@@ -45,3 +45,53 @@ jobs:
         run: npm run check
       - name: Build ứng dụng
         run: npm run build
+
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v7
+      - name: Cài Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Cài thư viện từ lockfile
+        run: npm ci
+      - name: Dùng cấu hình giả cho môi trường thử
+        run: cp .env.example .env
+      - name: Khởi động MySQL và Mailpit
+        run: docker compose up -d --wait --wait-timeout 180 db mailpit
+      - name: Kiểm tra trang trên máy chủ dev
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=5s 300s npm run dev > "$RUNNER_TEMP/next-dev.log" 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true; wait "$app_pid" 2>/dev/null || true' EXIT
+
+          for attempt in $(seq 1 60); do
+            if curl -fsS --max-time 2 http://127.0.0.1:3000/api/health > /dev/null 2>&1; then
+              break
+            fi
+            if ! kill -0 "$app_pid" 2>/dev/null; then
+              tail -n 80 "$RUNNER_TEMP/next-dev.log"
+              exit 1
+            fi
+            sleep 2
+          done
+
+          curl -fsS --max-time 30 http://127.0.0.1:3000/ > "$RUNNER_TEMP/home.html"
+          grep -Fq 'Lắng nghe sinh viên' "$RUNNER_TEMP/home.html"
+          curl -fsS --max-time 30 http://127.0.0.1:3000/suc-khoe > "$RUNNER_TEMP/health-page.html"
+          grep -Fq 'Ứng dụng đang phản hồi' "$RUNNER_TEMP/health-page.html"
+          curl -fsS --max-time 30 http://127.0.0.1:3000/api/health > "$RUNNER_TEMP/health.json"
+          node -e 'const data = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8")); if (data.status !== "ok" || data.application !== "available" || data.database !== "not_checked") process.exit(1)' "$RUNNER_TEMP/health.json"
+      - name: Dừng dịch vụ thử
+        if: always()
+        run: |
+          if [ -f .env ]; then docker compose down; fi
