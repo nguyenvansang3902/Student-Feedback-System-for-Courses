@@ -23,8 +23,8 @@ export default function HealthPage() {
           Ứng dụng đang phản hồi.
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-          Trang này xác nhận máy chủ web trả lời được yêu cầu. Trạng thái cơ sở
-          dữ liệu chưa được kiểm tra trong tuần khởi động.
+          Trang này xác nhận máy chủ web trả lời được yêu cầu. Kiểm tra này chưa
+          xác nhận kết nối cơ sở dữ liệu.
         </p>
 
         <dl className="mt-9 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
