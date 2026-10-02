@@ -1,0 +1,21 @@
+# Thong tin cau hinh rieng va bi mat
+.env
+.env.*
+!.env.example
+
+# Node.js / Next.js / ket qua kiem thu
+node_modules/
+.next/
+src/generated/prisma/
+out/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+*.log
+
+# Tep rieng cua may phat trien
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
