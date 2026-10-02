@@ -43,3 +43,5 @@ jobs:
         run: npm ci
       - name: Chạy lint, typecheck và test
         run: npm run check
+      - name: Build ứng dụng
+        run: npm run build
