@@ -4,7 +4,7 @@ Tiểu luận chuyên ngành HK1 2026–2027. Dự án theo kế hoạch 15 tu�
 
 ## Phạm vi hiện tại: Tuần 1
 
-Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra chất lượng và tài liệu nghiệp vụ ban đầu. Chưa có đăng nhập, bảng dữ liệu nghiệp vụ, tài khoản demo hoặc chức năng khảo sát. Nội dung nghiệp vụ trong `docs/` là bản nháp theo đề tài để nhóm đọc, hiểu và viết lại bằng lời của mình. Mã nguồn và lịch sử Tuần 1 có tại [GitHub](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/tree/feat/week-1); kết quả nghiệm thu xem `docs/PROJECT_STATE.md`.
+Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra chất lượng và tài liệu nghiệp vụ ban đầu. Chưa có đăng nhập, bảng dữ liệu nghiệp vụ, tài khoản demo hoặc chức năng khảo sát. Nội dung nghiệp vụ trong `docs/` là bản nháp theo đề tài để nhóm đọc, hiểu và viết lại bằng lời của mình. Mã nguồn và lịch sử Tuần 1 có tại [GitHub, nhánh main](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/tree/main); kết quả nghiệm thu xem `docs/PROJECT_STATE.md`.
 
 ## Môi trường phát triển hiện tại
 
@@ -13,7 +13,7 @@ Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra ch
 - Docker Desktop đang chạy; `docker info` đã nhận server **29.8.1** và distro `docker-desktop` ở trạng thái Running trên WSL 2. `docker compose up -d --wait db mailpit` cục bộ kết thúc mã 0 và hai dịch vụ healthy. Truy vấn MySQL cho thấy phiên bản **8.4.11**, charset `utf8mb4`, collation `utf8mb4_vi_0900_ai_ci`, `connection_ok=1`; giao diện Mailpit tại `http://127.0.0.1:8025` trả HTTP **200** với tiêu đề Mailpit.
 - Sau `npm ci` đúng lockfile, các thư viện native Rolldown/SWC/Oxide đã tải và nạp được. `npm run check` cục bộ qua lint, typecheck và **1/1 Vitest**; `npm run build` qua; HTTP trả **200** cho trang chủ, `/suc-khoe`, `/api/health`. API health ở Tuần 1 chỉ kiểm tra tiến trình ứng dụng, không kiểm tra kết nối database.
 
-[GitHub Actions lần 36961330459](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961330459) đã chạy qua `check` và Compose/dev smoke trên Linux cho mã nguồn `58c33ea`, hiện có trên `main`. Cấu hình Next `agentRules: false` đã được kiểm tra cục bộ bằng `npm run check`, build, HTTP ba route; SHA-256 của `AGENTS.md` trước/sau lần chạy dev giống nhau. Trạng thái Tuần 1 xem `docs/PROJECT_STATE.md`.
+[GitHub Actions trên main, lần 36961609369](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961609369) đã qua `check` và Compose/dev smoke trên Linux tại `c26b713`. Cấu hình Next `agentRules: false` đã được kiểm tra cục bộ bằng `npm run check`, build, HTTP ba route; SHA-256 của `AGENTS.md` trước/sau lần chạy dev giống nhau. Sau sự cố Docker lúc 10:50, hai cold start đã qua. Lúc 20:29 ngày 02/10, check (1/1 test), Compose healthy, SQL và HTTP bốn địa chỉ đều qua; volume MySQL được giữ. Đăng nhập Docker Desktop đã phục hồi bằng mã thiết bị (`docker login`) rồi restart lúc 20:37. Trạng thái Tuần 1 xem `docs/PROJECT_STATE.md`.
 
 ## Chạy cục bộ (PowerShell)
 
@@ -42,6 +42,19 @@ npm run check
 ```
 
 Lệnh `check` chạy lint, kiểm tra kiểu TypeScript và test. Trên máy Windows sau `npm ci`, lệnh này đã qua với **1/1 Vitest**; `npm run build` cũng qua. [GitHub Actions lần 36957106844](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957106844) đã qua lint, typecheck, Vitest và build; [lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188) qua tiếp hai job `check` và `smoke`. Job `smoke` dùng Compose khởi động MySQL/Mailpit, chạy `npm run dev`, rồi kiểm tra HTTP của trang chủ, `/suc-khoe` và `/api/health`. Xem `docs/PROJECT_STATE.md` để biết trạng thái phiên gần nhất.
+
+## Đăng nhập tài khoản Docker Desktop
+
+Ngày 02/10, đăng nhập web đã xong nhưng Chrome không mở liên kết quay về Docker Desktop; ứng dụng vẫn hiện Sign in. Bộ xử lý liên kết Windows nhận được URI thử, nên chưa có bằng chứng cần thay đường dẫn đăng ký. Đăng nhập đã phục hồi bằng [luồng mã thiết bị chính thức của Docker](https://docs.docker.com/reference/cli/docker/login/):
+
+```powershell
+docker login
+# Nhập mã vừa hiện tại https://login.docker.com/activate và xác nhận thiết bị.
+# Sau khi có Login Succeeded:
+docker desktop restart
+```
+
+Trong lần kiểm tra này, sau restart Dashboard đã hiện tài khoản và nhật ký xác nhận tự đăng nhập thành công. MySQL/Mailpit tự chạy lại, đều healthy; SQL và HTTP được kiểm tra lại lúc 20:41. Nguyên nhân Chrome không mở callback và lỗi registry trước đó chưa được chứng minh. Không cần gửi mật khẩu, token hay mã đăng nhập vào chat hoặc lưu chúng trong dự án.
 
 ## Prisma và dữ liệu
 
