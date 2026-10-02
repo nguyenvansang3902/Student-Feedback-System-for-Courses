@@ -1,0 +1,9 @@
+// Tuần 1 chỉ khai báo MySQL. Mô hình nghiệp vụ được thiết kế ở tuần 2.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}

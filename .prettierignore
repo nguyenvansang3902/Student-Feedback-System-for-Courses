@@ -1,0 +1,7 @@
+.next/
+node_modules/
+src/generated/prisma/
+package-lock.json
+docs/
+AGENTS.md
+README.md
