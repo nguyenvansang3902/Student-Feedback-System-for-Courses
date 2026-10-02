@@ -16,15 +16,17 @@
 
 ## Giới hạn và tồn đọng
 
-- Trên máy Windows hiện tại, `npm run check` cục bộ vẫn không qua vì Windows Application Control chặn Rolldown native; không ghi là kiểm tra cục bộ đã đạt.
+- Trên máy Windows, `npm run check` cục bộ vẫn không qua: Windows Application Control chặn Rolldown native; khi thử WASI, resolver lỗi cả với import fixture ở thư mục kế bên. CI Linux vẫn xanh và mã nguồn không đổi; không ghi là kiểm tra cục bộ đã đạt.
 - Node.js 24.21.0/npm 11.19.0 và Docker Desktop CLI 29.8.1/Compose 5.5.1 đã cài trên PATH của người dùng; terminal Codex cũ có thể còn PATH trước khi cài.
-- Docker daemon cục bộ chưa dùng được. Cài WSL 2 gặp `REGDB_E_CLASSNOTREG`; cần hoàn tất bước quản trị Windows và khởi động lại trước khi thử Compose tại máy.
+- WSL 2 vẫn chưa có, Docker Engine cục bộ chưa dùng được. Tải MSI WSL chính thức 2.7.14 bị quyền socket của sandbox chặn; trước đó `wsl --install --no-distribution` gặp `REGDB_E_CLASSNOTREG`.
+- Thử mở script quản trị bằng `Start-Process -Verb RunAs` dừng với `0xc0000142` trước khi hiện UAC/chạy script. Chạy DISM bật `VirtualMachinePlatform` với `/norestart` trả Error 740 (cần quyền quản trị). Chưa khởi động lại máy hoặc bật được tính năng Windows.
 - Kết quả CI xác minh Compose/dev trong môi trường GitHub Actions, không phải trên máy Windows này.
 - Bắt đầu muộn 2 ngày; không cắt P0 hoặc làm trước Tuần 2 để bù tiến độ.
 
 ## Quyết định
 
 - Luôn tách mốc kế hoạch 30/09/2026 khỏi ngày thực tế 02/10/2026 trong báo cáo.
+- Người dùng đã cho phép cài các thành phần môi trường; các lần thử trên chưa vượt qua bước quyền quản trị Windows. Không ghi WSL 2 hoặc Docker Engine là đã cài xong.
 - Theo yêu cầu ngày 02/10/2026, không viết phần quy trình hiện tại tại trường; tài liệu nghiệp vụ chỉ mô tả quy trình đề xuất.
 - Chỉ dùng dữ liệu giả, không ghi đóng góp sinh viên thay nhóm; bản nháp AI cần sinh viên rà soát và viết lại.
 
