@@ -3,22 +3,23 @@
 - Đề tài: Website quản lý khảo sát và phản hồi của sinh viên về môn học.
 - Kế hoạch: 15 tuần từ 30/09/2026; nếu mỗi tuần 7 ngày, Tuần 1 là 30/09–06/10/2026 (giả định, chờ đối chiếu lịch học).
 - Khởi động thực tế: 02/10/2026. Không ghi nhận công việc cho 30/09–01/10.
-- Tuần hiện tại: Tuần 1 — khởi động và hiểu nghiệp vụ; **chưa nghiệm thu xong**.
+- Tuần hiện tại: Tuần 1 — đã có bằng chứng nghiệm thu kỹ thuật trên CI; kiểm tra cục bộ Windows còn chờ môi trường.
 
 ## Đã thực hiện
 
-- Tạo tài liệu nền theo Mục 14; bốn phần yêu cầu chép nguyên văn đã đối chiếu với nguồn. Có đủ 63 FR, 33 BR, bản nháp nghiệp vụ, Chương 1 và giải thích Tuần 1.
+- Tạo tài liệu nền theo Mục 14; bốn phần chép nguyên văn đã đối chiếu với nguồn. Có đủ 63 FR, 33 BR, bản nháp nghiệp vụ, Chương 1 và giải thích Tuần 1.
 - Dựng Next.js, TypeScript strict, Tailwind, Prisma MySQL chưa có bảng nghiệp vụ, Docker Compose, CI, trang chủ và health check ứng dụng.
-- ESLint, typecheck, `prisma validate`, định dạng YAML và `npm run progress` chạy qua. Tiến độ ghi nhận: 0/163 điểm; mục tiêu lũy kế Tuần 1 là 3/163 điểm.
-- Build với Webpack và SWC WebAssembly tạm thời chạy qua; bản build trả HTTP 200 cho `/`, `/suc-khoe`, `/api/health`. API trả `database: not_checked`, `Cache-Control: no-store`.
-- Các commit nhỏ đã tạo trên nhánh `feat/week-1`; chưa đưa lên `main` khi cổng nghiệm thu chưa qua.
+- Mã nguồn Tuần 1 đã được đẩy lên [nhánh `feat/week-1` trên GitHub](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/tree/feat/week-1); xem lịch sử Git để kiểm tra các nhánh.
+- [CI 36957106844](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957106844) qua lint, typecheck, 1/1 Vitest và build.
+- [CI 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188) qua cả `check` và `smoke`: Compose MySQL/Mailpit, `npm run dev`, HTTP trang chủ, `/suc-khoe`, `/api/health`.
+- FR-102 được tick sau test và nghiệm thu trên CI; tiến độ từ `docs/PROGRESS.md` là 3/163 điểm, bằng mục tiêu lũy kế Tuần 1 là 3/163 điểm.
 
-## Đang thực hiện và tồn đọng
+## Giới hạn và tồn đọng
 
-- `npm run check` **chưa đạt**: lint và typecheck qua; Vitest dừng lúc khởi động, chưa chạy test nào. Windows Application Control chặn Rolldown native; thử WebAssembly cũng lỗi.
-- Build chuẩn với native SWC cũng bị Windows Application Control chặn. Build tạm bằng WebAssembly xác minh mã nguồn, không thay cho cổng chuẩn.
-- Máy hiện không có npm trên PATH, Docker Desktop hoặc WSL; npm CLI tạm được gọi qua pnpm. Chưa thể chạy `docker compose up` và xác minh MySQL/Mailpit ở đây.
-- CI GitHub Actions chưa chạy vì chưa có remote. FR-102 vẫn chưa tick trong `PROGRESS.md` do test tự động chưa qua; Tuần 1 chưa được báo hoàn thành.
+- Trên máy Windows hiện tại, `npm run check` cục bộ vẫn không qua vì Windows Application Control chặn Rolldown native; không ghi là kiểm tra cục bộ đã đạt.
+- Node.js 24.21.0/npm 11.19.0 và Docker Desktop CLI 29.8.1/Compose 5.5.1 đã cài trên PATH của người dùng; terminal Codex cũ có thể còn PATH trước khi cài.
+- Docker daemon cục bộ chưa dùng được. Cài WSL 2 gặp `REGDB_E_CLASSNOTREG`; cần hoàn tất bước quản trị Windows và khởi động lại trước khi thử Compose tại máy.
+- Kết quả CI xác minh Compose/dev trong môi trường GitHub Actions, không phải trên máy Windows này.
 - Bắt đầu muộn 2 ngày; không cắt P0 hoặc làm trước Tuần 2 để bù tiến độ.
 
 ## Quyết định
@@ -29,6 +30,5 @@
 
 ## Cách chạy và việc tiếp theo
 
-- Xem `README.md` để cài Node.js/npm, WSL 2 và Docker Desktop, rồi chạy ứng dụng, Compose và `npm run check`.
-- Khi môi trường cho phép: xác minh `docker compose up -d db mailpit`, `npm run check`, trang chủ và trang sức khỏe; ghi log thực tế, cập nhật truy vết/tiến độ rồi mới nghiệm thu Tuần 1.
-- Sau khi Tuần 1 đạt cổng kiểm tra, tạo báo cáo tuần từ bằng chứng thật và đưa bản chạy được lên `main`.
+- Xem `README.md` để chạy cục bộ sau khi Docker daemon hoạt động; xem hai link CI ở trên để kiểm tra bằng chứng đã chạy.
+- Kiểm tra trạng thái CI của các lần cập nhật tiếp theo và lập báo cáo phiên/tuần từ bằng chứng thật.

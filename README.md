@@ -4,21 +4,15 @@ Tiểu luận chuyên ngành HK1 2026–2027. Dự án theo kế hoạch 15 tu�
 
 ## Phạm vi hiện tại: Tuần 1
 
-Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra chất lượng và tài liệu nghiệp vụ ban đầu. Chưa có đăng nhập, bảng dữ liệu nghiệp vụ, tài khoản demo hoặc chức năng khảo sát. Nội dung nghiệp vụ trong `docs/` là bản nháp theo đề tài để nhóm đọc, hiểu và viết lại bằng lời của mình.
+Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra chất lượng và tài liệu nghiệp vụ ban đầu. Chưa có đăng nhập, bảng dữ liệu nghiệp vụ, tài khoản demo hoặc chức năng khảo sát. Nội dung nghiệp vụ trong `docs/` là bản nháp theo đề tài để nhóm đọc, hiểu và viết lại bằng lời của mình. Mã nguồn và lịch sử Tuần 1 có tại [GitHub](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/tree/feat/week-1); kết quả nghiệm thu xem `docs/PROJECT_STATE.md`.
 
-## Cần có trên máy
+## Môi trường phát triển hiện tại
 
-- Node.js **24 LTS** kèm npm; kiểm tra bằng `node --version` và `npm --version`.
-- Docker Desktop có Docker Compose; kiểm tra bằng `docker --version` và `docker compose version`.
-- Git để theo dõi thay đổi.
+- Máy người dùng đã cài Node.js **24.21.0**, npm **11.19.0**, Docker Desktop CLI **29.8.1** và Docker Compose **5.5.1** trên PATH của người dùng. Git đã có.
+- Docker daemon cục bộ **chưa hoạt động** vì bước cài WSL 2 gặp lỗi `REGDB_E_CLASSNOTREG`. Vì vậy Compose, MySQL và Mailpit chưa được xác minh trên máy Windows này. Cần hoàn tất cài WSL 2 bằng quyền quản trị Windows và khởi động lại trước khi thử lại Docker Desktop. Nếu lỗi vẫn xuất hiện, cần xử lý lỗi WSL 2 tại Windows trước khi tiếp tục.
+- Terminal Codex đã mở trước khi cài có thể còn PATH cũ (thấy Node `v24.19.0` và chưa nhận `npm`/`docker`); mở PowerShell hoặc Codex mới để nhận PATH đã cập nhật, rồi kiểm tra bằng `node --version`, `npm --version`, `docker --version`, `docker compose version` và `docker info`. Lệnh `docker info` chỉ thành công khi daemon chạy.
 
-Nếu máy Windows chưa có môi trường này:
-
-1. Mở PowerShell với quyền quản trị, chạy `wsl --install` để bật WSL 2, rồi khởi động lại Windows theo hướng dẫn trên màn hình. Nếu máy đã có WSL 2 thì bỏ qua bước này.
-2. Cài [Docker Desktop cho Windows](https://docs.docker.com/desktop/setup/install/windows-install/), khởi động ứng dụng và dùng WSL 2 backend. Chờ Docker Desktop báo engine đang chạy, rồi kiểm tra `docker --version` và `docker compose version`.
-3. Cài [Node.js 24 LTS bản Windows](https://nodejs.org/en/download) có kèm npm, mở PowerShell mới, rồi kiểm tra `node --version` và `npm --version`.
-
-Trong môi trường Codex khi khởi động dự án ngày 02/10/2026, đã thấy Git và Node `v24.19.0`; `npm`, Docker Desktop và WSL chưa sẵn sàng. Vì vậy việc chạy Compose trên máy này **chưa được xác minh**. Hướng dẫn trên dành cho máy phát triển của nhóm.
+Việc chạy Compose và trang web đã được xác minh riêng trong [GitHub Actions lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188). Kết quả này không được ghi là kiểm tra cục bộ Windows đã qua.
 
 ## Chạy cục bộ (PowerShell)
 
@@ -46,7 +40,7 @@ Nếu cổng `3306`, `1025` hoặc `8025` đã được chương trình khác s�
 npm run check
 ```
 
-Lệnh `check` chạy lint, kiểm tra kiểu TypeScript và test. CI GitHub Actions chạy cùng lệnh với một dịch vụ MySQL 8.4 riêng và `npm ci` từ lockfile. Chỉ xem kiểm tra là đạt khi các lệnh kết thúc với mã thoát 0; xem `docs/PROJECT_STATE.md` để biết kết quả chạy thực tế của phiên gần nhất.
+Lệnh `check` chạy lint, kiểm tra kiểu TypeScript và test. [GitHub Actions lần 36957106844](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957106844) đã chạy qua lint, typecheck, **1/1 Vitest** và build; [lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188) chạy qua tiếp hai job `check` và `smoke`. Job `smoke` dùng Compose khởi động MySQL/Mailpit, chạy `npm run dev`, rồi kiểm tra HTTP của trang chủ, `/suc-khoe` và `/api/health`. Trên máy Windows hiện tại, `npm run check` vẫn bị Windows Application Control chặn Rolldown native trong Vitest; không xem đây là kết quả chạy cục bộ đạt. Xem `docs/PROJECT_STATE.md` để biết trạng thái phiên gần nhất.
 
 ## Prisma và dữ liệu
 
