@@ -1,39 +1,34 @@
 # Trạng thái dự án
 
 - Đề tài: Website quản lý khảo sát và phản hồi của sinh viên về môn học.
-- Kế hoạch: 15 tuần, dự kiến bắt đầu 30/09/2026. Nếu tính mỗi tuần 7 ngày, Tuần 1 là 30/09–06/10/2026; đây là giả định cần đối chiếu lịch học và lịch báo cáo của trường.
-- Khởi động thực tế: 02/10/2026. Không có công việc nào được ghi nhận cho 30/09–01/10; không sửa lại mốc kế hoạch.
-- Tuần hiện tại: Tuần 1 — khởi động và hiểu nghiệp vụ (đang thực hiện).
-- Mốc kết thúc Tuần 1: tạm lấy 06/10/2026 theo giả định 7 ngày/tuần; cần nhóm/GVHD xác nhận lịch báo cáo và nghiệm thu.
+- Kế hoạch: 15 tuần từ 30/09/2026; nếu mỗi tuần 7 ngày, Tuần 1 là 30/09–06/10/2026 (giả định, chờ đối chiếu lịch học).
+- Khởi động thực tế: 02/10/2026. Không ghi nhận công việc cho 30/09–01/10.
+- Tuần hiện tại: Tuần 1 — khởi động và hiểu nghiệp vụ; **chưa nghiệm thu xong**.
 
-## Đã hoàn thành
+## Đã thực hiện
 
-- Sao chép nguyên văn nội dung AGENTS.md và các Mục 3–10 theo yêu cầu Mục 14 của đặc tả.
-- Tạo khung tài liệu nền Tuần 1 và bản nháp nghiệp vụ, Chương 1 để sinh viên rà soát.
+- Tạo tài liệu nền theo Mục 14; bốn phần yêu cầu chép nguyên văn đã đối chiếu với nguồn. Có đủ 63 FR, 33 BR, bản nháp nghiệp vụ, Chương 1 và giải thích Tuần 1.
+- Dựng Next.js, TypeScript strict, Tailwind, Prisma MySQL chưa có bảng nghiệp vụ, Docker Compose, CI, trang chủ và health check ứng dụng.
+- ESLint, typecheck, `prisma validate`, định dạng YAML và `npm run progress` chạy qua. Tiến độ ghi nhận: 0/163 điểm; mục tiêu lũy kế Tuần 1 là 3/163 điểm.
+- Build với Webpack và SWC WebAssembly tạm thời chạy qua; bản build trả HTTP 200 cho `/`, `/suc-khoe`, `/api/health`. API trả `database: not_checked`, `Cache-Control: no-store`.
+- Các commit nhỏ đã tạo trên nhánh `feat/week-1`; chưa đưa lên `main` khi cổng nghiệm thu chưa qua.
 
-## Đang thực hiện
+## Đang thực hiện và tồn đọng
 
-- Dựng và kiểm tra khung Next.js, TypeScript, Prisma, MySQL, Docker Compose, công cụ kiểm tra và CI theo phạm vi Tuần 1.
-- Soạn nghiệp vụ đích đề xuất, vai trò, thuật ngữ và bảng mã BR trong `docs/NGHIEP_VU.md`.
-
-## Tồn đọng và rủi ro
-
-- Chưa có danh sách nhóm và lịch nộp báo cáo; không gán đóng góp cá nhân hoặc ngày nghiệm thu chưa xác nhận.
-- Bắt đầu thực tế muộn 2 ngày. Ưu tiên hoàn tất nghiệm thu Tuần 1, chưa cắt yêu cầu hoặc làm trước Tuần 2.
-- Kết quả chạy Docker, `npm run check` và CI phải cập nhật bằng bằng chứng sau khi thực sự chạy.
+- `npm run check` **chưa đạt**: lint và typecheck qua; Vitest dừng lúc khởi động, chưa chạy test nào. Windows Application Control chặn Rolldown native; thử WebAssembly cũng lỗi.
+- Build chuẩn với native SWC cũng bị Windows Application Control chặn. Build tạm bằng WebAssembly xác minh mã nguồn, không thay cho cổng chuẩn.
+- Máy hiện không có npm trên PATH, Docker Desktop hoặc WSL; npm CLI tạm được gọi qua pnpm. Chưa thể chạy `docker compose up` và xác minh MySQL/Mailpit ở đây.
+- CI GitHub Actions chưa chạy vì chưa có remote. FR-102 vẫn chưa tick trong `PROGRESS.md` do test tự động chưa qua; Tuần 1 chưa được báo hoàn thành.
+- Bắt đầu muộn 2 ngày; không cắt P0 hoặc làm trước Tuần 2 để bù tiến độ.
 
 ## Quyết định
 
-- Dùng 30/09/2026 làm mốc kế hoạch, 02/10/2026 làm mốc thực tế trong mọi báo cáo.
-- Ngày 02/10/2026, người dùng yêu cầu bỏ phần viết về quy trình hiện tại tại trường; tài liệu nghiệp vụ chỉ mô tả quy trình đề xuất, vai trò, thuật ngữ và bảng mã BR.
-- Giữ dữ liệu demo hoàn toàn giả; tài liệu AI soạn là bản nháp để sinh viên hiểu, kiểm chứng và viết lại.
+- Luôn tách mốc kế hoạch 30/09/2026 khỏi ngày thực tế 02/10/2026 trong báo cáo.
+- Theo yêu cầu ngày 02/10/2026, không viết phần quy trình hiện tại tại trường; tài liệu nghiệp vụ chỉ mô tả quy trình đề xuất.
+- Chỉ dùng dữ liệu giả, không ghi đóng góp sinh viên thay nhóm; bản nháp AI cần sinh viên rà soát và viết lại.
 
-## Cách chạy và kiểm tra
+## Cách chạy và việc tiếp theo
 
-- Theo `README.md` sau khi khung kỹ thuật được dựng. Không ghi trạng thái “đã chạy qua” khi chưa có log thực tế.
-
-## Việc tiếp theo
-
-1. Hoàn tất khung kỹ thuật Tuần 1 và chạy các lệnh nghiệm thu thật.
-2. Nhóm rà soát và hiểu bản nháp nghiệp vụ, báo cáo; bổ sung thông tin nhóm và lịch nộp khi có.
-3. Ghi kết quả thực tế, rủi ro và bằng chứng vào báo cáo Tuần 1 khi kết thúc tuần.
+- Xem `README.md` để cài Node.js/npm, WSL 2 và Docker Desktop, rồi chạy ứng dụng, Compose và `npm run check`.
+- Khi môi trường cho phép: xác minh `docker compose up -d db mailpit`, `npm run check`, trang chủ và trang sức khỏe; ghi log thực tế, cập nhật truy vết/tiến độ rồi mới nghiệm thu Tuần 1.
+- Sau khi Tuần 1 đạt cổng kiểm tra, tạo báo cáo tuần từ bằng chứng thật và đưa bản chạy được lên `main`.

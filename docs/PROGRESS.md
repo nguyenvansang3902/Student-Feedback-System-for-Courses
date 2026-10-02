@@ -4,6 +4,8 @@ Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ �
 
 Mốc kế hoạch: 30/09/2026. Bắt đầu thực tế: 02/10/2026. Tuần 1 tạm tính 30/09–06/10/2026 theo giả định 7 ngày/tuần, chờ xác nhận lịch của trường.
 
+FR-102 chưa đánh dấu hoàn thành: health check đã trả HTTP 200 khi thử thủ công, nhưng Vitest bị chặn lúc khởi động trên máy hiện tại và Docker Compose chưa chạy được.
+
 ## M1 Xác thực và phiên
 
 - [ ] FR-01 [P0] đăng nhập bằng mã định danh (mã SV/GV) hoặc email (Tuần 3)
