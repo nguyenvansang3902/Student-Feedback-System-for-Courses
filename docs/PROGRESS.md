@@ -4,7 +4,7 @@ Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ �
 
 Mốc kế hoạch: 30/09/2026. Bắt đầu thực tế: 02/10/2026. Tuần 1 tạm tính 30/09–06/10/2026 theo giả định 7 ngày/tuần, chờ xác nhận lịch của trường.
 
-FR-102 đã có test và nghiệm thu trên GitHub Actions ([lần chạy 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188)): job `check` chạy lint, typecheck, 1/1 Vitest và build; job `smoke` khởi động MySQL/Mailpit bằng Compose, chạy `npm run dev` và kiểm tra trang chủ, trang sức khỏe, API health. Kiểm tra cục bộ Windows vẫn bị chặn bởi môi trường, không được ghi là đã qua.
+FR-102 đã có test và nghiệm thu trên GitHub Actions ([lần chạy 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188)): job `check` chạy lint, typecheck, 1/1 Vitest và build; job `smoke` khởi động MySQL/Mailpit bằng Compose, chạy `npm run dev` và kiểm tra trang chủ, trang sức khỏe, API health. Sau khi cài WSL/Docker và chạy `npm ci`, Windows cục bộ cũng qua `npm run check` (1/1 test), build và HTTP 200 cho ba route; Compose MySQL/Mailpit healthy, truy vấn MySQL và Mailpit UI đã kiểm tra riêng. Cấu hình Next `agentRules: false` đã được test cục bộ, `AGENTS.md` giữ nguyên SHA-256 sau lần chạy dev. Báo cáo Tuần 1 là bản cập nhật đến 02/10, chưa phải bản chốt ngày 06/10 theo giả định 7 ngày.
 
 ## M1 Xác thực và phiên
 

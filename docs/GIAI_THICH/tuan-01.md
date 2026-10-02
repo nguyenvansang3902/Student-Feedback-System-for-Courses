@@ -4,7 +4,7 @@ Tuần 1 dùng để thống nhất đề tài và tạo nền kỹ thuật. V�
 
 Tài liệu `NGHIEP_VU.md` là bản tóm tắt quy trình đề xuất, vai trò và thuật ngữ. `DAC_TA_NGHIEP_VU.md` giữ nguyên đặc tả nguồn để tra cứu các chi tiết và ngoại lệ. `PROGRESS.md` chia công việc theo mã FR để tránh báo tiến độ bằng cảm tính. Mọi quy tắc BR sẽ cần test gắn mã ở tuần triển khai tương ứng.
 
-Mốc kế hoạch bắt đầu **30/09/2026**, nhóm khởi động thực tế **02/10/2026**. Tuần 1 tạm hiểu là **30/09–06/10/2026** nếu tính 7 ngày liên tiếp; lịch chính thức cần đối chiếu với yêu cầu nộp tiến độ. Không ghi phần việc cho 30/09–01/10 khi không có bằng chứng. Khung kỹ thuật đã qua kiểm tra và chạy thử Compose/dev trong [GitHub Actions lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188). Kiểm tra cục bộ Windows còn bị chặn ở Vitest native và Docker daemon.
+Mốc kế hoạch bắt đầu **30/09/2026**, nhóm khởi động thực tế **02/10/2026**. Tuần 1 tạm hiểu là **30/09–06/10/2026** nếu tính 7 ngày liên tiếp; lịch chính thức cần đối chiếu với yêu cầu nộp tiến độ. Không ghi phần việc cho 30/09–01/10 khi không có bằng chứng. Khung kỹ thuật đã qua kiểm tra và chạy thử Compose/dev trong [GitHub Actions lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188). Sau khi người dùng hoàn tất bước DISM và khởi động lại, kiểm tra cục bộ Windows cũng qua `npm run check` (1/1 test), build, HTTP 200 cho ba route, MySQL/Mailpit healthy. Cấu hình Next mới qua test và `AGENTS.md` không bị sửa khi chạy dev. Đây là kết quả tính đến 02/10, chưa phải báo cáo chốt tuần.
 
 ## Năm câu hỏi có thể được hỏi khi bảo vệ
 

@@ -8,13 +8,12 @@ Tuần 1 dựng khung Next.js, TypeScript, Prisma, MySQL, Mailpit, kiểm tra ch
 
 ## Môi trường phát triển hiện tại
 
-- Máy người dùng đã cài Node.js **24.21.0**, npm **11.19.0**, Docker Desktop CLI **29.8.1** và Docker Compose **5.5.1** trên PATH của người dùng. Git đã có.
-- WSL 2 **chưa có** và Docker Engine cục bộ **chưa hoạt động**, nên Compose, MySQL và Mailpit chưa được xác minh trên máy Windows này. Lệnh `wsl --install --no-distribution` gặp `REGDB_E_CLASSNOTREG`. Thử tải MSI WSL chính thức 2.7.14 bị quyền socket của sandbox chặn. Thử chạy script quản trị bằng `Start-Process -Verb RunAs` dừng với `0xc0000142` trước UAC; DISM bật `VirtualMachinePlatform` với `/norestart` trả Error 740 (cần quyền quản trị). Chưa khởi động lại máy hay bật được tính năng Windows. **Quyền quản trị Windows là điểm chặn tiếp theo** để hoàn tất WSL/Docker; các bản CLI đã cài không có nghĩa Docker Engine chạy được.
-- Terminal Codex đã mở trước khi cài có thể còn PATH cũ (thấy Node `v24.19.0` và chưa nhận `npm`/`docker`); mở PowerShell hoặc Codex mới để nhận PATH đã cập nhật, rồi kiểm tra bằng `node --version`, `npm --version`, `docker --version`, `docker compose version` và `docker info`. Lệnh `docker info` chỉ thành công khi daemon chạy.
+- Máy người dùng đã cài Node.js **24.21.0**, npm **11.19.0**, Docker Desktop CLI/server **29.8.1** và Docker Compose **5.5.1**. Git đã có.
+- Ngày 02/10/2026, người dùng đã bật thành công hai tính năng Windows cần cho WSL bằng DISM với quyền quản trị và khởi động lại lúc **10:25** (Asia/Saigon). Bản MSI WSL 2.7.14 x64 chính thức được kiểm tra chữ ký Microsoft hợp lệ và SHA-256 trước khi cài; lệnh cài nâng quyền kết thúc mã 0. `wsl --version` báo **2.7.14.0**, kernel **6.18.33.2-2**, phiên bản mặc định **2**.
+- Docker Desktop đang chạy; `docker info` đã nhận server **29.8.1** và distro `docker-desktop` ở trạng thái Running trên WSL 2. `docker compose up -d --wait db mailpit` cục bộ kết thúc mã 0 và hai dịch vụ healthy. Truy vấn MySQL cho thấy phiên bản **8.4.11**, charset `utf8mb4`, collation `utf8mb4_vi_0900_ai_ci`, `connection_ok=1`; giao diện Mailpit tại `http://127.0.0.1:8025` trả HTTP **200** với tiêu đề Mailpit.
+- Sau `npm ci` đúng lockfile, các thư viện native Rolldown/SWC/Oxide đã tải và nạp được. `npm run check` cục bộ qua lint, typecheck và **1/1 Vitest**; `npm run build` qua; HTTP trả **200** cho trang chủ, `/suc-khoe`, `/api/health`. API health ở Tuần 1 chỉ kiểm tra tiến trình ứng dụng, không kiểm tra kết nối database.
 
-Việc chạy Compose và trang web đã được xác minh riêng trong [GitHub Actions lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188). Kết quả này không được ghi là kiểm tra cục bộ Windows đã qua.
-
-Để tiếp tục kiểm tra trên máy Windows, cần thực hiện phần WSL 2/`VirtualMachinePlatform` trong PowerShell có quyền quản trị ngoài sandbox, khởi động lại theo yêu cầu của Windows, rồi mở Docker Desktop và xác nhận `docker info` chạy được. Chỉ sau đó mới chạy các lệnh Compose bên dưới. Không xóa volume hoặc dữ liệu trong quá trình xử lý môi trường.
+[GitHub Actions lần 36961330459](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961330459) đã chạy qua `check` và Compose/dev smoke trên Linux cho mã nguồn `58c33ea`, hiện có trên `main`. Cấu hình Next `agentRules: false` đã được kiểm tra cục bộ bằng `npm run check`, build, HTTP ba route; SHA-256 của `AGENTS.md` trước/sau lần chạy dev giống nhau. Trạng thái Tuần 1 xem `docs/PROJECT_STATE.md`.
 
 ## Chạy cục bộ (PowerShell)
 
@@ -42,7 +41,7 @@ Nếu cổng `3306`, `1025` hoặc `8025` đã được chương trình khác s�
 npm run check
 ```
 
-Lệnh `check` chạy lint, kiểm tra kiểu TypeScript và test. [GitHub Actions lần 36957106844](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957106844) đã chạy qua lint, typecheck, **1/1 Vitest** và build; [lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188) chạy qua tiếp hai job `check` và `smoke`. Job `smoke` dùng Compose khởi động MySQL/Mailpit, chạy `npm run dev`, rồi kiểm tra HTTP của trang chủ, `/suc-khoe` và `/api/health`. Trên máy Windows hiện tại, `npm run check` bị Windows Application Control chặn Rolldown native. Thử WASI tiếp tục lỗi resolver ngay cả khi import fixture ở thư mục kế bên; lỗi đã được cô lập trong môi trường cục bộ, mã nguồn dự án không đổi và CI Linux vẫn qua. Không xem đây là kết quả chạy cục bộ đạt. Xem `docs/PROJECT_STATE.md` để biết trạng thái phiên gần nhất.
+Lệnh `check` chạy lint, kiểm tra kiểu TypeScript và test. Trên máy Windows sau `npm ci`, lệnh này đã qua với **1/1 Vitest**; `npm run build` cũng qua. [GitHub Actions lần 36957106844](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957106844) đã qua lint, typecheck, Vitest và build; [lần 36957548188](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36957548188) qua tiếp hai job `check` và `smoke`. Job `smoke` dùng Compose khởi động MySQL/Mailpit, chạy `npm run dev`, rồi kiểm tra HTTP của trang chủ, `/suc-khoe` và `/api/health`. Xem `docs/PROJECT_STATE.md` để biết trạng thái phiên gần nhất.
 
 ## Prisma và dữ liệu
 
