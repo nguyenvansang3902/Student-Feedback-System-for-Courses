@@ -154,8 +154,8 @@ describe("BR-03 — Mục 5.6(a), DMMF của thiết kế đầy đủ", () => {
   });
 });
 
-describe("W2 — tính nhất quán schema và phạm vi migration", () => {
-  it("schema áp dụng chỉ gồm chín bảng người dùng và danh mục", () => {
+describe("W3 — tính nhất quán schema và phạm vi migration", () => {
+  it("schema áp dụng gồm chín bảng nền Tuần 2 và bốn bảng xác thực/kiểm toán Tuần 3", () => {
     expect(
       foundation.datamodel.models.map((model) => model.name).sort(),
     ).toEqual(
@@ -169,11 +169,15 @@ describe("W2 — tính nhất quán schema và phạm vi migration", () => {
         "CourseSection",
         "TeachingAssignment",
         "Enrollment",
+        "UserSession",
+        "AuthToken",
+        "RateLimitBucket",
+        "AuditLog",
       ].sort(),
     );
   });
 
-  it("các trường dữ liệu nền không lệch giữa schema áp dụng và thiết kế", () => {
+  it("trường, quan hệ và khóa của 13 model runtime không lệch thiết kế đầy đủ", () => {
     for (const model of foundation.datamodel.models) {
       const expected = model.fields.filter((field) => field.kind !== "object");
       const actual = getModel(model.name).fields.filter(

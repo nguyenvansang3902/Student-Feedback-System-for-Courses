@@ -6,6 +6,7 @@
 # Node.js / Next.js / ket qua kiem thu
 node_modules/
 .next/
+.next-auth/
 src/generated/
 out/
 coverage/

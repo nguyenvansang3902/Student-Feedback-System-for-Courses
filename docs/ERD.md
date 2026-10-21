@@ -1,14 +1,14 @@
-# ERD toàn hệ thống — Tuần 2
+# ERD toàn hệ thống — cập nhật Tuần 3
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Ngày thiết kế thực tế **21/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. Đây là thiết kế dữ liệu, không phải các chức năng nghiệp vụ đã chạy.
+Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 3 ngày **21/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. ERD phân biệt thiết kế dữ liệu với schema đã migrate; có bảng không đồng nghĩa toàn bộ chức năng nghiệp vụ đã hoàn thành.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model**), đối chiếu `prisma/schema.prisma` runtime (**9 model nền**). SHA-256 DMMF thiết kế: `a2320384188d56543a7ecf3b50c1356cd7a4df53a56880bd4e576d50c92713d3`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**13 model đã migrate đến Tuần 3**). SHA-256 DMMF thiết kế: `a2320384188d56543a7ecf3b50c1356cd7a4df53a56880bd4e576d50c92713d3`.
 
 ## Cách đọc và tái tạo
 
-- Chín model nền người dùng/danh mục là phạm vi migration Tuần 2; ba mươi model còn lại là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ.
+- Tuần 2 đã migrate chín model nền người dùng/danh mục. Đến Tuần 3, runtime thêm `UserSession`, `AuthToken`, `RateLimitBucket`, `AuditLog`, tổng **13 model đã migrate đến Tuần 3**. **26 model còn lại** là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ. Bản báo cáo nghiệm thu Tuần 2 giữ kết quả chín bảng tại thời điểm đó.
 - Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.

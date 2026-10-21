@@ -9,6 +9,7 @@ export default defineConfig([
   prettier,
   globalIgnores([
     ".next/**",
+    ".next-auth/**",
     "out/**",
     "build/**",
     "src/generated/**",

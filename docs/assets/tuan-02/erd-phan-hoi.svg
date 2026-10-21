@@ -220,7 +220,9 @@
     <rect x="561" y="571" width="510" height="48" rx="14" fill="#64748b" />
     <rect x="561" y="599" width="510" height="20" fill="#64748b" />
     <text x="579" y="602" class="model">CourseSection</text>
-    <text x="579" y="643" class="meta">Ngữ cảnh lặp · 4 scalar</text>
+    <text x="579" y="643" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 3 · 4 scalar
+    </text>
     <text x="579" y="672" class="field">PK (id)</text>
     <text x="579" y="695" class="field">UK1 (semesterId, code)</text>
     <text x="579" y="718" class="field">FK (courseId) → Course (id)</text>
@@ -240,14 +242,16 @@
     <rect x="1095" y="571" width="510" height="48" rx="14" fill="#64748b" />
     <rect x="1095" y="599" width="510" height="20" fill="#64748b" />
     <text x="1113" y="602" class="model">User</text>
-    <text x="1113" y="643" class="meta">Ngữ cảnh lặp · 9 scalar</text>
+    <text x="1113" y="643" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 3 · 9 scalar
+    </text>
     <text x="1113" y="672" class="field">PK (id)</text>
     <text x="1113" y="695" class="field">UK1 (loginCode)</text>
     <text x="1113" y="718" class="field">UK2 (email)</text>
   </g>
   <text x="27" y="800" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 9 model runtime
-    · Ngày thiết kế thực tế 21/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 13 model đã
+    migrate đến Tuần 3 · Khởi tạo và cập nhật thực tế 21/10/2026
   </text>
   <text x="27" y="825" class="foot">
     SHA-256 DMMF:

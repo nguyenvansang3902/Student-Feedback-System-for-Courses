@@ -29,6 +29,7 @@ jobs:
       - name: Dùng cấu hình giả và khởi động dịch vụ
         run: |
           cp .env.example .env
+          npm run auth:key
           docker compose up -d --wait --wait-timeout 180 db mailpit
       - name: Chuẩn bị database shadow riêng
         run: npm run db:prepare
@@ -39,6 +40,8 @@ jobs:
           npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code
       - name: Kiểm tra ràng buộc trên MySQL thật
         run: npm run test:integration
+      - name: Kiểm tra xác thực qua HTTP, MySQL và Mailpit
+        run: npm run test:auth
       - name: Chạy lint, typecheck và test
         run: npm run check
       - name: Build ứng dụng
@@ -66,7 +69,9 @@ jobs:
       - name: Cài thư viện từ lockfile
         run: npm ci
       - name: Dùng cấu hình giả cho môi trường thử
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env
+          npm run auth:key
       - name: Khởi động MySQL và Mailpit
         run: docker compose up -d --wait --wait-timeout 180 db mailpit
       - name: Kiểm tra trang trên máy chủ dev

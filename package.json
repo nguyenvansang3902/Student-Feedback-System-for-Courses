@@ -22,19 +22,28 @@
     "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "design:diagrams": "node scripts/export-erd.mjs",
-    "design:check": "node scripts/export-erd.mjs --check"
+    "design:check": "node scripts/export-erd.mjs --check",
+    "auth:key": "node scripts/generate-auth-key.mjs",
+    "db:seed": "tsx scripts/seed-auth.ts",
+    "test:auth": "tsx scripts/verify-auth.ts"
   },
   "dependencies": {
+    "@prisma/adapter-mariadb": "7.10.1",
     "@prisma/client": "7.10.1",
+    "bcryptjs": "3.0.3",
     "dotenv": "18.0.5",
+    "jose": "6.2.13",
     "next": "16.3.8",
+    "nodemailer": "10.1.7",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@prisma/generator-helper": "7.10.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.1",
+    "@types/nodemailer": "8.0.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "9.39.5",
@@ -44,6 +53,7 @@
     "prettier": "3.9.9",
     "prisma": "7.10.1",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.0.3"
   },

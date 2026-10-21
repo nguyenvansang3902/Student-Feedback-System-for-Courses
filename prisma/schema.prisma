@@ -1,4 +1,4 @@
-// Schema áp dụng ở Tuần 2. Bản thiết kế toàn hệ thống: design.prisma.
+// Schema áp dụng đến Tuần 3. Bản thiết kế toàn hệ thống: design.prisma.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -45,6 +45,9 @@ model User {
   mustChangePassword Boolean              @default(true)
   createdAt          DateTime             @default(now()) @db.DateTime(3)
   updatedAt          DateTime             @updatedAt @db.DateTime(3)
+  sessions           UserSession[]
+  authTokens         AuthToken[]
+  audit              AuditLog[]
   roles              RoleAssignment[]
   teaching           TeachingAssignment[]
   enrollments        Enrollment[]
@@ -151,4 +154,60 @@ model RoleAssignment {
   @@unique([userId, role, scopeKey])
   @@index([facultyId])
   @@index([departmentId])
+}
+
+enum AuthTokenKind {
+  ACTIVATION
+  PASSWORD_RESET
+}
+
+model UserSession {
+  id               String       @id @default(uuid()) @db.Char(36)
+  userId           String       @db.Char(36)
+  refreshTokenHash String       @unique @db.Char(64)
+  familyId         String       @db.Char(36)
+  expiresAt        DateTime     @db.DateTime(3)
+  createdAt        DateTime     @default(now()) @db.DateTime(3)
+  revokedAt        DateTime?    @db.DateTime(3)
+  userAgent        String?      @db.VarChar(512)
+  rotatedFromId    String?      @unique @db.Char(36)
+  user             User         @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  previous         UserSession? @relation("Rotation", fields: [rotatedFromId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  next             UserSession? @relation("Rotation")
+
+  @@index([userId, revokedAt])
+  @@index([familyId])
+}
+
+model AuthToken {
+  id        String        @id @default(uuid()) @db.Char(36)
+  userId    String        @db.Char(36)
+  kind      AuthTokenKind
+  tokenHash String        @unique @db.Char(64)
+  expiresAt DateTime      @db.DateTime(3)
+  usedAt    DateTime?     @db.DateTime(3)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([userId, kind])
+}
+
+model RateLimitBucket {
+  keyHash     String    @id @db.Char(64)
+  attempts    Int       @default(0)
+  windowStart DateTime  @db.DateTime(3)
+  lockedUntil DateTime? @db.DateTime(3)
+}
+
+model AuditLog {
+  id              String   @id @default(uuid()) @db.Char(36)
+  actorId         String?  @db.Char(36)
+  action          String   @db.VarChar(100)
+  objectType      String   @db.VarChar(64)
+  objectId        String?  @db.Char(36)
+  redactedSummary Json?
+  occurredAt      DateTime @default(now()) @db.DateTime(3)
+  actor           User?    @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([actorId, occurredAt])
+  @@index([objectType, objectId])
 }
