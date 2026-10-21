@@ -1,0 +1,4 @@
+# Giữ artifact sinh tự động và SHA-256 ổn định khi checkout Windows/Linux.
+docs/ERD.md text eol=lf
+docs/assets/tuan-02/*.svg text eol=lf
+docs/assets/tuan-02/mermaid/*.svg text eol=lf

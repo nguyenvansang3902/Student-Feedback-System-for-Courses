@@ -1,40 +1,36 @@
 # Trạng thái dự án
 
-- Đề tài: Website quản lý khảo sát và phản hồi của sinh viên về môn học.
-- Kế hoạch: 15 tuần từ 30/09/2026; nếu mỗi tuần 7 ngày, Tuần 1 là 30/09–06/10/2026 (giả định, chờ đối chiếu lịch học).
+- Đề tài: Website quản lý khảo sát và phản hồi của sinh viên về môn học; kế hoạch 15 tuần từ 30/09/2026.
 - Khởi động thực tế: 02/10/2026. Không ghi nhận công việc cho 30/09–01/10.
-- Tuần hiện tại: Tuần 1 — nghiệm thu kỹ thuật đã qua trên CI và cục bộ; báo cáo hiện là bản cập nhật đến 02/10/2026, trước mốc kết thúc tuần giả định.
+- Tuần hiện tại: Tuần 2 — phân tích, thiết kế và migration người dùng/danh mục theo lệnh người dùng ngày 21/10/2026.
+- Lịch giả định 7 ngày/tuần: Tuần 1 30/09–06/10; Tuần 2 07–13/10/2026. Công việc Tuần 2 thực hiện 21/10, không ghi lùi ngày; chờ nhóm đối chiếu lịch trường.
 
 ## Đã thực hiện
 
-- Tạo tài liệu nền theo Mục 14; bốn phần chép nguyên văn đã đối chiếu với nguồn. Có đủ 63 FR, 33 BR, bản nháp nghiệp vụ, Chương 1 và giải thích Tuần 1.
-- Dựng Next.js, TypeScript strict, Tailwind, Prisma MySQL chưa có bảng nghiệp vụ, Docker Compose, CI, trang chủ và health check ứng dụng.
-- Mã nguồn và báo cáo Tuần 1 đã có trên [nhánh `main`](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/tree/main) tại `c26b713`; giữ nguyên lịch sử Git ban đầu, không force push.
-- [CI main 36961609369](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961609369) cho `c26b713` qua lint, typecheck, 1/1 Vitest và build (`check`); trạng thái được đọc lại lúc 20:30 ngày 02/10.
-- Cùng lần CI trên qua `smoke`: Compose MySQL/Mailpit, `npm run dev`, HTTP trang chủ, `/suc-khoe`, `/api/health`.
-- FR-102 được tick sau test và nghiệm thu trên CI; tiến độ từ `docs/PROGRESS.md` là 3/163 điểm, bằng mục tiêu lũy kế Tuần 1 là 3/163 điểm.
-- Người dùng bật thành công hai tính năng Windows cần cho WSL bằng DISM và khởi động lại lúc 10:25 ngày 02/10/2026 (Asia/Saigon); WSL MSI 2.7.14 x64 chính thức có chữ ký Microsoft hợp lệ và SHA-256 đã kiểm tra, cài nâng quyền exit 0.
-- `wsl --version` báo 2.7.14.0, kernel 6.18.33.2-2, mặc định WSL 2; Docker Desktop chạy, server 29.8.1 và distro `docker-desktop` Running.
-- Sau `npm ci`, Rolldown/SWC/Oxide native nạp được; build đã qua. Kiểm tra lại lúc 20:29 ngày 02/10: `npm run check` exit 0, 1/1 Vitest; trang chủ, `/suc-khoe`, `/api/health` đều HTTP 200; SHA-256 `AGENTS.md` không đổi.
-- `docker compose up -d --wait db mailpit` cục bộ exit 0, hai dịch vụ healthy. MySQL 8.4.11 kết nối được (`connection_ok=1`), `utf8mb4`/`utf8mb4_vi_0900_ai_ci`; Mailpit UI tại `http://127.0.0.1:8025` trả HTTP 200 và tiêu đề Mailpit.
-- Đăng nhập Docker bằng mã thiết bị qua `docker login` thành công; sau restart lúc 20:37, nhật ký xác nhận tự đăng nhập, Dashboard có tài khoản. Lúc 20:41 db/mailpit healthy, SQL thành công, HTTP ba route và Mailpit 200.
+- Tuần 1 có khung Next.js/TypeScript/Tailwind/Prisma, Compose MySQL/Mailpit, CI, trang chủ và sức khỏe; FR-102 được nghiệm thu. Lịch sử Docker/WSL và phục hồi đăng nhập ngày 02/10 giữ trong AI_USAGE/báo cáo Tuần 1.
+- Tuần 2 có 63 FR và 20 NFR có mã, ma trận 7 vai trò, kiến trúc, ERD, CSDL/ẩn danh, ADR-002/003 và nháp Chương 2–3; 13/13 sơ đồ Mermaid render thành công (`docs/SO_DO_DA_RENDER.md`).
+- Có 18 wireframe trong `docs/wireframes/tuan-02.html`; đã kiểm desktop 1440/mobile 390, không tràn ngang hoặc nút nghiệp vụ hoạt động; đây là tài liệu tĩnh, không phải giao diện chức năng.
+- Blueprint `prisma/design.prisma` có 39 model; schema áp dụng `prisma/schema.prisma` chỉ có 9 model người dùng/danh mục, output sinh riêng. Không migrate blueprint.
+- Migration `20261021160354_week2_users_catalog`: 9 bảng, 11 FK Restrict, 3 CHECK và utf8mb4; migrate dev lần ba đồng bộ, status up-to-date, diff không khác biệt, deploy không có migration chờ; giữ volume cũ.
+- Kiểm tích hợp MySQL thật: 10/10 tình huống qua, fixture rollback; kiểm trùng, FK, phạm vi vai trò, ngày kỳ, tín chỉ. Không tạo dữ liệu sinh viên thật.
+- `npm run check` sau vá phụ thuộc qua validate/generate/ERD check/lint/typecheck và 14/14 Vitest (13 schema/guard + 1 health); build exit 0.
+- Prepare shadow: 6/6 tình huống bảo vệ qua (sai cổng/mật khẩu/Docker override/cùng DB/marker sai server bị chặn; cấu hình hợp lệ chạy lại qua), không grant toàn server.
+- HTTP production cổng 3001: trang chủ/sức khỏe/API đều 200, payload health/no-store đúng; Mailpit 8025 HTTP 200. Server 3001 đã dừng sau thử.
+- Mã Tuần 2 `723e165` đã qua CI `39634835024`: cả check và smoke thành công, gồm migrate/deploy/diff, MySQL, lint/typecheck/test, build và HTTP dev. Commit `85de07a` bổ sung tài liệu phân tích và SVG.
+- Tiến độ FR giữ 3/163 điểm (1,8%), chỉ FR-102 tick; thiết kế/schema không hoàn thành đăng nhập, CRUD hay nộp khảo sát.
 
-## Giới hạn và tồn đọng
+## Giới hạn và quyết định
 
-- Tuần 1 chưa đến mốc kết thúc 06/10 theo giả định 7 ngày; báo cáo hiện tại không thay cho bản chốt tuần nếu trường yêu cầu cuối tuần.
-- Lúc 10:50 Docker báo thiếu registry key. Đã sao lưu ổ dữ liệu; hai cold start qua shortcut/app ID thành công sau khi bỏ khóa thử, restart lúc 20:37 cũng qua. Nguyên nhân registry ban đầu và việc Chrome không mở callback chưa chứng minh; đã phục hồi đăng nhập bằng mã thiết bị, giữ volume MySQL.
-- `/api/health` trả `database: not_checked`: endpoint chỉ kiểm tra ứng dụng ở Tuần 1; kết nối MySQL được thử riêng qua SQL.
-- Bắt đầu muộn 2 ngày; không cắt P0 hoặc làm trước Tuần 2 để bù tiến độ.
-
-## Quyết định
-
-- Luôn tách mốc kế hoạch 30/09/2026 khỏi ngày thực tế 02/10/2026 trong báo cáo.
-- Người dùng đã cho phép cài các thành phần môi trường; lịch sử các lần thử chưa thành công được giữ trong `docs/AI_USAGE.md`, kết quả sau khi khởi động lại được ghi bằng bằng chứng thực tế.
-- Theo yêu cầu ngày 02/10/2026, không viết phần quy trình hiện tại tại trường; tài liệu nghiệp vụ chỉ mô tả quy trình đề xuất.
-- Chỉ dùng dữ liệu giả, không ghi đóng góp sinh viên thay nhóm; bản nháp AI cần sinh viên rà soát và viết lại.
+- Chưa có giao diện/service chức năng, đăng nhập, tài khoản demo, policy/MFA chạy thật; không làm trước Tuần 3.
+- Ẩn danh ở mức ứng dụng: phiếu chỉ quan hệ Response–Answer, metadata scalar phải được service Tuần 8 xác minh trong transaction; test 5.6b/c/d chưa triển khai.
+- Nháp khảo sát chỉ phía trình duyệt khi triển khai; không server draft. Feedback giữ authorId nội bộ và che bằng projection, khác phiếu khảo sát.
+- `/api/health` vẫn trả `database: not_checked`; kết nối/ràng buộc MySQL được kiểm riêng, không suy từ health.
+- Prisma/client/helper đã vá 7.10.1, Vite 8.3.5; audit production 0, full audit còn 5 high thuộc dev chain braces/micromatch/fast-glob/ESLint, chưa áp dụng force downgrade ESLint; không tuyên bố hết lỗ hổng.
+- Không viết quy trình hiện tại ở trường theo yêu cầu người dùng; chỉ quy trình đề xuất. Sinh viên đọc, xác minh và viết lại nháp AI; không ghi đóng góp cá nhân thay nhóm.
+- Giữ bốn file chép nguyên văn; chỉ dữ liệu giả; không xóa volume/reset DB, force push, bỏ P0 hoặc deploy công khai.
 
 ## Cách chạy và việc tiếp theo
 
-- Xem `README.md` để chạy cục bộ; trang chủ `http://127.0.0.1:3000`, Mailpit `http://127.0.0.1:8025` đang phản hồi.
-- Bản cập nhật tiến độ đến 02/10/2026: `docs/bao-cao-tien-do/tuan-01.md`; chưa thay cho báo cáo chốt cuối Tuần 1.
-- Nhóm nghiệm thu trang chủ/trang sức khỏe, đọc và viết lại bản nháp báo cáo; chỉ bắt đầu Tuần 2 khi người dùng ra lệnh.
+- Xem `README.md`, `docs/NGHIEM_THU_TUAN_02.md`; chạy Compose, `db:prepare`, `db:migrate`, `test:integration`, `check`; xem đồ thị và wireframe tĩnh.
+- Báo cáo `docs/bao-cao-tien-do/tuan-02.md` đủ 9 phần và bằng chứng local/CI; nhóm tự điền thông tin và đóng góp, đọc/viết lại nháp.
+- Đã đạt nghiệm thu kỹ thuật Tuần 2; nhóm duyệt bản thiết kế. Bước tiếp theo là Tuần 3 khi người dùng yêu cầu.

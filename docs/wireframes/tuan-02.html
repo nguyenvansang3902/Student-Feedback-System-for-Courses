@@ -1,0 +1,1954 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Thư viện 18 wireframe tĩnh Tuần 2 của hệ thống khảo sát và phản hồi sinh viên. Chưa có chức năng, chỉ dữ liệu giả."
+    />
+    <title>Tuần 2 · Thư viện wireframe · Chưa có chức năng</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        color: #222;
+        background: #f3f3f3;
+        line-height: 1.6;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      a {
+        color: #222;
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
+      }
+      a:focus-visible {
+        outline: 3px solid #333;
+        outline-offset: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 1rem;
+        top: -6rem;
+        background: white;
+        padding: 0.8rem;
+        z-index: 9;
+      }
+      .skip:focus {
+        top: 0.5rem;
+      }
+      header {
+        background: #222;
+        color: white;
+        padding: 2.5rem max(1.2rem, calc((100vw - 1240px) / 2));
+      }
+      header a {
+        color: white;
+      }
+      header p {
+        max-width: 76ch;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        line-height: 1.2;
+        margin: 0.5rem 0 1rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+        margin: 0.3rem 0 0.6rem;
+        line-height: 1.35;
+      }
+      h3 {
+        font-size: 1.05rem;
+        margin: 0 0 0.65rem;
+      }
+      h4 {
+        font-size: 1rem;
+        margin: 0.8rem 0 0.3rem;
+      }
+      p {
+        margin: 0.45rem 0 0.9rem;
+      }
+      ul,
+      ol {
+        padding-left: 1.3rem;
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .layout {
+        max-width: 1240px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 235px minmax(0, 1fr);
+        gap: 1.7rem;
+        padding: 1.7rem 1.2rem 4rem;
+      }
+      nav {
+        align-self: start;
+        position: sticky;
+        top: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        background: white;
+      }
+      nav ol {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+      nav li {
+        padding: 0.22rem 0;
+        font-size: 0.9rem;
+      }
+      main {
+        min-width: 0;
+      }
+      .intro,
+      .screen {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        padding: 1.4rem;
+        margin-bottom: 1.6rem;
+        scroll-margin-top: 1rem;
+      }
+      .screen:target {
+        outline: 3px solid #666;
+        outline-offset: 3px;
+      }
+      .screen-heading {
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .meta,
+      .small {
+        font-size: 0.85rem;
+        color: #444;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.1rem 0.5rem;
+        border: 1px solid #888;
+        border-radius: 0.2rem;
+        font-size: 0.78rem;
+        font-weight: 650;
+        margin: 0.15rem 0.25rem 0.15rem 0;
+        background: #f1f1f1;
+      }
+      .frame {
+        border: 2px solid #777;
+        border-radius: 0.4rem;
+        overflow: hidden;
+        background: #fafafa;
+      }
+      .frame-bar {
+        border-bottom: 1px solid #aaa;
+        padding: 0.65rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.4rem;
+        background: #e8e8e8;
+        font-size: 0.85rem;
+      }
+      .frame-body {
+        padding: 1rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .panel {
+        background: white;
+        border: 1px solid #bbb;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        min-width: 0;
+      }
+      .panel + .panel,
+      .stack > * + * {
+        margin-top: 0.8rem;
+      }
+      .grid > .panel {
+        margin-top: 0;
+      }
+      .muted {
+        background: #f1f1f1;
+      }
+      .notice {
+        border-left: 4px solid #555;
+        background: #eee;
+        padding: 0.75rem 1rem;
+        margin: 0.75rem 0;
+      }
+      .error {
+        border: 2px solid #555;
+        background: white;
+        padding: 0.7rem 0.9rem;
+        margin: 0.75rem 0;
+        font-size: 0.9rem;
+      }
+      .note {
+        font-size: 0.88rem;
+        color: #444;
+        margin: 0.8rem 0 0;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0 0.2rem;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+        color: #333;
+      }
+      button {
+        border: 1px solid #555;
+        padding: 0.5rem 0.8rem;
+        border-radius: 0.2rem;
+        background: #ddd;
+        line-height: 1.4;
+      }
+      button:disabled {
+        opacity: 1;
+        cursor: not-allowed;
+        color: #444;
+      }
+      button.primary {
+        background: #333;
+        color: white;
+      }
+      label {
+        display: block;
+        margin: 0.7rem 0 0.25rem;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+      input:not([type="radio"]):not([type="checkbox"]),
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #999;
+        border-radius: 0.2rem;
+        padding: 0.55rem;
+        background: #f5f5f5;
+        opacity: 1;
+        -webkit-text-fill-color: #333;
+      }
+      input:disabled,
+      select:disabled,
+      textarea:disabled {
+        opacity: 1;
+      }
+      textarea {
+        min-height: 6rem;
+        resize: none;
+      }
+      fieldset {
+        padding: 0.9rem;
+        border: 1px solid #aaa;
+        min-width: 0;
+        margin: 0.8rem 0;
+      }
+      legend {
+        padding: 0 0.3rem;
+        font-weight: 650;
+      }
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem 1rem;
+      }
+      .options label {
+        font-weight: 400;
+        margin: 0.3rem 0;
+      }
+      .phone {
+        max-width: 390px;
+        margin: 0 auto;
+        border: 7px solid #555;
+        border-radius: 1.3rem;
+        background: #f5f5f5;
+        padding: 1rem 0.8rem;
+      }
+      .phone h3 {
+        font-size: 1.25rem;
+      }
+      .phone .panel {
+        margin-top: 0.7rem;
+      }
+      .metric {
+        font-size: 1.65rem;
+        font-weight: 750;
+        display: block;
+        line-height: 1.2;
+      }
+      .table-wrap {
+        max-width: 100%;
+        overflow-x: auto;
+        border: 1px solid #aaa;
+        margin: 0.8rem 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+        min-width: 510px;
+      }
+      caption {
+        text-align: left;
+        font-weight: 650;
+        padding: 0.6rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.6rem;
+        border-bottom: 1px solid #ccc;
+        vertical-align: top;
+      }
+      th {
+        background: #e9e9e9;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      .progress {
+        height: 0.7rem;
+        border: 1px solid #888;
+        background: white;
+        margin: 0.5rem 0;
+      }
+      .progress span {
+        display: block;
+        height: 100%;
+        background: #777;
+      }
+      .qr {
+        display: grid;
+        place-items: center;
+        min-height: 130px;
+        max-width: 170px;
+        border: 3px dashed #777;
+        margin: 1rem auto;
+        text-align: center;
+        background: #eee;
+        font-weight: 650;
+      }
+      .timeline {
+        border-left: 2px solid #999;
+        margin: 0.8rem 0 0.8rem 0.5rem;
+        padding-left: 1rem;
+      }
+      .timeline p {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 0.5rem;
+        font-size: 0.88rem;
+      }
+      .bubble {
+        padding: 0.8rem;
+        margin: 0.6rem 0;
+        border: 1px solid #aaa;
+        background: white;
+        max-width: 90%;
+      }
+      .bubble.reply {
+        margin-left: auto;
+        background: #e8e8e8;
+      }
+      .rule {
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 0.85rem;
+        overflow-wrap: anywhere;
+        border: 1px solid #aaa;
+        padding: 0.7rem;
+        background: white;
+      }
+      .screen-link {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        margin-top: 1rem;
+      }
+      .placeholder-chart {
+        display: flex;
+        align-items: end;
+        gap: 1.1rem;
+        height: 120px;
+        padding: 0.7rem;
+        border-bottom: 2px solid #777;
+        margin-bottom: 0.6rem;
+      }
+      .placeholder-chart span {
+        display: block;
+        background: #aaa;
+        width: 23%;
+        border: 1px solid #777;
+        text-align: center;
+        font-size: 0.78rem;
+      }
+      code {
+        overflow-wrap: anywhere;
+      }
+      footer {
+        background: #ddd;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          position: static;
+          max-height: none;
+        }
+        nav ol {
+          columns: 2;
+        }
+        .grid.three {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 580px) {
+        .layout {
+          padding: 1rem 0.65rem 2rem;
+          gap: 1rem;
+        }
+        header {
+          padding: 1.5rem 1rem;
+        }
+        .intro,
+        .screen {
+          padding: 0.85rem;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        nav ol {
+          columns: 1;
+        }
+        .frame-body {
+          padding: 0.7rem;
+        }
+        .phone {
+          padding: 0.75rem 0.6rem;
+          border-width: 4px;
+        }
+        .panel {
+          padding: 0.8rem;
+        }
+        .metric {
+          font-size: 1.4rem;
+        }
+      }
+      @media print {
+        nav,
+        .screen-link {
+          display: none;
+        }
+        header {
+          color: #222;
+          background: white;
+          padding: 1rem;
+        }
+        .layout {
+          display: block;
+          padding: 0;
+        }
+        .screen {
+          break-inside: avoid;
+          box-shadow: none;
+        }
+        .frame {
+          border-width: 1px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#content">Bỏ qua mục lục, đến nội dung</a>
+    <header id="top">
+      <div class="eyebrow">Student Feedback System for Courses · Tuần 2</div>
+      <h1>Thiết kế trước khi lập trình</h1>
+      <p>
+        Thư viện 18 màn hình chính cho khảo sát theo đợt và phản hồi liên tục.
+        Mỗi màn mô tả bố cục, quyền, trạng thái và lỗi dự kiến.
+      </p>
+      <p>
+        <strong>BẢN THIẾT KẾ TĨNH · CHƯA CÓ CHỨC NĂNG · CHỈ DỮ LIỆU GIẢ</strong>
+      </p>
+      <p class="small" style="color: #ddd">
+        Thực hiện 21/10/2026 · Mốc Tuần 2 dự kiến 07–13/10/2026 theo giả định 7
+        ngày, không ghi nhận hồi tố.
+      </p>
+    </header>
+    <div class="layout">
+      <nav aria-label="Chọn màn hình thiết kế">
+        <h3>Mục lục màn hình</h3>
+        <ol>
+          <li><a href="#wf-01">Đăng nhập / phục hồi</a></li>
+          <li><a href="#wf-02">2FA quản trị</a></li>
+          <li><a href="#wf-03">Dashboard 7 vai trò</a></li>
+          <li><a href="#wf-04">Nhiệm vụ sinh viên</a></li>
+          <li><a href="#wf-05">Phiếu khảo sát</a></li>
+          <li><a href="#wf-06">Nộp và xác nhận</a></li>
+          <li><a href="#wf-07">Mẫu và phiên bản</a></li>
+          <li><a href="#wf-08">Đợt và tiến độ</a></li>
+          <li><a href="#wf-09">Lãnh đạo phê duyệt</a></li>
+          <li><a href="#wf-10">Kết quả / ngưỡng</a></li>
+          <li><a href="#wf-11">Kiểm duyệt góp ý</a></li>
+          <li><a href="#wf-12">Gửi phản hồi</a></li>
+          <li><a href="#wf-13">Hàng đợi / SLA</a></li>
+          <li><a href="#wf-14">Đối thoại / mở lại</a></li>
+          <li><a href="#wf-15">Giải trình cải tiến</a></li>
+          <li><a href="#wf-16">Báo cáo / xuất tệp</a></li>
+          <li><a href="#wf-17">Quản trị / cấu hình</a></li>
+          <li><a href="#wf-18">Danh mục / import</a></li>
+        </ol>
+      </nav>
+      <main id="content">
+        <section class="intro" aria-labelledby="intro-title">
+          <h2 id="intro-title">Cách đọc thư viện</h2>
+          <p>
+            Chọn liên kết trong mục lục để đến một màn. Các liên kết chuyển màn
+            hoạt động; nút nghiệp vụ và trường nhập đều bị vô hiệu hóa. Bạn chưa
+            đăng nhập và không có dữ liệu nào được gửi hoặc lưu.
+          </p>
+          <div class="notice">
+            <strong>Hai kiểu ẩn danh:</strong> phiếu khảo sát tách hoàn toàn
+            khỏi người/nhiệm vụ trong đồ thị quan hệ ứng dụng. Phản hồi liên tục
+            vẫn có chủ sở hữu nội bộ để đối thoại, nhưng che danh tính với người
+            xử lý.
+          </div>
+          <p class="small">
+            Mọi mã lớp, tên vai trò, số liệu, ngày hạn và nội dung dưới đây đều
+            là ví dụ. Đây là phương án cho các tuần triển khai tương ứng, chưa
+            phải bằng chứng chức năng hoàn thành.
+          </p>
+        </section>
+
+        <section class="screen" id="wf-01" aria-labelledby="title-01">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-01 · FR-01–06, FR-09</span>
+            <h2 id="title-01">Đăng nhập và phục hồi tài khoản</h2>
+            <p class="meta">
+              Chưa đăng nhập · Mọi vai trò · Thiết kế triển khai Tuần 3
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <h3>Đăng nhập hệ thống</h3>
+              <p class="small">Bản mô phỏng, không có tài khoản thật.</p>
+              <label for="login-id">Mã sinh viên / giảng viên hoặc email</label
+              ><input
+                id="login-id"
+                disabled
+                placeholder="Nhập mã hoặc email"
+                autocomplete="off"
+              />
+              <label for="login-password">Mật khẩu</label
+              ><input
+                id="login-password"
+                type="password"
+                disabled
+                autocomplete="off"
+                placeholder="Nhập mật khẩu"
+              />
+              <div class="actions">
+                <button disabled class="primary" type="button">
+                  Đăng nhập · chưa hoạt động</button
+                ><button disabled type="button">Quên mật khẩu</button>
+              </div>
+              <div class="error">
+                <strong>Trạng thái lỗi dự kiến</strong><br />Thông tin đăng nhập
+                không hợp lệ hoặc tài khoản chưa thể đăng nhập.
+              </div>
+              <p class="small">
+                Sai quá 5 lần trong 15 phút: khóa tạm và thông báo chung, không
+                tiết lộ tài khoản có tồn tại.
+              </p>
+            </div>
+            <div class="panel muted">
+              <h3>Các trạng thái liên quan</h3>
+              <p>
+                <span class="badge">Chờ kích hoạt</span> Xác nhận liên kết hoặc
+                đổi mật khẩu tạm trước khi vào hệ thống.
+              </p>
+              <p>
+                <span class="badge">Đặt lại mật khẩu</span> “Nếu thông tin phù
+                hợp, hướng dẫn đã được gửi đến email của bạn.” Token một lần,
+                hạn 30 phút.
+              </p>
+              <p>
+                <span class="badge">Đổi mật khẩu</span> Tối thiểu 10 ký tự, tối
+                đa 72 byte; không dùng mật khẩu phổ biến. Đổi xong thu hồi
+                phiên.
+              </p>
+              <p>
+                <span class="badge">Hết phiên</span> “Phiên đã hết hạn. Vui lòng
+                đăng nhập lại.”
+              </p>
+              <p class="small">
+                Thiết kế phiên: access ngắn + refresh xoay vòng; cookie
+                httpOnly. Không lưu token vào localStorage.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-02">Luồng yêu cầu 2FA →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-02" aria-labelledby="title-02">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-02 · FR-07–08 · BR-32</span>
+            <h2 id="title-02">ADMIN xác thực hai bước</h2>
+            <p class="meta">
+              ADMIN bắt buộc TOTP · Vai trò khác khi cấu hình yêu cầu · Thiết kế
+              Tuần 4
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <h3>Lần đầu: đăng ký và xác nhận</h3>
+              <div
+                class="qr"
+                role="img"
+                aria-label="Ô giữ chỗ mã QR, không quét được"
+              >
+                QR GIỮ CHỖ<br />KHÔNG QUÉT ĐƯỢC
+              </div>
+              <p class="small">
+                Khóa nhập tay: [chỉ hiện khi triển khai thật, không có secret
+                tại đây]
+              </p>
+              <label for="totp-setup">Mã đầu tiên từ ứng dụng xác thực</label
+              ><input id="totp-setup" disabled placeholder="6 chữ số" />
+              <div class="actions">
+                <button disabled type="button">
+                  Xác nhận 2FA · chưa hoạt động
+                </button>
+              </div>
+              <p class="small">
+                Chưa xác nhận: chỉ vào trang đăng ký 2FA. Sau xác nhận: hiện 10
+                mã khôi phục đúng một lần, lưu băm tại máy chủ.
+              </p>
+            </div>
+            <div class="panel">
+              <h3>Bước 2: xác thực đăng nhập</h3>
+              <p>Phiên tạm 5 phút chỉ dành cho bước này.</p>
+              <label for="totp-code">Mã TOTP hoặc mã khôi phục</label
+              ><input id="totp-code" disabled placeholder="Nhập mã xác thực" />
+              <div class="actions">
+                <button disabled class="primary" type="button">
+                  Xác thực · chưa hoạt động</button
+                ><button disabled type="button">Dùng mã khôi phục</button>
+              </div>
+              <div class="error">Mã xác thực không hợp lệ hoặc đã hết hạn.</div>
+              <p class="small">
+                TOTP 6 chữ số, chu kỳ 30 giây, lệch ±1 chu kỳ; chặn dùng lại.
+                Sai quá 5 lần khóa 15 phút. Chỉ khi thành công mới cấp phiên
+                mfa=true.
+              </p>
+              <div class="notice">
+                Đặt lại 2FA: admin khác có quyền thực hiện và ghi nhật ký, hoặc
+                script tại máy chủ.
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-17">Xem thiết kế quản trị →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-03" aria-labelledby="title-03">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-03 · FR-11, FR-80, FR-90–91</span>
+            <h2 id="title-03">Dashboard và điều hướng theo 7 vai trò</h2>
+            <p class="meta">
+              Không có phiên đăng nhập thật · Phạm vi là phần bắt buộc của ngữ
+              cảnh
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Hệ thống khảo sát và phản hồi · bản thiết kế</strong
+              ><span>Vai trò + phạm vi [giữ chỗ] · Thông báo [0]</span>
+            </div>
+            <div class="frame-body">
+              <div class="notice">
+                Một người có nhiều vai trò chọn ngữ cảnh làm việc. Việc đổi menu
+                không tự cấp quyền; service kiểm quyền và phạm vi cho mỗi thao
+                tác.
+              </div>
+              <div class="grid">
+                <div class="panel">
+                  <h3>SINH_VIEN</h3>
+                  <p>Nhiệm vụ của tôi · Phản hồi của tôi · Thông báo</p>
+                  <p class="small">Không có kết quả khảo sát tổng hợp.</p>
+                  <a href="#wf-04">Xem nhiệm vụ</a> ·
+                  <a href="#wf-12">Gửi phản hồi</a>
+                </div>
+                <div class="panel">
+                  <h3>GIANG_VIEN</h3>
+                  <p>
+                    Lớp phụ trách · Kết quả đã công bố · Phản hồi đến · Giải
+                    trình
+                  </p>
+                  <p class="small">Chỉ lớp mình, đủ mẫu và đúng trạng thái.</p>
+                  <a href="#wf-10">Xem kết quả</a> ·
+                  <a href="#wf-15">Giải trình</a>
+                </div>
+                <div class="panel">
+                  <h3>TRUONG_BO_MON</h3>
+                  <p>
+                    Phạm vi: Bộ môn giả định A · Tiến độ · Kết quả · Phản hồi ·
+                    Xác nhận giải trình
+                  </p>
+                  <a href="#wf-13">Hàng đợi</a> ·
+                  <a href="#wf-15">Xác nhận giải trình</a>
+                </div>
+                <div class="panel">
+                  <h3>TRUONG_KHOA</h3>
+                  <p>
+                    Phạm vi: Khoa giả định A · Tiến độ · Kết quả · Phản hồi leo
+                    thang
+                  </p>
+                  <a href="#wf-08">Tiến độ</a> ·
+                  <a href="#wf-16">Báo cáo phạm vi khoa</a>
+                </div>
+                <div class="panel">
+                  <h3>CAN_BO_DBCL</h3>
+                  <p>
+                    Toàn hệ thống · Danh mục theo đề xuất ma trận · Mẫu phiếu ·
+                    Đợt khảo sát · Kiểm duyệt · Công bố · Báo cáo
+                  </p>
+                  <a href="#wf-07">Mẫu phiếu</a> ·
+                  <a href="#wf-08">Đợt khảo sát</a> ·
+                  <a href="#wf-11">Kiểm duyệt</a> ·
+                  <a href="#wf-18">Danh mục / import</a>
+                </div>
+                <div class="panel">
+                  <h3>LANH_DAO</h3>
+                  <p>
+                    Toàn hệ thống · Chờ phê duyệt · Dashboard toàn trường · Báo
+                    cáo
+                  </p>
+                  <a href="#wf-09">Phê duyệt</a> · <a href="#wf-16">Báo cáo</a>
+                </div>
+                <div class="panel">
+                  <h3>ADMIN</h3>
+                  <p>Tài khoản · Vai trò/phạm vi · Cấu hình · Nhật ký</p>
+                  <p class="small">
+                    Bắt buộc mfa=true. Không mặc định có quyền danh mục, kết quả
+                    hoặc nội dung phản hồi. Nếu được gán thêm CAN_BO_DBCL, dùng
+                    quyền của gán đó để vận hành danh mục.
+                  </p>
+                  <a href="#wf-17">Quản trị</a>
+                </div>
+                <div class="panel muted">
+                  <h3>Không có quyền / chưa có dữ liệu</h3>
+                  <p>“Bạn không có quyền thực hiện thao tác này.”</p>
+                  <p>“Chưa có dữ liệu trong phạm vi được xem.”</p>
+                  <p class="small">
+                    Không trả tên người, nội dung hay số liệu ngoài quyền khi
+                    truy cập URL trực tiếp.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-04">Luồng sinh viên →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-04" aria-labelledby="title-04">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-04 · FR-43, FR-46, FR-50</span>
+            <h2 id="title-04">Sinh viên: danh sách nhiệm vụ</h2>
+            <p class="meta">
+              Thiết kế ưu tiên điện thoại · SINH_VIEN chỉ thấy nhiệm vụ của mình
+            </p>
+          </div>
+          <div class="grid">
+            <div class="phone">
+              <div class="eyebrow">Bản thiết kế · chưa đăng nhập</div>
+              <h3>Khảo sát của tôi</h3>
+              <p class="small">Học kỳ minh họa · Không có dữ liệu thật</p>
+              <div class="options">
+                <span class="badge">Cần làm: 1</span
+                ><span class="badge">Đã làm: 1</span>
+              </div>
+              <div class="panel">
+                <span class="badge">PENDING · Đang mở</span>
+                <h4>LHP-DEMO-01 · Môn học mẫu A</h4>
+                <p>
+                  Hạn: 30/11/2026 · 23:59<br /><span class="small"
+                    >Giờ Việt Nam · thời hạn giả định</span
+                  >
+                </p>
+                <button disabled class="primary" type="button">
+                  Làm khảo sát · chưa hoạt động
+                </button>
+              </div>
+              <div class="panel">
+                <span class="badge">DONE · Đã nộp</span>
+                <h4>LHP-DEMO-02 · Môn học mẫu B</h4>
+                <p class="small">Đã hoàn thành. Không thể sửa hoặc nộp lại.</p>
+              </div>
+              <div class="panel">
+                <span class="badge">Đã đóng</span>
+                <h4>LHP-DEMO-03 · Môn học mẫu C</h4>
+                <p class="small">Đã hết thời gian nhận phiếu.</p>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="panel">
+                <h3>Trạng thái rỗng</h3>
+                <p>Hiện chưa có khảo sát cần làm.</p>
+                <p class="small">
+                  Chỉ hiển thị khảo sát của các lớp đăng ký đã chốt lúc mở đợt.
+                  Thay đổi đăng ký sau đó không đổi nhiệm vụ của đợt đang mở.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>Thông tin được phép thấy</h3>
+                <p>
+                  Tên đợt, lớp học phần, hạn chót và trạng thái PENDING/DONE.
+                </p>
+                <p class="small">
+                  Không có kết quả tổng hợp, danh sách người khác hay nội dung
+                  phiếu đã nộp.
+                </p>
+              </div>
+              <div class="error">
+                Nếu đợt vừa đóng khi mở phiếu: “Đợt khảo sát đã hết thời gian
+                nhận phiếu.” Kiểm tra lại thời gian ở máy chủ khi nộp.
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-05">Xem bố cục phiếu →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-05" aria-labelledby="title-05">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-05 · FR-31, FR-51–52 · BR-03–04</span>
+            <h2 id="title-05">Phiếu khảo sát động</h2>
+            <p class="meta">
+              SINH_VIEN có nhiệm vụ PENDING · Đợt DANG_MO · Các loại câu minh
+              họa
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>LHP-DEMO-01 · Mẫu v1 · Bản thiết kế</strong
+              ><span>Không có danh tính trên phiếu</span>
+            </div>
+            <div class="frame-body">
+              <p>
+                <strong>Nhóm 1/2 · Hoạt động giảng dạy</strong>
+                <span class="small">2/5 câu đã chọn trong ví dụ</span>
+              </p>
+              <div
+                class="progress"
+                role="img"
+                aria-label="Tiến trình minh họa 40 phần trăm"
+              >
+                <span style="width: 40%"></span>
+              </div>
+              <fieldset disabled>
+                <legend>1. Mức độ rõ ràng của bài giảng * · Likert 1–5</legend>
+                <div class="options">
+                  <label><input type="radio" name="q1" /> 1</label
+                  ><label><input type="radio" name="q1" /> 2</label
+                  ><label><input type="radio" name="q1" /> 3</label
+                  ><label><input type="radio" name="q1" checked /> 4</label
+                  ><label><input type="radio" name="q1" /> 5</label
+                  ><label><input type="radio" name="q1" /> Không áp dụng</label>
+                </div>
+                <p class="small">
+                  Chỉ hiện “Không áp dụng” khi cấu hình câu hỏi cho phép.
+                </p>
+              </fieldset>
+              <div class="grid">
+                <fieldset disabled>
+                  <legend>
+                    2. Hình thức tài liệu hữu ích nhất * · Chọn một
+                  </legend>
+                  <div class="options">
+                    <label><input type="radio" name="q2" /> Slide</label
+                    ><label><input type="radio" name="q2" /> Bài tập</label
+                    ><label
+                      ><input type="radio" name="q2" /> Tài liệu đọc</label
+                    >
+                  </div>
+                  <p class="small">
+                    <strong>Lỗi dự kiến:</strong> Vui lòng trả lời câu bắt buộc
+                    này.
+                  </p>
+                </fieldset>
+                <fieldset disabled>
+                  <legend>3. Hoạt động nên tăng · Chọn nhiều</legend>
+                  <div class="options">
+                    <label><input type="checkbox" checked /> Thảo luận</label
+                    ><label><input type="checkbox" /> Thực hành</label
+                    ><label><input type="checkbox" /> Bài tập nhóm</label>
+                  </div>
+                </fieldset>
+              </div>
+              <fieldset disabled>
+                <legend>4. Đề cương có được giới thiệu? * · Có/Không</legend>
+                <div class="options">
+                  <label><input type="radio" name="q4" /> Có</label
+                  ><label><input type="radio" name="q4" /> Không</label>
+                </div>
+              </fieldset>
+              <label for="survey-text">5. Góp ý tự luận · Không bắt buộc</label
+              ><textarea
+                id="survey-text"
+                disabled
+                placeholder="Không ghi tên, mã sinh viên hay chi tiết có thể nhận diện bạn."
+              ></textarea>
+              <div class="notice">
+                <strong>Nháp trên trình duyệt:</strong> khi triển khai, không
+                gửi nháp lên máy chủ. Trên máy dùng chung, nên xóa nháp sau thao
+                tác. Wireframe hiện tại không lưu nháp.
+              </div>
+              <div class="actions">
+                <button disabled type="button">
+                  Lưu nháp trên máy · chưa hoạt động</button
+                ><button disabled type="button">
+                  Xóa nháp · chưa hoạt động</button
+                ><button disabled class="primary" type="button">
+                  Rà soát trước nộp · chưa hoạt động
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-06">Xem xác nhận nộp →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-06" aria-labelledby="title-06">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-06 · FR-53–54 · BR-02–04</span>
+            <h2 id="title-06">Rà soát và xác nhận đã nộp</h2>
+            <p class="meta">
+              Hai trạng thái thiết kế, không có thao tác nộp thật
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <span class="badge">A · Trước nộp</span>
+              <h3>Bạn đã sẵn sàng nộp?</h3>
+              <p>LHP-DEMO-01 · Các câu bắt buộc đã được kiểm tra.</p>
+              <div class="notice">
+                Nộp xong không thể sửa hoặc xóa. Nội dung phiếu không liên kết
+                với người dùng hoặc nhiệm vụ.
+              </div>
+              <div class="actions">
+                <button disabled type="button">Quay lại xem phiếu</button
+                ><button disabled class="primary" type="button">
+                  Xác nhận nộp · chưa hoạt động
+                </button>
+              </div>
+              <p class="small">
+                Khi đang gửi: chặn bấm lặp ở giao diện; máy chủ vẫn kiểm
+                transaction và trạng thái để chống gửi đồng thời.
+              </p>
+            </div>
+            <div class="panel">
+              <span class="badge">B · Thành công dự kiến</span>
+              <h3>Đã hoàn thành khảo sát</h3>
+              <p>Phiếu đã được nộp. Bạn không thể sửa hoặc nộp lại.</p>
+              <p class="small">
+                Không hiển thị bản sao nội dung, mã phiếu nối với nhiệm vụ hoặc
+                giờ nộp chính xác.
+              </p>
+              <button disabled type="button">
+                Về danh sách · chưa hoạt động
+              </button>
+              <div class="error">
+                <strong>Nộp trùng:</strong> Khảo sát này đã hoàn thành.<br /><strong
+                  >Vừa hết hạn:</strong
+                >
+                Đợt khảo sát đã hết thời gian nhận phiếu.<br /><strong
+                  >Lỗi ghi:</strong
+                >
+                Chưa thể nộp phiếu. Vui lòng thử lại; không ghi trạng thái hoàn
+                thành một phần.
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            Thiết kế Tuần 8: đổi task PENDING→DONE và chèn phiếu/câu trả lời
+            trong cùng transaction; phải đổi đúng 1 dòng. Phiếu dùng UUID, chỉ
+            có ngày nộp; không log nội dung hoặc định danh.
+          </p>
+          <div class="screen-link">
+            <a href="#wf-10">Xem thiết kế kết quả dành cho vai trò có quyền →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-07" aria-labelledby="title-07">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-07 · FR-30–35 · BR-05</span>
+            <h2 id="title-07">ĐBCL: mẫu phiếu và phiên bản</h2>
+            <p class="meta">CAN_BO_DBCL · Toàn hệ thống · Thiết kế Tuần 6</p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Mẫu đánh giá giảng dạy minh họa · v1</strong
+              ><span class="badge">NHAP</span>
+            </div>
+            <div class="frame-body">
+              <div class="grid">
+                <div class="panel">
+                  <label for="template-name">Tên mẫu *</label
+                  ><input
+                    id="template-name"
+                    disabled
+                    value="Mẫu đánh giá giảng dạy minh họa"
+                  /><label for="group-name">Nhóm tiêu chí *</label
+                  ><input
+                    id="group-name"
+                    disabled
+                    value="A · Hoạt động giảng dạy"
+                  /><label for="group-weight">Trọng số nhóm *</label
+                  ><input id="group-weight" disabled value="2" />
+                  <p class="small">
+                    Sắp xếp nhóm/câu bằng điều khiển bàn phím khi triển khai.
+                  </p>
+                </div>
+                <div class="panel">
+                  <label for="question-name">Nội dung câu hỏi *</label
+                  ><input
+                    id="question-name"
+                    disabled
+                    value="Giảng viên giải thích rõ ràng"
+                  /><label for="question-type">Loại câu</label
+                  ><select id="question-type" disabled>
+                    <option>Likert 1–5</option></select
+                  ><label for="question-weight">Trọng số câu *</label
+                  ><input id="question-weight" disabled value="1" />
+                  <div class="options">
+                    <label
+                      ><input type="checkbox" checked disabled /> Bắt
+                      buộc</label
+                    ><label
+                      ><input type="checkbox" checked disabled /> Cho phép Không
+                      áp dụng</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button disabled class="primary" type="button">
+                  Lưu bản nháp · chưa hoạt động</button
+                ><button disabled type="button">Xem trước</button
+                ><button disabled type="button">Nhân bản</button>
+              </div>
+              <div class="notice">
+                <strong>Trạng thái đã khóa:</strong> mẫu gắn với đợt đã duyệt
+                không sửa trực tiếp. “Mẫu đã khóa. Hãy tạo phiên bản mới để thay
+                đổi.”
+              </div>
+              <p class="small">
+                Các loại hỗ trợ: Likert 1–4/1–5, chọn một, chọn nhiều, tự luận,
+                Có/Không. Trọng số phải dương; không áp dụng chỉ có nếu cho
+                phép.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-08">Đưa phiên bản vào đợt →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-08" aria-labelledby="title-08">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-08 · FR-40–41, FR-43–47</span>
+            <h2 id="title-08">ĐBCL: lập đợt và theo dõi tiến độ</h2>
+            <p class="meta">
+              DBCL được tạo/sửa · Trưởng đơn vị chỉ xem tiến độ thuộc phạm vi
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Đợt khảo sát minh họa · NHAP</strong
+              ><span>Học kỳ mẫu đang mở</span>
+            </div>
+            <div class="frame-body">
+              <div class="grid">
+                <div class="panel">
+                  <label for="campaign-name">Tên đợt *</label
+                  ><input
+                    id="campaign-name"
+                    disabled
+                    value="Khảo sát học kỳ minh họa"
+                  /><label for="campaign-template">Mẫu và phiên bản *</label
+                  ><select id="campaign-template" disabled>
+                    <option>Mẫu đánh giá minh họa · v1</option></select
+                  ><label for="campaign-scope">Phạm vi *</label
+                  ><select id="campaign-scope" disabled>
+                    <option>Khoa giả định A · 12 lớp ví dụ</option>
+                  </select>
+                  <p class="small">
+                    Có thể chọn toàn trường/khoa/bộ môn/danh sách lớp theo thiết
+                    kế.
+                  </p>
+                </div>
+                <div class="panel">
+                  <label for="campaign-open">Mở lúc (giờ Việt Nam) *</label
+                  ><input
+                    id="campaign-open"
+                    disabled
+                    value="01/11/2026 08:00 · ví dụ"
+                  /><label for="campaign-close">Đóng lúc *</label
+                  ><input
+                    id="campaign-close"
+                    disabled
+                    value="30/11/2026 23:59 · ví dụ"
+                  /><label for="campaign-threshold"
+                    >Ngưỡng công bố đồng thời *</label
+                  ><input
+                    id="campaign-threshold"
+                    disabled
+                    value="≥5 phiếu VÀ ≥30% tham gia"
+                  />
+                  <p class="small">
+                    Các giá trị mặc định phải cấu hình được theo đợt.
+                  </p>
+                </div>
+              </div>
+              <div class="actions">
+                <button disabled type="button">Lưu nháp · chưa hoạt động</button
+                ><button disabled class="primary" type="button">
+                  Trình duyệt · chưa hoạt động</button
+                ><button disabled type="button">
+                  Gia hạn / đóng sớm / hủy
+                </button>
+              </div>
+              <div class="error">
+                Thời gian đóng phải sau thời gian mở. Khi gia hạn/đóng sớm/hủy,
+                vui lòng nhập lý do.
+              </div>
+              <div class="panel">
+                <h3>Tiến độ ví dụ của một lớp</h3>
+                <p><strong>4 DONE / 10 nhiệm vụ = 40%</strong></p>
+                <div
+                  class="progress"
+                  role="img"
+                  aria-label="Tỉ lệ tham gia minh họa 40 phần trăm"
+                >
+                  <span style="width: 40%"></span>
+                </div>
+                <p class="small">
+                  Danh sách chưa hoàn thành chỉ có trạng thái, không kèm nội
+                  dung trả lời. Xem/xuất có audit; nhắc tối đa 1 lần/ngày/sinh
+                  viên/đợt.
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            Chốt đăng ký khi chuyển DANG_MO. Sau duyệt không đổi mẫu/phạm vi;
+            muốn đổi rút về NHAP. Sau mở chỉ gia hạn ngày đóng có lý do. HUY chỉ
+            từ NHAP/CHO_DUYET/DA_DUYET. Học kỳ khóa sổ: chỉ đọc.
+          </p>
+          <div class="screen-link">
+            <a href="#wf-09">Trình lãnh đạo duyệt →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-09" aria-labelledby="title-09">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-09 · FR-42 · BR-06, BR-30</span>
+            <h2 id="title-09">Lãnh đạo: duyệt hoặc từ chối</h2>
+            <p class="meta">LANH_DAO · Toàn hệ thống · Chỉ đợt CHO_DUYET</p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <span class="badge">CHO_DUYET</span>
+              <h3>Khảo sát học kỳ minh họa</h3>
+              <p>Mẫu v1 · Khoa giả định A · 12 lớp ví dụ</p>
+              <p>
+                01/11/2026 08:00 → 30/11/2026 23:59<br /><span class="small"
+                  >Thời gian giả định, giờ Việt Nam</span
+                >
+              </p>
+              <p>Ngưỡng: ≥5 phiếu và ≥30% tham gia.</p>
+              <button disabled class="primary" type="button">
+                Phê duyệt · chưa hoạt động
+              </button>
+              <p class="small">
+                Duyệt → DA_DUYET, khóa mẫu/phạm vi. Hệ thống chỉ mở khi đến giờ;
+                không mở trực tiếp từ NHAP.
+              </p>
+            </div>
+            <div class="panel">
+              <h3>Trả lại bản nháp</h3>
+              <label for="reject-reason">Lý do từ chối *</label
+              ><textarea
+                id="reject-reason"
+                disabled
+                placeholder="Nêu nội dung cần điều chỉnh"
+              ></textarea>
+              <div class="error">Vui lòng nhập lý do từ chối.</div>
+              <button disabled type="button">
+                Từ chối và trả về NHAP · chưa hoạt động
+              </button>
+              <p class="small">
+                Nếu người khác vừa xử lý: “Trạng thái đã thay đổi. Vui lòng tải
+                lại.” Ghi lịch sử người/thời điểm/trạng thái/lý do; chuyển trạng
+                thái có điều kiện và idempotent.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-04">Sau khi tự mở: nhiệm vụ sinh viên →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-10" aria-labelledby="title-10">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-10 · FR-60–64 · BR-07–08, BR-11–12</span>
+            <h2 id="title-10">Kết quả: công bố có điều kiện</h2>
+            <p class="meta">
+              DBCL/LANH_DAO từ DA_TONG_HOP · GV/trưởng đơn vị từ DA_CONG_BO và
+              đúng phạm vi · SV/ADMIN không có quyền mặc định
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <span class="badge">A · Đủ mẫu · đã công bố</span>
+              <h3>LHP-DEMO-04 · Ví dụ độc lập</h3>
+              <span class="metric">4.20 / 5 · Tốt</span>
+              <p>
+                8 phiếu / 10 nhiệm vụ · 80%<br />Ngưỡng đợt: ≥5 phiếu và ≥30%.
+              </p>
+              <div
+                class="placeholder-chart"
+                role="img"
+                aria-label="Biểu đồ giữ chỗ, điểm minh họa của ba nhóm"
+              >
+                <span style="height: 80%">A</span
+                ><span style="height: 70%">B</span
+                ><span style="height: 75%">C</span>
+              </div>
+              <p class="small">
+                So sánh bộ môn/khoa/kỳ trước nếu có và được phép. Góp ý chỉ phần
+                đã kiểm duyệt; không có danh sách người nộp.
+              </p>
+            </div>
+            <div class="panel">
+              <span class="badge">B · Thiếu mẫu</span>
+              <h3>Chưa đủ mẫu để công bố</h3>
+              <div class="notice">
+                Ẩn điểm chi tiết và góp ý của lớp. Chỉ số gộp bộ môn/khoa dành
+                cho vai trò có quyền, không phải lối tắt công khai lớp ít người.
+              </div>
+              <p class="small">
+                Trước công bố: “Kết quả chưa được công bố.”<br />Chưa có giá trị
+                hợp lệ: “Chưa có dữ liệu hợp lệ để tính điểm.”
+              </p>
+              <button disabled type="button">
+                Công bố sau kiểm duyệt · chưa hoạt động
+              </button>
+            </div>
+          </div>
+          <div class="panel" style="margin-top: 1rem">
+            <h3>TC-AGG-01 — bộ dữ liệu tính tay độc lập</h3>
+            <p>
+              Q1: [5,4,4,5] → 4.50; Q2: [3,4,5,NA] → 4.00; nhóm A: (1×4.50 +
+              2×4.00)/3 = 12.5/3. Nhóm B: Q3 [4,4,4,4] → 4.00.
+            </p>
+            <div class="rule">
+              Điểm nhóm = Σ(trọng số câu × điểm câu) / Σ(trọng số câu hợp lệ)<br />Điểm
+              tổng = Σ(trọng số nhóm × điểm nhóm) / Σ(trọng số nhóm hợp lệ)<br />Tổng
+              ví dụ = (2×(12.5/3) + 1×4.00)/3 = 4.11<br />Tỉ lệ = 4 DONE / 10
+              task = 40%
+            </div>
+            <p class="small">
+              Bỏ NA/trống; chỉ lấy câu/nhóm có giá trị hợp lệ; giữ độ chính xác,
+              làm tròn 2 chữ số ở kết quả cuối. Ví dụ 4 phiếu < 5 nên
+              <strong>chưa công bố được lớp</strong> dù 40% ≥30%.
+            </p>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-11">Kiểm duyệt trước công bố →</a
+            ><a href="#wf-15">Điểm thấp cần giải trình →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-11" aria-labelledby="title-11">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-11 · FR-65 · BR-09, BR-30</span>
+            <h2 id="title-11">ĐBCL: kiểm duyệt góp ý tự luận</h2>
+            <p class="meta">
+              CAN_BO_DBCL · Chưa công bố · Không có định danh người nộp
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Hàng đợi góp ý minh họa</strong
+              ><span>CHO_KIEM_DUYET · Cờ từ khóa [giữ chỗ]</span>
+            </div>
+            <div class="frame-body">
+              <div class="panel">
+                <h3>Nội dung ví dụ đã được tạo giả</h3>
+                <p>
+                  “Mong học phần tăng thêm buổi thực hành và công bố tiêu chí
+                  đánh giá sớm.”
+                </p>
+                <p class="small">
+                  Chỉ phân loại theo đợt/lớp/câu hỏi theo quyền; thứ tự hiển thị
+                  được trộn. Không có tên, mã SV, task, IP, User-Agent hoặc giờ
+                  nộp.
+                </p>
+              </div>
+              <label for="moderation-reason"
+                >Lý do ẩn nội dung (bắt buộc nếu ẩn)</label
+              ><textarea
+                id="moderation-reason"
+                disabled
+                placeholder="Ghi lý do kiểm duyệt"
+              ></textarea>
+              <div class="actions">
+                <button disabled class="primary" type="button">
+                  Cho hiển thị · chưa hoạt động</button
+                ><button disabled type="button">
+                  Ẩn có lý do · chưa hoạt động
+                </button>
+              </div>
+              <p class="small">
+                CHO_KIEM_DUYET → HIEN_THI hoặc DA_AN. Ghi người kiểm duyệt và lý
+                do; không đưa nội dung phiếu vào audit log.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-10">Trở về thiết kế công bố →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-12" aria-labelledby="title-12">
+          <div class="screen-heading">
+            <span class="eyebrow"
+              >WF-12 · FR-70 · BR-20–21, BR-24, BR-26, BR-28</span
+            >
+            <h2 id="title-12">Sinh viên: gửi phản hồi liên tục</h2>
+            <p class="meta">
+              SINH_VIEN · Lớp đã/đang đăng ký trong học kỳ cho phép · Khác với
+              phiếu khảo sát
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Phản hồi mới · bản thiết kế</strong
+              ><span>Không gửi dữ liệu</span>
+            </div>
+            <div class="frame-body">
+              <div class="grid">
+                <div>
+                  <label for="feedback-section">Lớp học phần *</label
+                  ><select id="feedback-section" disabled>
+                    <option>LHP-DEMO-01 · Môn học mẫu A</option></select
+                  ><label for="feedback-category">Loại phản hồi *</label
+                  ><select id="feedback-category" disabled>
+                    <option>Giảng dạy → Giảng viên phụ trách</option></select
+                  ><label for="feedback-severity">Mức độ *</label
+                  ><select id="feedback-severity" disabled>
+                    <option>Góp ý / Đề xuất / Khiếu nại</option>
+                  </select>
+                </div>
+                <div class="panel">
+                  <h3>Ẩn danh với người xử lý</h3>
+                  <label
+                    ><input type="checkbox" checked disabled /> Hiển thị “Sinh
+                    viên ẩn danh”</label
+                  >
+                  <p class="small">
+                    Hệ thống vẫn biết chủ sở hữu để bạn theo dõi, nhận thông báo
+                    và đối thoại. Không phải kiểu tách định danh của phiếu khảo
+                    sát.
+                  </p>
+                  <p class="small">
+                    Khiếu nại luôn đồng gửi trưởng bộ môn. Loại Kiểm tra/đánh
+                    giá cũng đồng gửi trưởng bộ môn.
+                  </p>
+                </div>
+              </div>
+              <label for="feedback-content">Nội dung *</label
+              ><textarea
+                id="feedback-content"
+                disabled
+                placeholder="Mô tả vấn đề, thời điểm và đề xuất; tránh tự ghi danh tính nếu muốn ẩn danh."
+              ></textarea
+              ><label for="feedback-files"
+                >Đính kèm · tối đa 3 tệp, 5 MB/tệp</label
+              ><input id="feedback-files" type="file" disabled />
+              <p class="small">
+                PNG/JPG/PDF, kiểm phần mở rộng và nội dung thực. Tệp đổi tên
+                ngẫu nhiên, tải qua route kiểm quyền, không để public.
+              </p>
+              <div class="error">
+                Lớp học phần không thuộc phạm vi được gửi phản hồi.<br />Hoặc:
+                Tệp không hợp lệ. Chỉ hỗ trợ PNG/JPG/PDF, tối đa 5 MB mỗi tệp.
+              </div>
+              <div class="actions">
+                <button disabled class="primary" type="button">
+                  Gửi phản hồi · chưa hoạt động
+                </button>
+              </div>
+              <p class="small">
+                Giới hạn mặc định 5 phản hồi/ngày; cảnh báo nội dung trùng trong
+                24h; cấu hình được.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-13">Người xử lý nhận trong hàng đợi →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-13" aria-labelledby="title-13">
+          <div class="screen-heading">
+            <span class="eyebrow"
+              >WF-13 · FR-71–72, FR-74, FR-76 · BR-21–23</span
+            >
+            <h2 id="title-13">Hàng đợi xử lý và cờ SLA</h2>
+            <p class="meta">
+              Người nhận/phạm vi được gán · GV → trưởng bộ môn → trưởng khoa →
+              DBCL
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Phản hồi cần xử lý · phạm vi giả định</strong
+              ><span>MOI · Đang xử lý · Quá hạn</span>
+            </div>
+            <div class="frame-body">
+              <div class="grid three">
+                <div class="panel">
+                  <span class="metric">2 ngày</span>
+                  <p>Tiếp nhận · ngày làm việc</p>
+                </div>
+                <div class="panel">
+                  <span class="metric">7 ngày</span>
+                  <p>Trả lời thông thường</p>
+                </div>
+                <div class="panel">
+                  <span class="metric">5 ngày</span>
+                  <p>Trả lời khiếu nại</p>
+                </div>
+              </div>
+              <p class="small">
+                Trên màn hình nhỏ, vuốt ngang bảng để xem đủ các cột.
+              </p>
+              <div
+                class="table-wrap"
+                tabindex="0"
+                role="region"
+                aria-label="Bảng hàng đợi phản hồi minh họa có thể cuộn"
+              >
+                <table>
+                  <caption>
+                    Dữ liệu giả · không có tên sinh viên
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>Mã giả</th>
+                      <th>Loại / mức độ</th>
+                      <th>Trạng thái</th>
+                      <th>SLA / người nhận</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>PH-DEMO-01</td>
+                      <td>Giảng dạy / Góp ý</td>
+                      <td>MOI</td>
+                      <td>Còn hạn · GV lớp</td>
+                    </tr>
+                    <tr>
+                      <td>PH-DEMO-02</td>
+                      <td>Kiểm tra / Khiếu nại</td>
+                      <td>DANG_XU_LY</td>
+                      <td><strong>QUÁ HẠN</strong> · leo thang bộ môn</td>
+                    </tr>
+                    <tr>
+                      <td>PH-DEMO-03</td>
+                      <td>CSVC/Lịch học</td>
+                      <td>DA_TIEP_NHAN</td>
+                      <td>Còn hạn · DBCL</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="small">
+                SLA loại trừ thứ Bảy/Chủ nhật. Quá hạn là
+                <strong>cờ độc lập</strong>, không phải trạng thái mới; job
+                thông báo/leo thang idempotent.
+              </p>
+              <div class="actions">
+                <button disabled type="button">
+                  Tiếp nhận · chưa hoạt động</button
+                ><button disabled type="button">Bắt đầu xử lý</button
+                ><button disabled type="button">Chuyển tiếp có lý do</button
+                ><button disabled type="button">Từ chối có lý do</button>
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            Định tuyến: Giảng dạy/Tài liệu → GV; Nội dung đề cương → trưởng bộ
+            môn; Kiểm tra/đánh giá → GV + đồng gửi bộ môn; CSVC/lịch học/khác →
+            DBCL. Khiếu nại luôn đồng gửi bộ môn.
+          </p>
+          <div class="screen-link">
+            <a href="#wf-14">Xem đối thoại và lịch sử →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-14" aria-labelledby="title-14">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-14 · FR-72–73, FR-75–76</span>
+            <h2 id="title-14">Đối thoại ẩn danh, lịch sử và mở lại</h2>
+            <p class="meta">
+              Góc nhìn người xử lý: không có danh tính SV · Góc nhìn SV: chỉ
+              phản hồi của mình
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <span class="badge">PH-DEMO-01 · DA_TRA_LOI</span>
+              <h3>Đối thoại minh họa</h3>
+              <div class="bubble">
+                <strong>Sinh viên ẩn danh</strong>
+                <p>Mong tăng phần minh họa bài tập thực hành.</p>
+              </div>
+              <div class="bubble reply">
+                <strong>Giảng viên phụ trách</strong>
+                <p>Tôi đã bổ sung một bộ bài tập ví dụ cho buổi tiếp theo.</p>
+              </div>
+              <label for="dialogue-text">Nội dung trao đổi tiếp</label
+              ><textarea
+                id="dialogue-text"
+                disabled
+                placeholder="Chỉ người tham gia có quyền gửi và xem"
+              ></textarea
+              ><button disabled type="button">
+                Gửi trao đổi · chưa hoạt động
+              </button>
+              <p class="small">
+                Tệp đính kèm chỉ tải sau kiểm quyền từng tài nguyên. Nội dung vi
+                phạm có thể bị ẩn/khóa có lý do.
+              </p>
+            </div>
+            <div class="panel">
+              <h3>Lịch sử bất biến</h3>
+              <div class="timeline">
+                <p>MOI → DA_TIEP_NHAN · người xử lý · thời điểm</p>
+                <p>DA_TIEP_NHAN → DANG_XU_LY · người xử lý</p>
+                <p>DANG_XU_LY → DA_TRA_LOI · người trả lời</p>
+                <p>Chuyển tiếp → MOI ở người nhận mới · bắt buộc lý do</p>
+              </div>
+              <h3>Sinh viên đánh giá sau trả lời</h3>
+              <div class="options">
+                <label><input type="radio" name="rating" disabled />1</label
+                ><label
+                  ><input type="radio" name="rating" disabled checked />2</label
+                ><label><input type="radio" name="rating" disabled />3</label
+                ><label><input type="radio" name="rating" disabled />4</label
+                ><label><input type="radio" name="rating" disabled />5</label>
+              </div>
+              <p class="small">
+                Trong 7 ngày. Điểm ≤2 cho mở lại từ DA_DONG → DANG_XU_LY tối đa
+                một lần trong 7 ngày.
+              </p>
+              <div class="actions">
+                <button disabled type="button">
+                  Đánh giá / đóng · chưa hoạt động</button
+                ><button disabled type="button">Mở lại khi đủ điều kiện</button>
+              </div>
+              <div class="error">
+                Phản hồi không đủ điều kiện mở lại.<br />Chuyển tiếp/từ chối
+                thiếu lý do: “Vui lòng nhập lý do.”
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-15">Xem luồng giải trình riêng →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-15" aria-labelledby="title-15">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-15 · FR-66 · BR-10</span>
+            <h2 id="title-15">Giải trình và kế hoạch cải tiến</h2>
+            <p class="meta">
+              GIANG_VIEN lớp mình gửi · TRUONG_BO_MON cùng phạm vi xác nhận/bổ
+              sung
+            </p>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <span class="badge">CAN_GIAI_TRINH</span>
+              <h3>LHP-DEMO-05 · Điểm thấp minh họa</h3>
+              <p>
+                Điểm tổng 2.80 &lt; ngưỡng cảnh báo 3.0.<br /><span
+                  class="small"
+                  >Ví dụ đã đủ mẫu và công bố; hạn giải trình mặc định 14 ngày,
+                  cấu hình được.</span
+                >
+              </p>
+              <label for="improvement-cause">Phân tích nguyên nhân *</label
+              ><textarea
+                id="improvement-cause"
+                disabled
+                placeholder="Giảng viên phân tích và nêu căn cứ"
+              ></textarea
+              ><label for="improvement-plan"
+                >Kế hoạch, người thực hiện và hạn *</label
+              ><textarea
+                id="improvement-plan"
+                disabled
+                placeholder="Nội dung cải tiến · người chịu trách nhiệm · hạn hoàn thành"
+              ></textarea
+              ><button disabled class="primary" type="button">
+                Gửi giải trình · chưa hoạt động
+              </button>
+            </div>
+            <div class="panel">
+              <span class="badge">DA_GUI</span>
+              <h3>Trưởng bộ môn rà soát</h3>
+              <label for="improvement-review"
+                >Nhận xét (bắt buộc khi yêu cầu bổ sung)</label
+              ><textarea
+                id="improvement-review"
+                disabled
+                placeholder="Nêu rõ phần cần bổ sung"
+              ></textarea>
+              <div class="actions">
+                <button disabled type="button">Xác nhận · chưa hoạt động</button
+                ><button disabled type="button">Yêu cầu bổ sung</button>
+              </div>
+              <div class="error">Vui lòng nhập nhận xét yêu cầu bổ sung.</div>
+              <div class="timeline">
+                <p>CAN_GIAI_TRINH → DA_GUI</p>
+                <p>DA_GUI → CAN_BO_SUNG → DA_GUI</p>
+                <p>DA_GUI → DA_XAC_NHAN</p>
+              </div>
+              <p class="small">
+                Ghi lịch sử người/thời điểm/nhận xét; kiểm lớp và phạm vi ở máy
+                chủ.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-16">Xem báo cáo →</a><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-16" aria-labelledby="title-16">
+          <div class="screen-heading">
+            <span class="eyebrow"
+              >WF-16 · FR-90–94 · BR-03, BR-07–08, BR-13, BR-30</span
+            >
+            <h2 id="title-16">Báo cáo và xuất dữ liệu theo quyền</h2>
+            <p class="meta">
+              DBCL/LANH_DAO toàn hệ thống · Trưởng đơn vị đúng phạm vi · GV lớp
+              mình theo quyền
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Báo cáo tổng hợp · bản thiết kế</strong
+              ><span>Không có tệp xuất thật</span>
+            </div>
+            <div class="frame-body">
+              <div class="grid">
+                <div>
+                  <label for="report-term">Học kỳ</label
+                  ><select id="report-term" disabled>
+                    <option>Học kỳ minh họa</option></select
+                  ><label for="report-scope">Phạm vi được phép xem</label
+                  ><select id="report-scope" disabled>
+                    <option>Khoa giả định A</option>
+                  </select>
+                </div>
+                <div class="panel">
+                  <h3>Nhóm báo cáo</h3>
+                  <p>
+                    Kết quả khảo sát · Tỉ lệ tham gia · So sánh kỳ · Tiến độ
+                    giải trình
+                  </p>
+                  <p>
+                    Phản hồi: số lượng, thời gian xử lý, quá hạn, mức hài lòng.
+                  </p>
+                </div>
+              </div>
+              <p class="small">
+                Trên màn hình nhỏ, vuốt ngang bảng để xem đủ các cột.
+              </p>
+              <div
+                class="table-wrap"
+                tabindex="0"
+                role="region"
+                aria-label="Bảng giữ chỗ báo cáo tổng hợp có thể cuộn"
+              >
+                <table>
+                  <caption>
+                    Ví dụ cột báo cáo, chưa có dữ liệu thật
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>Đơn vị</th>
+                      <th>Phiếu / nhiệm vụ</th>
+                      <th>Tỉ lệ</th>
+                      <th>Kết quả</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Bộ môn giả định A</td>
+                      <td>[Tổng hợp]</td>
+                      <td>[Tỉ lệ]</td>
+                      <td>[Điểm đủ điều kiện]</td>
+                    </tr>
+                    <tr>
+                      <td>Lớp thiếu ngưỡng</td>
+                      <td>[Không lộ chi tiết]</td>
+                      <td>—</td>
+                      <td>Chưa đủ mẫu để công bố</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="actions">
+                <button disabled type="button">
+                  Xuất Excel · chưa hoạt động</button
+                ><button disabled type="button">
+                  Xuất CSV · chưa hoạt động</button
+                ><button disabled type="button">
+                  Xuất PDF · chưa hoạt động
+                </button>
+              </div>
+              <div class="notice">
+                <strong>Kết quả xuất không có:</strong> định danh SV, IP,
+                User-Agent, giờ nộp chính xác hoặc mã nối phiếu với nhiệm vụ. Áp
+                dụng ngưỡng và phạm vi như màn hình.
+              </div>
+              <p class="small">
+                Danh sách sinh viên chưa hoàn thành là tệp trạng thái riêng cho
+                DBCL/trưởng đơn vị có quyền, ghi audit mỗi lần xem/xuất; không
+                ghép với nội dung phiếu. Không có dữ liệu: “Không có dữ liệu
+                thuộc phạm vi được xem.”
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-17">Phân biệt với quyền ADMIN →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-17" aria-labelledby="title-17">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-17 · FR-07, FR-10–12, FR-100</span>
+            <h2 id="title-17">ADMIN: tài khoản, cấu hình và nhật ký</h2>
+            <p class="meta">
+              Điều kiện bắt buộc: role=ADMIN và mfa=true · Chưa có phiên thật
+              trong wireframe
+            </p>
+          </div>
+          <div class="frame">
+            <div class="frame-bar">
+              <strong>Khu vực quản trị · bản thiết kế</strong
+              ><span>Không có menu nội dung khảo sát/phản hồi</span>
+            </div>
+            <div class="frame-body">
+              <div class="notice">
+                Quản trị hệ thống không tự cấp quyền nghiệp vụ. ADMIN không mặc
+                định đọc kết quả khảo sát hoặc nội dung phản hồi. Nếu chưa hoàn
+                tất TOTP: “Cần xác thực hai bước để tiếp tục.”
+              </div>
+              <div class="grid">
+                <div class="panel">
+                  <h3>Tài khoản và gán quyền</h3>
+                  <label for="admin-account">Tài khoản giả</label
+                  ><input
+                    id="admin-account"
+                    disabled
+                    value="USER-DEMO · không phải tài khoản thật"
+                  /><label for="admin-role">Vai trò + phạm vi</label
+                  ><select id="admin-role" disabled>
+                    <option>TRUONG_BO_MON · Bộ môn giả định A</option>
+                  </select>
+                  <div class="actions">
+                    <button disabled type="button">
+                      Gán quyền · chưa hoạt động</button
+                    ><button disabled type="button">Khóa / mở tài khoản</button
+                    ><button disabled type="button">Đặt lại 2FA</button>
+                  </div>
+                  <p class="small">
+                    Đổi quyền/đặt lại 2FA người khác cần step-up TOTP ở P1; thu
+                    hồi phiên khi khóa tài khoản.
+                  </p>
+                </div>
+                <div class="panel">
+                  <h3>Cấu hình có kiểm tra</h3>
+                  <p>
+                    Ngưỡng phiếu/tỉ lệ · Ngưỡng giải trình · SLA · Chống spam ·
+                    Từ khóa nhạy cảm · 2FA vai trò
+                  </p>
+                  <p class="small">
+                    Giá trị mặc định có thể cấu hình, không nhập giá trị
+                    âm/ngoài miền. Ghi lịch sử thay đổi, không hiển thị khóa bí
+                    mật.
+                  </p>
+                  <button disabled type="button">
+                    Lưu cấu hình · chưa hoạt động
+                  </button>
+                </div>
+              </div>
+              <div class="panel" style="margin-top: 1rem">
+                <h3>Nhật ký kiểm toán</h3>
+                <p>
+                  [Người thực hiện] · [Thời điểm] · [Hành động] · [Đối tượng] ·
+                  [Tóm tắt thay đổi]
+                </p>
+                <p class="small">
+                  Có lọc/phân trang theo quyền. Không ghi mật khẩu, token,
+                  secret TOTP hoặc nội dung phiếu. Không cho sửa lịch sử trên
+                  giao diện.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-02">Xem cổng 2FA →</a><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+
+        <section class="screen" id="wf-18" aria-labelledby="title-18">
+          <div class="screen-heading">
+            <span class="eyebrow">WF-18 · FR-20–22 · BR-17, BR-30, BR-34</span>
+            <h2 id="title-18">Danh mục và import có chạy thử</h2>
+            <p class="meta">
+              CAN_BO_DBCL · Đề xuất vận hành theo ma trận quyền · Thiết kế chức
+              năng Tuần 5
+            </p>
+          </div>
+          <div class="notice">
+            Danh mục do CAN_BO_DBCL vận hành theo đề xuất trong ma trận quyền.
+            Người có nhiều vai trò dùng gán DBCL đã được cấp; ADMIN đơn vai trò
+            không có quyền danh mục. Quản lý tài khoản FR-10 vẫn thuộc ADMIN.
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <h3>Danh mục nền</h3>
+              <p>
+                Học kỳ · Khoa · Bộ môn · Môn học · Lớp học phần · Phân công
+                giảng viên · Đăng ký
+              </p>
+              <label for="catalog-semester">Học kỳ ví dụ</label
+              ><select id="catalog-semester" disabled>
+                <option>Học kỳ minh họa · đang mở</option>
+              </select>
+              <div class="actions">
+                <button disabled type="button">
+                  Tạo / sửa · chưa hoạt động</button
+                ><button disabled type="button">Khóa sổ học kỳ</button>
+              </div>
+              <div class="error">
+                Học kỳ đã khóa sổ, chỉ được xem. Không tạo đợt hoặc phản hồi
+                mới.
+              </div>
+              <p class="small">
+                Migration 9 bảng nền ở Tuần 2 không đồng nghĩa các thao tác
+                CRUD/import này đã có.
+              </p>
+            </div>
+            <div class="panel">
+              <h3>Import Excel/CSV</h3>
+              <label for="import-file">Tệp dữ liệu giả</label
+              ><input id="import-file" type="file" disabled />
+              <div class="actions">
+                <button disabled type="button">Tải mẫu · chưa hoạt động</button
+                ><button disabled class="primary" type="button">
+                  Chạy thử · chưa hoạt động</button
+                ><button disabled type="button">
+                  Ghi sau khi duyệt kết quả
+                </button>
+              </div>
+              <div class="notice">
+                <strong>Kết quả chạy thử minh họa:</strong><br />Dòng 4: mã lớp
+                học phần không tồn tại.<br />Dòng 7: mã sinh viên trùng.<br />Chưa
+                ghi dữ liệu vào DB.
+              </div>
+              <p class="small">
+                Tài khoản nhập mới chờ kích hoạt hoặc buộc đổi mật khẩu tạm. Mọi
+                thao tác ghi kiểm quyền/phạm vi và audit tại máy chủ.
+              </p>
+            </div>
+          </div>
+          <div class="screen-link">
+            <a href="#wf-03">Về tổng quan vai trò →</a
+            ><a href="#top">Về đầu trang</a>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      Tuần 2 · Thực hiện 21/10/2026 · Thiết kế tĩnh, 18 màn · Không có
+      JavaScript / mạng / dữ liệu thật / đăng nhập thật. Đối chiếu FR/BR trong
+      docs/WIREFRAME.md.
+    </footer>
+  </body>
+</html>

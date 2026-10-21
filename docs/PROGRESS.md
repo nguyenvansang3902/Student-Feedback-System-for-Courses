@@ -2,9 +2,11 @@
 
 Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ đánh dấu hoàn thành khi có test qua, nghiệm thu được và tài liệu đã cập nhật. Tuần dự kiến bám Mục 9; P2 chưa được xếp trong kế hoạch 15 tuần được ghi rõ là chưa xếp tuần, không tự nhận đã hoàn thành.
 
-Mốc kế hoạch: 30/09/2026. Bắt đầu thực tế: 02/10/2026. Tuần 1 tạm tính 30/09–06/10/2026 theo giả định 7 ngày/tuần, chờ xác nhận lịch của trường.
+Mốc kế hoạch: 30/09/2026. Bắt đầu thực tế: 02/10/2026. Tuần 2 tạm tính 07–13/10/2026 theo giả định 7 ngày/tuần, chờ xác nhận lịch của trường; công việc Tuần 2 thực hiện ngày **21/10/2026**, không ghi lùi ngày.
 
-FR-102 đã có test và nghiệm thu trên [CI main 36961609369](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961609369) tại `c26b713`: `check` qua lint, typecheck, 1/1 Vitest, build; `smoke` qua Compose MySQL/Mailpit, `npm run dev` và HTTP ba route. Sau lỗi Docker lúc 10:50, hai cold start thành công không cần khóa registry thử. Kiểm tra lại lúc 20:29 ngày 02/10: check exit 0, 1/1 test; HTTP 200 ba route và Mailpit, Compose healthy, SQL MySQL 8.4.11/utf8mb4 thành công, volume cũ được giữ. SHA-256 `AGENTS.md` vẫn nguyên; build đã qua trong phiên trước. Đăng nhập tài khoản Docker Desktop phục hồi bằng mã thiết bị và restart lúc 20:37; db/mailpit tự chạy lại và healthy. Không tăng số FR hoàn thành. Báo cáo Tuần 1 là bản cập nhật đến 02/10, chưa phải bản chốt ngày 06/10 theo giả định 7 ngày.
+`npm run progress` ngày 21/10 trả **1,8% = 3/163 điểm**, chỉ FR-102 hoàn thành; mục tiêu có trọng số đến Tuần 2 cũng 3/163. Phân tích 63 FR/20 NFR, sơ đồ, ma trận quyền, ERD, 39 model blueprint, 9 bảng migration và 18 wireframe là đầu ra Tuần 2, không hoàn thành các FR chức năng. Migrate dev chạy lại đồng bộ; SQL 10/10 qua, fixture rollback; check qua validate/generate/ERD/lint/typecheck và 14/14 Vitest, build qua. Prepare safety 6/6 qua; 13/13 sơ đồ render và bố cục wireframe desktop/mobile đã kiểm. Mã `723e165` đã push nhánh feature; [CI 39634835024](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39634835024) đã qua cả check và smoke (migration/MySQL/check/build/HTTP dev). 5.6b/c/d và service/giao diện nghiệp vụ chưa triển khai; full audit còn 5 high dev chain, production audit 0.
+
+FR-102 có bằng chứng Tuần 1: [CI main 36961609369](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961609369) tại `c26b713` qua check/build/smoke; nghiệm thu Windows ngày 02/10 qua sau phục hồi Docker/đăng nhập. API vẫn chỉ kiểm ứng dụng (`database: not_checked`). Lịch sử đầy đủ giữ ở [báo cáo Tuần 1](bao-cao-tien-do/tuan-01.md) và [AI_USAGE](AI_USAGE.md); đầu ra Tuần 2 ở [nghiệm thu](NGHIEM_THU_TUAN_02.md), [báo cáo Tuần 2](bao-cao-tien-do/tuan-02.md). Không tăng tick chỉ vì schema/test thiết kế đã có.
 
 ## M1 Xác thực và phiên
 
@@ -104,4 +106,3 @@ FR-102 đã có test và nghiệm thu trên [CI main 36961609369](https://github
 - [ ] FR-110 [P2] gợi ý chủ đề/cảm xúc cho góp ý tự luận bằng AI (tắt mặc định, ẩn danh hóa trước khi gửi, cần người dùng đồng ý) (Chưa xếp tuần; P2 tùy chọn)
 - [ ] FR-111 [P2] API trạng thái hoàn thành (Chưa xếp tuần; P2 tùy chọn)
 - [ ] FR-112 [P2] đánh giá riêng từng giảng viên (Chưa xếp tuần; P2 tùy chọn)
-
