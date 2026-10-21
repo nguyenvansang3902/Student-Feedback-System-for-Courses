@@ -25,7 +25,10 @@
     "design:check": "node scripts/export-erd.mjs --check",
     "auth:key": "node scripts/generate-auth-key.mjs",
     "db:seed": "tsx scripts/seed-auth.ts",
-    "test:auth": "tsx scripts/verify-auth.ts"
+    "test:auth": "tsx scripts/verify-auth.ts",
+    "predb:seed": "npm run db:generate",
+    "pretest:auth": "npm run db:generate",
+    "prebuild": "npm run db:generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "7.10.1",
