@@ -10,22 +10,29 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "eslint . && tsc --noEmit && vitest run",
+    "check": "npm run db:validate && npm run db:generate && npm run design:check && eslint . && tsc --noEmit && vitest run",
+    "pretest": "npm run db:generate",
+    "test:integration": "node scripts/verify-database.mjs",
     "progress": "node scripts/progress.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:validate": "prisma validate",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:validate": "prisma validate && prisma validate --schema prisma/design.prisma",
+    "db:generate": "prisma generate && prisma generate --schema prisma/design.prisma",
+    "db:prepare": "node scripts/prepare-database.mjs",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate": "prisma migrate dev",
+    "design:diagrams": "node scripts/export-erd.mjs",
+    "design:check": "node scripts/export-erd.mjs --check"
   },
   "dependencies": {
-    "@prisma/client": "7.10.0",
+    "@prisma/client": "7.10.1",
     "dotenv": "18.0.5",
     "next": "16.3.8",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@prisma/generator-helper": "7.10.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.1",
     "@types/react": "19.3.0",
@@ -35,7 +42,7 @@
     "eslint-config-prettier": "10.1.8",
     "postcss": "8.5.28",
     "prettier": "3.9.9",
-    "prisma": "7.10.0",
+    "prisma": "7.10.1",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
     "vitest": "5.0.3"

@@ -11,7 +11,7 @@ export default defineConfig([
     ".next/**",
     "out/**",
     "build/**",
-    "src/generated/prisma/**",
+    "src/generated/**",
     "next-env.d.ts",
   ]),
 ]);

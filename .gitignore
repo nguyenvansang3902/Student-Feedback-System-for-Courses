@@ -6,13 +6,14 @@
 # Node.js / Next.js / ket qua kiem thu
 node_modules/
 .next/
-src/generated/prisma/
+src/generated/
 out/
 coverage/
 playwright-report/
 test-results/
 *.tsbuildinfo
 *.log
+.local/
 
 # Tep rieng cua may phat trien
 .DS_Store

@@ -10,26 +10,11 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: mysql:8.4.11
-        env:
-          MYSQL_ROOT_PASSWORD: ci_root_only
-          MYSQL_DATABASE: survey_feedback_test
-          MYSQL_USER: survey_ci
-          MYSQL_PASSWORD: ci_local_only
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=12
+    timeout-minutes: 12
 
     env:
       CI: "true"
       NEXT_TELEMETRY_DISABLED: "1"
-      DATABASE_URL: mysql://survey_ci:ci_local_only@127.0.0.1:3306/survey_feedback_test
 
     steps:
       - name: Lấy mã nguồn
@@ -41,10 +26,27 @@ jobs:
           cache: npm
       - name: Cài thư viện từ lockfile
         run: npm ci
+      - name: Dùng cấu hình giả và khởi động dịch vụ
+        run: |
+          cp .env.example .env
+          docker compose up -d --wait --wait-timeout 180 db mailpit
+      - name: Chuẩn bị database shadow riêng
+        run: npm run db:prepare
+      - name: Áp dụng migration đã duyệt và kiểm tra đồng bộ schema
+        run: |
+          npm run db:deploy
+          npx prisma migrate status
+          npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code
+      - name: Kiểm tra ràng buộc trên MySQL thật
+        run: npm run test:integration
       - name: Chạy lint, typecheck và test
         run: npm run check
       - name: Build ứng dụng
         run: npm run build
+      - name: Dừng dịch vụ thử, giữ volume
+        if: always()
+        run: |
+          if [ -f .env ]; then docker compose down; fi
 
   smoke:
     runs-on: ubuntu-latest

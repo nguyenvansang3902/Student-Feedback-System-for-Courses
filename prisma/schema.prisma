@@ -1,4 +1,4 @@
-// Tuần 1 chỉ khai báo MySQL. Mô hình nghiệp vụ được thiết kế ở tuần 2.
+// Schema áp dụng ở Tuần 2. Bản thiết kế toàn hệ thống: design.prisma.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -6,4 +6,149 @@ generator client {
 
 datasource db {
   provider = "mysql"
+}
+
+generator metadata {
+  provider = "node ./scripts/generate-dmmf.mjs"
+  output   = "../src/generated/runtime-metadata"
+}
+
+enum UserStatus {
+  PENDING_ACTIVATION
+  ACTIVE
+  DISABLED
+}
+
+enum Role {
+  SINH_VIEN
+  GIANG_VIEN
+  TRUONG_BO_MON
+  TRUONG_KHOA
+  CAN_BO_DBCL
+  LANH_DAO
+  ADMIN
+}
+
+enum ScopeType {
+  GLOBAL
+  FACULTY
+  DEPARTMENT
+}
+
+model User {
+  id                 String               @id @default(uuid()) @db.Char(36)
+  loginCode          String               @unique @db.VarChar(32)
+  email              String               @unique @db.VarChar(254)
+  displayName        String               @db.VarChar(160)
+  passwordHash       String?              @db.VarChar(255)
+  status             UserStatus           @default(PENDING_ACTIVATION)
+  mustChangePassword Boolean              @default(true)
+  createdAt          DateTime             @default(now()) @db.DateTime(3)
+  updatedAt          DateTime             @updatedAt @db.DateTime(3)
+  roles              RoleAssignment[]
+  teaching           TeachingAssignment[]
+  enrollments        Enrollment[]
+
+  @@index([status])
+}
+
+model Faculty {
+  id          String           @id @default(uuid()) @db.Char(36)
+  code        String           @unique @db.VarChar(32)
+  name        String           @db.VarChar(160)
+  isActive    Boolean          @default(true)
+  departments Department[]
+  roles       RoleAssignment[]
+}
+
+model Department {
+  id        String           @id @default(uuid()) @db.Char(36)
+  code      String           @unique @db.VarChar(32)
+  name      String           @db.VarChar(160)
+  isActive  Boolean          @default(true)
+  facultyId String           @db.Char(36)
+  faculty   Faculty          @relation(fields: [facultyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  courses   Course[]
+  roles     RoleAssignment[]
+
+  @@index([facultyId])
+}
+
+model Semester {
+  id       String          @id @default(uuid()) @db.Char(36)
+  code     String          @unique @db.VarChar(32)
+  name     String          @db.VarChar(160)
+  startsOn DateTime        @db.Date
+  endsOn   DateTime        @db.Date
+  lockedAt DateTime?       @db.DateTime(3)
+  sections CourseSection[]
+}
+
+model Course {
+  id           String          @id @default(uuid()) @db.Char(36)
+  code         String          @unique @db.VarChar(32)
+  name         String          @db.VarChar(200)
+  credits      Decimal         @db.Decimal(4, 1)
+  isActive     Boolean         @default(true)
+  departmentId String          @db.Char(36)
+  department   Department      @relation(fields: [departmentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sections     CourseSection[]
+
+  @@index([departmentId])
+}
+
+model CourseSection {
+  id          String               @id @default(uuid()) @db.Char(36)
+  code        String               @db.VarChar(32)
+  courseId    String               @db.Char(36)
+  semesterId  String               @db.Char(36)
+  course      Course               @relation(fields: [courseId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  semester    Semester             @relation(fields: [semesterId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  teaching    TeachingAssignment[]
+  enrollments Enrollment[]
+
+  @@unique([semesterId, code])
+  @@index([courseId])
+}
+
+model TeachingAssignment {
+  sectionId String        @db.Char(36)
+  teacherId String        @db.Char(36)
+  isLead    Boolean       @default(false)
+  section   CourseSection @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  teacher   User          @relation(fields: [teacherId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@id([sectionId, teacherId])
+  @@index([teacherId])
+}
+
+model Enrollment {
+  id           String        @id @default(uuid()) @db.Char(36)
+  sectionId    String        @db.Char(36)
+  studentId    String        @db.Char(36)
+  registeredAt DateTime      @default(now()) @db.DateTime(3)
+  withdrawnAt  DateTime?     @db.DateTime(3)
+  section      CourseSection @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  student      User          @relation(fields: [studentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([sectionId, studentId])
+  @@index([studentId, withdrawnAt])
+}
+
+model RoleAssignment {
+  id           String      @id @default(uuid()) @db.Char(36)
+  userId       String      @db.Char(36)
+  role         Role
+  scopeType    ScopeType
+  // Khóa không NULL: GLOBAL, FACULTY:<uuid> hoặc DEPARTMENT:<uuid>.
+  scopeKey     String      @db.VarChar(64)
+  facultyId    String?     @db.Char(36)
+  departmentId String?     @db.Char(36)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  faculty      Faculty?    @relation(fields: [facultyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([userId, role, scopeKey])
+  @@index([facultyId])
+  @@index([departmentId])
 }
