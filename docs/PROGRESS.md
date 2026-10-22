@@ -1,21 +1,23 @@
 # Tiến độ yêu cầu chức năng
 
-Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ đánh dấu hoàn thành khi có test qua, nghiệm thu được và tài liệu đã cập nhật. Tuần dự kiến bám Mục 9; P2 chưa được xếp trong kế hoạch 15 tuần được ghi rõ là chưa xếp tuần, không tự nhận đã hoàn thành.
+Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ tick khi có test qua, nghiệm thu được và tài liệu cập nhật. Mỗi FR giữ mã/ưu tiên/tuần dự kiến; FR chưa xếp tuần vẫn nằm trong mẫu số.
 
-Mốc kế hoạch: 30/09/2026. Bắt đầu thực tế: 02/10/2026. Tuần 2 tạm tính 07–13/10/2026 theo giả định 7 ngày/tuần, chờ xác nhận lịch của trường; công việc Tuần 2 thực hiện ngày **21/10/2026**, không ghi lùi ngày.
+Kế hoạch bắt đầu 30/09/2026, khởi động thực tế 02/10. Tuần 2 theo mốc giả định 07–13/10 nhưng làm 21/10; Tuần 3 theo mốc 14–20/10, triển khai thực tế **21–22/10/2026**. Không ghi lùi ngày; nhóm đối chiếu lịch trường.
 
-`npm run progress` ngày 21/10 trả **1,8% = 3/163 điểm**, chỉ FR-102 hoàn thành; mục tiêu có trọng số đến Tuần 2 cũng 3/163. Phân tích 63 FR/20 NFR, sơ đồ, ma trận quyền, ERD, 39 model blueprint, 9 bảng migration và 18 wireframe là đầu ra Tuần 2, không hoàn thành các FR chức năng. Migrate dev chạy lại đồng bộ; SQL 10/10 qua, fixture rollback; check qua validate/generate/ERD/lint/typecheck và 14/14 Vitest, build qua. Prepare safety 6/6 qua; 13/13 sơ đồ render và bố cục wireframe desktop/mobile đã kiểm. Mã `723e165` đã push nhánh feature; [CI 39634835024](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39634835024) đã qua cả check và smoke (migration/MySQL/check/build/HTTP dev). 5.6b/c/d và service/giao diện nghiệp vụ chưa triển khai; full audit còn 5 high dev chain, production audit 0.
+**Đã nghiệm thu Tuần 3:** FR-01–06 và FR-102 được tick, **20/163 điểm = 12,3%**, bằng mục tiêu lũy kế phạm vi Tuần 3 nhưng thực hiện muộn hơn lịch. M1 đạt **17/23 = 73,9%**. Bằng chứng trong [nghiệm thu Tuần 3](NGHIEM_THU_TUAN_03.md), [truy vết](TRUY_VET.md), [báo cáo](bao-cao-tien-do/tuan-03.md).
 
-FR-102 có bằng chứng Tuần 1: [CI main 36961609369](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/36961609369) tại `c26b713` qua check/build/smoke; nghiệm thu Windows ngày 02/10 qua sau phục hồi Docker/đăng nhập. API vẫn chỉ kiểm ứng dụng (`database: not_checked`). Lịch sử đầy đủ giữ ở [báo cáo Tuần 1](bao-cao-tien-do/tuan-01.md) và [AI_USAGE](AI_USAGE.md); đầu ra Tuần 2 ở [nghiệm thu](NGHIEM_THU_TUAN_02.md), [báo cáo Tuần 2](bao-cao-tien-do/tuan-02.md). Không tăng tick chỉ vì schema/test thiết kế đã có.
+Runtime hiện **13 model** (9 nền Tuần 2 + 4 auth/audit Tuần 3), blueprint **39 model**. Full check **61/61 test** (core27/recovery18/schema13/limits2/health1), SQL MySQL **10/10**, HTTP/MySQL/Mailpit **24/24**, build, UI và render sơ đồ qua. Không cộng test targeted vào full check lần nữa. Ẩn danh 5.6b/c/d, khảo sát/phản hồi, ADMIN TOTP và phân quyền chi tiết chưa làm; health database:not_checked.
+
+Bằng chứng lịch sử giữ trong [Tuần 1](bao-cao-tien-do/tuan-01.md), [Tuần 2](bao-cao-tien-do/tuan-02.md) và [AI_USAGE](AI_USAGE.md). Mã Tuần 3 `43b937e` có [CI check + smoke thành công](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39642730208). `npm run progress` tính tỷ lệ từ checkbox dưới đây.
 
 ## M1 Xác thực và phiên
 
-- [ ] FR-01 [P0] đăng nhập bằng mã định danh (mã SV/GV) hoặc email (Tuần 3)
-- [ ] FR-02 [P0] phiên JWT, đăng xuất, thu hồi (Tuần 3)
-- [ ] FR-03 [P0] đổi mật khẩu (Tuần 3)
-- [ ] FR-04 [P1] quên/đặt lại mật khẩu qua email (token dùng một lần, hết hạn 30 phút) (Tuần 3)
-- [ ] FR-05 [P0] kích hoạt tài khoản lần đầu hoặc mật khẩu tạm buộc đổi (Tuần 3)
-- [ ] FR-06 [P0] giới hạn tần suất và khóa tạm (Tuần 3)
+- [x] FR-01 [P0] đăng nhập bằng mã định danh (mã SV/GV) hoặc email (Tuần 3)
+- [x] FR-02 [P0] phiên JWT, đăng xuất, thu hồi (Tuần 3)
+- [x] FR-03 [P0] đổi mật khẩu (Tuần 3)
+- [x] FR-04 [P1] quên/đặt lại mật khẩu qua email (token dùng một lần, hết hạn 30 phút) (Tuần 3)
+- [x] FR-05 [P0] kích hoạt tài khoản lần đầu hoặc mật khẩu tạm buộc đổi (Tuần 3)
+- [x] FR-06 [P0] giới hạn tần suất và khóa tạm (Tuần 3)
 - [ ] FR-07 [P0] xác thực hai bước TOTP cho ADMIN (đăng ký bằng mã QR, xác nhận, mã khôi phục, đặt lại) (Tuần 4)
 - [ ] FR-08 [P1] bật 2FA bắt buộc cho các vai trò khác theo cấu hình (Tuần 4)
 - [ ] FR-09 [P2] xem và đăng xuất các thiết bị (Chưa xếp tuần; P2 tùy chọn)
