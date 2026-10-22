@@ -94,3 +94,5 @@ Người dùng yêu cầu bắt đầu và tiếp tục Tuần 5 sau gián đo�
 | Tài liệu/tiến độ | [hướng dẫn](HUONG_DAN_IMPORT.md), [ADR](decisions/ADR-006-danh-muc-va-nhap-lieu.md), [báo cáo](bao-cao-tien-do/tuan-05.md), [nghiệm thu](NGHIEM_THU_TUAN_05.md) | FR20/21/22/101,46/163=28,2%; các FR nghiệp vụ tương lai vẫn0. Giữ nguyên bốn file nguồn và không viết quy trình hiện tại ở trường. CI cuối sẽ ghi khi đối chiếu đúng SHA |
 
 Sau gián đoạn, Docker được mở lại cùng volume, đối chiếu JSON/log bền vững và tiếp tục phần chưa xong. Chưa deploy công khai, dùng dữ liệu thật, chi tiền, reset/xóa DB hay force push. Các database demo mới được tạo để nghiệm thu vẫn giữ lại; không gán sinh viên đã đọc/hiểu hoặc tự điền công sức cá nhân.
+
+Rà soát cuối phát hiện wrapper `test:demo` có thể truyền `DEMO_DATABASE_URL` cũ do parent đã nạp `.env` trước khi child tạo DB mới. Đã bỏ biến URL kế thừa ở bước verifier để child nạp giá trị vừa ghi, giữ kiểm marker/server identity. Chạy lại trong môi trường đã có URL cũ qua **9/9** nhóm; kiểm mật khẩu bổ sung đổi sang bcrypt hash khác trước khi seed, xác nhận hash đã đổi được giữ rồi phục hồi fixture.

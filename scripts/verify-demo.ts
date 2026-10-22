@@ -1,6 +1,7 @@
 import "dotenv/config";
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync } from "node:fs";
+import { hash } from "bcryptjs";
 import { getDb } from "../src/lib/db";
 import {
   seedDemo,
@@ -199,13 +200,25 @@ try {
   results.push(
     "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
   );
-  const repeat = await run("medium");
-  assert.deepEqual(repeat, medium);
-  assert.equal(
-    (await db.user.findUniqueOrThrow({ where: { id: original.id } }))
-      .passwordHash,
-    original.passwordHash,
-  );
+  const changedHash = await hash("KiemThuMatKhauDaDoi!2026", 12);
+  await db.user.update({
+    where: { id: original.id },
+    data: { passwordHash: changedHash },
+  });
+  try {
+    const repeat = await run("medium");
+    assert.deepEqual(repeat, medium);
+    assert.equal(
+      (await db.user.findUniqueOrThrow({ where: { id: original.id } }))
+        .passwordHash,
+      changedHash,
+    );
+  } finally {
+    await db.user.update({
+      where: { id: original.id },
+      data: { passwordHash: original.passwordHash },
+    });
+  }
   results.push("Chạy lại không nhân đôi hoặc đặt lại mật khẩu");
   assert.equal(await surveySnapshot(), frozenSurvey);
   await db.user.update({
