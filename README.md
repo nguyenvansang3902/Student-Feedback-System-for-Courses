@@ -11,6 +11,8 @@ Tuần 5 thực hiện ngày **22/10/2026**, sớm hơn mốc giả định **28
 - [18 wireframe Tuần 2](docs/wireframes/tuan-02.html) là tài liệu HTML tĩnh. Web chức năng hiện tại chạy bằng Next.js.
 - Trang `/suc-khoe` và `/api/health` dành cho kỹ thuật kiểm ứng dụng; không phải màn khảo sát và chưa kiểm kết nối database.
 
+Nghiệm thu Tuần5: **219/219 test**, SQL10, HTTP24+28+22, CLI5, seed9nhóm, QA13nhóm/10viewport, build qua; **46/163=28,2%**. [CI 39775473219](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39775473219) của mã `a844f3f2f9fdcd8a71ef5587358c8446075b5294` đã qua cả `check` và `smoke`. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_05.md); CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
+
 ## Chạy lần đầu trên PowerShell
 
 Cần Git, Node.js LTS 24+, npm và Docker Desktop Linux containers/WSL 2 đang chạy. Mở terminal tại thư mục gốc dự án có `package.json`; không chạy trong `C:\Windows\system32`.

@@ -47,6 +47,8 @@ Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **2
 | Quyền làm trước | Lệnh người dùng ngày22/10/2026 | Chỉ dữ liệu seed khảo sát/phản hồi;31runtime/39blueprint không có nghĩa hoàn thành các FR tuần6–11 |
 | Giao diện/sơ đồ | [QA](QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](SO_DO_TUAN_05.md) | 13nhóm/10viewport,10PNG đã xem;4thânMermaid khớp,4SVG nhãn31 đã raster/xem |
 
+[CI 39775473219](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39775473219) của mã `a844f3f2f9fdcd8a71ef5587358c8446075b5294` đã qua cả `check` và `smoke`. Pipeline gồm migration/diff, SQL10, HTTP auth24, CLI5/HTTP28, HTTP Tuần5 22, seed9, full219 và build. CI main/tài liệu cuối đối chiếu SHA trong Actions.
+
 ## 2. FR đã nghiệm thu
 
 | Mã     | Tuần | Màn hình / luồng thật          | Service / policy hiện có | Test                   | Bằng chứng                                                                                                                                                                                                                               | Trạng thái                                     |

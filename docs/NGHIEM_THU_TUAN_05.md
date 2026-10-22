@@ -68,7 +68,7 @@ Chạy các bộ HTTP tuần tự. Tuần 5 dùng lại database thử riêng do
 | Giao diện/ảnh | [QA trình duyệt](QA_GIAO_DIEN_TUAN_05.md): **13 nhóm thao tác, 10 lượt viewport 1440/390px qua**, không lỗi JavaScript/tràn ngang/thiếu nhãn theo phép đo DOM. Đã tạo sáu danh mục, phân trang, chạy thử CSV sai/đúng, xác nhận nhập sinh viên pending, tải 8 mẫu và khóa kỳ. **10/10 PNG đã mở xem**, không chứa bí mật; fixture dọn, seed giữ nguyên. Chưa thao tác đủ sửa/xóa hoặc commit mọi loại import qua UI |
 | Sơ đồ | [Đối chiếu ERD](SO_DO_TUAN_05.md): 31 runtime/39 blueprint; **4/4 thân Mermaid khớp HEAD** nên giữ render lịch sử. Bốn SVG tổng quan mới đã raster và mở xem đủ, nhãn seed/tương lai rõ |
 | Dependency audit | **Production 0**, full audit còn **5 high** ở dev chain braces→micromatch→fast-glob→ESLint. ExcelJS dùng override uuid11.1.1 theo bản vá [uuid v11.1.1](https://github.com/uuidjs/uuid/releases/tag/v11.1.1); đối chiếu nguồn ExcelJS chỉ gọi `uuid.v4()` không tham số. Không force downgrade hoặc nhận toàn hệ thống hết lỗ hổng |
-| CI/commit | **Chờ root điền URL run và đúng SHA Tuần 5**; CI Tuần 4 không chứng minh mã Tuần 5 |
+| CI/commit | [CI 39775473219](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39775473219) của mã `a844f3f2f9fdcd8a71ef5587358c8446075b5294` đã qua cả `check` và `smoke`. Main/tài liệu cuối đối chiếu đúng SHA trong Actions; không dùng CI Tuần4 để chứng minh mã Tuần5 |
 | Progress | `npm run progress` thực tế: **46/163 = 28,2%**, M3 **9/9 = 100%**, M11 **6/11 = 54,5%**; đã tick FR-20/21/22/101. FR chức năng khảo sát/phản hồi tương lai vẫn chưa tick |
 
 ## 6. Giới hạn còn lại

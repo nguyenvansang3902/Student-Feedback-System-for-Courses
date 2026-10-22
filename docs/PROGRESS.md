@@ -4,7 +4,7 @@ Nguồn: Mục7 đặc tả. P0=3, P1=2, P2=1; chỉ tick khi có mã, test qua,
 
 Tuần5 thực hiện **22/10/2026**, sớm hơn mốc giả định **28/10–03/11**, theo yêu cầu người dùng. Thêm FR-20/21/22/101: **46/163=28,2%**, M3 **9/9=100%**, M11 **6/11=54,5%**. Tỷ lệ này tính chức năng đã chạy, không tính độ lớn thiết kế.
 
-Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngoại lệ chỉ tạo dữ liệu giả; các FR mẫu phiếu, khảo sát, nộp phiếu, kết quả, xử lý phản hồi vẫn chưa hoàn thành. Runtime31/blueprint39, không reset dữ liệu cũ. CI cuối đang chờ đối chiếu đúng SHA.
+Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngoại lệ chỉ tạo dữ liệu giả; các FR mẫu phiếu, khảo sát, nộp phiếu, kết quả, xử lý phản hồi vẫn chưa hoàn thành. Runtime31/blueprint39, không reset dữ liệu cũ. [CI 39775473219](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39775473219) của mã `a844f3f2f9fdcd8a71ef5587358c8446075b5294` đã qua cả `check` và `smoke`; CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
 
 Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_05.md), [báo cáo](bao-cao-tien-do/tuan-05.md), [QA](QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](SO_DO_TUAN_05.md), [hướng dẫn import](HUONG_DAN_IMPORT.md), [truy vết](TRUY_VET.md). Lịch sử Tuần1–4 giữ kết quả tại thời điểm nghiệm thu; health vẫn database:not_checked.
 
