@@ -2,11 +2,11 @@
 
 Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/09/2026**, khởi động thực tế **02/10/2026**. Tuần 3 thực hiện **21–22/10/2026**. Tuần 4 theo mốc giả định **21–27/10/2026**, bắt đầu thực tế **22/10/2026**; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-## Phạm vi hiện tại — Tuần 4: phân quyền và TOTP
+## Phạm vi hiện tại — Tuần 5: danh mục và nhập liệu
 
-Web có các luồng tài khoản của Tuần 3, thêm đăng ký/xác minh TOTP, mã khôi phục, quản trị tài khoản, gán vai trò/phạm vi, chính sách MFA và nhật ký kiểm toán. ADMIN phải có phiên đầy đủ và MFA; quyền quản trị không tự cấp quyền xem kết quả/nội dung phản hồi. Danh sách lớp tối thiểu dùng để kiểm bộ lọc phạm vi; phần điền khảo sát, gửi/xử lý phản hồi, dashboard kết quả và CRUD/import được làm đúng các tuần sau.
+Tuần 5 thực hiện ngày **22/10/2026**, sớm hơn mốc giả định **28/10–03/11/2026**, theo yêu cầu người dùng. Cán bộ ĐBCL có thể CRUD học kỳ/khoa/bộ môn/môn/lớp/phân công, khóa sổ, nhập CSV/XLSX qua chạy thử và tải mẫu. Quyền quản trị ADMIN vẫn cần MFA và không tự cấp quyền ĐBCL.
 
-- `prisma/schema.prisma`: **16 model đã migrate**, thêm TotpCredential/TotpRecoveryCode/SystemSetting và trạng thái MFA của UserSession ở Tuần 4; giữ 9 bảng nền và 4 bảng auth/audit.
+- `prisma/schema.prisma`: **31 model đã migrate**, gồm 16 bảng nền/xác thực và 15 bảng phục vụ seed khảo sát/phản hồi được người dùng cho phép làm trước ngày 22/10. Có seed dữ liệu không đồng nghĩa đã có màn hình hoặc API khảo sát/phản hồi/kết quả; các chức năng đó triển khai đúng tuần sau.
 - `prisma/design.prisma`: **39 model thiết kế đầy đủ**, output riêng, không dùng migrate/db push.
 - [18 wireframe Tuần 2](docs/wireframes/tuan-02.html) là tài liệu HTML tĩnh. Web chức năng hiện tại chạy bằng Next.js.
 - Trang `/suc-khoe` và `/api/health` dành cho kỹ thuật kiểm ứng dụng; không phải màn khảo sát và chưa kiểm kết nối database.
@@ -21,7 +21,7 @@ npm.cmd ci
 npm.cmd run auth:key
 docker compose up -d --wait --wait-timeout 180 db mailpit
 npm.cmd run db:prepare
-npm.cmd run db:migrate
+npm.cmd run db:deploy
 npm.cmd run db:seed
 npm.cmd run dev
 ```
@@ -32,7 +32,7 @@ Mở **[http://localhost:3000](http://localhost:3000)** hoặc [đăng nhập](h
 
 ### Tài khoản demo dev
 
-Chạy `db:seed` trước. Ba tài khoản ACTIVE có mật khẩu ban đầu **`Demo2026!HocTap`**; tài khoản chờ kích hoạt chưa có mật khẩu. Chỉ dùng dữ liệu giả ở dev/demo:
+Chạy `db:seed` trước. Tài khoản demo ACTIVE có mật khẩu ban đầu **`Demo2026!HocTap`**; tài khoản chờ kích hoạt chưa có mật khẩu. Chỉ dùng dữ liệu giả ở dev/demo:
 
 | Mã định danh | Email                    | Trạng thái và cách thử                                          |
 | ------------ | ------------------------ | --------------------------------------------------------------- |
@@ -40,8 +40,32 @@ Chạy `db:seed` trước. Ba tài khoản ACTIVE có mật khẩu ban đầu **
 | GV2026001    | giangvien@demo.invalid   | ACTIVE, giảng viên; đăng nhập xem bố cục                        |
 | TEMP2026001  | tam@demo.invalid         | ACTIVE, mật khẩu tạm; bắt buộc đổi trước khi vào tài khoản      |
 | NEW2026001   | moikichhoat@demo.invalid | PENDING_ACTIVATION; vào Kích hoạt, yêu cầu thư rồi đặt mật khẩu |
+| DBCL2026001 | dbcl2026001@seed.demo.invalid | Cán bộ ĐBCL; mở **Danh mục và nhập dữ liệu** từ trang Tài khoản |
+| TK2026001 | tk2026001@seed.demo.invalid | Trưởng khoa, phạm vi khoa minh họa 1 |
+| TBM2026001 | tbm2026001@seed.demo.invalid | Trưởng bộ môn, phạm vi bộ môn minh họa 1 |
+| LD2026001 | ld2026001@seed.demo.invalid | Lãnh đạo, phạm vi toàn trường |
 
 Seed chỉ tạo tài khoản demo còn thiếu, không phải công cụ đặt lại mật khẩu hoặc trạng thái đã đổi. Seed bị chặn production; không dùng ADMIN/demo cố định trong môi trường thật. Nếu thử đổi/reset/kích hoạt, giữ lại mật khẩu bạn vừa chọn để đăng nhập lần sau.
+
+### Xem chức năng Tuần 5 và chạy demo riêng
+
+Đăng nhập `DBCL2026001`, mở [Danh mục và nhập dữ liệu](http://localhost:3000/danh-muc). Nhập file tại **Nhập dữ liệu**: tải mẫu, thay dòng ví dụ bằng dữ liệu giả/mã danh mục đang có, chọn file, **Chạy thử**, xem lỗi từng dòng rồi mới **Xác nhận nhập**. Tài khoản nhập chờ kích hoạt; thư tới Mailpit. Xem [hướng dẫn nhập file](docs/HUONG_DAN_IMPORT.md).
+
+```powershell
+npm.cmd run demo
+```
+
+Lệnh này cần `.env`, khóa auth, dependencies và Docker Compose đã chuẩn bị theo phần chạy lần đầu. Nó tạo **database demo mới riêng**, deploy migration, seed rồi chạy web tại **[http://127.0.0.1:3001](http://127.0.0.1:3001)**. Không đổi `DATABASE_URL` của ứng dụng chính, không DROP/reset dữ liệu cũ. Ctrl+C dừng web; database demo được giữ. Mỗi lần gọi tạo môi trường mới, nên dữ liệu của lần demo cũ vẫn chiếm dung lượng; không tự động xóa.
+
+Mặc định `DEMO_SIZE=medium`: 3 khoa, 8 bộ môn, 40 môn, 120 lớp, 60 giảng viên, 1.500 sinh viên giả, 4.501 đăng ký (gồm sinh viên demo chính). Có thêm một mẫu, một đợt mở, một đợt đã đóng/công bố có phiếu và kết quả khớp toán học, sáu trạng thái phản hồi giả. Các tài khoản trên dùng được; ADMIN tạo riêng bằng CLI với mật khẩu riêng và TOTP.
+
+| DEMO_SIZE | Khoa / bộ môn / môn / lớp | Giảng viên / sinh viên | Đăng ký trên DB mới |
+| --- | --- | --- | --- |
+| small | 3 / 8 / 8 / 12 | 6 / 30 | 91 |
+| medium | 3 / 8 / 40 / 120 | 60 / 1.500 | 4.501 |
+| large | 3 / 8 / 80 / 240 | 120 / 3.000 | 9.001 |
+
+Đổi size trong `.env`, hoặc `$env:DEMO_SIZE='small'` trước lệnh demo. `npm.cmd run demo -- --prepare` chỉ chuẩn bị dữ liệu, không mở server. `db:seed` bổ sung vào DB đang cấu hình, không giảm/xóa dữ liệu khi đổi xuống size nhỏ, không cân lại đăng ký đã có hay danh sách khảo sát đã chốt; từ chối nếu học kỳ demo đã khóa. Dữ liệu đợt đang mở giữ mốc đã tạo khi seed lại, nên chạy demo mới khi cần mốc thời gian mới.
 
 ## Tạo ADMIN và dùng giao diện quản trị
 
@@ -105,6 +129,8 @@ npm.cmd run db:validate
 npm.cmd run test:integration
 npm.cmd run test:auth
 npm.cmd run test:week4
+npm.cmd run test:week5
+npm.cmd run test:demo
 npm.cmd run check
 npm.cmd run build
 npm.cmd run progress
@@ -112,13 +138,15 @@ npm.cmd run progress
 
 | Lệnh               | Phạm vi                                                                                                         |
 | ------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `test:integration` | MySQL thật đúng 16 bảng; 10 test ràng buộc nền dùng fixture transaction rồi rollback                            |
+| `test:integration` | MySQL thật đúng 31 bảng; 10 test ràng buộc nền dùng fixture transaction rồi rollback                            |
 | `test:auth`        | HTTP/MySQL/Mailpit với fixture giả riêng, server thử cổng 3002; cleanup đúng fixture, không dùng tài khoản demo |
 | `check`            | Validate/generate runtime+blueprint, ERD đồng bộ DMMF, ESLint, TypeScript, Vitest                               |
 | `build`            | Next.js production build, không thay thử giao diện/HTTP                                                         |
 | `progress`         | Tính FR từ checkbox có trọng số, không ước lượng khối lượng thiết kế                                            |
 | `auth:key`         | Sinh khóa JWT riêng lần đầu, giữ khóa đã có                                                                     |
-| `db:seed`          | Tạo demo auth còn thiếu, chặn production, không reset tài khoản đã thử                                          |
+| `db:seed`          | Bổ sung dữ liệu giả và tài khoản còn thiếu, chặn production, không reset tài khoản đã thử                      |
+| `test:week5` | HTTP/MySQL/Mailpit cổng 3004, output `.next-week5`, dùng lại DB thử có marker Tuần 4; chạy tuần tự các suite |
+| `test:demo` | Tạo DB demo mới, kiểm seed/size/idempotent, dữ liệu khảo sát và phép tính thật; giữ DB sau kiểm |
 
 `db:seed`, `test:auth` và `build` tự chạy `db:generate` qua npm prehook, nên máy clone mới không cần có Prisma client đã sinh sẵn trong Git. CI ban đầu ở `ed7ed60` từng lỗi vì chạy test auth trước generate; mã `43b937e` đã sửa thứ tự này.
 
@@ -144,6 +172,8 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 
 ## Tài liệu
 
+- Tuần 5: [nghiệm thu](docs/NGHIEM_THU_TUAN_05.md), [hướng dẫn import](docs/HUONG_DAN_IMPORT.md), [ADR-006](docs/decisions/ADR-006-danh-muc-va-nhap-lieu.md), [giải thích](docs/GIAI_THICH/tuan-05.md), [báo cáo](docs/bao-cao-tien-do/tuan-05.md), [QA giao diện](docs/QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](docs/SO_DO_TUAN_05.md).
+
 - [Sơ đồ ERD Tuần 4 đã render và hash](docs/SO_DO_TUAN_04.md).
 
 - Tuần 4: [nghiệm thu](docs/NGHIEM_THU_TUAN_04.md), [ma trận chạy thật](docs/PHAN_QUYEN_TUAN_04.md), [bảo mật](docs/BAO_MAT_TUAN_04.md), [ADR-005](docs/decisions/ADR-005-totp-va-phan-quyen.md), [giải thích](docs/GIAI_THICH/tuan-04.md), [báo cáo](docs/bao-cao-tien-do/tuan-04.md), [QA giao diện](docs/QA_GIAO_DIEN_TUAN_04.md).
@@ -154,4 +184,4 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 - [ERD hiện tại](docs/ERD.md), [kiến trúc](docs/KIEN_TRUC.md), [thiết kế ẩn danh](docs/THIET_KE_AN_DANH.md), [gallery sơ đồ Tuần 2](docs/SO_DO_DA_RENDER.md).
 - [Báo cáo Tuần 1](docs/bao-cao-tien-do/tuan-01.md), [Tuần 2](docs/bao-cao-tien-do/tuan-02.md) giữ nguyên bằng chứng tại thời điểm thực hiện.
 
-AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Sau nghiệm thu dừng đúng phạm vi Tuần 4; Tuần 5 cần lệnh tiếp tục.
+AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Sau nghiệm thu dừng đúng phạm vi Tuần 5; Tuần 6 cần lệnh tiếp tục. Ngoại lệ làm trước chỉ dành cho dữ liệu seed khảo sát/phản hồi đã được người dùng đồng ý.

@@ -24,7 +24,9 @@
     "design:diagrams": "node scripts/export-erd.mjs",
     "design:check": "node scripts/export-erd.mjs --check",
     "auth:key": "node scripts/generate-auth-key.mjs",
-    "db:seed": "tsx scripts/seed-auth.ts",
+    "db:seed": "tsx scripts/seed-auth.ts && tsx scripts/seed-demo.ts",
+    "demo": "node scripts/demo.mjs",
+    "predemo": "npm run db:generate",
     "test:auth": "tsx scripts/verify-auth.ts",
     "predb:seed": "npm run db:generate",
     "pretest:auth": "npm run db:generate",
@@ -34,13 +36,18 @@
     "preadmin:create": "npm run db:generate",
     "preadmin:reset-2fa": "npm run db:generate",
     "test:week4": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-admin-console.ts && tsx scripts/verify-week4.ts",
-    "pretest:week4": "npm run db:generate"
+    "pretest:week4": "npm run db:generate",
+    "test:week5": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-week5.ts",
+    "pretest:week5": "npm run db:generate",
+    "test:demo": "node scripts/test-demo.mjs",
+    "pretest:demo": "npm run db:generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "7.10.1",
     "@prisma/client": "7.10.1",
     "bcryptjs": "3.0.3",
     "dotenv": "18.0.5",
+    "exceljs": "4.4.0",
     "jose": "6.2.13",
     "next": "16.3.8",
     "nodemailer": "10.1.7",
@@ -51,6 +58,7 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "10.6.0",
     "@prisma/generator-helper": "7.10.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.1",
@@ -68,6 +76,11 @@
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.0.3"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
   },
   "engines": {
     "node": ">=24.0.0"

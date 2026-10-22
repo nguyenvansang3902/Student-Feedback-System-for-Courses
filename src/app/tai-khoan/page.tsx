@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/auth/logout-button";
 import { getPageActor } from "@/server/auth/http";
 import { authDestination } from "@/components/auth/destination";
 import { authorizeAuthAction } from "@/server/policies/auth";
+import { can } from "@/server/policies/can";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -195,6 +196,14 @@ export default async function AccountPage() {
                 Không gian được cấp quyền
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
+                {can(actor, "catalog:list") && (
+                  <Link
+                    href="/danh-muc"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Danh mục và nhập dữ liệu <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 {actor.roles.map((role) => (
                   <Link
                     key={role}

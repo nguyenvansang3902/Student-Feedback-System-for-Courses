@@ -10,8 +10,9 @@
   <title id="title">ERD tổng quan: Khảo sát, giải trình và nhắc khảo sát</title>
   <desc id="description">
     14 model chính và 5 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
-    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Chi tiết
-    toàn bộ scalar nằm trong ERD.md.
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 5 có
+    15 bảng chỉ seed demo theo quyền người dùng, chưa có workflow nghiệp vụ. Chi
+    tiết toàn bộ scalar nằm trong ERD.md.
   </desc>
   <style>
     text {
@@ -74,7 +75,7 @@
     <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
     <text x="45" y="207" class="model">SurveyTemplate</text>
     <text x="45" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 9 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 9 scalar
     </text>
     <text x="45" y="277" class="field">PK (id)</text>
     <text x="45" y="300" class="field">UK1 (familyId, version)</text>
@@ -95,7 +96,7 @@
     <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
     <text x="579" y="207" class="model">CriterionGroup</text>
     <text x="579" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 5 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 5 scalar
     </text>
     <text x="579" y="277" class="field">PK (id)</text>
     <text x="579" y="300" class="field">UK1 (templateId, position)</text>
@@ -118,7 +119,7 @@
     <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="207" class="model">Question</text>
     <text x="1113" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 10 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
     </text>
     <text x="1113" y="277" class="field">PK (id)</text>
     <text x="1113" y="300" class="field">UK1 (groupId, position)</text>
@@ -141,7 +142,7 @@
     <rect x="27" y="390" width="510" height="20" fill="#1e40af" />
     <text x="45" y="393" class="model">QuestionOption</text>
     <text x="45" y="434" class="meta">
-      Thiết kế tương lai; chưa migration · 4 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 4 scalar
     </text>
     <text x="45" y="463" class="field">PK (id)</text>
     <text x="45" y="486" class="field">UK1 (questionId, position)</text>
@@ -162,7 +163,7 @@
     <rect x="561" y="390" width="510" height="20" fill="#1e40af" />
     <text x="579" y="393" class="model">SurveyCampaign</text>
     <text x="579" y="434" class="meta">
-      Thiết kế tương lai; chưa migration · 19 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 19 scalar
     </text>
     <text x="579" y="463" class="field">PK (id)</text>
     <text x="579" y="486" class="field">FK (semesterId) → Semester (id)</text>
@@ -191,7 +192,7 @@
     <rect x="1095" y="390" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="393" class="model">CampaignSection</text>
     <text x="1113" y="434" class="meta">
-      Thiết kế tương lai; chưa migration · 2 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 2 scalar
     </text>
     <text x="1113" y="463" class="field">PK (campaignId, sectionId)</text>
     <text x="1113" y="486" class="field">
@@ -216,7 +217,7 @@
     <rect x="27" y="668" width="510" height="20" fill="#1e40af" />
     <text x="45" y="671" class="model">CampaignHistory</text>
     <text x="45" y="712" class="meta">
-      Thiết kế tương lai; chưa migration · 7 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 7 scalar
     </text>
     <text x="45" y="741" class="field">PK (id)</text>
     <text x="45" y="764" class="field">
@@ -239,7 +240,7 @@
     <rect x="561" y="668" width="510" height="20" fill="#1e40af" />
     <text x="579" y="671" class="model">SurveyTask</text>
     <text x="579" y="712" class="meta">
-      Thiết kế tương lai; chưa migration · 6 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 6 scalar
     </text>
     <text x="579" y="741" class="field">PK (id)</text>
     <text x="579" y="764" class="field">
@@ -266,7 +267,7 @@
     <rect x="1095" y="668" width="510" height="20" fill="#0f766e" />
     <text x="1113" y="671" class="model">SurveyResponse</text>
     <text x="1113" y="712" class="meta">
-      Thiết kế tương lai; chưa migration · 4 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 4 scalar
     </text>
     <text x="1113" y="741" class="field">PK (id)</text>
     <text x="1113" y="764" class="field">
@@ -289,7 +290,7 @@
     <rect x="27" y="900" width="510" height="20" fill="#0f766e" />
     <text x="45" y="903" class="model">SurveyAnswer</text>
     <text x="45" y="944" class="meta">
-      Thiết kế tương lai; chưa migration · 10 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
     </text>
     <text x="45" y="973" class="field">PK (id)</text>
     <text x="45" y="996" class="field">UK1 (responseId, questionId)</text>
@@ -316,7 +317,7 @@
     <rect x="561" y="900" width="510" height="20" fill="#1e40af" />
     <text x="579" y="903" class="model">AggregateResult</text>
     <text x="579" y="944" class="meta">
-      Thiết kế tương lai; chưa migration · 10 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
     </text>
     <text x="579" y="973" class="field">PK (id)</text>
     <text x="579" y="996" class="field">UK1 (campaignId, sectionId)</text>
@@ -507,8 +508,8 @@
     <text x="45" y="1669" class="field">UK2 (email)</text>
   </g>
   <text x="27" y="1728" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã
-    migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 31 model runtime
+    Tuần 5 (15 bảng chỉ seed demo) · Cập nhật thực tế 22/10/2026
   </text>
   <text x="27" y="1753" class="foot">
     SHA-256 DMMF:

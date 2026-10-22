@@ -1,8 +1,8 @@
-# Bảng truy vết yêu cầu — cập nhật Tuần 4
+# Bảng truy vết yêu cầu — cập nhật Tuần 5
 
 Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **21–27/10/2026**. Tuần 3 làm **21–22/10**, sau mốc 14–20/10; bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
 
-**Cách đọc:** FR-01–08/10–12/102 đã nghiệm thu trong phạm vi mã hiện có; các chức năng khác còn thiết kế. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.
+**Cách đọc:** Tuần5 làm ngày22/10 (mốc giả định28/10–03/11). FR-01–08/10–12/20–22/101/102 đã nghiệm thu trong phạm vi mã hiện có; các chức năng khác còn thiết kế. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.
 
 ## 1. Bằng chứng lịch sử Tuần 2 tại thời điểm nghiệm thu
 
@@ -38,6 +38,15 @@ Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **2
 | UI/sơ đồ | [QA](QA_GIAO_DIEN_TUAN_04.md), [ERD](SO_DO_TUAN_04.md) | UI 13nhóm/6 viewport,6PNG; ERD khối 4 render/hash mới,3 khối giữ hash lịch sử |
 | CI/build | [CI 39733168348](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39733168348) của mã `578fd96622b341b0d94228de83c4c8994449e03b` đã qua check và smoke | Full121/lint/typecheck/ERD/build qua; audit production0/full5high dev |
 
+## 1.3. Bằng chứng Tuần5
+
+| Đầu ra | Bằng chứng | Kết quả và giới hạn |
+| --- | --- | --- |
+| Danh mục/import | [nghiệm thu](NGHIEM_THU_TUAN_05.md), [hướng dẫn](HUONG_DAN_IMPORT.md) | HTTP22/22 và SQL10/10; previewreadonly, ghi nguyên tử, kiểm lại quyền/kỳ khóa, thư Mailpit |
+| Seed | demo services, verify-demo.ts | MySQL9/9; medium1.500SV/120lớp/78phiếu/234đáp án/6phản hồi, giữ seed cũ và chặn production |
+| Quyền làm trước | Lệnh người dùng ngày22/10/2026 | Chỉ dữ liệu seed khảo sát/phản hồi;31runtime/39blueprint không có nghĩa hoàn thành các FR tuần6–11 |
+| Giao diện/sơ đồ | [QA](QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](SO_DO_TUAN_05.md) | 13nhóm/10viewport,10PNG đã xem;4thânMermaid khớp,4SVG nhãn31 đã raster/xem |
+
 ## 2. FR đã nghiệm thu
 
 | Mã     | Tuần | Màn hình / luồng thật          | Service / policy hiện có | Test                   | Bằng chứng                                                                                                                                                                                                                               | Trạng thái                                     |
@@ -54,6 +63,10 @@ Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **2
 | FR-10 | 4 | Quản trị tài khoản/vai trò/phạm vi | services/users.ts, access.ts, can.ts | HTTP 28, CLI 5, RBAC 29, UI | Tạo pending/khóa-mở/gán phạm vi, một ADMIN còn hoạt động khi khóa chéo; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
 | FR-11 | 4 | Workspace theo vai trò và lớp theo scope | policies/can.ts, access.ts, workspace.ts | Matrix 13/service 16, HTTP 28, UI role guard | Deny default, list/count/detail và các ID route trong phạm vi đã có; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
 | FR-12 | 4 | Xem/lọc AuditLog | services/audit.ts, can.ts | RBAC unit, HTTP 28, UI desktop/mobile | Phân trang/lọc/UTC+7 và allowlist summary; không bí mật; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
+| FR-20 | 5 | /danh-muc/hoc-ky,khoa,bo-mon,mon-hoc,lop-hoc-phan,phan-cong | services/catalog.ts, can.ts, access.ts | catalog-services + catalog-csrf; W5-HTTP01–06/17–20, UI | CRUD/khóa sổ/IDOR/mutex/freshguard; [nghiệm thu](NGHIEM_THU_TUAN_05.md) | Hoàn thành Tuần5 |
+| FR-21 | 5 | /danh-muc/nhap-lieu → chạy thử → xác nhận; Mailpit | services/imports.ts, import-file.ts, catalog mutex | import-file/import-services; W5-HTTP08–19/21–22, UI CSV | 4loại CSV/XLSX, không ghi ở preview, lỗi dòng, token ràng buộc tệp/phiên, account pending+thư; [hướng dẫn](HUONG_DAN_IMPORT.md) | Hoàn thành Tuần5 |
+| FR-22 | 5 | Tải mẫu CSV/XLSX cho4loại | imports.ts::downloadImportTemplate, import-file.ts | parser/template tests; W5-HTTP07; UI tải8tệp | Mẫu đúng header +1dòng giả phải thay, Origin/CSRF áp dụng khi upload; [QA](QA_GIAO_DIEN_TUAN_05.md) | Hoàn thành Tuần5 |
+| FR-101 | 5 | npm run db:seed / npm run demo | demo-seed.ts, demo-survey-seed.ts, console policy | demo-survey-seed tests + scripts/verify-demo.ts9nhóm MySQL | 3size,2đợt/phiếu/kết quả/6phản hồi, dữ liệu tương lai được user cho phép; không tính các FR nghiệp vụ chưa làm | Hoàn thành Tuần5 |
 
 ## 3. FR đang triển khai hoặc còn ở mức thiết kế
 
@@ -62,15 +75,12 @@ FR đã nghiệm thu được ghi ở mục2. Các dòng dưới chưa hoàn th�
 | Mã FR  | Tuần dự kiến | Wireframe / luồng thiết kế                                                     | Miền service/policy dự kiến                                  | Test nghiệm thu FR                                                                                 |
 | ------ | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | FR-09  | P2, chưa xếp | [WF-01](wireframes/tuan-02.html#wf-01)                                         | phiên/thiết bị; chưa triển khai                              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-20  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-21  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-22  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-30  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-31  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-32  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-33  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-34  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-35  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-30  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-31  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-32  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-33  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-34  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-35  | 6            | [WF-07](wireframes/tuan-02.html#wf-07)                                         | templates; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-40  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-41  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns; chỉ blueprint                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-42  | 7            | [WF-09](wireframes/tuan-02.html#wf-09)                                         | campaigns / phê duyệt; chỉ blueprint                         | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -107,7 +117,6 @@ FR đã nghiệm thu được ghi ở mục2. Các dòng dưới chưa hoàn th�
 | FR-93  | 12           | [WF-16](wireframes/tuan-02.html#wf-16)                                         | reports / export; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-94  | 12           | [WF-16](wireframes/tuan-02.html#wf-16)                                         | reports / export; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-100 | 7            | [WF-17](wireframes/tuan-02.html#wf-17)                                         | settings; chỉ blueprint                                      | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-101 | 5 | Seed auth giả tối thiểu có ở Tuần 3 | `scripts/seed-auth.ts`; chưa seed danh mục/khảo sát/phản hồi đầy đủ | Chưa hoàn thành FR-101; nghiệm thu seed toàn bộ thuộc Tuần 5 |
 | FR-103 | 14           | CLI sao lưu/phục hồi; chưa có script                                           | backup / restore; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-110 | P2, chưa xếp | Chưa có màn riêng; AI tắt mặc định                                             | mở rộng AI, cần người dùng đồng ý; chưa triển khai           | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-111 | P2, chưa xếp | [WF-08](wireframes/tuan-02.html#wf-08)                                         | API trạng thái hoàn thành; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |

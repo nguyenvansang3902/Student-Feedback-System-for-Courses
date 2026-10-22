@@ -10,6 +10,8 @@ export default defineConfig([
   globalIgnores([
     ".next/**",
     ".next-auth/**",
+    ".next-demo/**",
+    ".next-week5/**",
     "out/**",
     "build/**",
     "src/generated/**",

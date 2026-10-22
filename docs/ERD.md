@@ -1,14 +1,15 @@
-# ERD toàn hệ thống — cập nhật Tuần 4
+# ERD toàn hệ thống — cập nhật Tuần 5
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 4 ngày **22/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. ERD phân biệt thiết kế dữ liệu với schema đã migrate; có bảng không đồng nghĩa toàn bộ chức năng nghiệp vụ đã hoàn thành.
+Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 5 ngày **22/10/2026**. Kế hoạch Tuần 5 giả định 28/10–03/11/2026; làm sớm theo lệnh người dùng, không ghi lùi ngày. Ngày 22/10 người dùng cho phép bổ sung dữ liệu seed khảo sát/phản hồi sớm: 15 bảng mới chỉ phục vụ seed, chưa có workflow/UI/API nghiệp vụ khảo sát/phản hồi. ERD phân biệt thiết kế dữ liệu với chức năng đã chạy.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**16 model đã migrate đến Tuần 4**). SHA-256 DMMF thiết kế: `41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**31 model Tuần 5**, gồm 15 bảng chỉ seed demo được người dùng cho phép). SHA-256 DMMF thiết kế: `41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b`.
 
 ## Cách đọc và tái tạo
 
-- Tuần 2 đã migrate chín model nền người dùng/danh mục. Đến Tuần 3, runtime thêm `UserSession`, `AuthToken`, `RateLimitBucket`, `AuditLog`, Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting và trạng thái MFA của phiên, tổng **16 model đã migrate đến Tuần 4**. **23 model còn lại** là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ. Bản báo cáo nghiệm thu Tuần 2 giữ kết quả chín bảng tại thời điểm đó.
+- Tuần 2 có chín model nền; Tuần 3 thêm UserSession/AuthToken/RateLimitBucket/AuditLog; Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting, tổng 16. Tuần 5 thêm **15 model chỉ seed demo** theo quyền người dùng ngày 22/10/2026, tổng **31 runtime / 39 thiết kế**. **8 model còn lại** chưa migrate. Bảng seed không đồng nghĩa hoàn thành FR nghiệp vụ các tuần sau; báo cáo/gallery Tuần 2–4 giữ bằng chứng tại thời điểm đó.
+- 15 bảng seed mới: SurveyTemplate, CriterionGroup, Question, QuestionOption, SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, SurveyResponse, SurveyAnswer, AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Chỉ tạo dữ liệu giả bằng CLI, chưa có API/UI xử lý chúng. Blueprint 39 model và thân bốn Mermaid không đổi khi chỉ vật chất hóa một phần thiết kế vào runtime.
 - Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.

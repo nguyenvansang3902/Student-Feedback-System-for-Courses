@@ -10,8 +10,9 @@
   <title id="title">ERD tổng quan: Phản hồi liên tục</title>
   <desc id="description">
     7 model chính và 2 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
-    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Chi tiết
-    toàn bộ scalar nằm trong ERD.md.
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 5 có
+    15 bảng chỉ seed demo theo quyền người dùng, chưa có workflow nghiệp vụ. Chi
+    tiết toàn bộ scalar nằm trong ERD.md.
   </desc>
   <style>
     text {
@@ -72,7 +73,7 @@
     <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
     <text x="45" y="207" class="model">Feedback</text>
     <text x="45" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 21 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 21 scalar
     </text>
     <text x="45" y="277" class="field">PK (id)</text>
     <text x="45" y="300" class="field">
@@ -96,7 +97,7 @@
     <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
     <text x="579" y="207" class="model">FeedbackRecipient</text>
     <text x="579" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 2 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 2 scalar
     </text>
     <text x="579" y="277" class="field">PK (feedbackId, userId)</text>
     <text x="579" y="300" class="field">FK (feedbackId) → Feedback (id)</text>
@@ -117,7 +118,7 @@
     <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="207" class="model">FeedbackMessage</text>
     <text x="1113" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 7 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 7 scalar
     </text>
     <text x="1113" y="277" class="field">PK (id)</text>
     <text x="1113" y="300" class="field">FK (feedbackId) → Feedback (id)</text>
@@ -138,7 +139,7 @@
     <rect x="27" y="413" width="510" height="20" fill="#1e40af" />
     <text x="45" y="416" class="model">FeedbackHistory</text>
     <text x="45" y="457" class="meta">
-      Thiết kế tương lai; chưa migration · 10 scalar
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
     </text>
     <text x="45" y="486" class="field">PK (id)</text>
     <text x="45" y="509" class="field">FK (feedbackId) → Feedback (id)</text>
@@ -250,8 +251,8 @@
     <text x="1113" y="718" class="field">UK2 (email)</text>
   </g>
   <text x="27" y="800" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã
-    migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 31 model runtime
+    Tuần 5 (15 bảng chỉ seed demo) · Cập nhật thực tế 22/10/2026
   </text>
   <text x="27" y="825" class="foot">
     SHA-256 DMMF:

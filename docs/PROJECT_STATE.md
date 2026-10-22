@@ -1,37 +1,38 @@
 # Trạng thái dự án
 
-- Đề tài: website quản lý khảo sát và phản hồi sinh viên về môn học; kế hoạch 15 tuần từ 30/09/2026.
-- Khởi động 02/10; Tuần 2 làm 21/10, Tuần 3 làm 21–22/10. Giữ ngày thực hiện thật.
-- Tuần hiện tại: Tuần 4 — phân quyền và TOTP cho ADMIN, nghiệm thu thực tế ngày 22/10/2026.
-- Mốc Tuần 4 giả định 21–27/10; nhóm đối chiếu lịch trường. Chưa triển khai Tuần 5.
+- Đề tài: website quản lý khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026.
+- Khởi động 02/10; Tuần 2 làm 21/10, Tuần 3 làm 21–22/10, Tuần 4 làm 22/10; không ghi lùi ngày.
+- Tuần hiện tại: Tuần 5 — danh mục và nhập liệu, thực hiện 22/10/2026 theo yêu cầu người dùng.
+- Mốc Tuần 5 giả định 28/10–03/11; làm sớm theo lệnh, nhóm đối chiếu lịch trường.
 
-## Đã nghiệm thu
+## Đã kiểm chứng cục bộ
 
-- Runtime 16/blueprint 39; migration 20261022004129_week4_rbac_mfa đã deploy, diff đồng bộ, giữ dữ liệu cũ.
-- can() từ chối mặc định, guard đọc DB, lọc list/count/detail theo gán vai trò/phạm vi; ADMIN không có quyền nghiệp vụ ngầm.
-- Quản trị tài khoản chờ kích hoạt, khóa/mở, gán phạm vi, chính sách MFA và AuditLog có lọc/phân trang.
-- TOTP 6 số/30 giây/±1 bước, chống dùng lại; AES-256-GCM, 10 mã khôi phục băm dùng một lần.
-- Phiên chờ tối đa 5 phút, không refresh; ADMIN cần FULL+mfa, thao tác ghi kiểm Origin/CSRF và TOTP mới khi nhạy cảm.
-- admin:create/admin:reset-2fa có audit, không nhận mật khẩu qua argv; CLI thật 5/5 qua.
-- Full check 121/121 trong 13 file, lint/typecheck/schema/ERD qua; SQL 10/10 và build exit0.
-- HTTP hồi quy Tuần 3 24/24, HTTP/MySQL Tuần 4 28/28 qua, gồm OTP/recovery đồng thời và bảo vệ ADMIN cuối.
-- Lỗi snapshot khi khóa chéo đã sửa bằng locking INSERT trước mọi SELECT thường; kiểm MySQL thật chỉ một thắng.
-- QA 13 nhóm/6 lượt desktop-mobile qua; sáu PNG đã xem, không chứa bí mật, fixture dọn và seed giữ nguyên.
-- ERD khối 4 đổi theo trạng thái phiên: render/xem ảnh và hash mới qua; 3 khối và gallery lịch sử giữ nguyên.
-- FR-07/08/10/11/12 và các FR cũ được tick: 34/163 = 20,9%; M1 22/23 = 95,7%, M2 9/9 = 100%.
-- Mã 578fd96 có CI 39733168348 check+smoke xanh; CI commit tài liệu cuối đối chiếu đúng SHA trong Actions của main.
+- CRUD 6 danh mục, khóa sổ một chiều có lý do; dữ liệu liên quan học kỳ khóa chỉ đọc, kể cả sửa cha gián tiếp.
+- ĐBCL GLOBAL vận hành; ADMIN không có quyền nghiệp vụ ngầm. Mỗi service kiểm policy và đọc lại quyền trong DB.
+- Origin + CSRF riêng catalog; mutex đầu transaction dùng chung quản trị/import/khóa học kỳ, tránh snapshot cũ.
+- CSV/XLSX: chạy thử không ghi DB, lỗi dòng/cột; xác nhận ký gắn người/phiên/tệp/loại/hạn15phút; commit nguyên tử.
+- 8 mẫu có dòng ví dụ; 2MiB/tệp, 500 tài khoản hoặc 2.000 dòng danh mục; từ chối công thức/ZIP bất thường.
+- Tài khoản nhập PENDING/null password/quyền SV hoặc GV cố định; thư kích hoạt sau commit, báo sent/failed.
+- Seed small/medium/large, giữ tài khoản đã đổi; demo tạo DB mới riêng, không DROP/reset main/volume.
+- Người dùng cho phép làm trước dữ liệu seed khảo sát/phản hồi ngày22/10; chưa cho làm trước UI/quy trình nghiệp vụ.
+- Runtime31/blueprint39: thêm15bảng phục vụ seed qua migration20261022072500_week5_demo_data; deploy/diff đồng bộ.
+- Medium:3khoa/8bộmôn/40môn/120lớp/60GV/1.500SV/4.501đăng ký; 2đợt/78phiếu/234đáp án/6phản hồi.
+- Seed MySQL9/9 qua: math khớp, UUID ẩn danh, giữ cohort/phiếu/kết quả khi seed lại/đổi size; production bị chặn.
+- HTTP Tuần5 22/22, SQL10/10; hồi quy Tuần4 HTTP28/28+CLI5/5, build exit0; full check cuối đối chiếu báo cáo.
+- UI13nhóm/10viewport,10PNG đã xem; 4 thân Mermaid khớp lịch sử, 4SVG nhãn31 đã raster/xem ảnh.
+- FR20/21/22/101 đã kiểm cục bộ; tiến độ46/163=28,2%, M3=9/9, M11=6/11. CI cuối đang chờ xác nhận.
 
-## Giới hạn và quyết định
+## Giới hạn
 
-- Chưa CRUD/import danh mục hoặc nghiệp vụ khảo sát/phản hồi; ẩn danh mới 5.6a. Health chỉ kiểm app.
-- Một version khóa MFA, chưa chuyển ciphertext tự động; scope options tối đa 200 mỗi loại, có hasMore.
-- AUTH_TRUST_PROXY=false dùng bucket IP chung; Mailpit chưa SMTP Internet/outbox.
-- Audit production 0; full audit còn 5 high ở dev chain braces→micromatch→fast-glob→ESLint.
-- Giữ nguyên 4 file nguồn, không quy trình hiện tại ở trường theo lệnh đã có; chỉ dữ liệu giả, không bí mật trong Git/ảnh/log.
-- Không reset volume/DB, force push, deploy công khai hoặc gán đóng góp thay sinh viên.
+- Chưa có UI/API làm khảo sát, mẫu phiếu, đợt, xử lý phản hồi/kết quả. Ẩn danh mới chứng minh cấu trúc và seed.
+- SMTP sau commit không phải outbox; nếu SMTP/DB cùng lỗi có thể chưa thu hồi token thư lỗi, giữ TTL24giờ.
+- Khôi phục DB/SMTP rồi yêu cầu lại /kich-hoat; không nhập lại file đã tạo tài khoản thành công.
+- AUTH_TRUST_PROXY=false dùng bucket IP chung; một version khóa MFA; chưa dịch vụ SMTP Internet.
+- Audit production0; full5high dev ESLint chain. ExcelJS dùng uuid11.1.1 override đã kiểm tương thích.
+- Giữ nguyên4file nguồn; chỉ dữ liệu giả, không bí mật trong Git/ảnh/log, không gán đóng góp sinh viên.
 
-## Cách chạy và tiếp theo
+## Chạy và tiếp theo
 
-- Theo README: auth:key, Compose, db:prepare/db:migrate/db:seed, npm run dev; mở http://localhost:3000.
-- Tạo ADMIN riêng bằng npm run admin:create; đăng nhập/đăng ký TOTP rồi mở /quan-tri. Giữ khóa và mã khôi phục riêng.
-- Nhóm đọc, thử và viết lại nháp; điền đóng góp thật. Dừng đúng Tuần 4, chỉ làm Tuần 5 khi được yêu cầu.
+- README: Compose, auth:key, db:prepare, db:deploy, db:seed, dev; mở http://localhost:3000.
+- Đăng nhập DBCL2026001 để mở /danh-muc; demo riêng: npm run demo, http://127.0.0.1:3001.
+- Nhóm kiểm tra theo NGHIEM_THU_TUAN_05, tự viết lại nháp và điền đóng góp thật. Dừng đúng Tuần5.

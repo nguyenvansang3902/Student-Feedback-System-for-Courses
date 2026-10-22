@@ -16,6 +16,7 @@ const safeKeys = new Set([
   "purpose", "mfa", "success", "count", "revokedSessions", "requiredRoles", "enabled",
   "method", "mfaRequired", "usedRecoveryCode", "recoveryCodesGenerated",
   "reasonProvided", "reasonLength", "source", "recoveryCodeCount",
+  "kind", "size", "console", "futureModules", "created", "newUsers",
 ]);
 const safeText = new Set([
   "ACTIVE", "DISABLED", "PENDING_ACTIVATION", "GLOBAL", "FACULTY", "DEPARTMENT",
@@ -24,6 +25,22 @@ const safeText = new Set([
   "totp", "recovery", "password", "server-console",
 ]);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const fieldText = new Map<string, ReadonlySet<string>>([
+  ["kind", new Set(["students", "teachers", "sections", "enrollments"])],
+  ["size", new Set(["small", "medium", "large"])],
+  ["purpose", new Set(["ACTIVATION", "PASSWORD_RESET", "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY"])],
+]);
+const fieldBoolean = new Set(["console", "futureModules", "reasonProvided"]);
+const fieldNumber = new Set(["created", "newUsers", "reasonLength"]);
+
+function redactField(key: string, value: unknown, depth: number): Prisma.InputJsonValue | null {
+  if (depth > 4) return null;
+  const allowed = fieldText.get(key);
+  if (allowed) return typeof value === "string" && allowed.has(value) ? value : null;
+  if (fieldBoolean.has(key)) return typeof value === "boolean" ? value : null;
+  if (fieldNumber.has(key)) return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null;
+  return redactAuditSummary(value, depth);
+}
 
 /** Lớp bảo vệ đầu ra thứ hai: không phát lại payload/log cũ có trường ngoài allowlist. */
 export function redactAuditSummary(value: unknown, depth = 0): Prisma.InputJsonValue | null {
@@ -35,7 +52,7 @@ export function redactAuditSummary(value: unknown, depth = 0): Prisma.InputJsonV
   if (typeof value !== "object") return null;
   const result: Record<string, Prisma.InputJsonValue | null> = {};
   for (const [key, entry] of Object.entries(value)) {
-    if (safeKeys.has(key)) result[key] = redactAuditSummary(entry, depth + 1);
+    if (safeKeys.has(key)) result[key] = redactField(key, entry, depth + 1);
   }
   return result;
 }

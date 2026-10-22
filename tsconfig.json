@@ -29,7 +29,11 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     ".next-auth/types/**/*.ts",
-    ".next-auth/dev/types/**/*.ts"
+    ".next-auth/dev/types/**/*.ts",
+    ".next-demo/types/**/*.ts",
+    ".next-demo/dev/types/**/*.ts",
+    ".next-week5/types/**/*.ts",
+    ".next-week5/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next-auth"]
+  "exclude": ["node_modules", ".next-auth", ".next-demo", ".next-week5"]
 }

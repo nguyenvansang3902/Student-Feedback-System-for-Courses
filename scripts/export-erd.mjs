@@ -38,6 +38,27 @@ const expectedRuntimeNames = new Set([
   "TotpCredential",
   "TotpRecoveryCode",
   "SystemSetting",
+  "SurveyTemplate",
+  "CriterionGroup",
+  "Question",
+  "QuestionOption",
+  "SurveyCampaign",
+  "CampaignSection",
+  "CampaignHistory",
+  "SurveyTask",
+  "SurveyResponse",
+  "SurveyAnswer",
+  "AggregateResult",
+  "Feedback",
+  "FeedbackRecipient",
+  "FeedbackMessage",
+  "FeedbackHistory",
+]);
+const seedOnlyNames = new Set([
+  "SurveyTemplate", "CriterionGroup", "Question", "QuestionOption",
+  "SurveyCampaign", "CampaignSection", "CampaignHistory", "SurveyTask",
+  "SurveyResponse", "SurveyAnswer", "AggregateResult", "Feedback",
+  "FeedbackRecipient", "FeedbackMessage", "FeedbackHistory",
 ]);
 const fingerprint = createHash("sha256").update(designText).digest("hex");
 
@@ -109,13 +130,13 @@ const groups = [
 const primaryNames = groups.flatMap((group) => group.names);
 if (
   design.models.length !== 39 ||
-  runtime.models.length !== 16 ||
+  runtime.models.length !== 31 ||
   [...expectedRuntimeNames].some((name) => !runtimeNames.has(name)) ||
   new Set(primaryNames).size !== 39 ||
   primaryNames.some((name) => !byName.has(name))
 ) {
   throw new Error(
-    "Phân nhóm ERD không khớp DMMF: cần 39 model thiết kế, đúng 16 model đã migrate đến Tuần 4 và mỗi model có đúng một nhóm chính. Cập nhật nhóm có chủ đích khi schema thay đổi.",
+    "Phân nhóm ERD không khớp DMMF: cần 39 model thiết kế, đúng 31 model Tuần 5 gồm 15 bảng chỉ phục vụ seed đã được người dùng cho phép, và mỗi model có đúng một nhóm chính. Cập nhật nhóm có chủ đích khi schema thay đổi.",
   );
 }
 if (groups[0].names.some((name) => !runtimeNames.has(name))) {
@@ -317,7 +338,9 @@ function overviewSvg(group) {
           ? "#64748b"
           : "#1e40af";
       const migrationLabel = runtimeNames.has(model.name)
-        ? "Đã migrate đến Tuần 4"
+        ? seedOnlyNames.has(model.name)
+          ? "Tuần 5: chỉ seed dữ liệu demo"
+          : "Đã migrate đến Tuần 4"
         : "Thiết kế tương lai; chưa migration";
       const cardMeta = `${context ? "Ngữ cảnh lặp · " : ""}${migrationLabel} · ${scalarFields(model).length} scalar`;
       shapes.push(
@@ -327,7 +350,7 @@ function overviewSvg(group) {
     y += rowHeight + 25;
   }
   const height = y + 81;
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">ERD tổng quan: ${escapeXml(group.title)}</title><desc id="description">${group.names.length} model chính và ${contexts.length} model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Chi tiết toàn bộ scalar nằm trong ERD.md.</desc><style>text{font-family:'Segoe UI',Arial,sans-serif;fill:#0f172a}.heading{font-size:29px;font-weight:700}.sub{font-size:17px;fill:#475569}.model{font-size:22px;font-weight:700;fill:#fff}.meta{font-size:15px;fill:#475569}.field{font-size:15px;font-family:Consolas,'Courier New',monospace}.foot{font-size:14px;fill:#475569}</style><rect width="${width}" height="${height}" fill="#f8fafc"/><text x="27" y="48" class="heading">${escapeXml(group.title)}</text><text x="27" y="82" class="sub">${group.names.length} model chính · ${contexts.length} model ngữ cảnh · PK / UK / FK lấy từ DMMF thật</text><text x="27" y="113" class="sub">SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ scalar và liên kết ở docs/ERD.md.</text><text x="27" y="143" class="sub">Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối Response/Answer.</text>${shapes.join("")}<text x="27" y="${y + 20}" class="foot">Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026</text><text x="27" y="${y + 45}" class="foot">SHA-256 DMMF: ${fingerprint}</text></svg>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">ERD tổng quan: ${escapeXml(group.title)}</title><desc id="description">${group.names.length} model chính và ${contexts.length} model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 5 có 15 bảng chỉ seed demo theo quyền người dùng, chưa có workflow nghiệp vụ. Chi tiết toàn bộ scalar nằm trong ERD.md.</desc><style>text{font-family:'Segoe UI',Arial,sans-serif;fill:#0f172a}.heading{font-size:29px;font-weight:700}.sub{font-size:17px;fill:#475569}.model{font-size:22px;font-weight:700;fill:#fff}.meta{font-size:15px;fill:#475569}.field{font-size:15px;font-family:Consolas,'Courier New',monospace}.foot{font-size:14px;fill:#475569}</style><rect width="${width}" height="${height}" fill="#f8fafc"/><text x="27" y="48" class="heading">${escapeXml(group.title)}</text><text x="27" y="82" class="sub">${group.names.length} model chính · ${contexts.length} model ngữ cảnh · PK / UK / FK lấy từ DMMF thật</text><text x="27" y="113" class="sub">SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ scalar và liên kết ở docs/ERD.md.</text><text x="27" y="143" class="sub">Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối Response/Answer.</text>${shapes.join("")}<text x="27" y="${y + 20}" class="foot">Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 31 model runtime Tuần 5 (15 bảng chỉ seed demo) · Cập nhật thực tế 22/10/2026</text><text x="27" y="${y + 45}" class="foot">SHA-256 DMMF: ${fingerprint}</text></svg>\n`;
 }
 
 function constraintTables(group) {
@@ -361,17 +384,18 @@ function constraintTables(group) {
 }
 
 const markdown = [
-  "# ERD toàn hệ thống — cập nhật Tuần 4",
+  "# ERD toàn hệ thống — cập nhật Tuần 5",
   "",
   "<!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->",
   "",
-  "Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 4 ngày **22/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. ERD phân biệt thiết kế dữ liệu với schema đã migrate; có bảng không đồng nghĩa toàn bộ chức năng nghiệp vụ đã hoàn thành.",
+  "Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 5 ngày **22/10/2026**. Kế hoạch Tuần 5 giả định 28/10–03/11/2026; làm sớm theo lệnh người dùng, không ghi lùi ngày. Ngày 22/10 người dùng cho phép bổ sung dữ liệu seed khảo sát/phản hồi sớm: 15 bảng mới chỉ phục vụ seed, chưa có workflow/UI/API nghiệp vụ khảo sát/phản hồi. ERD phân biệt thiết kế dữ liệu với chức năng đã chạy.",
   "",
-  `Nguồn: DMMF thật được Prisma sinh từ \`prisma/design.prisma\` (**${design.models.length} model thiết kế**), đối chiếu \`prisma/schema.prisma\` runtime (**${runtime.models.length} model đã migrate đến Tuần 4**). SHA-256 DMMF thiết kế: \`${fingerprint}\`.`,
+  `Nguồn: DMMF thật được Prisma sinh từ \`prisma/design.prisma\` (**${design.models.length} model thiết kế**), đối chiếu \`prisma/schema.prisma\` runtime (**${runtime.models.length} model Tuần 5**, gồm 15 bảng chỉ seed demo được người dùng cho phép). SHA-256 DMMF thiết kế: \`${fingerprint}\`.`,
   "",
   "## Cách đọc và tái tạo",
   "",
-  "- Tuần 2 đã migrate chín model nền người dùng/danh mục. Đến Tuần 3, runtime thêm `UserSession`, `AuthToken`, `RateLimitBucket`, `AuditLog`, Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting và trạng thái MFA của phiên, tổng **16 model đã migrate đến Tuần 4**. **23 model còn lại** là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ. Bản báo cáo nghiệm thu Tuần 2 giữ kết quả chín bảng tại thời điểm đó.",
+  "- Tuần 2 có chín model nền; Tuần 3 thêm UserSession/AuthToken/RateLimitBucket/AuditLog; Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting, tổng 16. Tuần 5 thêm **15 model chỉ seed demo** theo quyền người dùng ngày 22/10/2026, tổng **31 runtime / 39 thiết kế**. **8 model còn lại** chưa migrate. Bảng seed không đồng nghĩa hoàn thành FR nghiệp vụ các tuần sau; báo cáo/gallery Tuần 2–4 giữ bằng chứng tại thời điểm đó.",
+  "- 15 bảng seed mới: SurveyTemplate, CriterionGroup, Question, QuestionOption, SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, SurveyResponse, SurveyAnswer, AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Chỉ tạo dữ liệu giả bằng CLI, chưa có API/UI xử lý chúng. Blueprint 39 model và thân bốn Mermaid không đổi khi chỉ vật chất hóa một phần thiết kế vào runtime.",
   "- Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.",
   "- `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.",
   "- Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.",
@@ -460,5 +484,5 @@ if (outdated.length) {
   );
 }
 console.log(
-  `ERD ${check ? "khớp" : "đã xuất"}: ${design.models.length} model thiết kế / ${runtime.models.length} model đã migrate đến Tuần 4, 4 Mermaid, 4 SVG tổng quan; vùng ẩn danh chỉ nối Response/Answer.`,
+  `ERD ${check ? "khớp" : "đã xuất"}: ${design.models.length} model thiết kế / ${runtime.models.length} model runtime Tuần 5 (15 bảng chỉ seed được người dùng cho phép), 4 Mermaid, 4 SVG tổng quan; vùng ẩn danh chỉ nối Response/Answer.`,
 );

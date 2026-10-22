@@ -154,8 +154,8 @@ describe("BR-03 — Mục 5.6(a), DMMF của thiết kế đầy đủ", () => {
   });
 });
 
-describe("W4 — tính nhất quán schema và phạm vi migration", () => {
-  it("schema áp dụng gồm chín bảng nền và bảy bảng xác thực/quản trị đến Tuần 4", () => {
+describe("W5 — tính nhất quán schema và phạm vi migration được người dùng cho phép", () => {
+  it("schema gồm 16 bảng nền/xác thực và 15 bảng cho seed khảo sát/phản hồi", () => {
     expect(
       foundation.datamodel.models.map((model) => model.name).sort(),
     ).toEqual(
@@ -176,11 +176,26 @@ describe("W4 — tính nhất quán schema và phạm vi migration", () => {
         "TotpCredential",
         "TotpRecoveryCode",
         "SystemSetting",
+        "SurveyTemplate",
+        "CriterionGroup",
+        "Question",
+        "QuestionOption",
+        "SurveyCampaign",
+        "CampaignSection",
+        "CampaignHistory",
+        "SurveyTask",
+        "SurveyResponse",
+        "SurveyAnswer",
+        "AggregateResult",
+        "Feedback",
+        "FeedbackRecipient",
+        "FeedbackMessage",
+        "FeedbackHistory",
       ].sort(),
     );
   });
 
-  it("trường, quan hệ và khóa của 16 model runtime không lệch thiết kế đầy đủ", () => {
+  it("trường, quan hệ và khóa của 31 model runtime không lệch thiết kế đầy đủ", () => {
     for (const model of foundation.datamodel.models) {
       const expected = model.fields.filter((field) => field.kind !== "object");
       const actual = getModel(model.name).fields.filter(
@@ -203,6 +218,10 @@ describe("W4 — tính nhất quán schema và phạm vi migration", () => {
     }
     for (const value of foundation.datamodel.enums)
       expect(design.datamodel.enums).toContainEqual(value);
+  });
+
+  it("BR-03: vùng ẩn danh của runtime đã migrate cũng không có đường tới người dùng/task", () => {
+    expect(anonymityIssues(foundation.datamodel.models)).toEqual([]);
   });
 });
 

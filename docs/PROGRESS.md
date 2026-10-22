@@ -1,14 +1,12 @@
 # Tiến độ yêu cầu chức năng
 
-Nguồn: Mục 7 đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. FR chưa xếp tuần vẫn trong mẫu số.
+Nguồn: Mục7 đặc tả. P0=3, P1=2, P2=1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. Mẫu số gồm cả FR chưa xếp tuần.
 
-Kế hoạch bắt đầu 30/09/2026, khởi động 02/10. Tuần 2 làm 21/10, Tuần 3 làm 21–22/10 sau lịch dự kiến; Tuần 4 thực hiện 22/10 trong mốc giả định 21–27/10. Nhóm đối chiếu lịch trường, không ghi lùi ngày.
+Tuần5 thực hiện **22/10/2026**, sớm hơn mốc giả định **28/10–03/11**, theo yêu cầu người dùng. Thêm FR-20/21/22/101: **46/163=28,2%**, M3 **9/9=100%**, M11 **6/11=54,5%**. Tỷ lệ này tính chức năng đã chạy, không tính độ lớn thiết kế.
 
-**Đã nghiệm thu Tuần 4:** thêm FR-07/08/10/11/12, tổng **34/163 điểm = 20,9%**, bằng mục tiêu lũy kế phạm vi Tuần 4. **M1 22/23 = 95,7%; M2 9/9 = 100%**. Full check **121/121 test trong 13 file**, SQL MySQL **10/10**, CLI stdin **5/5**, HTTP hồi quy Tuần 3 **24/24**, HTTP/MySQL Tuần 4 **28/28** và build exit0. UI 13 nhóm/6 viewport và sơ đồ đã kiểm. Không cộng lượt targeted vào tổng lần nữa.
+Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngoại lệ chỉ tạo dữ liệu giả; các FR mẫu phiếu, khảo sát, nộp phiếu, kết quả, xử lý phản hồi vẫn chưa hoàn thành. Runtime31/blueprint39, không reset dữ liệu cũ. CI cuối đang chờ đối chiếu đúng SHA.
 
-[CI 39733168348](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39733168348) của mã `578fd96622b341b0d94228de83c4c8994449e03b` đã qua check và smoke. Runtime 16/blueprint 39; dữ liệu cũ được giữ. Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_04.md), [truy vết](TRUY_VET.md), [báo cáo](bao-cao-tien-do/tuan-04.md), [QA](QA_GIAO_DIEN_TUAN_04.md), [sơ đồ cập nhật](SO_DO_TUAN_04.md).
-
-Khảo sát/phản hồi, CRUD/import, ẩn danh 5.6b/c/d chưa triển khai. Quyền chỉ nghiệm thu cho chức năng hiện có; health vẫn database:not_checked. Báo cáo Tuần 1–3 giữ bằng chứng lịch sử.
+Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_05.md), [báo cáo](bao-cao-tien-do/tuan-05.md), [QA](QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](SO_DO_TUAN_05.md), [hướng dẫn import](HUONG_DAN_IMPORT.md), [truy vết](TRUY_VET.md). Lịch sử Tuần1–4 giữ kết quả tại thời điểm nghiệm thu; health vẫn database:not_checked.
 
 ## M1 Xác thực và phiên
 
@@ -30,9 +28,9 @@ Khảo sát/phản hồi, CRUD/import, ẩn danh 5.6b/c/d chưa triển khai. Qu
 
 ## M3 Danh mục và nhập liệu
 
-- [ ] FR-20 [P0] CRUD học kỳ (có khóa sổ), khoa, bộ môn, môn học, lớp học phần, phân công giảng viên (Tuần 5)
-- [ ] FR-21 [P0] import Excel/CSV (sinh viên, giảng viên, lớp học phần, đăng ký) với chạy thử trước khi ghi và báo lỗi từng dòng (Tuần 5)
-- [ ] FR-22 [P0] tải mẫu file import (Tuần 5)
+- [x] FR-20 [P0] CRUD học kỳ (có khóa sổ), khoa, bộ môn, môn học, lớp học phần, phân công giảng viên (Tuần 5)
+- [x] FR-21 [P0] import Excel/CSV (sinh viên, giảng viên, lớp học phần, đăng ký) với chạy thử trước khi ghi và báo lỗi từng dòng (Tuần 5)
+- [x] FR-22 [P0] tải mẫu file import (Tuần 5)
 
 ## M4 Mẫu phiếu
 
@@ -99,7 +97,7 @@ Khảo sát/phản hồi, CRUD/import, ẩn danh 5.6b/c/d chưa triển khai. Qu
 ## M11 Hệ thống
 
 - [ ] FR-100 [P0] cấu hình ngưỡng (Tuần 7)
-- [ ] FR-101 [P0] dữ liệu demo (seed) (Tuần 5)
+- [x] FR-101 [P0] dữ liệu demo (seed) (Tuần 5)
 - [x] FR-102 [P0] health check (Tuần 1)
 - [ ] FR-103 [P1] script sao lưu/khôi phục (Tuần 14)
 

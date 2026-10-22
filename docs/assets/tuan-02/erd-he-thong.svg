@@ -12,8 +12,9 @@
   </title>
   <desc id="description">
     9 model chính và 1 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
-    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Chi tiết
-    toàn bộ scalar nằm trong ERD.md.
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 5 có
+    15 bảng chỉ seed demo theo quyền người dùng, chưa có workflow nghiệp vụ. Chi
+    tiết toàn bộ scalar nằm trong ERD.md.
   </desc>
   <style>
     text {
@@ -261,8 +262,8 @@
     <text x="45" y="950" class="field">UK2 (email)</text>
   </g>
   <text x="27" y="1009" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã
-    migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 31 model runtime
+    Tuần 5 (15 bảng chỉ seed demo) · Cập nhật thực tế 22/10/2026
   </text>
   <text x="27" y="1034" class="foot">
     SHA-256 DMMF:

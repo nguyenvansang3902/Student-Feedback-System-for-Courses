@@ -1,4 +1,5 @@
-// Schema áp dụng đến Tuần 4. Bản thiết kế toàn hệ thống: design.prisma.
+// Tuần 5: 16 model nền + 15 bảng phục vụ seed khảo sát/phản hồi được người dùng cho phép ngày 22/10/2026.
+// Chưa triển khai service/route nghiệp vụ các tuần sau. Blueprint: design.prisma.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -35,24 +36,126 @@ enum ScopeType {
   DEPARTMENT
 }
 
+enum AuthTokenKind {
+  ACTIVATION
+  PASSWORD_RESET
+}
+
+enum TemplateStatus {
+  NHAP
+  DA_KHOA
+}
+
+enum QuestionType {
+  LIKERT
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TEXT
+  BOOLEAN
+}
+
+enum CampaignScope {
+  GLOBAL
+  FACULTY
+  DEPARTMENT
+  SECTIONS
+}
+
+enum CampaignStatus {
+  NHAP
+  CHO_DUYET
+  DA_DUYET
+  DANG_MO
+  DA_DONG
+  DA_TONG_HOP
+  DA_CONG_BO
+  LUU_TRU
+  HUY
+}
+
+enum TaskStatus {
+  PENDING
+  DONE
+}
+
+enum ModerationStatus {
+  CHO_KIEM_DUYET
+  HIEN_THI
+  DA_AN
+}
+
+enum FeedbackCategory {
+  GIANG_DAY
+  NOI_DUNG_DE_CUONG
+  TAI_LIEU
+  KIEM_TRA_DANH_GIA
+  CSVC_LICH_HOC
+  KHAC
+}
+
+enum FeedbackSeverity {
+  GOP_Y
+  DE_XUAT
+  KHIEU_NAI
+}
+
+enum FeedbackStatus {
+  MOI
+  DA_TIEP_NHAN
+  DANG_XU_LY
+  DA_TRA_LOI
+  DA_DONG
+  TU_CHOI
+}
+
+enum FeedbackEvent {
+  GUI
+  TIEP_NHAN
+  BAT_DAU_XU_LY
+  TRA_LOI
+  DONG
+  CHUYEN_TIEP
+  TU_CHOI
+  MO_LAI
+  LEO_THANG
+  KIEM_DUYET
+}
+
+enum SessionPurpose {
+  FULL
+  PASSWORD_CHANGE
+  MFA_SETUP
+  MFA_VERIFY
+}
+
 model User {
-  id                 String               @id @default(uuid()) @db.Char(36)
-  loginCode          String               @unique @db.VarChar(32)
-  email              String               @unique @db.VarChar(254)
-  displayName        String               @db.VarChar(160)
-  passwordHash       String?              @db.VarChar(255)
-  status             UserStatus           @default(PENDING_ACTIVATION)
-  mustChangePassword Boolean              @default(true)
-  createdAt          DateTime             @default(now()) @db.DateTime(3)
-  updatedAt          DateTime             @updatedAt @db.DateTime(3)
-  sessions           UserSession[]
-  authTokens         AuthToken[]
-  totp               TotpCredential?
-  settings           SystemSetting[]
-  audit              AuditLog[]
-  roles              RoleAssignment[]
-  teaching           TeachingAssignment[]
-  enrollments        Enrollment[]
+  id                   String               @id @default(uuid()) @db.Char(36)
+  loginCode            String               @unique @db.VarChar(32)
+  email                String               @unique @db.VarChar(254)
+  displayName          String               @db.VarChar(160)
+  passwordHash         String?              @db.VarChar(255)
+  status               UserStatus           @default(PENDING_ACTIVATION)
+  mustChangePassword   Boolean              @default(true)
+  createdAt            DateTime             @default(now()) @db.DateTime(3)
+  updatedAt            DateTime             @updatedAt @db.DateTime(3)
+  roles                RoleAssignment[]
+  teaching             TeachingAssignment[]
+  enrollments          Enrollment[]
+  sessions             UserSession[]
+  authTokens           AuthToken[]
+  totp                 TotpCredential?
+  templates            SurveyTemplate[]
+  createdCampaigns     SurveyCampaign[]     @relation("CampaignCreator")
+  approvedCampaigns    SurveyCampaign[]     @relation("CampaignApprover")
+  campaignHistory      CampaignHistory[]
+  tasks                SurveyTask[]
+  feedbackSent         Feedback[]           @relation("FeedbackAuthor")
+  feedbackAssigned     Feedback[]           @relation("FeedbackAssignee")
+  feedbackRecipients   FeedbackRecipient[]
+  feedbackMessages     FeedbackMessage[]
+  feedbackHistory      FeedbackHistory[]
+  settings             SystemSetting[]
+  audit                AuditLog[]
 
   @@index([status])
 }
@@ -64,6 +167,7 @@ model Faculty {
   isActive    Boolean          @default(true)
   departments Department[]
   roles       RoleAssignment[]
+  campaigns   SurveyCampaign[]
 }
 
 model Department {
@@ -75,18 +179,20 @@ model Department {
   faculty   Faculty          @relation(fields: [facultyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   courses   Course[]
   roles     RoleAssignment[]
+  campaigns SurveyCampaign[]
 
   @@index([facultyId])
 }
 
 model Semester {
-  id       String          @id @default(uuid()) @db.Char(36)
-  code     String          @unique @db.VarChar(32)
-  name     String          @db.VarChar(160)
-  startsOn DateTime        @db.Date
-  endsOn   DateTime        @db.Date
-  lockedAt DateTime?       @db.DateTime(3)
-  sections CourseSection[]
+  id        String           @id @default(uuid()) @db.Char(36)
+  code      String           @unique @db.VarChar(32)
+  name      String           @db.VarChar(160)
+  startsOn  DateTime         @db.Date
+  endsOn    DateTime         @db.Date
+  lockedAt  DateTime?        @db.DateTime(3)
+  sections  CourseSection[]
+  campaigns SurveyCampaign[]
 }
 
 model Course {
@@ -111,6 +217,8 @@ model CourseSection {
   semester    Semester             @relation(fields: [semesterId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   teaching    TeachingAssignment[]
   enrollments Enrollment[]
+  campaigns   CampaignSection[]
+  feedback    Feedback[]
 
   @@unique([semesterId, code])
   @@index([courseId])
@@ -158,18 +266,6 @@ model RoleAssignment {
   @@index([departmentId])
 }
 
-enum AuthTokenKind {
-  ACTIVATION
-  PASSWORD_RESET
-}
-
-enum SessionPurpose {
-  FULL
-  PASSWORD_CHANGE
-  MFA_SETUP
-  MFA_VERIFY
-}
-
 model UserSession {
   id               String       @id @default(uuid()) @db.Char(36)
   userId           String       @db.Char(36)
@@ -202,11 +298,301 @@ model AuthToken {
   @@index([userId, kind])
 }
 
+model TotpCredential {
+  userId           String             @id @db.Char(36)
+  encryptedSecret  String             @db.Text
+  keyVersion       String             @db.VarChar(32)
+  enabledAt        DateTime?          @db.DateTime(3)
+  pendingExpiresAt DateTime?          @db.DateTime(3)
+  lastUsedStep     BigInt?
+  failedAttempts   Int                @default(0)
+  lockedUntil      DateTime?          @db.DateTime(3)
+  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  recoveryCodes    TotpRecoveryCode[]
+}
+
+model TotpRecoveryCode {
+  id         String         @id @default(uuid()) @db.Char(36)
+  userId     String         @db.Char(36)
+  codeHash   String         @unique @db.Char(64)
+  usedAt     DateTime?      @db.DateTime(3)
+  credential TotpCredential @relation(fields: [userId], references: [userId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([userId])
+}
+
 model RateLimitBucket {
   keyHash     String    @id @db.Char(64)
   attempts    Int       @default(0)
   windowStart DateTime  @db.DateTime(3)
   lockedUntil DateTime? @db.DateTime(3)
+}
+
+model SurveyTemplate {
+  id          String           @id @default(uuid()) @db.Char(36)
+  familyId    String           @db.Char(36)
+  version     Int
+  name        String           @db.VarChar(200)
+  status      TemplateStatus   @default(NHAP)
+  isDefault   Boolean          @default(false)
+  createdById String           @db.Char(36)
+  createdAt   DateTime         @default(now()) @db.DateTime(3)
+  lockedAt    DateTime?        @db.DateTime(3)
+  createdBy   User             @relation(fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  groups      CriterionGroup[]
+  campaigns   SurveyCampaign[]
+
+  @@unique([familyId, version])
+  @@index([createdById])
+}
+
+model CriterionGroup {
+  id         String         @id @default(uuid()) @db.Char(36)
+  templateId String         @db.Char(36)
+  title      String         @db.VarChar(200)
+  position   Int
+  weight     Decimal        @default(1) @db.Decimal(10, 4)
+  template   SurveyTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  questions  Question[]
+
+  @@unique([templateId, position])
+}
+
+model Question {
+  id       String           @id @default(uuid()) @db.Char(36)
+  groupId  String           @db.Char(36)
+  label    String           @db.VarChar(1000)
+  type     QuestionType
+  position Int
+  required Boolean          @default(true)
+  allowNA  Boolean          @default(false)
+  weight   Decimal          @default(1) @db.Decimal(10, 4)
+  scaleMin Int?
+  scaleMax Int?
+  group    CriterionGroup   @relation(fields: [groupId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  options  QuestionOption[]
+
+  @@unique([groupId, position])
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid()) @db.Char(36)
+  questionId String   @db.Char(36)
+  label      String   @db.VarChar(500)
+  position   Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([questionId, position])
+}
+
+model SurveyCampaign {
+  id              String            @id @default(uuid()) @db.Char(36)
+  title           String            @db.VarChar(200)
+  semesterId      String            @db.Char(36)
+  templateId      String            @db.Char(36)
+  scope           CampaignScope
+  facultyId       String?           @db.Char(36)
+  departmentId    String?           @db.Char(36)
+  startsAt        DateTime          @db.DateTime(3)
+  endsAt          DateTime          @db.DateTime(3)
+  status          CampaignStatus    @default(NHAP)
+  minResponses    Int               @default(5)
+  minRate         Decimal           @default(0.30) @db.Decimal(5, 4)
+  warningScore    Decimal           @default(3.0) @db.Decimal(5, 2)
+  explanationDays Int               @default(14)
+  mandatory       Boolean           @default(false)
+  createdById     String            @db.Char(36)
+  approvedById    String?           @db.Char(36)
+  approvedAt      DateTime?         @db.DateTime(3)
+  createdAt       DateTime          @default(now()) @db.DateTime(3)
+  semester        Semester          @relation(fields: [semesterId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  template        SurveyTemplate    @relation(fields: [templateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  faculty         Faculty?          @relation(fields: [facultyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  department      Department?       @relation(fields: [departmentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  createdBy       User              @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  approvedBy      User?             @relation("CampaignApprover", fields: [approvedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sections        CampaignSection[]
+  history         CampaignHistory[]
+
+  @@index([semesterId, status])
+  @@index([status, startsAt, endsAt])
+  @@index([templateId])
+  @@index([facultyId])
+  @@index([departmentId])
+  @@index([createdById])
+  @@index([approvedById])
+}
+
+model CampaignSection {
+  campaignId   String            @db.Char(36)
+  sectionId    String            @db.Char(36)
+  campaign     SurveyCampaign    @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  section      CourseSection     @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  tasks        SurveyTask[]
+  result       AggregateResult?
+
+  @@id([campaignId, sectionId])
+  @@index([sectionId])
+}
+
+model CampaignHistory {
+  id         String         @id @default(uuid()) @db.Char(36)
+  campaignId String         @db.Char(36)
+  actorId    String?        @db.Char(36)
+  fromStatus CampaignStatus
+  toStatus   CampaignStatus
+  reason     String?        @db.Text
+  occurredAt DateTime       @default(now()) @db.DateTime(3)
+  campaign   SurveyCampaign @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor      User?          @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([campaignId, occurredAt])
+  @@index([actorId])
+}
+
+model SurveyTask {
+  id         String          @id @default(uuid()) @db.Char(36)
+  campaignId String          @db.Char(36)
+  sectionId  String          @db.Char(36)
+  studentId  String          @db.Char(36)
+  status     TaskStatus      @default(PENDING)
+  doneDate   DateTime?       @db.Date
+  cohort     CampaignSection @relation(fields: [campaignId, sectionId], references: [campaignId, sectionId], onDelete: Restrict, onUpdate: Restrict)
+  student    User            @relation(fields: [studentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([campaignId, sectionId, studentId])
+  @@index([studentId, status])
+}
+
+model SurveyResponse {
+  id            String         @id @default(uuid()) @db.Char(36)
+  campaignId    String         @db.Char(36)
+  sectionId     String         @db.Char(36)
+  submittedDate DateTime       @db.Date
+  answers       SurveyAnswer[]
+
+  @@index([campaignId, sectionId])
+}
+
+model SurveyAnswer {
+  id               String           @id @default(uuid()) @db.Char(36)
+  responseId       String           @db.Char(36)
+  questionId       String           @db.Char(36)
+  valueNumber      Decimal?         @db.Decimal(10, 4)
+  valueText        String?          @db.Text
+  valueOptionIds   Json?
+  valueBoolean     Boolean?
+  isNotApplicable  Boolean          @default(false)
+  moderationStatus ModerationStatus @default(CHO_KIEM_DUYET)
+  moderationReason String?          @db.VarChar(500)
+  response         SurveyResponse   @relation(fields: [responseId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([responseId, questionId])
+  @@index([questionId, moderationStatus])
+}
+
+model AggregateResult {
+  id                String          @id @default(uuid()) @db.Char(36)
+  campaignId        String          @db.Char(36)
+  sectionId         String          @db.Char(36)
+  responseCount     Int
+  taskCount         Int
+  participationRate Decimal         @db.Decimal(7, 4)
+  overallScore      Decimal?        @db.Decimal(5, 2)
+  details           Json
+  eligibleToPublish Boolean
+  aggregatedAt      DateTime        @db.DateTime(3)
+  cohort            CampaignSection @relation(fields: [campaignId, sectionId], references: [campaignId, sectionId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([campaignId, sectionId])
+}
+
+model Feedback {
+  id               String              @id @default(uuid()) @db.Char(36)
+  sectionId        String              @db.Char(36)
+  authorId         String              @db.Char(36)
+  assigneeId       String?             @db.Char(36)
+  category         FeedbackCategory
+  severity         FeedbackSeverity
+  title            String              @db.VarChar(200)
+  body             String              @db.Text
+  isAnonymous      Boolean             @default(true)
+  status           FeedbackStatus      @default(MOI)
+  isOverdue        Boolean             @default(false)
+  isHidden         Boolean             @default(false)
+  isLocked         Boolean             @default(false)
+  moderationReason String?             @db.VarChar(500)
+  escalationLevel  Int                 @default(0)
+  reopenCount      Int                 @default(0)
+  createdAt        DateTime            @default(now()) @db.DateTime(3)
+  acceptDueAt      DateTime            @db.DateTime(3)
+  replyDueAt       DateTime            @db.DateTime(3)
+  answeredAt       DateTime?           @db.DateTime(3)
+  closedAt         DateTime?           @db.DateTime(3)
+  section          CourseSection       @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  author           User                @relation("FeedbackAuthor", fields: [authorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  assignee         User?               @relation("FeedbackAssignee", fields: [assigneeId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  recipients       FeedbackRecipient[]
+  messages         FeedbackMessage[]
+  history          FeedbackHistory[]
+
+  @@index([authorId, createdAt])
+  @@index([assigneeId, status, replyDueAt])
+  @@index([sectionId])
+  @@index([status, isOverdue])
+}
+
+model FeedbackRecipient {
+  feedbackId String   @db.Char(36)
+  userId     String   @db.Char(36)
+  feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@id([feedbackId, userId])
+  @@index([userId])
+}
+
+model FeedbackMessage {
+  id               String   @id @default(uuid()) @db.Char(36)
+  feedbackId       String   @db.Char(36)
+  authorId         String   @db.Char(36)
+  body             String   @db.Text
+  isHidden         Boolean  @default(false)
+  moderationReason String?  @db.VarChar(500)
+  createdAt        DateTime @default(now()) @db.DateTime(3)
+  feedback         Feedback @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  author           User     @relation(fields: [authorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([feedbackId, createdAt])
+  @@index([authorId])
+}
+
+model FeedbackHistory {
+  id             String         @id @default(uuid()) @db.Char(36)
+  feedbackId     String         @db.Char(36)
+  actorId        String?        @db.Char(36)
+  event          FeedbackEvent
+  fromStatus     FeedbackStatus
+  toStatus       FeedbackStatus
+  fromAssigneeId String?        @db.Char(36)
+  toAssigneeId   String?        @db.Char(36)
+  reason         String?        @db.Text
+  occurredAt     DateTime       @default(now()) @db.DateTime(3)
+  feedback       Feedback       @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor          User?          @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([feedbackId, occurredAt])
+  @@index([actorId])
+}
+
+model SystemSetting {
+  key         String   @id @db.VarChar(100)
+  value       Json
+  updatedById String?  @db.Char(36)
+  updatedAt   DateTime @updatedAt @db.DateTime(3)
+  updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([updatedById])
 }
 
 model AuditLog {
@@ -221,40 +607,4 @@ model AuditLog {
 
   @@index([actorId, occurredAt])
   @@index([objectType, objectId])
-}
-
-
-model TotpCredential {
-  userId           String             @id @db.Char(36)
-  encryptedSecret  String             @db.Text
-  keyVersion       String             @db.VarChar(32)
-  enabledAt        DateTime?          @db.DateTime(3)
-  pendingExpiresAt DateTime?          @db.DateTime(3)
-  lastUsedStep     BigInt?
-  failedAttempts   Int                @default(0)
-  lockedUntil      DateTime?          @db.DateTime(3)
-  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  recoveryCodes    TotpRecoveryCode[]
-}
-
-
-model TotpRecoveryCode {
-  id         String         @id @default(uuid()) @db.Char(36)
-  userId     String         @db.Char(36)
-  codeHash   String         @unique @db.Char(64)
-  usedAt     DateTime?      @db.DateTime(3)
-  credential TotpCredential @relation(fields: [userId], references: [userId], onDelete: Restrict, onUpdate: Restrict)
-
-  @@index([userId])
-}
-
-
-model SystemSetting {
-  key         String   @id @db.VarChar(100)
-  value       Json
-  updatedById String?  @db.Char(36)
-  updatedAt   DateTime @updatedAt @db.DateTime(3)
-  updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
-
-  @@index([updatedById])
 }

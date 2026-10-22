@@ -12,6 +12,7 @@ export interface RoleGrant {
 export type PolicyAction =
   | "workspace:view" | "sections:list" | "sections:read"
   | "users:list" | "users:read" | "users:create" | "users:status" | "users:roles"
+  | "catalog:list" | "catalog:read" | "catalog:write" | "imports:manage"
   | "audit:list" | "mfa-policy:read" | "mfa-policy:write" | "mfa:reset";
 
 export interface SectionResource {
@@ -62,6 +63,8 @@ export function can(
   const grants = actorGrants(actor);
   if (adminActions.has(action))
     return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
+  if (["catalog:list", "catalog:read", "catalog:write", "imports:manage"].includes(action))
+    return grants.some((grant) => grant.role === "CAN_BO_DBCL");
   if (action === "workspace:view") return grants.some((grant) => !resource?.role || grant.role === resource.role);
   if (action !== "sections:list" && action !== "sections:read") return false;
   return grants.some((grant) => {

@@ -44,6 +44,10 @@ jobs:
         run: npm run test:auth
       - name: Kiểm tra TOTP, phân quyền và CLI trên database thử riêng
         run: npm run test:week4
+      - name: Kiểm tra danh mục, khóa sổ, CSV/XLSX và kích hoạt qua HTTP
+        run: npm run test:week5
+      - name: Kiểm tra seed và demo trong database mới riêng
+        run: npm run test:demo
       - name: Chạy lint, typecheck và test
         run: npm run check
       - name: Build ứng dụng

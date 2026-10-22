@@ -18,6 +18,21 @@ const expectedTables = [
   "TotpCredential",
   "TotpRecoveryCode",
   "SystemSetting",
+  "SurveyTemplate",
+  "CriterionGroup",
+  "Question",
+  "QuestionOption",
+  "SurveyCampaign",
+  "CampaignSection",
+  "CampaignHistory",
+  "SurveyTask",
+  "SurveyResponse",
+  "SurveyAnswer",
+  "AggregateResult",
+  "Feedback",
+  "FeedbackRecipient",
+  "FeedbackMessage",
+  "FeedbackHistory",
 ];
 const tables = requireMysql(mysql("SHOW TABLES;"))
   .split(/\r?\n/)
@@ -25,7 +40,7 @@ const tables = requireMysql(mysql("SHOW TABLES;"))
   .sort();
 if (JSON.stringify(tables) !== JSON.stringify(expectedTables.sort()))
   throw new Error(
-    "Database không đúng 16 bảng đã migrate đến Tuần 4 (9 bảng nền và 7 bảng xác thực/quản trị).",
+    "Database không đúng 31 bảng đến Tuần 5 (16 bảng nền/xác thực và 15 bảng cho seed được cho phép).",
   );
 
 const ids = Object.fromEntries(
