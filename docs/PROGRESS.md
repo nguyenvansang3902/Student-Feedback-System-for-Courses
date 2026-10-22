@@ -1,14 +1,14 @@
 # Tiến độ yêu cầu chức năng
 
-Nguồn: Mục 7 của đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1. Chỉ tick khi có test qua, nghiệm thu được và tài liệu cập nhật. Mỗi FR giữ mã/ưu tiên/tuần dự kiến; FR chưa xếp tuần vẫn nằm trong mẫu số.
+Nguồn: Mục 7 đặc tả. Trọng số P0 = 3, P1 = 2, P2 = 1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. FR chưa xếp tuần vẫn trong mẫu số.
 
-Kế hoạch bắt đầu 30/09/2026, khởi động thực tế 02/10. Tuần 2 theo mốc giả định 07–13/10 nhưng làm 21/10; Tuần 3 theo mốc 14–20/10, triển khai thực tế **21–22/10/2026**. Không ghi lùi ngày; nhóm đối chiếu lịch trường.
+Kế hoạch bắt đầu 30/09/2026, khởi động 02/10. Tuần 2 làm 21/10, Tuần 3 làm 21–22/10 sau lịch dự kiến; Tuần 4 thực hiện 22/10 trong mốc giả định 21–27/10. Nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-**Đã nghiệm thu Tuần 3:** FR-01–06 và FR-102 được tick, **20/163 điểm = 12,3%**, bằng mục tiêu lũy kế phạm vi Tuần 3 nhưng thực hiện muộn hơn lịch. M1 đạt **17/23 = 73,9%**. Bằng chứng trong [nghiệm thu Tuần 3](NGHIEM_THU_TUAN_03.md), [truy vết](TRUY_VET.md), [báo cáo](bao-cao-tien-do/tuan-03.md).
+**Đã nghiệm thu Tuần 4:** thêm FR-07/08/10/11/12, tổng **34/163 điểm = 20,9%**, bằng mục tiêu lũy kế phạm vi Tuần 4. **M1 22/23 = 95,7%; M2 9/9 = 100%**. Full check **121/121 test trong 13 file**, SQL MySQL **10/10**, CLI stdin **5/5**, HTTP hồi quy Tuần 3 **24/24**, HTTP/MySQL Tuần 4 **28/28** và build exit0. UI 13 nhóm/6 viewport và sơ đồ đã kiểm. Không cộng lượt targeted vào tổng lần nữa.
 
-Runtime hiện **13 model** (9 nền Tuần 2 + 4 auth/audit Tuần 3), blueprint **39 model**. Full check **61/61 test** (core27/recovery18/schema13/limits2/health1), SQL MySQL **10/10**, HTTP/MySQL/Mailpit **24/24**, build, UI và render sơ đồ qua. Không cộng test targeted vào full check lần nữa. Ẩn danh 5.6b/c/d, khảo sát/phản hồi, ADMIN TOTP và phân quyền chi tiết chưa làm; health database:not_checked.
+[CI 39733168348](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39733168348) của mã `578fd96622b341b0d94228de83c4c8994449e03b` đã qua check và smoke. Runtime 16/blueprint 39; dữ liệu cũ được giữ. Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_04.md), [truy vết](TRUY_VET.md), [báo cáo](bao-cao-tien-do/tuan-04.md), [QA](QA_GIAO_DIEN_TUAN_04.md), [sơ đồ cập nhật](SO_DO_TUAN_04.md).
 
-Bằng chứng lịch sử giữ trong [Tuần 1](bao-cao-tien-do/tuan-01.md), [Tuần 2](bao-cao-tien-do/tuan-02.md) và [AI_USAGE](AI_USAGE.md). Mã Tuần 3 `43b937e` có [CI check + smoke thành công](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39642730208). `npm run progress` tính tỷ lệ từ checkbox dưới đây.
+Khảo sát/phản hồi, CRUD/import, ẩn danh 5.6b/c/d chưa triển khai. Quyền chỉ nghiệm thu cho chức năng hiện có; health vẫn database:not_checked. Báo cáo Tuần 1–3 giữ bằng chứng lịch sử.
 
 ## M1 Xác thực và phiên
 
@@ -18,15 +18,15 @@ Bằng chứng lịch sử giữ trong [Tuần 1](bao-cao-tien-do/tuan-01.md), [
 - [x] FR-04 [P1] quên/đặt lại mật khẩu qua email (token dùng một lần, hết hạn 30 phút) (Tuần 3)
 - [x] FR-05 [P0] kích hoạt tài khoản lần đầu hoặc mật khẩu tạm buộc đổi (Tuần 3)
 - [x] FR-06 [P0] giới hạn tần suất và khóa tạm (Tuần 3)
-- [ ] FR-07 [P0] xác thực hai bước TOTP cho ADMIN (đăng ký bằng mã QR, xác nhận, mã khôi phục, đặt lại) (Tuần 4)
-- [ ] FR-08 [P1] bật 2FA bắt buộc cho các vai trò khác theo cấu hình (Tuần 4)
+- [x] FR-07 [P0] xác thực hai bước TOTP cho ADMIN (đăng ký bằng mã QR, xác nhận, mã khôi phục, đặt lại) (Tuần 4)
+- [x] FR-08 [P1] bật 2FA bắt buộc cho các vai trò khác theo cấu hình (Tuần 4)
 - [ ] FR-09 [P2] xem và đăng xuất các thiết bị (Chưa xếp tuần; P2 tùy chọn)
 
 ## M2 Người dùng, phân quyền, kiểm toán
 
-- [ ] FR-10 [P0] quản lý người dùng (tạo, khóa/mở khóa, gán vai trò và phạm vi) (Tuần 4)
-- [ ] FR-11 [P0] policy tập trung theo vai trò + phạm vi (Tuần 4)
-- [ ] FR-12 [P0] xem và lọc nhật ký kiểm toán (Tuần 4)
+- [x] FR-10 [P0] quản lý người dùng (tạo, khóa/mở khóa, gán vai trò và phạm vi) (Tuần 4)
+- [x] FR-11 [P0] policy tập trung theo vai trò + phạm vi (Tuần 4)
+- [x] FR-12 [P0] xem và lọc nhật ký kiểm toán (Tuần 4)
 
 ## M3 Danh mục và nhập liệu
 

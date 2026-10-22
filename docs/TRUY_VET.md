@@ -1,8 +1,8 @@
-# Bảng truy vết yêu cầu — cập nhật Tuần 3
+# Bảng truy vết yêu cầu — cập nhật Tuần 4
 
-Tuần 3 khởi động **21/10**, tiếp tục **22/10/2026**; mốc kế hoạch giả định **14–20/10/2026**. Bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
+Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **21–27/10/2026**. Tuần 3 làm **21–22/10**, sau mốc 14–20/10; bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
 
-**Cách đọc:** WF là wireframe tĩnh. FR-01–06 đã nghiệm thu bằng mã thật, full check, HTTP/MySQL/Mailpit và CI; các miền còn lại là thiết kế theo [KIEN_TRUC](KIEN_TRUC.md)/[PHAN_QUYEN](PHAN_QUYEN.md). “Chưa có” nghĩa chưa triển khai, không phải test đang fail. Có bảng không hoàn thành CRUD hoặc toàn bộ BR. Trạng thái chính thức theo [nghiệm thu Tuần 3](NGHIEM_THU_TUAN_03.md) và PROGRESS.
+**Cách đọc:** FR-01–08/10–12/102 đã nghiệm thu trong phạm vi mã hiện có; các chức năng khác còn thiết kế. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.
 
 ## 1. Bằng chứng lịch sử Tuần 2 tại thời điểm nghiệm thu
 
@@ -21,11 +21,22 @@ Tuần 3 khởi động **21/10**, tiếp tục **22/10/2026**; mốc kế hoạ
 | Đầu ra | File / kiểm tra | Kết quả và giới hạn |
 | --- | --- | --- |
 | Auth runtime | Auth/recovery services, helpers/policy/route | Login/logout/change/reset/activate/rate, cookie/Origin và thu hồi phiên qua HTTP thật |
-| DB hiện tại | Runtime13/blueprint39, migration `20261021165346_week3_auth_sessions` | Thêm UserSession/AuthToken/RateLimitBucket/AuditLog; sửa collation/FK bốn bảng mới rỗng, status/diff đồng bộ; clean migration Linux qua |
+| DB hiện tại | Runtime13/blueprint 39, migration `20261021165346_week3_auth_sessions` | Thêm UserSession/AuthToken/RateLimitBucket/AuditLog; sửa collation/FK bốn bảng mới rỗng, status/diff đồng bộ; clean migration Linux qua |
 | Full check | 8 file Vitest, validate/generate/ERD/lint/typecheck | **61/61**: core27, recovery18, schema13, limits2, health1; không cộng lượt targeted hai lần |
 | SQL/HTTP | `scripts/verify-database.mjs`, `scripts/verify-auth.ts` | SQL **10/10**, auth HTTP/MySQL/Mailpit **24/24**; reset đồng thời thật, refresh race chỉ unit/mock, HTTP có rotation/replay |
 | UI/sơ đồ | [QA](QA_GIAO_DIEN_TUAN_03.md), [SVG/hash](SO_DO_XAC_THUC.md) | 10 route/viewport, bàn phím, login/logout và browser reset qua; 3/3 SVG render/xem ảnh, 6/6 hash khớp |
-| Build/CI | [CI 39642730208](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39642730208), `43b937e` | Build exit0; CI check+smoke xanh. Production audit0, full audit còn5high dev ESLint chain |
+| Build/CI | [CI 39642730208](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39642730208), `43b937e` | Build exit0; CI check+smoke xanh. Production audit 0, full audit còn 5 high dev ESLint chain |
+
+## 1.2. Bằng chứng Tuần 4
+
+| Đầu ra | Bằng chứng | Kết quả và giới hạn |
+| --- | --- | --- |
+| MFA/core | Auth/MFA 53 targeted trong full 121 | TOTP, AES, purpose, replay/recovery, rate và centralresetguard; không cộng test hai lần |
+| Policy/quản trị | RBAC 29 targeted trong full 121 | Matrix 13/service 16, scope và freshDBguard; ADMIN không ngầm có quyền nghiệp vụ |
+| Giao thức/thực thi | CLI 5, HTTP hồi quy24, HTTP Tuần 4 28 | TOTP/recovery và ADMIN khóa chéo đồng thời thật; CSRF, expiry, policy, reset, filter/IDOR và redaction qua |
+| Migration/SQL | Runtime 16/blueprint 39, SQL 10 | Ba migration áp dụng sạch trên DB thử/CI Linux; main giữ dữ liệu, diff đồng bộ |
+| UI/sơ đồ | [QA](QA_GIAO_DIEN_TUAN_04.md), [ERD](SO_DO_TUAN_04.md) | UI 13nhóm/6 viewport,6PNG; ERD khối 4 render/hash mới,3 khối giữ hash lịch sử |
+| CI/build | [CI 39733168348](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39733168348) của mã `578fd96622b341b0d94228de83c4c8994449e03b` đã qua check và smoke | Full121/lint/typecheck/ERD/build qua; audit production0/full5high dev |
 
 ## 2. FR đã nghiệm thu
 
@@ -38,19 +49,19 @@ Tuần 3 khởi động **21/10**, tiếp tục **22/10/2026**; mốc kế hoạ
 | FR-04 | 3 | `/quen-mat-khau`, `/dat-lai-mat-khau`, Mailpit | `account-recovery.ts`, `lib/mail.ts` | Recovery unit; HTTP14–17; browser reset E2E | Hash/expiry/one-use, race reset MySQL và thư Mailpit; [nghiệm thu](NGHIEM_THU_TUAN_03.md) | Hoàn thành trong phạm vi Tuần 3 |
 | FR-05 | 3 | `/kich-hoat`, `/doi-mat-khau` | Recovery/auth services, workspace guard | Recovery/session unit; HTTP10/18–20 | PENDING→ACTIVE, mật khẩu tạm buộc đổi; activation UI token chưa kiểm bằng browser; [nghiệm thu](NGHIEM_THU_TUAN_03.md) | Hoàn thành trong phạm vi Tuần 3 |
 | FR-06 | 3 | Lỗi auth/email và khóa tạm | `auth/rate-limit.ts`, `limits.ts`, auth/recovery services | Rate/login-race/limits unit; HTTP23 | 5 lần sai bằng mã/email vẫn chung bucket tài khoản; lần sau đúng bị429; [nghiệm thu](NGHIEM_THU_TUAN_03.md) | Hoàn thành trong phạm vi Tuần 3 |
+| FR-07 | 4 | TOTP setup/verify/recovery/reset và CLI | mfa.ts, mfa-crypto.ts, admin-console.ts | MFA 53 unit, HTTP 28, CLI 5, browser setup/recovery | QR/secret mã hóa/one-use/purpose, reset và thu hồi; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
+| FR-08 | 4 | Chính sách hai bước | services/mfa-policy.ts, auth/mfa-policy.ts | HTTP 28 policy+revoke, RBAC/MFA unit | ADMIN luôn bắt buộc, vai trò khác theo cấu hình; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
+| FR-10 | 4 | Quản trị tài khoản/vai trò/phạm vi | services/users.ts, access.ts, can.ts | HTTP 28, CLI 5, RBAC 29, UI | Tạo pending/khóa-mở/gán phạm vi, một ADMIN còn hoạt động khi khóa chéo; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
+| FR-11 | 4 | Workspace theo vai trò và lớp theo scope | policies/can.ts, access.ts, workspace.ts | Matrix 13/service 16, HTTP 28, UI role guard | Deny default, list/count/detail và các ID route trong phạm vi đã có; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
+| FR-12 | 4 | Xem/lọc AuditLog | services/audit.ts, can.ts | RBAC unit, HTTP 28, UI desktop/mobile | Phân trang/lọc/UTC+7 và allowlist summary; không bí mật; [nghiệm thu](NGHIEM_THU_TUAN_04.md) | Hoàn thành Tuần 4 |
 
 ## 3. FR đang triển khai hoặc còn ở mức thiết kế
 
-FR-01–06 được ghi ở mục2. Các dòng dưới còn là thiết kế; FR-10/20 mới có schema/SQL nền, FR-53 mới kiểm cấu trúc 5.6a, chưa có nộp một lần/đồng thời.
+FR đã nghiệm thu được ghi ở mục2. Các dòng dưới chưa hoàn thành; schema hoặc thiết kế không thay giao diện/service nghiệp vụ.
 
 | Mã FR  | Tuần dự kiến | Wireframe / luồng thiết kế                                                     | Miền service/policy dự kiến                                  | Test nghiệm thu FR                                                                                 |
 | ------ | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| FR-07  | 4            | [WF-02](wireframes/tuan-02.html#wf-02), [WF-17](wireframes/tuan-02.html#wf-17) | auth/MFA và cấu hình; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-08  | 4            | [WF-02](wireframes/tuan-02.html#wf-02), [WF-17](wireframes/tuan-02.html#wf-17) | auth/MFA và cấu hình; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-09  | P2, chưa xếp | [WF-01](wireframes/tuan-02.html#wf-01)                                         | phiên/thiết bị; chưa triển khai                              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-10  | 4            | [WF-17](wireframes/tuan-02.html#wf-17)                                         | users / audit; chưa triển khai                               | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-11  | 4            | [WF-03](wireframes/tuan-02.html#wf-03), [WF-17](wireframes/tuan-02.html#wf-17) | policy role/phạm vi; chưa triển khai                         | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-12  | 4            | [WF-17](wireframes/tuan-02.html#wf-17)                                         | users / audit; chưa triển khai                               | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-20  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-21  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-22  | 5            | [WF-18](wireframes/tuan-02.html#wf-18)                                         | catalog / import; mới có schema nền                          | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -125,7 +136,7 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | BR-15 | [WF-08](wireframes/tuan-02.html#wf-08)                                                                                 | Campaign gia hạn/đóng sớm, reason/history/notification                                    | Chưa có; Tuần 7 kiểm đúng quyền, lý do và thông báo                                                                |
 | BR-16 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-10](wireframes/tuan-02.html#wf-10), [WF-18](wireframes/tuan-02.html#wf-18) | Nhiều TeachingAssignment, đánh giá ở mức lớp                                              | Có SQL nền chặn phân công trùng; chưa test khảo sát chung lớp Tuần 7–9                                             |
 | BR-17 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-12](wireframes/tuan-02.html#wf-12), [WF-18](wireframes/tuan-02.html#wf-18) | Semester.lockedAt, service mọi thao tác ghi theo kỳ                                       | SQL W2-DB-07 chỉ kiểm ngày kỳ hợp lệ; chưa test khóa sổ ở service Tuần 5+                                          |
-| BR-18 | [WF-03](wireframes/tuan-02.html#wf-03), [WF-17](wireframes/tuan-02.html#wf-17)                                         | Policy ADMIN tách quyền hệ thống/nghiệp vụ                                                | Chưa có; Tuần 4/9/10 kiểm ADMIN đơn vai trò bị chặn nội dung                                                       |
+| BR-18 | Không gian vai trò và API lớp tối thiểu Tuần 4 | `policies/can.ts`, `services/workspace.ts`; ADMIN đơn vai trò không có scope nghiệp vụ | Policy/service targeted và UI chặn vai trò qua; khảo sát/kết quả/phản hồi chưa có mã nên chưa kiểm nội dung các module đó |
 | BR-20 | [WF-12](wireframes/tuan-02.html#wf-12)                                                                                 | Feedback policy theo Enrollment và kỳ hiện hành/liền trước                                | Chưa có; Tuần 10 kiểm lớp người khác và kỳ ngoài cấu hình                                                          |
 | BR-21 | [WF-12](wireframes/tuan-02.html#wf-12), [WF-13](wireframes/tuan-02.html#wf-13)                                         | Routing/recipients/assignee/history                                                       | Chưa có; Tuần 10 kiểm từng loại, khiếu nại và chuyển tiếp                                                          |
 | BR-22 | [WF-13](wireframes/tuan-02.html#wf-13), [WF-14](wireframes/tuan-02.html#wf-14)                                         | Feedback state machine / cập nhật có điều kiện / lịch sử bất biến                         | Chưa có; Tuần 10 kiểm mọi chuyển hợp lệ/sai quyền/sai trạng thái                                                   |
@@ -135,11 +146,11 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | BR-26 | [WF-12](wireframes/tuan-02.html#wf-12)                                                                                 | Rate limit phản hồi, cảnh báo nội dung trùng                                              | Chưa có; Tuần 11 kiểm N/ngày và 24 giờ                                                                             |
 | BR-27 | [WF-13](wireframes/tuan-02.html#wf-13), [WF-14](wireframes/tuan-02.html#wf-14)                                         | Feedback/message moderation, isHidden/isLocked, reason                                    | Chưa có; Tuần 11 kiểm quyền, lý do và ngăn thao tác khi khóa                                                       |
 | BR-28 | [WF-12](wireframes/tuan-02.html#wf-12), [WF-14](wireframes/tuan-02.html#wf-14)                                         | Attachment / kiểm magic bytes / route download có policy                                  | Chưa có; Tuần 10 kiểm 3×5MB, đuôi giả, tên/path và tải ngoài quyền                                                 |
-| BR-30 | Luồng xác thực Tuần 3; WF-11/17 còn thiết kế                                                                           | AuditLog trong auth/recovery, allowlist summary và không log token/password/email content | Core/recovery unit và HTTP24 qua, audit DB không chứa password/token. Các module khác chưa triển khai, chưa hoàn thành toàn hệ thống |
-| BR-31 | `/dang-nhap`, đổi/reset/kích hoạt và refresh/logout                                                                    | `auth.ts`, `account-recovery.ts`, `auth/password.ts`, `session.ts`, `http.ts`             | Core27/recovery18 nằm trong full61; HTTP24 qua, gồm reset race MySQL; refresh race chỉ unit/mock                                      |
-| BR-32 | [WF-02](wireframes/tuan-02.html#wf-02), [WF-17](wireframes/tuan-02.html#wf-17)                                         | ADMIN MFA, TOTP encrypted/recovery/step-up                                                | Chưa có; Tuần 4 kiểm sai/hết hạn/reuse/bypass/token tạm                                                            |
+| BR-30 | Auth/recovery/MFA, người dùng, chính sách và nhật ký quản trị | AuditLog cùng transaction; `services/audit.ts` lọc DTO, allowlist summary và che bí mật cũ | Unit/auth lịch sử và CLI 5 qua; UI xem/lọc audit qua. HTTP Tuần 4 28/28 và CI qua; chỉ các thao tác đã có, chưa hoàn thành audit toàn hệ thống |
+| BR-31 | `/dang-nhap`, đổi/reset/kích hoạt và refresh/logout                                                                    | `auth.ts`, `account-recovery.ts`, `auth/password.ts`, `session.ts`, `http.ts`             | Core27/recovery18 nằm trong full61; HTTP 24 qua, gồm reset race MySQL; refresh race chỉ unit/mock                                      |
+| BR-32 | `/bao-mat/thiet-lap`, `/bao-mat/xac-thuc`, quản trị/CLI | `services/mfa.ts`, MFA crypto/rate/policy, session purpose và DB mfaVerifiedAt | Auth/MFA 53 targeted, CSRF 5, CLI 5 và browser setup/recovery qua. HTTP/MySQL cuối 28/28 qua; không nhận token tạm hoặc actor.mfa tự khai là đủ |
 | BR-33 | Đăng nhập và yêu cầu email/token                                                                                       | RateLimitBucket, `auth/rate-limit.ts` và service                                          | Rate/login-race/limits unit và HTTP23 qua: sai5lần khóa15phút mặc định, mã/email cùng bucket, lỗi trung tính           |
-| BR-34 | Service/policy auth và workspace guard                                                                                 | Actor, purpose, owner/session/User hiện tại, từ chối mặc định; scope nghiệp vụ chưa có    | Unit guard có kiểm; IDOR/ma trận quyền chi tiết và các module thuộc Tuần 4+ chưa hoàn thành                        |
+| BR-34 | API chi tiết/khóa-mở/đổi quyền/reset MFA tài khoản và lớp tối thiểu | `services/access.ts`, `users.ts`, `workspace.ts`, `policies/can.ts`; ID cùng scope trong query | Policy/service 29 targeted qua; service đọc lại DB, list/count/detail cùng filter. HTTP28/IDOR và CI qua; các module Tuần 5+ phải bổ sung khi triển khai |
 | BR-35 | Luồng quản lý lưu trữ / CLI                                                                                            | Retention setting/script, P2; không tự xóa dữ liệu                                        | Chưa có; chưa xếp tuần, xóa dữ liệu cần người dùng đồng ý                                                          |
 
 ## 5. Quy tắc cập nhật
