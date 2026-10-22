@@ -89,7 +89,9 @@ export function setSessionCookies(
   });
   response.cookies.set(REFRESH_COOKIE, tokens.refreshToken, {
     ...cookieOptions("/api/auth"),
-    expires: tokens.refreshExpiresAt,
+    ...(tokens.refreshToken
+      ? { expires: tokens.refreshExpiresAt }
+      : { maxAge: 0, expires: new Date(0) }),
   });
 }
 

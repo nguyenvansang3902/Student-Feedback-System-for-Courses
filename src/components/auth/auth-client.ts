@@ -1,11 +1,20 @@
 "use client";
 
-type AuthUser = { id: string; mustChangePassword: boolean };
+export type AuthUser = {
+  id: string;
+  mustChangePassword: boolean;
+  roles: string[];
+  purpose?: string;
+  mfaRequired?: boolean;
+  mfa?: boolean;
+};
 type ApiResult = {
   ok?: boolean;
   message?: string;
   code?: string;
   mustChangePassword?: boolean;
+  purpose?: string;
+  mfaRequired?: boolean;
   user?: AuthUser;
 };
 
@@ -24,11 +33,25 @@ function readResult(value: unknown): ApiResult {
     message: typeof source.message === "string" ? source.message : undefined,
     code: typeof source.code === "string" ? source.code : undefined,
     mustChangePassword: source.mustChangePassword === true,
+    purpose: typeof source.purpose === "string" ? source.purpose : undefined,
+    mfaRequired: source.mfaRequired === true,
     user:
       user &&
       typeof user.id === "string" &&
       typeof user.mustChangePassword === "boolean"
-        ? { id: user.id, mustChangePassword: user.mustChangePassword }
+        ? {
+            id: user.id,
+            mustChangePassword: user.mustChangePassword,
+            roles: Array.isArray(user.roles)
+              ? user.roles.filter(
+                  (role): role is string => typeof role === "string",
+                )
+              : [],
+            purpose:
+              typeof user.purpose === "string" ? user.purpose : undefined,
+            mfaRequired: user.mfaRequired === true,
+            mfa: user.mfa === true,
+          }
         : undefined,
   };
 }
@@ -53,7 +76,7 @@ export function refreshSession(): Promise<boolean> {
 
 export async function authRequest(
   path: string,
-  body: Record<string, string>,
+  body: Record<string, unknown>,
   retryOnExpiredSession = false,
 ): Promise<{ response: Response; result: ApiResult }> {
   const send = () =>

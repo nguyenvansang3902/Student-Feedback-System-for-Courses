@@ -280,11 +280,20 @@ enum DeliveryStatus {
   FAILED
 }
 
+enum SessionPurpose {
+  FULL
+  PASSWORD_CHANGE
+  MFA_SETUP
+  MFA_VERIFY
+}
+
 model UserSession {
   id               String       @id @default(uuid()) @db.Char(36)
   userId           String       @db.Char(36)
   refreshTokenHash String       @unique @db.Char(64)
   familyId         String       @db.Char(36)
+  purpose          SessionPurpose @default(FULL)
+  mfaVerifiedAt    DateTime?     @db.DateTime(3)
   expiresAt        DateTime     @db.DateTime(3)
   createdAt        DateTime     @default(now()) @db.DateTime(3)
   revokedAt        DateTime?    @db.DateTime(3)

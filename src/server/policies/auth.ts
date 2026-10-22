@@ -8,6 +8,11 @@ type AuthAction =
   | "logout"
   | "change-password"
   | "workspace"
+  | "mfa-status"
+  | "mfa-setup"
+  | "mfa-confirm"
+  | "mfa-verify"
+  | "step-up"
   | "admin";
 
 const publicActions: ReadonlySet<AuthAction> = new Set([
@@ -38,12 +43,32 @@ export function authorizeAuthAction(
       "UNAUTHENTICATED",
     );
   }
-  if (action === "change-password") return;
+  const purpose =
+    actor.purpose ?? (actor.mustChangePassword ? "PASSWORD_CHANGE" : "FULL");
+  if (
+    action === "change-password" &&
+    (purpose === "FULL" || purpose === "PASSWORD_CHANGE")
+  )
+    return;
   if (actor.mustChangePassword) {
     throw new AuthError(
       "Bạn cần đổi mật khẩu tạm trước khi tiếp tục.",
       403,
       "PASSWORD_CHANGE_REQUIRED",
+    );
+  }
+  if (action === "mfa-status") return;
+  if (
+    (action === "mfa-setup" || action === "mfa-confirm") &&
+    purpose === "MFA_SETUP"
+  )
+    return;
+  if (action === "mfa-verify" && purpose === "MFA_VERIFY") return;
+  if (purpose !== "FULL") {
+    throw new AuthError(
+      "Bạn cần hoàn tất xác thực hai bước trước khi tiếp tục.",
+      403,
+      "MFA_REQUIRED",
     );
   }
   if (action === "admin" && !actor.roles.includes("ADMIN")) {
@@ -54,16 +79,19 @@ export function authorizeAuthAction(
     );
   }
   if (
-    action === "admin" ||
-    (action === "workspace" && actor.roles.includes("ADMIN"))
+    (action === "admin" ||
+      action === "step-up" ||
+      actor.mfaRequired ||
+      actor.roles.includes("ADMIN")) &&
+    !actor.mfa
   ) {
-    // Không có đường vòng MFA trong tuần 3; tuần 4 thay bằng TOTP đã xác minh.
     throw new AuthError(
-      "Khu vực quản trị yêu cầu xác thực hai bước, sẽ triển khai ở tuần 4.",
+      "Bạn cần xác thực hai bước để tiếp tục.",
       403,
       "MFA_REQUIRED",
     );
   }
+  if (action === "admin" || action === "step-up") return;
   if (action === "workspace" && actor.roles.length > 0) return;
   throw new AuthError(
     "Bạn không có quyền thực hiện thao tác này.",

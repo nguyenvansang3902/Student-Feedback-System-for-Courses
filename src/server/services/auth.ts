@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 import type { Prisma } from "../../generated/prisma/client";
-import type { Role } from "../../generated/prisma/enums";
+import type {
+  Role,
+  ScopeType,
+  SessionPurpose,
+} from "../../generated/prisma/enums";
 import { getDb } from "../../lib/db";
 import { getAuthConfig } from "../../lib/env";
 import {
@@ -28,20 +32,31 @@ import {
   type SessionTokens,
 } from "../auth/types";
 import { authorizeAuthAction } from "../policies/auth";
+import { isMfaRequired } from "../auth/mfa-policy";
 
-interface UserIdentity {
+export interface UserIdentity {
   id: string;
   loginCode: string;
   email: string;
   displayName: string;
   mustChangePassword: boolean;
-  roles: { role: Role }[];
+  roles: {
+    role: Role;
+    scopeType?: ScopeType;
+    facultyId?: string | null;
+    departmentId?: string | null;
+  }[];
 }
 
-function actorFrom(
+export function actorFrom(
   user: UserIdentity,
   sessionId: string,
   familyId: string,
+  purpose: SessionPurpose = user.mustChangePassword
+    ? "PASSWORD_CHANGE"
+    : "FULL",
+  mfa = false,
+  mfaRequired = false,
 ): AuthActor {
   return {
     userId: user.id,
@@ -52,7 +67,15 @@ function actorFrom(
     sessionId,
     familyId,
     mustChangePassword: user.mustChangePassword,
-    mfa: false,
+    mfa,
+    purpose,
+    mfaRequired,
+    assignments: user.roles.map((assignment) => ({
+      role: assignment.role,
+      scopeType: assignment.scopeType ?? "GLOBAL",
+      facultyId: assignment.facultyId ?? null,
+      departmentId: assignment.departmentId ?? null,
+    })),
   };
 }
 
@@ -84,13 +107,13 @@ async function lockFamily(
   `;
 }
 
-async function tokensFor(
+export async function tokensFor(
   actor: AuthActor,
   refreshToken: string,
   refreshExpiresAt: Date,
 ): Promise<SessionTokens> {
   const ttl =
-    actor.mustChangePassword || actor.roles.includes("ADMIN")
+    actor.purpose !== "FULL"
       ? Math.min(getAuthConfig().accessTtlSeconds, 300)
       : getAuthConfig().accessTtlSeconds;
   const accessExpiresAt = new Date(
@@ -102,6 +125,44 @@ async function tokensFor(
     refreshToken,
     accessExpiresAt,
     refreshExpiresAt,
+  };
+}
+
+/** Tạo phiên trong transaction của caller; phiên hạn chế không phát refresh. */
+export async function createAuthenticatedSession(
+  tx: Prisma.TransactionClient,
+  user: UserIdentity,
+  context: AuthContext,
+  purpose: SessionPurpose,
+  mfa: boolean,
+): Promise<{ actor: AuthActor; refreshToken: string; refreshExpiresAt: Date }> {
+  const id = randomUUID();
+  const familyId = randomUUID();
+  const randomRefresh = newRefreshToken();
+  const expiresAt = new Date(
+    Date.now() +
+      (purpose === "FULL" ? getAuthConfig().refreshTtlDays * 86400000 : 300000),
+  );
+  const required = await isMfaRequired(
+    user.roles.map((row) => row.role),
+    tx,
+  );
+  await tx.userSession.create({
+    data: {
+      id,
+      userId: user.id,
+      familyId,
+      purpose,
+      mfaVerifiedAt: mfa ? new Date() : null,
+      refreshTokenHash: hashRefreshToken(randomRefresh),
+      expiresAt,
+      userAgent: context.userAgent?.slice(0, 512),
+    },
+  });
+  return {
+    actor: actorFrom(user, id, familyId, purpose, mfa, required),
+    refreshToken: purpose === "FULL" ? randomRefresh : "",
+    refreshExpiresAt: expiresAt,
   };
 }
 
@@ -154,49 +215,51 @@ export async function login(
     });
     throw invalidLogin();
   }
-  const sessionId = randomUUID();
-  const familyId = randomUUID();
-  const refreshToken = newRefreshToken();
-  const refreshExpiresAt = new Date(
-    Date.now() + getAuthConfig().refreshTtlDays * 86400 * 1000,
-  );
-  const activeUser = await getDb().$transaction(async (tx) => {
+  const created = await getDb().$transaction(async (tx) => {
     await assertLoginAllowed(tx, [accountKey, ipKey]);
     // Lần kiểm trạng thái cuối ngay trước tạo phiên. getActor còn kiểm lại mỗi request.
     await tx.$queryRaw`SELECT id FROM User WHERE id = ${user.id} FOR UPDATE`;
     const active = await tx.user.findUnique({
       where: { id: user.id },
-      include: { roles: true },
+      include: { roles: true, totp: true },
     });
     if (
       active?.status !== "ACTIVE" ||
       active.passwordHash !== user.passwordHash
     )
       throw invalidLogin();
-    await tx.userSession.create({
-      data: {
-        id: sessionId,
-        userId: user.id,
-        familyId,
-        refreshTokenHash: hashRefreshToken(refreshToken),
-        expiresAt: refreshExpiresAt,
-        userAgent: context.userAgent?.slice(0, 512),
-      },
-    });
+    const required = await isMfaRequired(
+      active.roles.map((row) => row.role),
+      tx,
+    );
+    const purpose = active.mustChangePassword
+      ? "PASSWORD_CHANGE"
+      : required
+        ? active.totp?.enabledAt
+          ? "MFA_VERIFY"
+          : "MFA_SETUP"
+        : "FULL";
+    const result = await createAuthenticatedSession(
+      tx,
+      active,
+      context,
+      purpose,
+      false,
+    );
     await tx.auditLog.create({
       data: {
         actorId: user.id,
         action: "AUTH_LOGIN",
         objectType: "UserSession",
-        objectId: sessionId,
+        objectId: result.actor.sessionId,
       },
     });
-    return active;
+    return result;
   });
   return tokensFor(
-    actorFrom(activeUser, sessionId, familyId),
-    refreshToken,
-    refreshExpiresAt,
+    created.actor,
+    created.refreshToken,
+    created.refreshExpiresAt,
   );
 }
 
@@ -214,6 +277,7 @@ export async function refreshSession(
   if (!session) throw invalidSession();
   const revokeFamily = async (action: string) => {
     await getDb().$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT id FROM User WHERE id = ${session.userId} FOR UPDATE`;
       await lockFamily(tx, session.familyId);
       await tx.userSession.updateMany({
         where: { familyId: session.familyId, revokedAt: null },
@@ -234,18 +298,35 @@ export async function refreshSession(
     await revokeFamily("AUTH_REFRESH_REUSE");
     throw invalidSession();
   }
-  if (session.expiresAt <= new Date() || session.user.status !== "ACTIVE") {
+  if (
+    session.expiresAt <= new Date() ||
+    session.user.status !== "ACTIVE" ||
+    session.purpose !== "FULL"
+  ) {
     await revokeFamily("AUTH_REFRESH_DENIED");
     throw invalidSession();
   }
   const nextId = randomUUID();
   const refreshToken = newRefreshToken();
   const rotated = await getDb().$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM User WHERE id = ${session.userId} FOR UPDATE`;
     await lockFamily(tx, session.familyId);
     const current = await tx.userSession.findUnique({
       where: { id: session.id },
+      include: { user: { include: { roles: true } } },
     });
     if (!current || current.revokedAt || current.expiresAt <= new Date())
+      return false;
+    const required = await isMfaRequired(
+      current.user.roles.map((row) => row.role),
+      tx,
+    );
+    if (
+      current.purpose !== "FULL" ||
+      current.user.status !== "ACTIVE" ||
+      current.user.mustChangePassword ||
+      (required && !current.mfaVerifiedAt)
+    )
       return false;
     const changed = await tx.userSession.updateMany({
       where: { id: session.id, revokedAt: null, expiresAt: { gt: new Date() } },
@@ -260,6 +341,8 @@ export async function refreshSession(
         refreshTokenHash: hashRefreshToken(refreshToken),
         // Hạn tuyệt đối của chuỗi, không kéo dài vô hạn bằng refresh.
         expiresAt: session.expiresAt,
+        purpose: "FULL",
+        mfaVerifiedAt: current.mfaVerifiedAt,
         rotatedFromId: session.id,
         userAgent: context.userAgent?.slice(0, 512),
       },
@@ -272,17 +355,20 @@ export async function refreshSession(
         objectId: nextId,
       },
     });
-    return true;
+    return actorFrom(
+      current.user,
+      nextId,
+      session.familyId,
+      "FULL",
+      !!current.mfaVerifiedAt,
+      required,
+    );
   });
   if (!rotated) {
     await revokeFamily("AUTH_REFRESH_REUSE");
     throw invalidSession();
   }
-  return tokensFor(
-    actorFrom(session.user, nextId, session.familyId),
-    refreshToken,
-    session.expiresAt,
-  );
+  return tokensFor(rotated, refreshToken, session.expiresAt);
 }
 
 export async function getActor(
@@ -305,17 +391,72 @@ export async function getActor(
     session.user.status !== "ACTIVE"
   )
     return null;
-  const resolved = actorFrom(session.user, session.id, session.familyId);
+  if (
+    session.purpose !== claims.purpose ||
+    !!session.mfaVerifiedAt !== claims.mfa
+  )
+    return null;
+  const required = await isMfaRequired(
+    session.user.roles.map((row) => row.role),
+  );
+  if (session.purpose === "FULL" && required && !session.mfaVerifiedAt)
+    return null;
+  const resolved = actorFrom(
+    session.user,
+    session.id,
+    session.familyId,
+    session.purpose,
+    claims.mfa && !!session.mfaVerifiedAt,
+    required,
+  );
   resolved.mustChangePassword = resolved.mustChangePassword || claims.pwd;
   // Cả flag JWT và flag hiện tại được kiểm; token hạn chế không tự trở thành đầy đủ.
   if (
     !allowPasswordChange &&
-    (resolved.mustChangePassword ||
-      claims.pwd ||
-      resolved.roles.includes("ADMIN"))
+    (resolved.mustChangePassword || claims.pwd || resolved.purpose !== "FULL")
   )
     return null;
   return resolved;
+}
+
+/** Xác minh lại actor tại ranh giới service; không tin role/purpose do caller gán. */
+export async function requireFreshActor(
+  actor: AuthActor,
+  db: Prisma.TransactionClient = getDb(),
+): Promise<AuthActor> {
+  const session = await db.userSession.findUnique({
+    where: { id: actor.sessionId },
+    include: { user: { include: { roles: true } } },
+  });
+  if (
+    !session ||
+    session.userId !== actor.userId ||
+    session.familyId !== actor.familyId ||
+    session.revokedAt ||
+    session.expiresAt <= new Date() ||
+    session.user.status !== "ACTIVE"
+  )
+    throw invalidSession();
+  const purpose = session.purpose;
+  if (purpose !== actor.purpose || !!session.mfaVerifiedAt !== actor.mfa)
+    throw invalidSession();
+  const required = await isMfaRequired(
+    session.user.roles.map((row) => row.role),
+    db,
+  );
+  if (
+    purpose === "FULL" &&
+    (session.user.mustChangePassword || (required && !session.mfaVerifiedAt))
+  )
+    throw invalidSession();
+  return actorFrom(
+    session.user,
+    session.id,
+    session.familyId,
+    purpose,
+    !!session.mfaVerifiedAt,
+    required,
+  );
 }
 
 export async function logout(
@@ -340,6 +481,7 @@ export async function logout(
   const userId = actor?.userId ?? session?.userId;
   if (!familyId || !userId) return;
   await getDb().$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM User WHERE id = ${userId} FOR UPDATE`;
     await lockFamily(tx, familyId);
     await tx.userSession.updateMany({
       where: { familyId, userId, revokedAt: null },
@@ -372,6 +514,7 @@ export async function changePassword(
     !session ||
     session.userId !== actor.userId ||
     session.familyId !== actor.familyId ||
+    (session.purpose !== "FULL" && session.purpose !== "PASSWORD_CHANGE") ||
     session.revokedAt ||
     session.expiresAt <= new Date()
   )
@@ -402,6 +545,8 @@ export async function changePassword(
     });
     if (
       !currentSession ||
+      (currentSession.purpose !== "FULL" &&
+        currentSession.purpose !== "PASSWORD_CHANGE") ||
       currentSession.revokedAt ||
       currentSession.expiresAt <= new Date()
     )

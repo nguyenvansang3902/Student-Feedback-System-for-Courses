@@ -9,6 +9,7 @@ import {
   type InputHTMLAttributes,
 } from "react";
 import { authRequest, restoreSession } from "./auth-client";
+import { authDestination } from "./destination";
 import { focusRing } from "./auth-shell";
 
 type Mode =
@@ -113,10 +114,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
     let active = true;
     void restoreSession().then((user) => {
       if (!active) return;
-      if (user)
-        window.location.replace(
-          user.mustChangePassword ? "/doi-mat-khau" : "/tai-khoan",
-        );
+      if (user) window.location.replace(authDestination(user));
       else setRestoring(false);
     });
     return () => {
@@ -211,9 +209,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       }
       if (mode === "login") {
         form.reset();
-        window.location.replace(
-          result.mustChangePassword ? "/doi-mat-khau" : "/tai-khoan",
-        );
+        window.location.replace(authDestination(result));
         return;
       }
       form.reset();

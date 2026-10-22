@@ -1,4 +1,4 @@
-// Schema áp dụng đến Tuần 3. Bản thiết kế toàn hệ thống: design.prisma.
+// Schema áp dụng đến Tuần 4. Bản thiết kế toàn hệ thống: design.prisma.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -47,6 +47,8 @@ model User {
   updatedAt          DateTime             @updatedAt @db.DateTime(3)
   sessions           UserSession[]
   authTokens         AuthToken[]
+  totp               TotpCredential?
+  settings           SystemSetting[]
   audit              AuditLog[]
   roles              RoleAssignment[]
   teaching           TeachingAssignment[]
@@ -161,11 +163,20 @@ enum AuthTokenKind {
   PASSWORD_RESET
 }
 
+enum SessionPurpose {
+  FULL
+  PASSWORD_CHANGE
+  MFA_SETUP
+  MFA_VERIFY
+}
+
 model UserSession {
   id               String       @id @default(uuid()) @db.Char(36)
   userId           String       @db.Char(36)
   refreshTokenHash String       @unique @db.Char(64)
   familyId         String       @db.Char(36)
+  purpose          SessionPurpose @default(FULL)
+  mfaVerifiedAt    DateTime?     @db.DateTime(3)
   expiresAt        DateTime     @db.DateTime(3)
   createdAt        DateTime     @default(now()) @db.DateTime(3)
   revokedAt        DateTime?    @db.DateTime(3)
@@ -210,4 +221,40 @@ model AuditLog {
 
   @@index([actorId, occurredAt])
   @@index([objectType, objectId])
+}
+
+
+model TotpCredential {
+  userId           String             @id @db.Char(36)
+  encryptedSecret  String             @db.Text
+  keyVersion       String             @db.VarChar(32)
+  enabledAt        DateTime?          @db.DateTime(3)
+  pendingExpiresAt DateTime?          @db.DateTime(3)
+  lastUsedStep     BigInt?
+  failedAttempts   Int                @default(0)
+  lockedUntil      DateTime?          @db.DateTime(3)
+  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  recoveryCodes    TotpRecoveryCode[]
+}
+
+
+model TotpRecoveryCode {
+  id         String         @id @default(uuid()) @db.Char(36)
+  userId     String         @db.Char(36)
+  codeHash   String         @unique @db.Char(64)
+  usedAt     DateTime?      @db.DateTime(3)
+  credential TotpCredential @relation(fields: [userId], references: [userId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([userId])
+}
+
+
+model SystemSetting {
+  key         String   @id @db.VarChar(100)
+  value       Json
+  updatedById String?  @db.Char(36)
+  updatedAt   DateTime @updatedAt @db.DateTime(3)
+  updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([updatedById])
 }

@@ -15,6 +15,7 @@ const { db, config } = vi.hoisted(() => {
     userSession: { findUnique: vi.fn(), updateMany: vi.fn(), create: vi.fn() },
     authToken: { updateMany: vi.fn() },
     auditLog: { create: vi.fn() },
+    systemSetting: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
     $transaction: vi.fn(),
   };
@@ -54,6 +55,9 @@ function record(actor: AuthActor) {
     familyId: actor.familyId,
     expiresAt: new Date(Date.now() + 86400000),
     revokedAt: null,
+    purpose:
+      actor.purpose ?? (actor.mustChangePassword ? "PASSWORD_CHANGE" : "FULL"),
+    mfaVerifiedAt: actor.mfa ? new Date() : null,
     user: {
       id: actor.userId,
       loginCode: actor.loginCode,
@@ -73,6 +77,7 @@ beforeEach(() => {
   db.userSession.updateMany.mockResolvedValue({ count: 1 });
   db.userSession.create.mockResolvedValue({});
   db.auditLog.create.mockResolvedValue({});
+  db.systemSetting.findUnique.mockResolvedValue(null);
 });
 
 describe("BR-31/BR-34 — guard kiểm phiên và dữ liệu hiện tại", () => {
@@ -113,7 +118,11 @@ describe("BR-31/BR-34 — guard kiểm phiên và dữ liệu hiện tại", () 
   it("mật khẩu tạm và ADMIN chỉ được resolve rõ mục đích, không thành phiên đầy đủ", async () => {
     for (const actor of [
       { ...identity(), mustChangePassword: true },
-      { ...identity(), roles: ["ADMIN"] as AuthActor["roles"] },
+      {
+        ...identity(),
+        roles: ["ADMIN"] as AuthActor["roles"],
+        purpose: "MFA_SETUP" as const,
+      },
     ]) {
       const token = await mintAccessToken(actor, new Date(Date.now() + 60000));
       db.userSession.findUnique.mockResolvedValue(record(actor));
@@ -136,6 +145,40 @@ describe("BR-31/BR-34 — guard kiểm phiên và dữ liệu hiện tại", () 
     expect(await getActor(token, true)).toMatchObject({
       mustChangePassword: true,
     });
+  });
+  it("BR-32: claim mfa:true không thay thế timestamp xác minh trong DB", async () => {
+    const actor = {
+      ...identity(),
+      roles: ["ADMIN"] as AuthActor["roles"],
+      purpose: "FULL" as const,
+      mfa: true,
+    };
+    const token = await mintAccessToken(actor, new Date(Date.now() + 60000));
+    db.userSession.findUnique.mockResolvedValue({
+      ...record(actor),
+      mfaVerifiedAt: null,
+    });
+    expect(await getActor(token, true)).toBeNull();
+    db.userSession.findUnique.mockResolvedValue(record(actor));
+    expect(await getActor(token)).toMatchObject({ mfa: true, purpose: "FULL" });
+  });
+  it("FR-08: cấu hình mới bắt buộc MFA vô hiệu phiên chưa MFA; pending không tự nâng quyền", async () => {
+    const actor = { ...identity(), purpose: "FULL" as const };
+    const token = await mintAccessToken(actor, new Date(Date.now() + 60000));
+    db.userSession.findUnique.mockResolvedValue(record(actor));
+    db.systemSetting.findUnique.mockResolvedValue({ value: ["SINH_VIEN"] });
+    expect(await getActor(token, true)).toBeNull();
+    const pending = { ...actor, purpose: "MFA_VERIFY" as const };
+    const pendingToken = await mintAccessToken(
+      pending,
+      new Date(Date.now() + 60000),
+    );
+    db.userSession.findUnique.mockResolvedValue({
+      ...record(pending),
+      purpose: "FULL",
+      mfaVerifiedAt: new Date(),
+    });
+    expect(await getActor(pendingToken, true)).toBeNull();
   });
 });
 
@@ -226,5 +269,48 @@ describe("BR-31 — rotation, replay và đăng xuất", () => {
       }),
     ).rejects.toMatchObject({ code: "UNAUTHENTICATED" });
     expect(db.user.findUnique).not.toHaveBeenCalled();
+  });
+  it("BR-32: refresh không nâng pending hoặc vượt chính sách MFA mới", async () => {
+    for (const purpose of [
+      "MFA_SETUP",
+      "MFA_VERIFY",
+      "PASSWORD_CHANGE",
+    ] as const) {
+      db.userSession.findUnique.mockResolvedValue(
+        record({ ...identity(), purpose }),
+      );
+      await expect(
+        refreshSession(null, newRefreshToken(), { ip: "192.0.2.5" }),
+      ).rejects.toMatchObject({ code: "INVALID_SESSION" });
+    }
+    const actor = { ...identity(), purpose: "FULL" as const };
+    db.systemSetting.findUnique.mockResolvedValue({ value: ["SINH_VIEN"] });
+    db.userSession.findUnique.mockResolvedValue(record(actor));
+    await expect(
+      refreshSession(null, newRefreshToken(), { ip: "192.0.2.5" }),
+    ).rejects.toMatchObject({ code: "INVALID_SESSION" });
+    expect(db.userSession.create).not.toHaveBeenCalled();
+  });
+  it("BR-32: refresh giữ MFA đã xác minh từ DB cùng family/hạn tuyệt đối", async () => {
+    const actor = {
+      ...identity(),
+      roles: ["ADMIN"] as AuthActor["roles"],
+      purpose: "FULL" as const,
+      mfa: true,
+    };
+    const active = record(actor);
+    db.userSession.findUnique.mockResolvedValue(active);
+    const tokens = await refreshSession(null, newRefreshToken(), {
+      ip: "192.0.2.6",
+    });
+    expect(tokens.actor).toMatchObject({
+      purpose: "FULL",
+      mfa: true,
+      mfaRequired: true,
+    });
+    expect(db.userSession.create.mock.calls[0][0].data.mfaVerifiedAt).toEqual(
+      active.mfaVerifiedAt,
+    );
+    expect(tokens.refreshExpiresAt).toEqual(active.expiresAt);
   });
 });

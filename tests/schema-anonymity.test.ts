@@ -154,8 +154,8 @@ describe("BR-03 — Mục 5.6(a), DMMF của thiết kế đầy đủ", () => {
   });
 });
 
-describe("W3 — tính nhất quán schema và phạm vi migration", () => {
-  it("schema áp dụng gồm chín bảng nền Tuần 2 và bốn bảng xác thực/kiểm toán Tuần 3", () => {
+describe("W4 — tính nhất quán schema và phạm vi migration", () => {
+  it("schema áp dụng gồm chín bảng nền và bảy bảng xác thực/quản trị đến Tuần 4", () => {
     expect(
       foundation.datamodel.models.map((model) => model.name).sort(),
     ).toEqual(
@@ -173,11 +173,14 @@ describe("W3 — tính nhất quán schema và phạm vi migration", () => {
         "AuthToken",
         "RateLimitBucket",
         "AuditLog",
+        "TotpCredential",
+        "TotpRecoveryCode",
+        "SystemSetting",
       ].sort(),
     );
   });
 
-  it("trường, quan hệ và khóa của 13 model runtime không lệch thiết kế đầy đủ", () => {
+  it("trường, quan hệ và khóa của 16 model runtime không lệch thiết kế đầy đủ", () => {
     for (const model of foundation.datamodel.models) {
       const expected = model.fields.filter((field) => field.kind !== "object");
       const actual = getModel(model.name).fields.filter(

@@ -1,14 +1,14 @@
-# ERD toàn hệ thống — cập nhật Tuần 3
+# ERD toàn hệ thống — cập nhật Tuần 4
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 3 ngày **21/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. ERD phân biệt thiết kế dữ liệu với schema đã migrate; có bảng không đồng nghĩa toàn bộ chức năng nghiệp vụ đã hoàn thành.
+Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 4 ngày **22/10/2026**. Kế hoạch Tuần 2 giả định 07–13/10/2026; không ghi lùi ngày. ERD phân biệt thiết kế dữ liệu với schema đã migrate; có bảng không đồng nghĩa toàn bộ chức năng nghiệp vụ đã hoàn thành.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**13 model đã migrate đến Tuần 3**). SHA-256 DMMF thiết kế: `a2320384188d56543a7ecf3b50c1356cd7a4df53a56880bd4e576d50c92713d3`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**16 model đã migrate đến Tuần 4**). SHA-256 DMMF thiết kế: `41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b`.
 
 ## Cách đọc và tái tạo
 
-- Tuần 2 đã migrate chín model nền người dùng/danh mục. Đến Tuần 3, runtime thêm `UserSession`, `AuthToken`, `RateLimitBucket`, `AuditLog`, tổng **13 model đã migrate đến Tuần 3**. **26 model còn lại** là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ. Bản báo cáo nghiệm thu Tuần 2 giữ kết quả chín bảng tại thời điểm đó.
+- Tuần 2 đã migrate chín model nền người dùng/danh mục. Đến Tuần 3, runtime thêm `UserSession`, `AuthToken`, `RateLimitBucket`, `AuditLog`, Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting và trạng thái MFA của phiên, tổng **16 model đã migrate đến Tuần 4**. **23 model còn lại** là thiết kế tương lai, chưa migrate hay có service/UI nghiệp vụ. Bản báo cáo nghiệm thu Tuần 2 giữ kết quả chín bảng tại thời điểm đó.
 - Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.
@@ -591,6 +591,8 @@ erDiagram
     String userId FK "NOT NULL; Char(36)"
     String refreshTokenHash UK "NOT NULL; Char(64)"
     String familyId "NOT NULL; Char(36)"
+    SessionPurpose purpose "NOT NULL; enum; default FULL"
+    DateTime mfaVerifiedAt "NULL; DateTime(3)"
     DateTime expiresAt "NOT NULL; DateTime(3)"
     DateTime createdAt "NOT NULL; DateTime(3); default now()"
     DateTime revokedAt "NULL; DateTime(3)"
@@ -736,6 +738,7 @@ erDiagram
 | FeedbackStatus    | MOI, DA_TIEP_NHAN, DANG_XU_LY, DA_TRA_LOI, DA_DONG, TU_CHOI                                       |
 | FeedbackEvent     | GUI, TIEP_NHAN, BAT_DAU_XU_LY, TRA_LOI, DONG, CHUYEN_TIEP, TU_CHOI, MO_LAI, LEO_THANG, KIEM_DUYET |
 | DeliveryStatus    | PENDING, SENT, FAILED                                                                             |
+| SessionPurpose    | FULL, PASSWORD_CHANGE, MFA_SETUP, MFA_VERIFY                                                      |
 
 ## Giới hạn và quy tắc ngoài ERD
 

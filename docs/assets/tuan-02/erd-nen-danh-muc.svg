@@ -71,7 +71,7 @@
     <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
     <text x="45" y="207" class="model">User</text>
-    <text x="45" y="248" class="meta">Đã migrate đến Tuần 3 · 9 scalar</text>
+    <text x="45" y="248" class="meta">Đã migrate đến Tuần 4 · 9 scalar</text>
     <text x="45" y="277" class="field">PK (id)</text>
     <text x="45" y="300" class="field">UK1 (loginCode)</text>
     <text x="45" y="323" class="field">UK2 (email)</text>
@@ -90,7 +90,7 @@
     <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
     <text x="579" y="207" class="model">Faculty</text>
-    <text x="579" y="248" class="meta">Đã migrate đến Tuần 3 · 4 scalar</text>
+    <text x="579" y="248" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
     <text x="579" y="277" class="field">PK (id)</text>
     <text x="579" y="300" class="field">UK1 (code)</text>
   </g>
@@ -108,7 +108,7 @@
     <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="207" class="model">Department</text>
-    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 3 · 5 scalar</text>
+    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 5 scalar</text>
     <text x="1113" y="277" class="field">PK (id)</text>
     <text x="1113" y="300" class="field">UK1 (code)</text>
     <text x="1113" y="323" class="field">FK (facultyId) → Faculty (id)</text>
@@ -127,7 +127,7 @@
     <rect x="27" y="362" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="27" y="390" width="510" height="20" fill="#1e40af" />
     <text x="45" y="393" class="model">Semester</text>
-    <text x="45" y="434" class="meta">Đã migrate đến Tuần 3 · 6 scalar</text>
+    <text x="45" y="434" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
     <text x="45" y="463" class="field">PK (id)</text>
     <text x="45" y="486" class="field">UK1 (code)</text>
   </g>
@@ -145,7 +145,7 @@
     <rect x="561" y="362" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="390" width="510" height="20" fill="#1e40af" />
     <text x="579" y="393" class="model">Course</text>
-    <text x="579" y="434" class="meta">Đã migrate đến Tuần 3 · 6 scalar</text>
+    <text x="579" y="434" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
     <text x="579" y="463" class="field">PK (id)</text>
     <text x="579" y="486" class="field">UK1 (code)</text>
     <text x="579" y="509" class="field">
@@ -166,7 +166,7 @@
     <rect x="1095" y="362" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="390" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="393" class="model">CourseSection</text>
-    <text x="1113" y="434" class="meta">Đã migrate đến Tuần 3 · 4 scalar</text>
+    <text x="1113" y="434" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
     <text x="1113" y="463" class="field">PK (id)</text>
     <text x="1113" y="486" class="field">UK1 (semesterId, code)</text>
     <text x="1113" y="509" class="field">FK (courseId) → Course (id)</text>
@@ -186,7 +186,7 @@
     <rect x="27" y="571" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="27" y="599" width="510" height="20" fill="#1e40af" />
     <text x="45" y="602" class="model">TeachingAssignment</text>
-    <text x="45" y="643" class="meta">Đã migrate đến Tuần 3 · 3 scalar</text>
+    <text x="45" y="643" class="meta">Đã migrate đến Tuần 4 · 3 scalar</text>
     <text x="45" y="672" class="field">PK (sectionId, teacherId)</text>
     <text x="45" y="695" class="field">
       FK (sectionId) → CourseSection (id)
@@ -207,7 +207,7 @@
     <rect x="561" y="571" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="599" width="510" height="20" fill="#1e40af" />
     <text x="579" y="602" class="model">Enrollment</text>
-    <text x="579" y="643" class="meta">Đã migrate đến Tuần 3 · 5 scalar</text>
+    <text x="579" y="643" class="meta">Đã migrate đến Tuần 4 · 5 scalar</text>
     <text x="579" y="672" class="field">PK (id)</text>
     <text x="579" y="695" class="field">UK1 (sectionId, studentId)</text>
     <text x="579" y="718" class="field">
@@ -229,7 +229,7 @@
     <rect x="1095" y="571" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="599" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="602" class="model">RoleAssignment</text>
-    <text x="1113" y="643" class="meta">Đã migrate đến Tuần 3 · 7 scalar</text>
+    <text x="1113" y="643" class="meta">Đã migrate đến Tuần 4 · 7 scalar</text>
     <text x="1113" y="672" class="field">PK (id)</text>
     <text x="1113" y="695" class="field">UK1 (userId, role, scopeKey)</text>
     <text x="1113" y="718" class="field">FK (userId) → User (id)</text>
@@ -239,11 +239,11 @@
     </text>
   </g>
   <text x="27" y="823" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 13 model đã
-    migrate đến Tuần 3 · Khởi tạo và cập nhật thực tế 21/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã
+    migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026
   </text>
   <text x="27" y="848" class="foot">
     SHA-256 DMMF:
-    a2320384188d56543a7ecf3b50c1356cd7a4df53a56880bd4e576d50c92713d3
+    41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b
   </text>
 </svg>

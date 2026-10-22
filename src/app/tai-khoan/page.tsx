@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { Brand, focusRing } from "@/components/auth/auth-shell";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { getPageActor } from "@/server/auth/http";
+import { authDestination } from "@/components/auth/destination";
+import { authorizeAuthAction } from "@/server/policies/auth";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -22,6 +24,8 @@ const roleLabels: Record<string, string> = {
 };
 
 function workspace(roles: readonly string[]) {
+  if (roles.includes("ADMIN"))
+    return { title: "Không gian quản trị", sections: [] };
   if (roles.includes("CAN_BO_DBCL"))
     return {
       title: "Không gian đảm bảo chất lượng",
@@ -63,31 +67,9 @@ function workspace(roles: readonly string[]) {
 export default async function AccountPage() {
   const actor = await getPageActor();
   if (!actor) redirect("/dang-nhap");
-  if (actor.mustChangePassword) redirect("/doi-mat-khau");
-  if (actor.roles.includes("ADMIN") && !actor.mfa) {
-    return (
-      <main className="min-h-screen bg-[#f7faf9]">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 py-6">
-            <Brand />
-            <LogoutButton />
-          </header>
-          <section className="mx-auto max-w-2xl py-16">
-            <p className="text-xs font-bold tracking-[0.12em] text-teal-800 uppercase">
-              Tài khoản quản trị
-            </p>
-            <h1 className="mt-4 text-3xl leading-tight font-bold text-slate-950">
-              Xác thực hai bước dành cho quản trị chưa được mở
-            </h1>
-            <p className="mt-5 text-base leading-8 text-slate-600">
-              Tài khoản quản trị cần hoàn tất xác thực hai bước trước khi sử
-              dụng các chức năng của hệ thống. Khu vực này hiện chưa sẵn sàng.
-            </p>
-          </section>
-        </div>
-      </main>
-    );
-  }
+  if (actor.mustChangePassword || (actor.purpose && actor.purpose !== "FULL"))
+    redirect(authDestination(actor));
+  authorizeAuthAction(actor, "workspace");
   const view = workspace(actor.roles);
   return (
     <main className="min-h-screen bg-[#f7faf9]">
@@ -205,38 +187,61 @@ export default async function AccountPage() {
                 </Link>
               </div>
             </section>
-            <section aria-labelledby="upcoming-title" className="mt-8">
+            <section aria-labelledby="spaces-title" className="mt-8">
               <h2
-                id="upcoming-title"
+                id="spaces-title"
                 className="text-lg font-bold text-slate-900"
               >
-                Các khu vực của bạn
+                Không gian được cấp quyền
               </h2>
-              <p className="mt-2 text-sm leading-7 text-slate-500">
-                Các chức năng dưới đây chưa mở. Bạn có thể quay lại khi hệ thống
-                cập nhật.
-              </p>
-              <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                {view.sections.map((name, index) => (
-                  <article
-                    key={name}
-                    className="rounded-2xl border border-slate-200 bg-white p-5"
+              <div className="mt-4 flex flex-wrap gap-3">
+                {actor.roles.map((role) => (
+                  <Link
+                    key={role}
+                    href={
+                      role === "ADMIN" ? "/quan-tri" : `/khong-gian/${role}`
+                    }
+                    className={`rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-semibold text-teal-900 hover:bg-teal-50 ${focusRing}`}
                   >
-                    <p
-                      aria-hidden="true"
-                      className="text-xs font-bold text-teal-700"
-                    >
-                      0{index + 1}
-                    </p>
-                    <h3 className="mt-4 text-sm leading-6 font-semibold text-slate-800">
-                      {name}
-                    </h3>
-                    <p className="mt-4 w-fit rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-500">
-                      Chưa mở
-                    </p>
-                  </article>
+                    {roleLabels[role] ?? role} <span aria-hidden="true">↗</span>
+                  </Link>
                 ))}
               </div>
+              {view.sections.length > 0 && (
+                <>
+                  <h2
+                    id="upcoming-title"
+                    className="mt-8 text-lg font-bold text-slate-900"
+                  >
+                    Các khu vực của bạn
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-slate-500">
+                    Các chức năng dưới đây chưa mở. Bạn có thể quay lại khi hệ
+                    thống cập nhật.
+                  </p>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                    {view.sections.map((name, index) => (
+                      <article
+                        key={name}
+                        className="rounded-2xl border border-slate-200 bg-white p-5"
+                      >
+                        <p
+                          aria-hidden="true"
+                          className="text-xs font-bold text-teal-700"
+                        >
+                          0{index + 1}
+                        </p>
+                        <h3 className="mt-4 text-sm leading-6 font-semibold text-slate-800">
+                          {name}
+                        </h3>
+                        <p className="mt-4 w-fit rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-500">
+                          Chưa mở
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              )}
             </section>
           </div>
         </div>

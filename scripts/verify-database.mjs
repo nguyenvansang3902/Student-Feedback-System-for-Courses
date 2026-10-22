@@ -15,6 +15,9 @@ const expectedTables = [
   "AuthToken",
   "RateLimitBucket",
   "AuditLog",
+  "TotpCredential",
+  "TotpRecoveryCode",
+  "SystemSetting",
 ];
 const tables = requireMysql(mysql("SHOW TABLES;"))
   .split(/\r?\n/)
@@ -22,7 +25,7 @@ const tables = requireMysql(mysql("SHOW TABLES;"))
   .sort();
 if (JSON.stringify(tables) !== JSON.stringify(expectedTables.sort()))
   throw new Error(
-    "Database không đúng 13 bảng đã migrate đến Tuần 3 (9 bảng nền và 4 bảng xác thực/kiểm toán).",
+    "Database không đúng 16 bảng đã migrate đến Tuần 4 (9 bảng nền và 7 bảng xác thực/quản trị).",
   );
 
 const ids = Object.fromEntries(

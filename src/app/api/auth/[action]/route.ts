@@ -24,6 +24,12 @@ import {
   requestPasswordReset,
   resetPassword,
 } from "@/server/services/account-recovery";
+import {
+  startMfaSetup,
+  confirmMfaSetup,
+  verifyMfa,
+  getMfaStatus,
+} from "@/server/services/mfa";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -48,6 +54,9 @@ const supported = new Set([
   "request-activation",
   "reset-password",
   "activate",
+  "mfa-setup",
+  "mfa-confirm",
+  "mfa-verify",
 ]);
 
 function failure(error: unknown) {
@@ -79,7 +88,7 @@ function failure(error: unknown) {
 
 export async function GET(request: NextRequest, context: RouteContext) {
   const { action } = await context.params;
-  if (action !== "me")
+  if (action !== "me" && action !== "mfa-status")
     return authJson({ ok: false, message: "Không tìm thấy chức năng." }, 404);
   try {
     const raw = request.cookies.get(ACCESS_COOKIE)?.value;
@@ -90,6 +99,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
         401,
         "INVALID_SESSION",
       );
+    if (action === "mfa-status")
+      return authJson({ ok: true, ...(await getMfaStatus(actor)) });
     return authJson({
       ok: true,
       user: {
@@ -100,6 +111,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
         roles: actor.roles,
         mustChangePassword: actor.mustChangePassword,
         mfa: actor.mfa,
+        mfaRequired: actor.mfaRequired,
+        purpose: actor.purpose ?? "FULL",
       },
     });
   } catch (error) {
@@ -124,6 +137,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
       const response = authJson({
         ok: true,
         mustChangePassword: tokens.actor.mustChangePassword,
+        mfaRequired: tokens.actor.mfaRequired,
+        purpose: tokens.actor.purpose ?? "FULL",
       });
       setSessionCookies(response, tokens);
       return response;
@@ -134,6 +149,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
       const response = authJson({
         ok: true,
         mustChangePassword: tokens.actor.mustChangePassword,
+        mfaRequired: tokens.actor.mfaRequired,
+        purpose: tokens.actor.purpose ?? "FULL",
       });
       setSessionCookies(response, tokens);
       return response;
@@ -160,6 +177,40 @@ export async function POST(request: NextRequest, context: RouteContext) {
         message: "Đã đổi mật khẩu. Vui lòng đăng nhập lại.",
       });
       clearSessionCookies(response);
+      return response;
+    }
+    if (action.startsWith("mfa-")) {
+      const actor = access ? await getActor(access, true) : null;
+      if (!actor)
+        throw new AuthError(
+          "Phiên xác thực đã hết hạn. Vui lòng đăng nhập lại.",
+          401,
+          "INVALID_SESSION",
+        );
+      if (action === "mfa-setup") {
+        z.object({}).strict().parse(input);
+        return authJson({ ok: true, ...(await startMfaSetup(actor, client)) });
+      }
+      const data = z
+        .object({ code: z.string().trim().min(1).max(128) })
+        .strict()
+        .parse(input);
+      if (action === "mfa-confirm") {
+        const result = await confirmMfaSetup(actor, data, client);
+        const response = authJson({
+          ok: true,
+          recoveryCodes: result.recoveryCodes,
+          purpose: "FULL",
+        });
+        setSessionCookies(response, result.tokens);
+        return response;
+      }
+      const tokens = await verifyMfa(actor, data, client);
+      const response = authJson({
+        ok: true,
+        purpose: tokens.actor.purpose ?? "FULL",
+      });
+      setSessionCookies(response, tokens);
       return response;
     }
     if (action === "forgot-password" || action === "request-activation") {

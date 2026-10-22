@@ -102,7 +102,7 @@ describe("BR-31 — JWT và refresh", () => {
     config.jwtAudience = "other-audience";
     expect(await verifyAccessToken(token)).toBeNull();
   });
-  it("không nhận HS384, thiếu claims hoặc token tự tuyên bố mfa:true", async () => {
+  it("không nhận HS384, thiếu claims hoặc mfa:true sai mục đích", async () => {
     const identity = actor();
     const make = (alg: string, extra: Record<string, unknown> = {}) =>
       new SignJWT({
@@ -112,6 +112,7 @@ describe("BR-31 — JWT và refresh", () => {
         mfa: false,
         pwd: false,
         tokenUse: "access",
+        purpose: "FULL",
         ...extra,
       })
         .setProtectedHeader({ alg, typ: "JWT" })
@@ -124,7 +125,9 @@ describe("BR-31 — JWT và refresh", () => {
         .sign(new TextEncoder().encode(config.jwtSecret));
     expect(await verifyAccessToken(await make("HS384"))).toBeNull();
     expect(
-      await verifyAccessToken(await make("HS256", { mfa: true })),
+      await verifyAccessToken(
+        await make("HS256", { mfa: true, purpose: "MFA_VERIFY" }),
+      ),
     ).toBeNull();
     expect(
       await verifyAccessToken(await make("HS256", { sid: "không-phải-uuid" })),

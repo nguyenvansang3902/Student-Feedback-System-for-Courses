@@ -28,7 +28,13 @@
     "test:auth": "tsx scripts/verify-auth.ts",
     "predb:seed": "npm run db:generate",
     "pretest:auth": "npm run db:generate",
-    "prebuild": "npm run db:generate"
+    "prebuild": "npm run db:generate",
+    "admin:create": "tsx scripts/admin-console.ts create",
+    "admin:reset-2fa": "tsx scripts/admin-console.ts reset-mfa",
+    "preadmin:create": "npm run db:generate",
+    "preadmin:reset-2fa": "npm run db:generate",
+    "test:week4": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-admin-console.ts && tsx scripts/verify-week4.ts",
+    "pretest:week4": "npm run db:generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "7.10.1",
@@ -38,6 +44,8 @@
     "jose": "6.2.13",
     "next": "16.3.8",
     "nodemailer": "10.1.7",
+    "otplib": "13.5.0",
+    "qrcode": "1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "4.6.7"
@@ -47,6 +55,7 @@
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.1",
     "@types/nodemailer": "8.0.2",
+    "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "9.39.5",

@@ -9,6 +9,7 @@ const { db, compare } = vi.hoisted(() => ({
     userSession: { create: vi.fn() },
     rateLimitBucket: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
+    systemSetting: { findUnique: vi.fn() },
     $executeRaw: vi.fn(),
     $queryRaw: vi.fn(),
     $transaction: vi.fn(),
@@ -39,6 +40,7 @@ beforeEach(() => {
   db.$transaction.mockImplementation(async (fn) => fn(db));
   db.userSession.create.mockResolvedValue({});
   db.auditLog.create.mockResolvedValue({});
+  db.systemSetting.findUnique.mockResolvedValue(null);
 });
 
 describe("BR-33 — khóa đồng thời trong lúc bcrypt đang chạy", () => {
@@ -131,4 +133,45 @@ describe("BR-33 — khóa đồng thời trong lúc bcrypt đang chạy", () => 
     );
     expect(queries[2][0].join("")).toContain("FROM User");
   });
+  it.each([
+    { enabled: false, temporary: false, purpose: "MFA_SETUP" },
+    { enabled: true, temporary: false, purpose: "MFA_VERIFY" },
+    { enabled: true, temporary: true, purpose: "PASSWORD_CHANGE" },
+  ])(
+    "BR-32: ADMIN login chỉ cấp mục đích $purpose trong5phút, không refresh",
+    async ({ enabled, temporary, purpose }) => {
+      const account = {
+        ...user(),
+        roles: [{ role: "ADMIN" }],
+        mustChangePassword: temporary,
+        totp: enabled ? { enabledAt: new Date() } : null,
+      };
+      db.user.findFirst.mockResolvedValue(account);
+      db.user.findUnique.mockResolvedValue(account);
+      compare.mockResolvedValue(true);
+      db.$queryRaw.mockImplementation(async (strings: TemplateStringsArray) =>
+        strings.join("").includes("FROM RateLimitBucket")
+          ? [{ lockedUntil: null }]
+          : [],
+      );
+      const tokens = await login(
+        null,
+        { identifier: account.loginCode, password: "Correct-password!" },
+        { ip },
+      );
+      expect(tokens.actor).toMatchObject({
+        purpose,
+        mfa: false,
+        mfaRequired: true,
+      });
+      expect(tokens.refreshToken).toBe("");
+      expect(tokens.accessExpiresAt.getTime() - Date.now()).toBeLessThanOrEqual(
+        300000,
+      );
+      expect(db.userSession.create.mock.calls[0][0].data).toMatchObject({
+        purpose,
+        mfaVerifiedAt: null,
+      });
+    },
+  );
 });

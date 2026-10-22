@@ -10,6 +10,11 @@ const authEnvironment = z.object({
       /^[a-f0-9]{64,}$/i,
       "JWT_SECRET cần ít nhất 32 byte ngẫu nhiên dạng hex.",
     ),
+  MFA_ENCRYPTION_KEY: z.string().regex(/^[a-f0-9]{64}$/i),
+  MFA_KEY_VERSION: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{1,32}$/)
+    .default("v1"),
   JWT_ISSUER: z.string().min(1).default("student-feedback-system"),
   JWT_AUDIENCE: z.string().min(1).default("student-feedback-web"),
   ACCESS_TTL_SECONDS: z.coerce.number().int().min(60).max(3600).default(900),
@@ -33,6 +38,8 @@ export function getAuthConfig() {
     );
   }
   const value = parsed.data;
+  if (value.MFA_ENCRYPTION_KEY.toLowerCase() === value.JWT_SECRET.toLowerCase())
+    throw new Error("Khóa MFA và JWT phải được sinh riêng biệt.");
   const app = new URL(value.APP_URL);
   if (
     !["http:", "https:"].includes(app.protocol) ||
@@ -53,6 +60,8 @@ export function getAuthConfig() {
     appUrl: app.origin,
     databaseUrl: value.DATABASE_URL,
     jwtSecret: value.JWT_SECRET,
+    mfaEncryptionKey: value.MFA_ENCRYPTION_KEY,
+    mfaKeyVersion: value.MFA_KEY_VERSION,
     jwtIssuer: value.JWT_ISSUER,
     jwtAudience: value.JWT_AUDIENCE,
     accessTtlSeconds: value.ACCESS_TTL_SECONDS,

@@ -1,4 +1,8 @@
-import type { Role } from "../../generated/prisma/enums";
+import type {
+  Role,
+  ScopeType,
+  SessionPurpose,
+} from "../../generated/prisma/enums";
 
 export class AuthError extends Error {
   constructor(
@@ -20,8 +24,15 @@ export interface AuthActor {
   sessionId: string;
   familyId: string;
   mustChangePassword: boolean;
-  // Tuần 3 chưa triển khai TOTP; không cấp đặc quyền ADMIN.
-  mfa: false;
+  mfa: boolean;
+  purpose?: SessionPurpose;
+  mfaRequired?: boolean;
+  assignments?: {
+    role: Role;
+    scopeType: ScopeType;
+    facultyId: string | null;
+    departmentId: string | null;
+  }[];
 }
 
 export interface AuthContext {

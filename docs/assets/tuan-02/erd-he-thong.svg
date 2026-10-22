@@ -75,7 +75,7 @@
     <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
     <text x="45" y="207" class="model">UserSession</text>
-    <text x="45" y="248" class="meta">Đã migrate đến Tuần 3 · 9 scalar</text>
+    <text x="45" y="248" class="meta">Đã migrate đến Tuần 4 · 11 scalar</text>
     <text x="45" y="277" class="field">PK (id)</text>
     <text x="45" y="300" class="field">UK1 (refreshTokenHash)</text>
     <text x="45" y="323" class="field">UK2 (rotatedFromId)</text>
@@ -98,7 +98,7 @@
     <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
     <text x="579" y="207" class="model">AuthToken</text>
-    <text x="579" y="248" class="meta">Đã migrate đến Tuần 3 · 6 scalar</text>
+    <text x="579" y="248" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
     <text x="579" y="277" class="field">PK (id)</text>
     <text x="579" y="300" class="field">UK1 (tokenHash)</text>
     <text x="579" y="323" class="field">FK (userId) → User (id)</text>
@@ -117,9 +117,7 @@
     <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="207" class="model">TotpCredential</text>
-    <text x="1113" y="248" class="meta">
-      Thiết kế tương lai; chưa migration · 8 scalar
-    </text>
+    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 8 scalar</text>
     <text x="1113" y="277" class="field">PK (userId)</text>
     <text x="1113" y="300" class="field">FK (userId) → User (id)</text>
   </g>
@@ -137,9 +135,7 @@
     <rect x="27" y="408" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="27" y="436" width="510" height="20" fill="#1e40af" />
     <text x="45" y="439" class="model">TotpRecoveryCode</text>
-    <text x="45" y="480" class="meta">
-      Thiết kế tương lai; chưa migration · 4 scalar
-    </text>
+    <text x="45" y="480" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
     <text x="45" y="509" class="field">PK (id)</text>
     <text x="45" y="532" class="field">UK1 (codeHash)</text>
     <text x="45" y="555" class="field">
@@ -160,7 +156,7 @@
     <rect x="561" y="408" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="436" width="510" height="20" fill="#1e40af" />
     <text x="579" y="439" class="model">RateLimitBucket</text>
-    <text x="579" y="480" class="meta">Đã migrate đến Tuần 3 · 4 scalar</text>
+    <text x="579" y="480" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
     <text x="579" y="509" class="field">PK (keyHash)</text>
   </g>
   <g aria-label="Notification">
@@ -221,9 +217,7 @@
     <rect x="561" y="594" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="561" y="622" width="510" height="20" fill="#1e40af" />
     <text x="579" y="625" class="model">SystemSetting</text>
-    <text x="579" y="666" class="meta">
-      Thiết kế tương lai; chưa migration · 4 scalar
-    </text>
+    <text x="579" y="666" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
     <text x="579" y="695" class="field">PK (key)</text>
     <text x="579" y="718" class="field">FK (updatedById) → User (id)</text>
   </g>
@@ -241,7 +235,7 @@
     <rect x="1095" y="594" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="622" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="625" class="model">AuditLog</text>
-    <text x="1113" y="666" class="meta">Đã migrate đến Tuần 3 · 7 scalar</text>
+    <text x="1113" y="666" class="meta">Đã migrate đến Tuần 4 · 7 scalar</text>
     <text x="1113" y="695" class="field">PK (id)</text>
     <text x="1113" y="718" class="field">FK (actorId) → User (id)</text>
   </g>
@@ -260,18 +254,18 @@
     <rect x="27" y="831" width="510" height="20" fill="#64748b" />
     <text x="45" y="834" class="model">User</text>
     <text x="45" y="875" class="meta">
-      Ngữ cảnh lặp · Đã migrate đến Tuần 3 · 9 scalar
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 9 scalar
     </text>
     <text x="45" y="904" class="field">PK (id)</text>
     <text x="45" y="927" class="field">UK1 (loginCode)</text>
     <text x="45" y="950" class="field">UK2 (email)</text>
   </g>
   <text x="27" y="1009" class="foot">
-    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 13 model đã
-    migrate đến Tuần 3 · Khởi tạo và cập nhật thực tế 21/10/2026
+    Sinh từ prisma/design.prisma qua DMMF · 39 model thiết kế / 16 model đã
+    migrate đến Tuần 4 · Khởi tạo 21/10, cập nhật thực tế 22/10/2026
   </text>
   <text x="27" y="1034" class="foot">
     SHA-256 DMMF:
-    a2320384188d56543a7ecf3b50c1356cd7a4df53a56880bd4e576d50c92713d3
+    41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b
   </text>
 </svg>

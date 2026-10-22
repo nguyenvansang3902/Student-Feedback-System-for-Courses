@@ -1,6 +1,6 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
-import { Role } from "../../generated/prisma/enums";
+import { Role, SessionPurpose } from "../../generated/prisma/enums";
 import { getAuthConfig } from "../../lib/env";
 import type { AuthActor } from "./types";
 
@@ -9,7 +9,8 @@ export interface AccessClaims extends JWTPayload {
   sid: string;
   fid: string;
   roles: Role[];
-  mfa: false;
+  mfa: boolean;
+  purpose: SessionPurpose;
   pwd: boolean;
   tokenUse: "access";
 }
@@ -35,7 +36,9 @@ export async function mintAccessToken(
     sid: actor.sessionId,
     fid: actor.familyId,
     roles: actor.roles,
-    mfa: false,
+    mfa: actor.mfa,
+    purpose:
+      actor.purpose ?? (actor.mustChangePassword ? "PASSWORD_CHANGE" : "FULL"),
     pwd: actor.mustChangePassword,
     tokenUse: "access",
   })
@@ -76,7 +79,11 @@ export async function verifyAccessToken(
       !uuid.test(payload.sid) ||
       typeof payload.fid !== "string" ||
       !uuid.test(payload.fid) ||
-      payload.mfa !== false ||
+      typeof payload.mfa !== "boolean" ||
+      !Object.values(SessionPurpose).includes(
+        payload.purpose as SessionPurpose,
+      ) ||
+      (payload.mfa && (payload.purpose !== "FULL" || payload.pwd !== false)) ||
       typeof payload.pwd !== "boolean" ||
       !Array.isArray(payload.roles) ||
       !payload.roles.every((role) => Object.values(Role).includes(role))
