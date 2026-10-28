@@ -17,12 +17,14 @@ const safeKeys = new Set([
   "method", "mfaRequired", "usedRecoveryCode", "recoveryCodesGenerated",
   "reasonProvided", "reasonLength", "source", "recoveryCodeCount",
   "kind", "size", "console", "futureModules", "created", "newUsers",
+  "familyId", "sourceId", "version", "revision", "groupCount", "questionCount", "previousDefaultCount", "isDefault",
 ]);
 const safeText = new Set([
   "ACTIVE", "DISABLED", "PENDING_ACTIVATION", "GLOBAL", "FACULTY", "DEPARTMENT",
   "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN",
   "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY", "TOTP", "RECOVERY_CODE",
   "totp", "recovery", "password", "server-console",
+  "NHAP", "DA_KHOA",
 ]);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fieldText = new Map<string, ReadonlySet<string>>([
@@ -30,11 +32,13 @@ const fieldText = new Map<string, ReadonlySet<string>>([
   ["size", new Set(["small", "medium", "large"])],
   ["purpose", new Set(["ACTIVATION", "PASSWORD_RESET", "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY"])],
 ]);
-const fieldBoolean = new Set(["console", "futureModules", "reasonProvided"]);
-const fieldNumber = new Set(["created", "newUsers", "reasonLength"]);
+const fieldBoolean = new Set(["console", "futureModules", "reasonProvided", "isDefault"]);
+const fieldNumber = new Set(["created", "newUsers", "reasonLength", "groupCount", "questionCount", "previousDefaultCount"]);
 
 function redactField(key: string, value: unknown, depth: number): Prisma.InputJsonValue | null {
   if (depth > 4) return null;
+  if (key === "familyId" || key === "sourceId") return typeof value === "string" && uuid.test(value) ? value : null;
+  if (key === "version" || key === "revision") return typeof value === "number" && Number.isSafeInteger(value) && value >= 1 ? value : null;
   const allowed = fieldText.get(key);
   if (allowed) return typeof value === "string" && allowed.has(value) ? value : null;
   if (fieldBoolean.has(key)) return typeof value === "boolean" ? value : null;

@@ -196,6 +196,14 @@ export default async function AccountPage() {
                 Không gian được cấp quyền
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
+                {can(actor, "templates:list") && (
+                  <Link
+                    href="/mau-phieu"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Mẫu phiếu khảo sát <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 {can(actor, "catalog:list") && (
                   <Link
                     href="/danh-muc"

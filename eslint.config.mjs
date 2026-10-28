@@ -12,6 +12,7 @@ export default defineConfig([
     ".next-auth/**",
     ".next-demo/**",
     ".next-week5/**",
+    ".next-week6/**",
     "out/**",
     "build/**",
     "src/generated/**",

@@ -48,6 +48,14 @@ export default async function WorkspacePage({
           <h1 className="mt-3 text-3xl font-bold text-slate-950">
             {roleLabels[role]}
           </h1>
+          {role === "CAN_BO_DBCL" && can(actor, "templates:list") && (
+            <Link
+              href="/mau-phieu"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
+              Soạn và quản lý mẫu phiếu khảo sát →
+            </Link>
+          )}
           {role === "CAN_BO_DBCL" && can(actor, "catalog:list") && (
             <Link
               href="/danh-muc"

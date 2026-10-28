@@ -1,15 +1,16 @@
-# ERD toàn hệ thống — cập nhật Tuần 5
+# ERD toàn hệ thống — cập nhật Tuần 6
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Thiết kế khởi tạo **21/10/2026**, cập nhật phạm vi migration Tuần 5 ngày **22/10/2026**. Kế hoạch Tuần 5 giả định 28/10–03/11/2026; làm sớm theo lệnh người dùng, không ghi lùi ngày. Ngày 22/10 người dùng cho phép bổ sung dữ liệu seed khảo sát/phản hồi sớm: 15 bảng mới chỉ phục vụ seed, chưa có workflow/UI/API nghiệp vụ khảo sát/phản hồi. ERD phân biệt thiết kế dữ liệu với chức năng đã chạy.
+Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 6 ngày **22/10/2026**. Kế hoạch Tuần 6 giả định 04–10/11/2026; làm sớm theo lệnh người dùng, không ghi lùi ngày. Tuần 6 hiện thực mẫu phiếu, bổ sung revision/updatedAt trên SurveyTemplate; chưa có workflow/UI/API lập và duyệt đợt, nộp phiếu hoặc xử lý phản hồi. ERD phân biệt thiết kế dữ liệu với chức năng đã chạy.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**31 model Tuần 5**, gồm 15 bảng chỉ seed demo được người dùng cho phép). SHA-256 DMMF thiết kế: `41bb4a86f745f11ccb7cece4fc479f1e6be124fee13f0369282b26508619864b`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**31 model Tuần 6**, gồm 4 bảng mẫu đã có service/UI/API và 11 bảng chỉ seed demo). SHA-256 DMMF thiết kế: `0f8ac7726c236f1ba0f622af90bce726dad84321256ee1b875eaf1d24d78b6ff`.
 
 ## Cách đọc và tái tạo
 
-- Tuần 2 có chín model nền; Tuần 3 thêm UserSession/AuthToken/RateLimitBucket/AuditLog; Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting, tổng 16. Tuần 5 thêm **15 model chỉ seed demo** theo quyền người dùng ngày 22/10/2026, tổng **31 runtime / 39 thiết kế**. **8 model còn lại** chưa migrate. Bảng seed không đồng nghĩa hoàn thành FR nghiệp vụ các tuần sau; báo cáo/gallery Tuần 2–4 giữ bằng chứng tại thời điểm đó.
-- 15 bảng seed mới: SurveyTemplate, CriterionGroup, Question, QuestionOption, SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, SurveyResponse, SurveyAnswer, AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Chỉ tạo dữ liệu giả bằng CLI, chưa có API/UI xử lý chúng. Blueprint 39 model và thân bốn Mermaid không đổi khi chỉ vật chất hóa một phần thiết kế vào runtime.
+- Tuần 2 có chín model nền; Tuần 3 thêm UserSession/AuthToken/RateLimitBucket/AuditLog; Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting, tổng 16. Tuần 5 thêm **15 model seed demo** theo quyền người dùng ngày 22/10/2026, tổng **31 runtime / 39 thiết kế**. Tuần 6 giữ số model, hiện thực 4 bảng mẫu và bổ sung 2 cột SurveyTemplate. **8 model còn lại** chưa migrate. Báo cáo/gallery các tuần trước giữ bằng chứng tại thời điểm đó.
+- 4 bảng mẫu phiếu đã hiện thực Tuần 6: SurveyTemplate, CriterionGroup, Question, QuestionOption. **11 bảng còn chỉ seed:** SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, SurveyResponse, SurveyAnswer, AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Bảng seed không đồng nghĩa hoàn thành FR chức năng các tuần sau; chưa có UI/API đợt, nộp phiếu, kết quả hoặc phản hồi.
+- SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè, updatedAt là metadata chỉnh mẫu. Hai cột mới không nằm trên SurveyResponse/SurveyAnswer và không thay thiết kế ẩn danh. Chỉ thân Mermaid miền khảo sát đổi do thêm hai thuộc tính; ba thân còn lại được đối chiếu với snapshot Tuần 5. Xem bằng chứng render tại SO_DO_TUAN_06.md.
 - Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.
@@ -28,9 +29,9 @@ Model chính: `User`, `Faculty`, `Department`, `Semester`, `Course`, `CourseSect
 
 Không cần model ngữ cảnh ngoài nhóm.
 
-![ERD tổng quan Nền người dùng và danh mục](assets/tuan-02/erd-nen-danh-muc.svg)
+![ERD tổng quan Nền người dùng và danh mục](assets/tuan-06/erd-nen-danh-muc.svg)
 
-[Mở SVG tổng quan](assets/tuan-02/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-06/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -155,9 +156,9 @@ Model chính: `SurveyTemplate`, `CriterionGroup`, `Question`, `QuestionOption`, 
 
 Ngữ cảnh lặp: `CourseSection`, `Department`, `Faculty`, `Semester`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/tuan-02/erd-khao-sat.svg)
+![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/tuan-06/erd-khao-sat.svg)
 
-[Mở SVG tổng quan](assets/tuan-02/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-06/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -169,6 +170,8 @@ erDiagram
     String name "NOT NULL; VarChar(200)"
     TemplateStatus status "NOT NULL; enum; default NHAP"
     Boolean isDefault "NOT NULL; default false"
+    Int revision "NOT NULL; default 1"
+    DateTime updatedAt "NOT NULL; DateTime(3); default now(); updatedAt"
     String createdById FK "NOT NULL; Char(36)"
     DateTime createdAt "NOT NULL; DateTime(3); default now()"
     DateTime lockedAt "NULL; DateTime(3)"
@@ -433,9 +436,9 @@ Model chính: `Feedback`, `FeedbackRecipient`, `FeedbackMessage`, `FeedbackHisto
 
 Ngữ cảnh lặp: `CourseSection`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Phản hồi liên tục](assets/tuan-02/erd-phan-hoi.svg)
+![ERD tổng quan Phản hồi liên tục](assets/tuan-06/erd-phan-hoi.svg)
 
-[Mở SVG tổng quan](assets/tuan-02/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-06/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -580,9 +583,9 @@ Model chính: `UserSession`, `AuthToken`, `TotpCredential`, `TotpRecoveryCode`, 
 
 Ngữ cảnh lặp: `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/tuan-02/erd-he-thong.svg)
+![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/tuan-06/erd-he-thong.svg)
 
-[Mở SVG tổng quan](assets/tuan-02/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-06/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram

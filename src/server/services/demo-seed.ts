@@ -7,6 +7,7 @@ import type { Role, ScopeType } from "../../generated/prisma/enums";
 import { authorizeConsole, type ServerConsoleActor } from "../policies/console";
 import { lockAdminMutations } from "./access";
 import { seedDemoSurveyData } from "./demo-survey-seed";
+import { seedDefaultTemplate } from "./seed-template-default";
 
 export const demoSizes = {
   small: {
@@ -356,6 +357,11 @@ export async function seedDemo(
         },
         size,
       );
+      await seedDefaultTemplate(actor, tx, {
+        id: demoId,
+        createdById: demoId("DBCL2026001"),
+        legacyDefaultId: demoId("survey-data:template"),
+      });
       await tx.auditLog.create({
         data: {
           actorId: null,

@@ -200,6 +200,102 @@ try {
   results.push(
     "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
   );
+  const legacyId = demoId("survey-data:template"),
+    builtinId = demoId("week6-default-template");
+  const selected = await db.surveyTemplate.findMany({
+    where: { isDefault: true },
+    include: {
+      groups: { include: { questions: { include: { options: true } } } },
+    },
+  });
+  assert.equal(selected.length, 1);
+  assert.equal(selected[0].id, builtinId);
+  assert.equal(selected[0].status, "DA_KHOA");
+  const builtinQuestions = selected[0].groups.flatMap((g) => g.questions);
+  assert.deepEqual([...new Set(builtinQuestions.map((q) => q.type))].sort(), [
+    "BOOLEAN",
+    "LIKERT",
+    "MULTIPLE_CHOICE",
+    "SINGLE_CHOICE",
+    "TEXT",
+  ]);
+  assert.deepEqual(
+    builtinQuestions
+      .filter((q) => q.type === "LIKERT")
+      .map((q) => q.scaleMax)
+      .sort(),
+    [4, 5],
+  );
+  const legacyBefore = await db.surveyTemplate.findUniqueOrThrow({
+    where: { id: legacyId },
+    include: {
+      groups: {
+        orderBy: { position: "asc" },
+        include: {
+          questions: {
+            orderBy: { position: "asc" },
+            include: { options: { orderBy: { position: "asc" } } },
+          },
+        },
+      },
+    },
+  });
+  assert.equal(legacyBefore.groups.flatMap((g) => g.questions).length, 3);
+  assert.equal(await db.surveyTemplate.count(), 2);
+  results.push(
+    "FR-35: họ mẫu mặc định mới đủ 5 loại/2 thang Likert, giữ mẫu 3 câu cũ và phiếu/kết quả",
+  );
+  const defaultMetadata = await db.surveyTemplate.findMany({
+    where: { id: { in: [legacyId, builtinId] } },
+    select: { id: true, isDefault: true, revision: true, updatedAt: true },
+  });
+  await db.$transaction(async (tx) => {
+    await tx.surveyTemplate.update({
+      where: { id: builtinId },
+      data: { isDefault: false, revision: { increment: 1 } },
+    });
+    await tx.surveyTemplate.update({
+      where: { id: legacyId },
+      data: { isDefault: true, revision: { increment: 1 } },
+    });
+  });
+  try {
+    await run("medium");
+    assert.equal(
+      (await db.surveyTemplate.findFirstOrThrow({ where: { isDefault: true } }))
+        .id,
+      legacyId,
+    );
+  } finally {
+    await db.$transaction(async (tx) => {
+      for (const item of defaultMetadata) {
+        const { id, ...data } = item;
+        await tx.surveyTemplate.update({ where: { id }, data });
+      }
+    });
+  }
+  assert.deepEqual(
+    (
+      await db.surveyTemplate.findUniqueOrThrow({
+        where: { id: legacyId },
+        include: {
+          groups: {
+            orderBy: { position: "asc" },
+            include: {
+              questions: {
+                orderBy: { position: "asc" },
+                include: { options: { orderBy: { position: "asc" } } },
+              },
+            },
+          },
+        },
+      })
+    ).groups,
+    legacyBefore.groups,
+  );
+  results.push(
+    "FR-35/BR-05: seed lại giữ lựa chọn mặc định đã đổi và không ghi lại cây câu hỏi cũ",
+  );
   const changedHash = await hash("KiemThuMatKhauDaDoi!2026", 12);
   await db.user.update({
     where: { id: original.id },

@@ -9,6 +9,7 @@ node_modules/
 .next-auth/
 .next-demo/
 .next-week5/
+.next-week6/
 src/generated/
 out/
 coverage/

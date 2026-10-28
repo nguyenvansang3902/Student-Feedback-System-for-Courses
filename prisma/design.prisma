@@ -356,6 +356,8 @@ model SurveyTemplate {
   name        String           @db.VarChar(200)
   status      TemplateStatus   @default(NHAP)
   isDefault   Boolean          @default(false)
+  revision    Int              @default(1)
+  updatedAt   DateTime         @default(now()) @updatedAt @db.DateTime(3)
   createdById String           @db.Char(36)
   createdAt   DateTime         @default(now()) @db.DateTime(3)
   lockedAt    DateTime?        @db.DateTime(3)

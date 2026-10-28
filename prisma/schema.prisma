@@ -1,5 +1,5 @@
-// Tuần 5: 16 model nền + 15 bảng phục vụ seed khảo sát/phản hồi được người dùng cho phép ngày 22/10/2026.
-// Chưa triển khai service/route nghiệp vụ các tuần sau. Blueprint: design.prisma.
+// Tuần 6: thêm revision/updatedAt cho mẫu phiếu; giữ 31 model runtime.
+// Bảng đợt/phiếu/phản hồi vẫn chỉ phục vụ seed đã được cho phép. Blueprint: design.prisma.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -335,6 +335,8 @@ model SurveyTemplate {
   name        String           @db.VarChar(200)
   status      TemplateStatus   @default(NHAP)
   isDefault   Boolean          @default(false)
+  revision    Int              @default(1)
+  updatedAt   DateTime         @default(now()) @updatedAt @db.DateTime(3)
   createdById String           @db.Char(36)
   createdAt   DateTime         @default(now()) @db.DateTime(3)
   lockedAt    DateTime?        @db.DateTime(3)

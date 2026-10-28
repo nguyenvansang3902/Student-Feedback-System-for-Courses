@@ -5,3 +5,6 @@ docs/assets/tuan-02/mermaid/*.svg text eol=lf
 docs/assets/tuan-03/*.svg text eol=lf
 docs/assets/tuan-04/*.svg text eol=lf
 prisma/migrations/20261022072500_week5_demo_data/migration.sql text eol=lf
+prisma/migrations/20261022125000_week6_template_revision/migration.sql text eol=lf
+docs/assets/tuan-06/**/*.svg text eol=lf
+docs/assets/tuan-06/*.svg text eol=lf

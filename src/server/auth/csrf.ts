@@ -5,7 +5,7 @@ import { authorizeAuthAction } from "@/server/policies/auth";
 import { requireCan } from "@/server/policies/can";
 import { AuthError, type AuthActor } from "./types";
 
-type CsrfPurpose = "admin" | "catalog";
+type CsrfPurpose = "admin" | "catalog" | "templates";
 function signature(payload: string, purpose: CsrfPurpose) {
   return createHmac("sha256", getAuthConfig().jwtSecret)
     .update(`sfs-${purpose}-csrf-v1:${payload}`)
@@ -22,6 +22,12 @@ export function issueAdminCsrf(actor: AuthActor): string {
 export function issueCatalogCsrf(actor: AuthActor): string {
   requireCan(actor, "catalog:write");
   return issueCsrf(actor, "catalog");
+}
+
+/** Mẫu phiếu dùng miền chữ ký riêng, không nhận token quản trị/danh mục. */
+export function issueTemplatesCsrf(actor: AuthActor): string {
+  requireCan(actor, "templates:write");
+  return issueCsrf(actor, "templates");
 }
 
 function issueCsrf(actor: AuthActor, purpose: CsrfPurpose): string {
@@ -47,6 +53,14 @@ export function assertCatalogCsrf(
 ): void {
   requireCan(actor, "catalog:write");
   assertCsrf(request, actor, "catalog");
+}
+
+export function assertTemplatesCsrf(
+  request: NextRequest,
+  actor: AuthActor,
+): void {
+  requireCan(actor, "templates:write");
+  assertCsrf(request, actor, "templates");
 }
 
 function assertCsrf(
