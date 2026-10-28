@@ -8,7 +8,7 @@ Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngo
 
 Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-cao-tien-do/tuan-06.md), [QA](QA_GIAO_DIEN_TUAN_06.md), [sơ đồ](SO_DO_TUAN_06.md), [truy vết](TRUY_VET.md). Full279/279, HTTP20/20, seed11/11, QA14nhóm/10viewport; preview không ghi phiếu. Lịch sử Tuần1–5 giữ kết quả tại thời điểm nghiệm thu; health vẫn database:not_checked. Workflow duyệt đợt tự khóa mẫu chờ Tuần7.
 
-Điều chỉnh số01 thêm21FR (56điểm), mẫu số mới **219**. Tick mới chỉ sau nghiệm thu G1; phần mở rộng các tuần sau vẫn chưa hoàn thành. Con số62/163 phía trên là lịch sử Tuần6, không phải tỷ lệ sau thay đổi mẫu số. FR-160/TC-ALL-01 cần phân biệt phạm vi runtime của G1 với toàn bộ luồng/tệp xuất ở Tuần13.
+**Nghiệm thu G1 ngày 29/10/2026:** thêm FR-140/141/148 (9 điểm), tổng **71/219 = 32,4%**, 25/84 FR đã xong. Điều chỉnh thêm 21 FR (56 điểm) nên tỷ lệ dùng mẫu số mới; 62/163 phía trên là lịch sử. [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) đúng mã `023b619` đã qua check/smoke; check cục bộ 346/346, build và các bộ HTTP/MySQL/UI qua. [Báo cáo G1](NGHIEM_THU_BO_SUNG_01.md). FR-160/TC-ALL-01 chỉ hoàn thành phần chức năng hiện có, chưa tick toàn bộ; mốc tính kế hoạch của FR-160 là nghiệm thu đầy đủ Tuần 13.
 
 ## M1 Xác thực và phiên
 
@@ -111,8 +111,8 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M13 Phòng Đào tạo
 
-- [ ] FR-140 [P0] đổi quyền CRUD dữ liệu đào tạo và import sang PHONG_DAO_TAO; khoa/bộ môn do ADMIN — việc bù G1 (Tuần 6)
-- [ ] FR-141 [P0] PĐT khóa/mở khóa học kỳ, mở khóa có lý do, audit và thông báo ĐBCL — việc bù G1 (Tuần 6)
+- [x] FR-140 [P0] đổi quyền CRUD dữ liệu đào tạo và import sang PHONG_DAO_TAO; khoa/bộ môn do ADMIN — việc bù G1 (Tuần 6)
+- [x] FR-141 [P0] PĐT khóa/mở khóa học kỳ, mở khóa có lý do, audit và thông báo ĐBCL — việc bù G1 (Tuần 6)
 - [ ] FR-142 [P0] kiểm tra sẵn sàng của đợt theo RS-01–RS-06 (Tuần 7)
 - [ ] FR-143 [P0] PĐT xác nhận hoặc trả về dữ liệu đối tượng khảo sát (Tuần 7)
 - [ ] FR-144 [P0] cảnh báo lệch dữ liệu khi mở đợt, chốt theo dữ liệu hiện tại (Tuần 7)
@@ -122,7 +122,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M14 Phòng Khảo thí
 
-- [ ] FR-148 [P0] cờ isAssessmentGroup trong trình soạn/xem trước và một nhóm mặc định Kiểm tra, đánh giá — việc bù G1 (Tuần 6)
+- [x] FR-148 [P0] cờ isAssessmentGroup trong trình soạn/xem trước và một nhóm mặc định Kiểm tra, đánh giá — việc bù G1 (Tuần 6)
 - [ ] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
 - [ ] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
 - [ ] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
@@ -140,20 +140,20 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M16 Ma trận quyền mở rộng
 
-- [ ] FR-160 [P0] ma trận quyền 10 vai trò và IDOR; G1 chỉ phần chức năng hiện có — hoàn thiện toàn bộ TC-ALL-01 ở Tuần 13 (Tuần 6)
+- [ ] FR-160 [P0] ma trận quyền 10 vai trò và IDOR; G1 chỉ phần chức năng hiện có — hoàn thiện toàn bộ TC-ALL-01 ở Tuần 13 (Tuần 13)
 
 ## Theo dõi BR bổ sung (không cộng vào mẫu số FR)
 
 | BR | Ưu tiên | Tuần/phạm vi dự kiến | Trạng thái tại lúc cập nhật tài liệu |
 | --- | --- | --- | --- |
-| BR-50 | P0 | G1/Tuần6 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-51 | P0 | G1/Tuần6 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-50 | P0 | G1/Tuần6 | Đạt G1: policy/service/API/UI và TC-PDT-01 đã qua |
+| BR-51 | P0 | G1/Tuần6 | Đạt G1: lý do/CAS/audit/thư Mailpit thật; SMTP lỗi có trạng thái rõ |
 | BR-52 | P0 | Tuần7 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-53 | P0 | Tuần7 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-54 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-55 | P1 | Tuần7 (P1) | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-56 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Cờ nhóm/default đạt G1; kết quả gộp và TC-KT-01 chờ Tuần9 |
 | BR-58 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-59 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-60 | P0 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
@@ -164,4 +164,4 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-65 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-66 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | G1 giữ deny default/ADMIN không có quyền ngầm; kiểm module tương lai chờ Tuần13 |

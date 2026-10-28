@@ -4,7 +4,7 @@ Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **2
 
 **Cách đọc mốc lịch sử trước điều chỉnh:** Tuần6 bắt đầu22/10, tiếp tục28/10 (mốc giả định04–10/11). FR-01–08/10–12/20–22/30–35/101/102 đã nghiệm thu trong phạm vi mã hiện có. Tiến độ62/163=38,0%. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.
 
-Điều chỉnh số01 thêm 21 FR và 19 BR theo [prompt nguyên văn](BO_SUNG_01_TAC_NHAN.md). Mẫu số mới 219; số 62/163 phía trên giữ nguyên tại mốc nghiệm thu Tuần6. Bằng chứng Tuần1–6 dưới đây có trước điều chỉnh: kiểm bảy vai trò không thay kiểm mười vai trò. G1 đang bổ sung quyền/dữ liệu nền/mẫu; chưa có lệnh **BẮT ĐẦU TUẦN 7**. Ma trận chi tiết: [MA_TRAN_QUYEN](MA_TRAN_QUYEN.md).
+Điều chỉnh số01 thêm 21 FR và 19 BR theo [prompt nguyên văn](BO_SUNG_01_TAC_NHAN.md). Mẫu số mới 219; số 62/163 phía trên giữ nguyên tại mốc nghiệm thu Tuần6. Bằng chứng Tuần1–6 dưới đây có trước điều chỉnh: kiểm bảy vai trò không thay kiểm mười vai trò. G1 đã hoàn tất quyền/dữ liệu nền/mẫu; chưa có lệnh **BẮT ĐẦU TUẦN 7**. Ma trận chi tiết: [MA_TRAN_QUYEN](MA_TRAN_QUYEN.md).
 
 ## 1. Bằng chứng lịch sử Tuần 2 tại thời điểm nghiệm thu
 
@@ -92,7 +92,7 @@ BR-05 đã kiểm bảo vệ mẫu khóa/được đợt đã duyệt tham chi�
 
 ## 3. FR đang triển khai hoặc còn ở mức thiết kế
 
-FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–22 hiện chuyển chủ sở hữu: PĐT dữ liệu đào tạo/import, ADMIN khoa/bộ môn; kiểm quyền mới truy vết FR-140/141 và TC-PDT-01. Bằng chứng Tuần5 vẫn giữ đúng thời điểm và không tự chứng minh quyền mới. Các dòng dưới chưa hoàn thành; schema hoặc thiết kế không thay giao diện/service nghiệp vụ.
+FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–22 hiện chuyển chủ sở hữu: PĐT dữ liệu đào tạo/import, ADMIN khoa/bộ môn; kiểm quyền mới truy vết FR-140/141 và TC-PDT-01. Bằng chứng Tuần5 vẫn giữ đúng thời điểm và không tự chứng minh quyền mới. Các dòng tương lai vẫn chưa hoàn thành; ba FR G1 có bằng chứng riêng dưới đây. Schema hoặc thiết kế không thay giao diện/service nghiệp vụ.
 
 | Mã FR  | Tuần dự kiến | Wireframe / luồng thiết kế                                                     | Miền service/policy dự kiến                                  | Test nghiệm thu FR                                                                                 |
 | ------ | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
@@ -138,15 +138,15 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-111 | P2, chưa xếp | [WF-08](wireframes/tuan-02.html#wf-08)                                         | API trạng thái hoàn thành; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-112 | P2, chưa xếp | [WF-10](wireframes/tuan-02.html#wf-10)                                         | đánh giá riêng giảng viên; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 
-| FR-140 | G1 / bù Tuần6 | Danh mục đào tạo/import; ADMIN khoa/bộ môn | can.ts, catalog.ts, imports.ts và menu; điều chỉnh từ code ĐBCL cũ | Chưa nghiệm thu mới: TC-PDT-01, TC-ALL-01 phần hiện có; chờ kết quả chạy thật |
-| FR-141 | G1 / bù Tuần6 | PĐT khóa/mở khóa học kỳ | catalog.ts, audit.ts, mail.ts; guard kỳ khóa | Chưa nghiệm thu mới: BR-51, lý do mở khóa/audit/thư; chờ kết quả chạy thật |
+| FR-140 | G1 / bù Tuần6 | Danh mục đào tạo/import; ADMIN khoa/bộ môn | can.ts, catalog.ts, imports.ts và menu; điều chỉnh từ code ĐBCL cũ | Đạt G1: TC-PDT-01/TC-ALL-01 phần hiện có; rbac-policy/rbac-services/catalog/import tests, verify-week5 HTTP23, UI; CI mục4.3 |
+| FR-141 | G1 / bù Tuần6 | PĐT khóa/mở khóa học kỳ | catalog.ts, audit.ts, mail.ts; guard kỳ khóa | Đạt G1: BR-51; HTTP19 của verify-week5 kiểm lý do/CAS/audit/Mailpit, unit SMTP fail/no-recipient; UI khóa/mở thật |
 | FR-142 | 7 | Readiness đợt RS-01–RS-06 | campaign readiness/confirmation; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-02; blocking/warning/snapshot/hash |
 | FR-143 | 7 | PĐT xác nhận/trả về dữ liệu đợt | CampaignDataConfirmation và transition; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-02; CHO_XAC_NHAN_DL→CHO_DUYET/trả NHAP có lý do |
 | FR-144 | 7 | Cảnh báo dữ liệu đổi khi đợt mở | recompute hash/freeze/notifications; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-03; vẫn chốt hiện tại, không đổi task sau chốt |
 | FR-145 | 7, P1 | Lô nhập/hoàn tác chưa dùng trong đợt đã chốt | ImportBatch; chưa triển khai, không tự cắt | Chưa nghiệm thu mới: BR-55; thiếu test, chỉ hiện thực nếu đủ thời gian |
 | FR-146 | 10 | Hàng đợi TO_CHUC_LOP_HOC | feedback routing/PĐT; chưa triển khai | Chưa nghiệm thu mới: BR-54; scope, SLA, forward, privacy Tuần10–11 |
 | FR-147 | 12, P1 | Dashboard PĐT | reports/readiness/feedback; chưa triển khai | Chưa nghiệm thu mới: BR-67; ngưỡng và không định danh, kiểm tệp xuất |
-| FR-148 | G1 / bù Tuần6 | Trình soạn/xem trước cờ nhóm đánh giá và mẫu mặc định mới | CriterionGroup.isAssessmentGroup, templates/template-input/default seed | Chưa nghiệm thu mới: Kiểm cờ lưu/đọc/clone/version, giữ mẫu khóa cũ; chờ kết quả chạy thật |
+| FR-148 | G1 / bù Tuần6 | Trình soạn/xem trước cờ nhóm đánh giá và mẫu mặc định mới | CriterionGroup.isAssessmentGroup, templates/template-input/default seed | Đạt G1: TC-FR148-01–09 trong templates/default-template-seed tests; HTTP20, demo12, UI lưu/reload/preview; giữ cây mẫu khóa cũ |
 | FR-149 | 10 | Hàng đợi THI_KET_THUC_HOC_PHAN/lời nhắc | feedback routing/KT; chưa triển khai | Chưa nghiệm thu mới: TC-KT-02; SLA/leo thang Tuần11 |
 | FR-150 | 9 | Kết quả nhóm đánh giá gộp | results/policy KT; chưa triển khai | Chưa nghiệm thu mới: TC-KT-01; ≥2 GV/đủ phiếu, không lớp/GV/tự luận |
 | FR-151 | 12, P1 | Thống kê phản hồi thi | reports KT; chưa triển khai | Chưa nghiệm thu mới: BR-59/67; ngưỡng, không định danh và tệp xuất |
@@ -158,7 +158,7 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-157 | 11, P1 | Chuyển một chiều sang Thanh tra | feedback→inspection history; chưa triển khai | Chưa nghiệm thu mới: BR-64; sender chỉ trạng thái/kết luận tóm tắt |
 | FR-158 | 12, P1 | Chỉ số và xem xét cảnh báo khảo sát | SurveyAnomalyFlag; chưa triển khai | Chưa nghiệm thu mới: BR-65; ≥10phiếu, ngưỡng, không điểm/đáp án/tự luận |
 | FR-159 | 12, P1 | Thống kê Thanh tra không định danh | inspection reports; chưa triển khai | Chưa nghiệm thu mới: BR-66/67; ngưỡng mẫu, tệp xuất |
-| FR-160 | G1 một phần / đầy đủ Tuần13 | Ma trận 10 vai trò; IDOR chức năng hiện có | MA_TRAN_QUYEN, can/access/workspace và service hiện có | Chưa nghiệm thu mới: TC-ALL-01 một phần; tương lai hồ sơ/thống kê/tệp xuất chưa nghiệm thu |
+| FR-160 | G1 một phần / đầy đủ Tuần13 | Ma trận 10 vai trò; IDOR chức năng hiện có | MA_TRAN_QUYEN, can/access/workspace và service hiện có | G1 phần hiện có đạt: ma trận10vai trò, IDOR/unit/HTTP/UI; toàn bộ hồ sơ/thống kê/tệp xuất chờ Tuần13, chưa tick |
 
 ## 4. Truy vết 33 BR gốc và điểm mở rộng
 
@@ -204,14 +204,14 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 
 | BR | FR liên quan | Tuần/phạm vi | Miền thực thi/điều kiện | Test và trạng thái |
 | --- | --- | --- | --- | --- |
-| BR-50 | FR-140; FR-20–22 | G1 bù Tuần6 | can/catalog/import + audit actor PĐT | TC-PDT-01; chờ nghiệm thu G1 |
-| BR-51 | FR-141 | G1 bù Tuần6 | khóa/mở học kỳ: reason/audit/thông báo ĐBCL | BR-51; chờ nghiệm thu G1 |
+| BR-50 | FR-140; FR-20–22 | G1 bù Tuần6 | can/catalog/import + audit actor PĐT | Đạt G1: TC-PDT-01, verify-week5 HTTP23; actor audit và quyền đọc/ghi theo entity |
+| BR-51 | FR-141 | G1 bù Tuần6 | khóa/mở học kỳ: reason/audit/thông báo ĐBCL | Đạt G1: catalog-services tests, verify-week5 HTTP19, UI; thư Mailpit và audit sau commit |
 | BR-52 | FR-142/143 | 7 | readiness RS-01–RS-06 + bản chụp xác nhận | TC-PDT-02; chưa triển khai |
 | BR-53 | FR-144; FR-43 | 7 | mã băm khi mở, chốt hiện tại/cảnh báo/không đổi task sau chốt | TC-PDT-03; chưa triển khai |
 | BR-54 | FR-146 | 10–11 | PĐT đúng loại/lý do chuyển/SLA2–5/leo thang | Chưa triển khai/test |
 | BR-55 | FR-145 | 7, P1 | ImportBatch/hash/hoàn tác chỉ khi chưa chốt | Chưa triển khai/test; không tự cắt |
 | BR-56 | FR-149 | 10–11 | KT đúng loại/SLA2–5/lời nhắc phúc khảo | TC-KT-02; chưa triển khai |
-| BR-57 | FR-148/150 | Cờ G1; kết quả9 | cờ nhóm/mẫu mặc định; gộp2GV/đủ phiếu/sau công bố | Cờ chờ nghiệm thu G1; TC-KT-01 kết quả chưa triển khai |
+| BR-57 | FR-148/150 | Cờ G1; kết quả9 | cờ nhóm/mẫu mặc định; gộp2GV/đủ phiếu/sau công bố | Cờ/default đạt G1 (FR-148); TC-KT-01 kết quả gộp chưa triển khai |
 | BR-58 | FR-152 | 11, P1 | kiến nghị/TBM phản hồi lý do/hạn14ngày | Chưa triển khai/test |
 | BR-59 | FR-151 | 12, P1 | thống kê thi gộp/ngưỡng/không định danh | Chưa triển khai/test |
 | BR-60 | FR-154 | 10 tiếp nhận / 11 SLA | Thanh tra3/30ngày làm việc; LĐ tóm tắt quá hạn | Chưa triển khai/test |
@@ -222,15 +222,15 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | BR-65 | FR-158 | 12, P1 | ≥10phiếu, chỉ số/cảnh báo/decision, không kết luận tự động | Chưa triển khai/test |
 | BR-66 | FR-159 | 12, P1 | thống kê hồ sơ có ngưỡng/không định danh | Chưa triển khai/test |
 | BR-67 | FR-147/151/159/160 | Theo luồng; đầy đủ13 | dashboard/thống kê/tệp xuất3vai trò không định danh | TC-ALL-01, kiểm tệp xuất Tuần12–13; chưa triển khai |
-| BR-68 | FR-160 | G1 nền; đầy đủ13 | ADMIN không kết quả/nội dung phản hồi/hồ sơ TT | Deny default G1 chờ nghiệm thu; module tương lai chưa có |
+| BR-68 | FR-160 | G1 nền; đầy đủ13 | ADMIN không kết quả/nội dung phản hồi/hồ sơ TT | G1 giữ deny default/ADMIN không có quyền nghiệp vụ ngầm; nội dung kết quả/hồ sơ tương lai chưa có |
 
 ## 4.2. Đăng ký chín mã test Mục F
 
-Đây là kế hoạch kiểm và chỗ ghi bằng chứng. Trước khi nghiệm thu G1, không gán PASS/CI cho các mã mới. Các test tương lai chỉ viết/chạy khi đến tuần tương ứng; tên TC là mã nghiệm thu, không nhất thiết một file mỗi TC.
+Đây là kế hoạch kiểm và chỗ ghi bằng chứng. G1 đã có bằng chứng chạy thật ở mục4.3; các mã tương lai tiếp tục ghi chưa triển khai. Các test tương lai chỉ viết/chạy khi đến tuần tương ứng; tên TC là mã nghiệm thu, không nhất thiết một file mỗi TC.
 
 | Mã test | Tuần/phạm vi | Yêu cầu | Điều phải chứng minh | Trạng thái/bằng chứng hiện tại |
 | --- | --- | --- | --- | --- |
-| TC-PDT-01 | G1 bù Tuần6 | FR-140, BR-50 | ADMIN tạo/sửa lớp và import bị chặn; PĐT thành công. Kiểm DBCL mất quyền ghi, ADMIN chỉ tổ chức, actor audit. | Chờ kết quả G1; không dùng HTTP22 của Tuần5 để nhận quyền mới. |
+| TC-PDT-01 | G1 bù Tuần6 | FR-140, BR-50 | ADMIN tạo/sửa lớp và import bị chặn; PĐT thành công. Kiểm DBCL mất quyền ghi, ADMIN chỉ tổ chức, actor audit. | Đạt G1: tests/rbac-policy, catalog-services, import-services; scripts/verify-week5.ts HTTP01/04/07–19/22, tổng23/23; CI mục4.3 |
 | TC-PDT-02 | 7 | FR-142/143, BR-52 | RS-01/02/03 chặn, RS-04/05/06 cảnh báo; không xác nhận khi còn chặn; lưu hash/snapshot, trả về phải có lý do. | Chưa triển khai. |
 | TC-PDT-03 | 7 | FR-144, BR-01/53 | Xác nhận → đổi đăng ký → mở: vẫn chốt theo dữ liệu hiện tại, có audit/cảnh báo PĐT+ĐBCL; đổi sau chốt không đổi task. | Chưa triển khai. |
 | TC-KT-01 | 9 | FR-150, BR-57 | Chỉ nhóm cờ sau công bố; ≥2 GV khác nhau/tổng phiếu đủ ngưỡng; không lớp/GV/tự luận, thiếu ngưỡng có thông báo. | Chưa triển khai; G1 chỉ có cờ, chưa có kết quả gộp. |
@@ -238,11 +238,18 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | TC-TT-01 | 10 | FR-153/155, BR-61 | GV/TBM/TK liên quan không thấy/không được giao; kể cả tài khoản có TT; list/count/detail/attachment không lộ và trả404. | Chưa triển khai. |
 | TC-TT-02 | 10–11 | FR-154/156, BR-62 | ADMIN/ĐBCL bị chặn, LĐ chỉ tóm tắt, TT không xung đột mới đầy đủ; audit mở hồ sơ/tải tệp. | Chưa triển khai. |
 | TC-TT-03 | 10–11 | FR-153/156, BR-63 | Mặc định hoàn toàn ẩn danh; cho TT biết thì chỉ TT hợp lệ thấy/audit; người bị phản ánh không thấy danh tính. | Chưa triển khai. |
-| TC-ALL-01 | G1 một phần / đầy đủ13 | FR-160, BR-34/61/62/67/68 | Ma trận10vai trò + IDOR trên từng function/scope; nhiều grant/MFA; sau này bổ sung kết quả, hồ sơ, dashboard và kiểm tệp xuất. | G1 hiện có chờ kết quả; đầy đủ Tuần13. Không coi deny action chưa tồn tại là đã kiểm luồng. |
+| TC-ALL-01 | G1 một phần / đầy đủ13 | FR-160, BR-34/61/62/67/68 | Ma trận10vai trò + IDOR trên từng function/scope; nhiều grant/MFA; sau này bổ sung kết quả, hồ sơ, dashboard và kiểm tệp xuất. | Đạt phần G1: rbac-policy/rbac-services và HTTP10role trong verify-week5/6, IDOR lớp theo scope ở verify-week4; UI KT/TT403. Toàn bộ kết quả/hồ sơ/thống kê/tệp xuất chờ Tuần13. |
 
 ## 4.3. Cập nhật nghiệm thu G1
 
-Chỗ này dành cho mã commit/command/số test/ảnh/CI thật sau kiểm thử. Hiện chưa thêm bằng chứng G1. Bằng chứng Tuần6 ở mục1.4 giữ đúng bộ bảy vai trò và mẫu phiếu trước điều chỉnh; không ghi ngược như đã có ba tác nhân mới. FR-160 còn phạm vi tương lai và kiểm tệp xuất; chỉ tick khi có quyết định nghiệm thu xác định rõ phạm vi.
+Mã hiện thực G1: `023b619134c58ee79a7ebbdd5882d24cdb034f59`; [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) đã qua **check và smoke**, đúng SHA. Ngày thực hiện kỹ thuật28–29/10/2026; không điền thay ngày/tên GVHD yêu cầu.
+
+- `npm run check` lúc02:00 ngày29/10: **346/346 test trong25file**, schema/ERD/lint/TypeScript qua; `npm run build` Next16.4.3 qua.
+- MySQL16/16; HTTP auth24/quản trị28/danh mục23/mẫu20; CLI5, seed12nhóm qua; fixture dọn. Verify-week4 đã kiểm cấu hình đủ10vai trò MFA qua API.
+- [UI G1](QA_GIAO_DIEN_BO_SUNG_01.md):7nhóm/16viewport/16PNG đã xem,0JSerror/overflow/thiếu nhãn; seed giữ nguyên. [Sơ đồ](SO_DO_BO_SUNG_01.md):4Mermaid render qua,4SVG mới/9PNG đã xem.
+- Migration deploy main, diff không lệch; hash16tập trước/sau giữ1.568tài khoản cũ, cây2mẫu cũ, đợt/task/78phiếu/234đáp án/3tổng hợp/phản hồi/lịch sử. Supplement SHA-256 khớp file người dùng; kiểm604liên kết nội bộ,5mục bảo vệ,3dòng AGENTS,84FR duy nhất qua. Báo cáo/ảnh Tuần6 và Git blob migration cũ không đổi.
+
+[Báo cáo phiên](NGHIEM_THU_BO_SUNG_01.md) mô tả tệp, mâu thuẫn, giới hạn và ước lượng. Chốt **FR-140/141/148**, tổng71/219=32,4%; FR-160/TC-ALL-01 chỉ phần hiện có, **chưa tick toàn bộ**. Bằng chứng Tuần6 ở mục1.4 giữ đúng bảy vai trò tại thời điểm đó. Không nhận kiểm chức năng hoặc tệp xuất chưa hiện thực; chưa bắt đầu Tuần7.
 
 ## 5. Quy tắc cập nhật
 

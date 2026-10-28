@@ -27,7 +27,7 @@ Loại phản hồi cũ trộn lịch học/cơ sở vật chất không có án
 
 ## Kiểm tra chạy thật
 
-`npm run check` chạy thật lúc **02:00 ngày 29/10/2026** đã qua **346/346 test trong 25 file**, gồm validate/generate hai schema, ERD, ESLint và TypeScript. `npm run build` qua trên Next.js 16.4.3; chưa có kết quả CI mới tại thời điểm ghi đoạn này. Các bộ sau cũng đã hoàn thành:
+`npm run check` chạy thật lúc **02:00 ngày 29/10/2026** đã qua **346/346 test trong 25 file**, gồm validate/generate hai schema, ERD, ESLint và TypeScript. `npm run build` qua trên Next.js 16.4.3; [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) của mã `023b619134c58ee79a7ebbdd5882d24cdb034f59` đã qua **check và smoke**. Các bộ sau cũng đã hoàn thành:
 
 | Bộ kiểm | Kết quả và phạm vi |
 | --- | --- |
@@ -47,7 +47,7 @@ HTTP mẫu/danh mục dùng phiên fixture hợp lệ để kiểm API/service; 
 
 ## Giới hạn, tiến độ và điểm dừng
 
-FR-140/141/148 chỉ tick sau gate cuối. **FR-160/TC-ALL-01 vẫn một phần**: ma trận/IDOR 10 vai trò cho chức năng hiện có đã kiểm; kết quả/hồ sơ/dashboard/thống kê/tệp xuất chờ tuần 9–13. Không tick FR-142–147/149–159 hoặc nhận đã chạy các TC readiness, Khảo thí, Thanh tra chưa hiện thực.
+Đã tick **FR-140/141/148** sau gate; tổng **71/219 = 32,4%** (25/84 FR). Mẫu số tăng từ163 lên219 do21FR mới, không phải mất chức năng cũ. **FR-160/TC-ALL-01 vẫn một phần**: ma trận/IDOR 10 vai trò cho chức năng hiện có đã kiểm; kết quả/hồ sơ/dashboard/thống kê/tệp xuất chờ tuần 9–13. Không tick FR-142–147/149–159 hoặc nhận đã chạy các TC readiness, Khảo thí, Thanh tra chưa hiện thực.
 
 Thông báo mở khóa gửi SMTP sau commit với SENT/FAILED/NO_RECIPIENT và audit biên nhận; chưa có outbox/retry bền vững. Lỗi gửi được báo rõ, không lùi giao dịch khóa kỳ hoặc nhận thành công giả. Hai tài khoản Thanh tra mới chỉ là nền, chưa chứng minh workflow/xung đột lợi ích.
 

@@ -10,6 +10,8 @@ Trình soạn và xem trước có cờ **Nhóm tiêu chí kiểm tra, đánh gi
 
 Sau khi kéo mã mới, dừng web rồi chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed` và mở lại `npm.cmd run dev`. Xem phần [migration](#shadow-và-migration) về preflight bắt buộc. Kết quả kiểm G1 cập nhật tại [PROJECT_STATE](docs/PROJECT_STATE.md), [PROGRESS](docs/PROGRESS.md) và [TRUY_VET](docs/TRUY_VET.md). Những số liệu/CI Tuần 1–6 bên dưới là bằng chứng lịch sử trước điều chỉnh.
 
+Nghiệm thu G1 ngày **29/10/2026**: **346/346 test**, build qua; [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) của mã `023b619` xanh check/smoke. Tiến độ **71/219 = 32,4%** sau mở rộng phạm vi. Xem [báo cáo phiên](docs/NGHIEM_THU_BO_SUNG_01.md) và [QA giao diện](docs/QA_GIAO_DIEN_BO_SUNG_01.md); FR-160 chỉ phần đang có.
+
 G1 chỉ bù nền quyền/dữ liệu/mẫu rồi dừng. Chưa làm readiness, đợt xác nhận, kết quả gộp Khảo thí hay hồ sơ Thanh tra. Tuần 7 chỉ bắt đầu khi người dùng gõ **BẮT ĐẦU TUẦN 7**.
 
 ### Mốc nghiệm thu lịch sử Tuần 6: mẫu phiếu khảo sát
