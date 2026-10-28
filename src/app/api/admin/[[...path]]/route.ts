@@ -112,7 +112,7 @@ export async function POST(request: NextRequest, context: Context) {
     if (path.length === 1 && path[0] === "mfa-policy") {
       const { stepUpCode, requiredRoles } = z
         .object({
-          requiredRoles: z.array(role).min(1).max(7),
+          requiredRoles: z.array(role).min(1).max(Object.values(Role).length),
           stepUpCode: stepUp,
         })
         .strict()

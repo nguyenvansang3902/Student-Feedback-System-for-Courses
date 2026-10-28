@@ -32,7 +32,7 @@ const questionSchema = z.object({
     context.addIssue({ code: "custom", message: "Nội dung lựa chọn không được trùng.", path: ["options"] });
 });
 const groupSchema = z.object({
-  title: text(200), position, weight,
+  title: text(200), position, weight, isAssessmentGroup: z.boolean().default(false),
   questions: z.array(questionSchema).min(1).max(TEMPLATE_LIMITS.questions),
 }).strict().superRefine((group, context) => {
   if (new Set(group.questions.map((question) => question.position)).size !== group.questions.length)
@@ -65,7 +65,7 @@ export function parseTemplateInput<T>(schema: z.ZodType<T>, input: unknown): T {
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
-    const labels: Record<string, string> = { name: "Tên mẫu", groups: "Nhóm", title: "Tiêu đề", questions: "Câu hỏi", label: "Nội dung", options: "Lựa chọn", weight: "Trọng số", position: "Thứ tự", scaleMin: "Điểm thấp nhất", scaleMax: "Điểm cao nhất", expectedRevision: "Phiên bản đang sửa" };
+    const labels: Record<string, string> = { name: "Tên mẫu", groups: "Nhóm", title: "Tiêu đề", isAssessmentGroup: "Nhóm kiểm tra, đánh giá", questions: "Câu hỏi", label: "Nội dung", options: "Lựa chọn", weight: "Trọng số", position: "Thứ tự", scaleMin: "Điểm thấp nhất", scaleMax: "Điểm cao nhất", expectedRevision: "Phiên bản đang sửa" };
     const location = issue.path.map((part) => typeof part === "number" ? String(part + 1) : labels[String(part)] ?? "Trường dữ liệu").join(" → ");
     const detail = issue.code === "custom" ? issue.message : "giá trị thiếu hoặc không đúng định dạng/giới hạn.";
     throw new AuthError(`${location || "Mẫu phiếu"}: ${detail}`, 400, "INVALID_TEMPLATE");

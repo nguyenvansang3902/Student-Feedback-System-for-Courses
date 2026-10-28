@@ -105,7 +105,7 @@ console.log(
   `Demo ${size} đã sẵn sàng tại http://127.0.0.1:${port}. Database chính được giữ nguyên.`,
 );
 console.log(
-  "Đăng nhập DBCL2026001 với mật khẩu mẫu trong README để mở Danh mục & nhập liệu.",
+  "Đăng nhập PDT2026001 để mở Danh mục & nhập liệu; DBCL2026001 để mở Mẫu phiếu. Mật khẩu mẫu xem README.",
 );
 if (!args.includes("--prepare")) {
   const child = spawn(

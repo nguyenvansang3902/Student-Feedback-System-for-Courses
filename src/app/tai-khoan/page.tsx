@@ -22,11 +22,26 @@ const roleLabels: Record<string, string> = {
   CAN_BO_DBCL: "Cán bộ đảm bảo chất lượng",
   LANH_DAO: "Lãnh đạo",
   ADMIN: "Quản trị viên",
+  PHONG_DAO_TAO: "Phòng Đào tạo",
+  PHONG_KHAO_THI: "Phòng Khảo thí",
+  THANH_TRA: "Phòng Thanh tra",
 };
 
 function workspace(roles: readonly string[]) {
   if (roles.includes("ADMIN"))
     return { title: "Không gian quản trị", sections: [] };
+  if (roles.includes("PHONG_DAO_TAO"))
+    return { title: "Không gian Phòng Đào tạo", sections: [] };
+  if (roles.includes("PHONG_KHAO_THI"))
+    return {
+      title: "Không gian Phòng Khảo thí",
+      sections: ["Xử lý phản ánh khảo thí được chuyển đến"],
+    };
+  if (roles.includes("THANH_TRA"))
+    return {
+      title: "Không gian Thanh tra",
+      sections: ["Hồ sơ thanh tra được giao"],
+    };
   if (roles.includes("CAN_BO_DBCL"))
     return {
       title: "Không gian đảm bảo chất lượng",
@@ -209,7 +224,11 @@ export default async function AccountPage() {
                     href="/danh-muc"
                     className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
                   >
-                    Danh mục và nhập dữ liệu <span aria-hidden="true">↗</span>
+                    Danh mục
+                    {can(actor, "imports:manage")
+                      ? " và nhập dữ liệu"
+                      : " theo quyền được cấp"}{" "}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 )}
                 {actor.roles.map((role) => (

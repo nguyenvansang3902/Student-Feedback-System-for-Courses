@@ -244,6 +244,7 @@ function payload(suffix = "Mẫu đủ loại"): TemplateInput {
         title: `${prefix} Nhóm hai`,
         position: 2,
         weight: 1.2345,
+        isAssessmentGroup: true,
         questions: [
           {
             label: `${prefix} Có không`,
@@ -280,6 +281,7 @@ function payload(suffix = "Mẫu đủ loại"): TemplateInput {
         title: `${prefix} Nhóm một`,
         position: 1,
         weight: 2,
+        isAssessmentGroup: false,
         questions: [
           {
             label: `${prefix} Chọn nhiều`,
@@ -436,13 +438,16 @@ try {
     "CAN_BO_DBCL",
     "LANH_DAO",
     "ADMIN",
+    "PHONG_DAO_TAO",
+    "PHONG_KHAO_THI",
+    "THANH_TRA",
   ];
   for (const [index, role] of roles.entries())
     clients.push(await createClient(role, index + 1));
   const quality = clients[4],
     student = clients[0],
-    otherQuality = await createClient("CAN_BO_DBCL", 8),
-    combined = await createClient("CAN_BO_DBCL", 9, true);
+    otherQuality = await createClient("CAN_BO_DBCL", 11),
+    combined = await createClient("CAN_BO_DBCL", 12, true);
   assert.equal((await req("/api/templates")).status, 401);
   assert.equal((await req("/mau-phieu")).status, 307);
   for (const client of clients) {
@@ -456,7 +461,7 @@ try {
     );
   }
   pass(
-    "BR-34: đủ bảy vai trò, phạm vi trưởng khoa/bộ môn hợp lệ, chỉ ĐBCL được list/CSRF; ADMIN đã MFA không có quyền ngầm",
+    "TC-ALL-01 / BR-34: đủ mười vai trò, phạm vi trưởng khoa/bộ môn hợp lệ, chỉ ĐBCL được list/CSRF; ADMIN đã MFA không có quyền ngầm",
   );
 
   const before = await db.surveyTemplate.count();
@@ -470,7 +475,8 @@ try {
       (await req("/api/templates", quality, payload(), options)).status,
       403,
     );
-  const catalogToken = (await req("/api/catalog/csrf", quality)).data.csrfToken;
+  const catalogToken = (await req("/api/catalog/csrf", clients[7])).data
+    .csrfToken;
   const adminToken = (await req("/api/admin/csrf", combined)).data.csrfToken;
   secrets.add(catalogToken);
   secrets.add(adminToken);
@@ -561,6 +567,26 @@ try {
     [1, 2, 3],
   );
   assert.equal(saved.groups[1].weight, 1.2345);
+  assert.deepEqual(
+    saved.groups.map((group) => group.isAssessmentGroup),
+    [false, true],
+  );
+  assert.deepEqual(
+    (
+      await db.criterionGroup.findMany({
+        where: { templateId: saved.id },
+        orderBy: { position: "asc" },
+      })
+    ).map((group) => group.isAssessmentGroup),
+    [false, true],
+  );
+  const editor = await req(`/mau-phieu/${saved.id}`, quality);
+  assert.equal(editor.status, 200);
+  const editorHtml = await editor.response.text();
+  assert(
+    editorHtml.includes(`group-assessment-${saved.groups[1].id}`) &&
+      editorHtml.includes("Nhóm tiêu chí kiểm tra, đánh giá"),
+  );
   assert.equal(saved.groups[0].questions[0].scaleMax, 5);
   assert.equal(saved.groups[1].questions[1].scaleMax, 4);
   assert(
@@ -579,7 +605,7 @@ try {
   assert.equal(saved.groups[0].questions[2].weight, 0.0001);
   assert.equal(saved.groups[0].questions[0].weight, 1000);
   pass(
-    "FR-30/31: lưu/đọc đủ năm loại, Likert 1–4/1–5, thứ tự ba cấp, trọng số bốn số lẻ, bắt buộc và Không áp dụng",
+    "TC-FR148-01/02 / FR-30/31: cờ kiểm tra, đánh giá lưu DB/DTO đúng nhóm sau sắp thứ tự, form ĐBCL có ô chọn; đủ năm loại và hai thang Likert",
   );
 
   for (const denied of clients.filter(
@@ -614,7 +640,7 @@ try {
     }
   }
   pass(
-    "BR-34: mọi đường ID đọc/sửa/khóa/nhân bản/phiên bản/mặc định và SSR xem trước đều chặn sáu vai trò khác",
+    "TC-ALL-01 / BR-34: mọi đường ID đọc/sửa/khóa/nhân bản/phiên bản/mặc định và SSR xem trước đều chặn chín vai trò khác",
   );
 
   const absent = randomUUID();
@@ -716,6 +742,13 @@ try {
     const item = payload();
     invalids.push({ ...item, isDefault: true });
   }
+  for (const isAssessmentGroup of ["true", "false", 0, 1, null]) {
+    const item = payload();
+    invalids.push({
+      ...item,
+      groups: [{ ...item.groups[0], isAssessmentGroup }],
+    });
+  }
   const untouched = content(await readTemplate(quality, saved.id)),
     templateCount = await db.surveyTemplate.count(),
     groupCount = await db.criterionGroup.count();
@@ -752,12 +785,21 @@ try {
     "Danh sách phân trang/tìm kiếm trả số tổng và metadata gọn, không có nội dung câu hỏi hoặc định danh người tạo",
   );
 
+  const updatedPayload = payload("Đã lưu");
+  updatedPayload.groups[0].isAssessmentGroup = false;
+  updatedPayload.groups[1].isAssessmentGroup = true;
   const changed = await req(`/api/templates/${saved.id}`, quality, {
-    ...payload("Đã lưu"),
+    ...updatedPayload,
     expectedRevision: saved.revision,
   });
   assert.equal(changed.status, 200);
   assert.equal(changed.data.item.revision, 2);
+  assert.deepEqual(
+    changed.data.item.groups.map(
+      (group: { isAssessmentGroup: boolean }) => group.isAssessmentGroup,
+    ),
+    [true, false],
+  );
   assert.equal(
     (
       await req(`/api/templates/${saved.id}`, quality, {
@@ -821,6 +863,24 @@ try {
   const lockedContent = content(locked);
   assert.equal(locked.status, "DA_KHOA");
   assert(locked.isLocked && locked.lockedAt);
+  const changeLockedFlag = payload("Cố đổi cờ nhóm đã khóa");
+  changeLockedFlag.groups[0].isAssessmentGroup = false;
+  assert.equal(
+    (
+      await req(`/api/templates/${locked.id}`, quality, {
+        ...changeLockedFlag,
+        expectedRevision: locked.revision,
+      })
+    ).status,
+    409,
+  );
+  const lockedEditorHtml = await (
+    await req(`/mau-phieu/${locked.id}`, quality)
+  ).response.text();
+  assert(
+    lockedEditorHtml.includes("Nhóm tiêu chí kiểm tra, đánh giá") &&
+      !lockedEditorHtml.includes("group-assessment-"),
+  );
   assert.equal(
     (
       await req(`/api/templates/${locked.id}`, quality, {
@@ -840,7 +900,7 @@ try {
   );
   assert.equal(content(await readTemplate(quality, locked.id)), lockedContent);
   pass(
-    "BR-05: khóa thật, không sửa hoặc mở/khóa lại mẫu; nội dung và toàn bộ ID cây giữ nguyên",
+    "TC-FR148-05 / BR-05: mẫu khóa hiển thị cờ, không cho đổi cờ/nội dung/UUID hoặc mở khóa lại",
   );
 
   const versions = await Promise.all([
@@ -868,6 +928,10 @@ try {
     assert.equal(item.status, "NHAP");
     assert(!item.isDefault && !item.lockedAt);
     assert(allIds(item).every((id) => !originalIds.has(id)));
+    assert.deepEqual(
+      item.groups.map((group) => group.isAssessmentGroup),
+      locked.groups.map((group) => group.isAssessmentGroup),
+    );
   }
   assert.equal(content(await readTemplate(quality, locked.id)), lockedContent);
   pass(
@@ -883,6 +947,10 @@ try {
   templates.push(clone.id);
   assert.notEqual(clone.familyId, locked.familyId);
   assert.equal(clone.version, 1);
+  assert.deepEqual(
+    clone.groups.map((group) => group.isAssessmentGroup),
+    locked.groups.map((group) => group.isAssessmentGroup),
+  );
   assert(allIds(clone).every((id) => !originalIds.has(id)));
   assert.equal(
     (
@@ -1040,7 +1108,8 @@ try {
     assert(
       html.includes(`${prefix} Likert năm`) &&
         html.includes(`${prefix} Chọn một`) &&
-        html.includes("Không áp dụng"),
+        html.includes("Không áp dụng") &&
+        html.includes("Nhóm tiêu chí kiểm tra, đánh giá"),
     );
   }
   assert.deepEqual(await countWrites(), readOnlyBefore);

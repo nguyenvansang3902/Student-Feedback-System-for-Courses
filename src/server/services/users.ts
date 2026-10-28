@@ -5,7 +5,7 @@ import { AuthError, type AuthActor } from "../auth/types";
 import { isValidGrant, requireCan, type RoleGrant } from "../policies/can";
 import { assertFreshActor, lockAdminMutations, objectId, pageInput, parseInput, revokeUserAccess } from "./access";
 
-const roles = ["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN"] as const;
+const roles = ["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"] as const;
 const grantInput = z.object({
   role: z.enum(roles), scopeType: z.enum(["GLOBAL", "FACULTY", "DEPARTMENT"]),
   facultyId: z.uuid().nullable().optional(), departmentId: z.uuid().nullable().optional(),

@@ -117,3 +117,23 @@ Người dùng yêu cầu Tuần 6 và nhắc hệ thống có đủ bảy tác 
 **Chốt Tuần6 ngày28/10:** bộ kiểm UI đã chạy đầy đủ **14/14 nhóm,10/10 viewport,10PNG cuối đã mở xem**, không pageerror/tràn ngang/thiếu nhãn trong phạm vi kiểm. Fixture dọn và cây mẫu/tài khoản/số phiếu/đáp án seed giữ nguyên. Các lượt UI trước dừng vì bộ kiểm bấm trước React hydration hoặc bấm liên tiếp checkbox trong cùng lượt JavaScript; sửa harness để đợi xử lý sự kiện và thao tác tuần tự, không sửa mã sản phẩm. Kiểm UI409 dùng tăng revision của đúng fixture DB để giả lập phiên khác; hai request đồng thời thật kiểm riêng qua HTTP/MySQL, không nhận là hai cửa sổ browser.
 
 Lượt `npm run check` cuối phiên **15:30 ngày28/10** tiếp tục qua **279/279 trong24file**, lint/typecheck/schema/ERD qua. Rà soát tĩnh độc lập có phạm vi không phát hiện lỗi cụ thể cản FR30–35; không thay QA hoặc quét bảo mật đầy đủ. [CI40633183047](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40633183047) của mã `68087ed7ecc68028ac78475696f4ee69a5d2e056` đã qua check/smoke. Chốt FR30–35, `npm run progress` trả **62/163=38,0%**, M4=16/16; cập nhật bốn tệp theo dõi, README, ADR, nghiệm thu/báo cáo/giải thích/QA. Kiểm tài liệu254liên kết,37dòng STATE,9mục báo cáo/107từ tóm tắt/5câu bảo vệ/63FR duy nhất và bốn file nguồn nguyên vẹn. Main/tài liệu cuối đối chiếu CI đúng SHA trong Actions. Dừng Tuần6, chưa triển khai Tuần7; không ghi công việc AI thành đóng góp sinh viên.
+
+## Điều chỉnh số 01 — việc bù G1, 28–29/10/2026
+
+Người dùng yêu cầu đọc và làm theo prompt bổ sung. AI xác minh main `5346de9` đã hoàn thành Tuần 1–6, lưu nguyên văn [prompt](BO_SUNG_01_TAC_NHAN.md), chỉ làm G1 rồi dừng. Ngày/tên GVHD yêu cầu do sinh viên tự điền; AI không gán công việc của mình thành đóng góp thành viên.
+
+| Phần AI hỗ trợ | Kết quả và cách kiểm |
+| --- | --- |
+| Tài liệu | Đặc tả/kế hoạch/mẫu báo cáo/ma trận10vai trò/21FR/19BR/9TC; giữ mục5.6/8.3–8.6 và báo cáo tuần cũ; AGENTS chỉ thêm3dòng. Blueprint46/runtime31,7bảng bổ sung chỉ thiết kế |
+| Quyền và mở khóa | PĐT ghi dữ liệu đào tạo/import; ADMIN MFA ghi khoa/bộ môn; ĐBCL chỉ đọc danh mục. Lý do mở khóa, mutex/CAS/fresh guard, audit và SMTP/Mailpit sau commit; lỗi gửi hiển thị rõ |
+| Mẫu và seed | Cờ isAssessmentGroup xuyên editor/API/DB/preview/clone/version; family mặc định3nhóm7câu/1nhóm đánh giá; thêm4tài khoản. So hash16tập main giữ1.568tài khoản cũ, cây2mẫu cũ, đợt/task/78phiếu/234đáp án/3tổng hợp/phản hồi/lịch sử |
+| Migration | Sáu migration đã deploy main, diff không lệch. Preflight không có loại CSVC_LICH_HOC cũ; nối tự động trước npm db:deploy và kiểm đúng Docker/cổng/database đích. Unit chặn loại cũ/sai endpoint/lỗi SQL, không tự ánh xạ nội dung |
+| Kiểm thử | Lượt cuối29/10 02:00: npm run check qua346/346 trong25file; SQL16, HTTPauth24/quản trị28/danh mục23/mẫu20, CLI5, demo12nhóm qua. Build Next16.4.3 qua. CI mới chưa chốt ở lượt ghi này |
+| Giao diện/sơ đồ | UI7nhóm/16viewport,16PNG đã xem;0JSerror/overflow/thiếu nhãn; fixture dọn và seed không đổi. ERD4Mermaid render qua,4SVG/9PNG sơ đồ đã xem; không ghi đè tài sảnTuần6 |
+| Hạn chế | FR160/TC-ALL-01 chỉ phần đang có; kiểm tệp xuất/kết quả/hồ sơ còn chờ. SMTP chưaoutbox/retrybền; chưa có workflow/seed readiness, Khảo thí hoặc Thanh tra của tuần sau |
+
+Rà soát chéo phát hiện API cấu hình MFA còn giới hạn7 và CSRF danh mục còn phụ thuộc quyền ghi không entity; đã sửa và kiểm lại. Lượt fullcheck đầu có4testCSRF cũ không qua khi đang đổi policy; sau sửa chạy lại đầy đủ346. UI đầu dừng vì harness đọc body login sau navigation và HMR do build đồng thời; sửa bộ kiểm, dọn fixture rồi chạy lại7/7. Không bỏ gate hoặc đổi mã sản phẩm để làm đẹp kết quả.
+
+Docker tắt sau gián đoạn được mở bằng shortcut trong Explorer, engine29.9.2 và Compose healthy. Không khởi backend trực tiếp từ shell Codex, không reset hoặc thay volume để đạt số liệu. Hướng dẫn sửa trước đó chỉ đặt Start in đã được thay bằng kết quả sửa all-users/đúng AppData trong runbook vận hành riêng ngoài Git.
+
+[NGHIEM_THU_BO_SUNG_01](NGHIEM_THU_BO_SUNG_01.md) ghi tệp thay đổi, mâu thuẫn code cũ thực tế do ĐBCL ghi danh mục, phạm vi G1 và ước lượng tiến độ. Ước lượng G1 1–2ngày công, phần còn lại8–12ngày công, không phải số giờ hay đóng góp thực tế sinh viên. Chưa bắt đầu Tuần7; chỉ tiếp tục khi có đúng lệnh BẮT ĐẦU TUẦN 7.

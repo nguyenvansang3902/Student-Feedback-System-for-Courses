@@ -17,9 +17,11 @@ Thời gian: từ \[ngày] đến \[ngày]
 7. Phân công và đóng góp từng thành viên: \[SINH VIÊN TỰ ĐIỀN, AI không điền]
 8. Các bước kiểm tra nhanh cho giảng viên (3-6 bước bấm kèm kết quả mong đợi)
 9. BẢN RÚT GỌN ĐỂ DÁN VÀO HỆ THỐNG CỦA TRƯỜNG (tối đa 150 từ, văn phong sinh viên, trung thực)
+10. Điều chỉnh so với kế hoạch: ngày yêu cầu [SINH VIÊN TỰ ĐIỀN]; tên người yêu cầu [SINH VIÊN TỰ ĐIỀN]; lý do theo yêu cầu GVHD; phần thêm/bớt; tác động tiến độ; ghi rõ việc bù và tuần thực hiện. AI không điền ngày/tên người yêu cầu.
 ```
 
 Tiến độ: `docs/PROGRESS.md` gồm mỗi FR một dòng `- \[ ] FR-xx \[P?] tên (tuần dự kiến)`. Trọng số P0 = 3, P1 = 2, P2 = 1. `npm run progress` in tỉ lệ tổng, theo module và so với tỉ lệ kế hoạch lũy kế đến tuần hiện tại. Chỉ tick khi đủ: có test qua, nghiệm thu được, tài liệu cập nhật.
 
 Nếu trường có mẫu báo cáo riêng, người dùng sẽ dán vào và bạn chỉnh mẫu cho khớp, không đổi nội dung thực.
 
+Điều chỉnh số01: giữ nguyên báo cáo lịch sử. Mẫu từ sau điều chỉnh có thêm mục10; ngày phiên làm thực tế trong nhật ký AI không thay ngày GVHD yêu cầu mà sinh viên phải xác minh.

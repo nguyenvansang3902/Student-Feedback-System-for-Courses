@@ -122,6 +122,18 @@ const cases = [
     sql: `INSERT INTO TeachingAssignment(sectionId,teacherId) VALUES('${ids.section}','${ids.teacher}');`,
     error: "1062",
   },
+  ...["PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"].flatMap((role) => [
+    {
+      name: `G1-DB ${role} chấp nhận phạm vi GLOBAL`,
+      sql: `INSERT INTO RoleAssignment(id,userId,role,scopeType,scopeKey) VALUES('${randomUUID()}','${ids.teacher}','${role}','GLOBAL','GLOBAL'); SELECT 'NEW_ROLE_OK';`,
+      marker: "NEW_ROLE_OK",
+    },
+    {
+      name: `G1-DB ${role} chặn giả phạm vi FACULTY`,
+      sql: `INSERT INTO RoleAssignment(id,userId,role,scopeType,scopeKey,facultyId) VALUES('${randomUUID()}','${ids.teacher}','${role}','FACULTY','FACULTY:${ids.faculty}','${ids.faculty}');`,
+      error: "3819",
+    },
+  ]),
 ];
 
 let passed = 0;

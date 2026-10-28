@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1632"
+  height="1070"
+  viewBox="0 0 1632 1070"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">
+    ERD tổng quan: Xác thực, thông báo, cấu hình và kiểm toán
+  </title>
+  <desc id="description">
+    9 model chính và 1 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Điều
+    chỉnh số 01: 46 model thiết kế, 31 runtime, 15 model chỉ thiết kế; G1 có 10
+    vai trò và cờ nhóm kiểm tra, đánh giá. Chưa có workflow các tuần sau. Chi
+    tiết toàn bộ scalar nằm trong ERD.md.
+  </desc>
+  <style>
+    text {
+      font-family: "Segoe UI", Arial, sans-serif;
+      fill: #0f172a;
+    }
+    .heading {
+      font-size: 29px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 17px;
+      fill: #475569;
+    }
+    .model {
+      font-size: 22px;
+      font-weight: 700;
+      fill: #fff;
+    }
+    .meta {
+      font-size: 15px;
+      fill: #475569;
+    }
+    .field {
+      font-size: 15px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+    .foot {
+      font-size: 14px;
+      fill: #475569;
+    }
+  </style>
+  <rect width="1632" height="1070" fill="#f8fafc" />
+  <text x="27" y="48" class="heading">
+    Xác thực, thông báo, cấu hình và kiểm toán
+  </text>
+  <text x="27" y="82" class="sub">
+    9 model chính · 1 model ngữ cảnh · PK / UK / FK lấy từ DMMF thật
+  </text>
+  <text x="27" y="113" class="sub">
+    SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ
+    scalar và liên kết ở docs/ERD.md.
+  </text>
+  <text x="27" y="143" class="sub">
+    Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối
+    Response/Answer.
+  </text>
+  <g aria-label="UserSession">
+    <rect
+      x="27"
+      y="176"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="207" class="model">UserSession</text>
+    <text x="45" y="248" class="meta">Đã migrate đến Tuần 4 · 11 scalar</text>
+    <text x="45" y="277" class="field">PK (id)</text>
+    <text x="45" y="300" class="field">UK1 (refreshTokenHash)</text>
+    <text x="45" y="323" class="field">UK2 (rotatedFromId)</text>
+    <text x="45" y="346" class="field">FK (userId) → User (id)</text>
+    <text x="45" y="369" class="field">
+      FK (rotatedFromId) → UserSession (id)
+    </text>
+  </g>
+  <g aria-label="AuthToken">
+    <rect
+      x="561"
+      y="176"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="207" class="model">AuthToken</text>
+    <text x="579" y="248" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
+    <text x="579" y="277" class="field">PK (id)</text>
+    <text x="579" y="300" class="field">UK1 (tokenHash)</text>
+    <text x="579" y="323" class="field">FK (userId) → User (id)</text>
+  </g>
+  <g aria-label="TotpCredential">
+    <rect
+      x="1095"
+      y="176"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="207" class="model">TotpCredential</text>
+    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 8 scalar</text>
+    <text x="1113" y="277" class="field">PK (userId)</text>
+    <text x="1113" y="300" class="field">FK (userId) → User (id)</text>
+  </g>
+  <g aria-label="TotpRecoveryCode">
+    <rect
+      x="27"
+      y="408"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="408" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="436" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="439" class="model">TotpRecoveryCode</text>
+    <text x="45" y="480" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
+    <text x="45" y="509" class="field">PK (id)</text>
+    <text x="45" y="532" class="field">UK1 (codeHash)</text>
+    <text x="45" y="555" class="field">
+      FK (userId) → TotpCredential (userId)
+    </text>
+  </g>
+  <g aria-label="RateLimitBucket">
+    <rect
+      x="561"
+      y="408"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="408" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="436" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="439" class="model">RateLimitBucket</text>
+    <text x="579" y="480" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
+    <text x="579" y="509" class="field">PK (keyHash)</text>
+  </g>
+  <g aria-label="Notification">
+    <rect
+      x="1095"
+      y="408"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="408" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="436" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="439" class="model">Notification</text>
+    <text x="1113" y="480" class="meta">
+      Thiết kế tương lai; chưa migration · 8 scalar
+    </text>
+    <text x="1113" y="509" class="field">PK (id)</text>
+    <text x="1113" y="532" class="field">FK (userId) → User (id)</text>
+  </g>
+  <g aria-label="EmailOutbox">
+    <rect
+      x="27"
+      y="594"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="594" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="622" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="625" class="model">EmailOutbox</text>
+    <text x="45" y="666" class="meta">
+      Thiết kế tương lai; chưa migration · 7 scalar
+    </text>
+    <text x="45" y="695" class="field">PK (id)</text>
+    <text x="45" y="718" class="field">UK1 (notificationId)</text>
+    <text x="45" y="741" class="field">UK2 (idempotencyKey)</text>
+    <text x="45" y="764" class="field">
+      FK (notificationId) → Notification (id)
+    </text>
+  </g>
+  <g aria-label="SystemSetting">
+    <rect
+      x="561"
+      y="594"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="594" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="622" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="625" class="model">SystemSetting</text>
+    <text x="579" y="666" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
+    <text x="579" y="695" class="field">PK (key)</text>
+    <text x="579" y="718" class="field">FK (updatedById) → User (id)</text>
+  </g>
+  <g aria-label="AuditLog">
+    <rect
+      x="1095"
+      y="594"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="594" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="622" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="625" class="model">AuditLog</text>
+    <text x="1113" y="666" class="meta">Đã migrate đến Tuần 4 · 7 scalar</text>
+    <text x="1113" y="695" class="field">PK (id)</text>
+    <text x="1113" y="718" class="field">FK (actorId) → User (id)</text>
+  </g>
+  <g aria-label="User">
+    <rect
+      x="27"
+      y="803"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="27" y="803" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="27" y="831" width="510" height="20" fill="#64748b" />
+    <text x="45" y="834" class="model">User</text>
+    <text x="45" y="875" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 9 scalar
+    </text>
+    <text x="45" y="904" class="field">PK (id)</text>
+    <text x="45" y="927" class="field">UK1 (loginCode)</text>
+    <text x="45" y="950" class="field">UK2 (email)</text>
+  </g>
+  <text x="27" y="1009" class="foot">
+    Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 31 runtime / 15
+    chỉ thiết kế · Điều chỉnh số 01, việc bù G1 ngày 28/10/2026
+  </text>
+  <text x="27" y="1034" class="foot">
+    SHA-256 DMMF:
+    c1e361cc05de595ac669db33e113b03b494505a1c7353add2fbe9a95fc0df5d5
+  </text>
+</svg>

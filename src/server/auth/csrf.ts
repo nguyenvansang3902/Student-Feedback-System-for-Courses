@@ -18,9 +18,9 @@ export function issueAdminCsrf(actor: AuthActor): string {
   return issueCsrf(actor, "admin");
 }
 
-/** Quyền ĐBCL được xét riêng; token danh mục không hợp lệ ở API quản trị. */
+/** CSRF bảo vệ phiên mở danh mục; quyền ghi từng entity vẫn do service quyết định. */
 export function issueCatalogCsrf(actor: AuthActor): string {
-  requireCan(actor, "catalog:write");
+  requireCan(actor, "catalog:list");
   return issueCsrf(actor, "catalog");
 }
 
@@ -51,7 +51,7 @@ export function assertCatalogCsrf(
   request: NextRequest,
   actor: AuthActor,
 ): void {
-  requireCan(actor, "catalog:write");
+  requireCan(actor, "catalog:list");
   assertCsrf(request, actor, "catalog");
 }
 

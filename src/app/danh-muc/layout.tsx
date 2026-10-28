@@ -29,7 +29,7 @@ export default async function CatalogLayout({
           <Brand />
           <div className="flex flex-wrap items-center gap-4">
             <span className="text-xs font-semibold text-teal-800">
-              Đảm bảo chất lượng
+              Danh mục theo quyền được cấp
             </span>
             <LogoutButton />
           </div>
@@ -43,21 +43,29 @@ export default async function CatalogLayout({
               aria-label="Chức năng danh mục"
               className="mt-4 flex flex-wrap gap-2 lg:flex-col"
             >
-              {Object.entries(catalogPaths).map(([entity, path]) => (
+              {Object.entries(catalogPaths)
+                .filter(([entity]) =>
+                  can(actor, "catalog:list", {
+                    catalogEntity: entity as keyof typeof catalogPaths,
+                  }),
+                )
+                .map(([entity, path]) => (
+                  <Link
+                    key={entity}
+                    href={`/danh-muc/${path}`}
+                    className={`rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-teal-100 ${focusRing}`}
+                  >
+                    {catalogLabels[entity as keyof typeof catalogLabels]}
+                  </Link>
+                ))}
+              {can(actor, "imports:manage") && (
                 <Link
-                  key={entity}
-                  href={`/danh-muc/${path}`}
+                  href="/danh-muc/nhap-lieu"
                   className={`rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-teal-100 ${focusRing}`}
                 >
-                  {catalogLabels[entity as keyof typeof catalogLabels]}
+                  Nhập từ Excel / CSV
                 </Link>
-              ))}
-              <Link
-                href="/danh-muc/nhap-lieu"
-                className={`rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-teal-100 ${focusRing}`}
-              >
-                Nhập từ Excel / CSV
-              </Link>
+              )}
               <Link
                 href="/tai-khoan"
                 className={`rounded-xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-teal-100 ${focusRing}`}

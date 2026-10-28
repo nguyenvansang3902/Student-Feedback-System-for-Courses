@@ -61,3 +61,43 @@ export async function sendAccountTokenMail(input: AccountMail): Promise<void> {
     transporter.close();
   }
 }
+
+/** BR-51: người nhận chỉ lấy từ tài khoản ĐBCL đang hoạt động phía máy chủ. */
+export async function sendSemesterUnlockedMail(input: {
+  to: string;
+  semesterCode: string;
+  semesterName: string;
+  reason: string;
+}): Promise<void> {
+  const config = getAuthConfig();
+  const transporter = nodemailer.createTransport({
+    host: config.smtpHost,
+    port: config.smtpPort,
+    secure: config.smtpPort === 465,
+    ...(config.smtpUser && config.smtpPassword
+      ? { auth: { user: config.smtpUser, pass: config.smtpPassword } }
+      : {}),
+    connectionTimeout: 5_000,
+    greetingTimeout: 5_000,
+    socketTimeout: 5_000,
+    logger: false,
+    debug: false,
+  });
+  try {
+    await transporter.sendMail({
+      from: config.smtpFrom,
+      to: input.to,
+      subject: "Thông báo mở khóa học kỳ — hệ thống khảo sát sinh viên",
+      text: [
+        "Phòng Đào tạo đã mở khóa học kỳ để cập nhật dữ liệu đào tạo.",
+        `Học kỳ: ${input.semesterCode} · ${input.semesterName}`,
+        `Lý do: ${input.reason}`,
+        "Cán bộ Đảm bảo chất lượng cần kiểm tra tác động đến dữ liệu dùng cho khảo sát.",
+      ].join("\n"),
+      disableFileAccess: true,
+      disableUrlAccess: true,
+    });
+  } finally {
+    transporter.close();
+  }
+}

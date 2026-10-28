@@ -37,3 +37,6 @@ Next.js (App Router) + TypeScript strict, Prisma + MySQL 8 (utf8mb4), Zod, Tailw
 ## Lệnh npm
 
 dev · build · start · lint · typecheck · test · test:e2e · check · db:migrate · db:seed · db:reset · demo · scheduler · progress · admin:create · admin:reset-2fa
+- Vai trò: SINH_VIEN, GIANG_VIEN, TRUONG_BO_MON, TRUONG_KHOA, CAN_BO_DBCL, LANH_DAO, ADMIN, PHONG_DAO_TAO, PHONG_KHAO_THI, THANH_TRA.
+- Điều chỉnh số01 và phạm vi việc bù G1: [docs/BO_SUNG_01_TAC_NHAN.md](docs/BO_SUNG_01_TAC_NHAN.md); chưa làm Tuần7 khi chưa có lệnh BẮT ĐẦU TUẦN 7.
+- ADMIN không xem dữ liệu nghiệp vụ nhạy cảm/hồ sơ Thanh tra.

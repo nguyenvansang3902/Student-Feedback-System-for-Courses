@@ -6,6 +6,9 @@ export const roleLabels: Record<string, string> = {
   CAN_BO_DBCL: "Cán bộ đảm bảo chất lượng",
   LANH_DAO: "Lãnh đạo",
   ADMIN: "Quản trị viên",
+  PHONG_DAO_TAO: "Phòng Đào tạo",
+  PHONG_KHAO_THI: "Phòng Khảo thí",
+  THANH_TRA: "Phòng Thanh tra",
 };
 export function authDestination(user: {
   purpose?: string;

@@ -15,7 +15,7 @@ export interface TemplateQuestion {
   id: string; label: string; type: QuestionType; position: number; required: boolean; allowNA: boolean; weight: number;
   scaleMin: number | null; scaleMax: number | null; options: TemplateOption[];
 }
-export interface TemplateGroup { id: string; title: string; position: number; weight: number; questions: TemplateQuestion[] }
+export interface TemplateGroup { id: string; title: string; position: number; weight: number; isAssessmentGroup: boolean; questions: TemplateQuestion[] }
 export interface TemplateSummary {
   id: string; familyId: string; version: number; revision: number; name: string; status: TemplateStatus; isDefault: boolean;
   createdAt: string; updatedAt: string; lockedAt: string | null; isLocked: boolean; lockReason: string | null;
@@ -36,7 +36,7 @@ const baseSelect = {
 const summarySelect = { ...baseSelect, groups: { select: { _count: { select: { questions: true } } } } } as const satisfies Prisma.SurveyTemplateSelect;
 const detailSelect = {
   ...baseSelect, groups: { orderBy: [{ position: "asc" }, { id: "asc" }], select: {
-    id: true, title: true, position: true, weight: true, questions: { orderBy: [{ position: "asc" }, { id: "asc" }], select: {
+    id: true, title: true, position: true, weight: true, isAssessmentGroup: true, questions: { orderBy: [{ position: "asc" }, { id: "asc" }], select: {
       id: true, label: true, type: true, position: true, required: true, allowNA: true, weight: true, scaleMin: true, scaleMax: true,
       options: { orderBy: [{ position: "asc" }, { id: "asc" }], select: { id: true, label: true, position: true } },
     } },
@@ -54,7 +54,7 @@ function summary(row: SummaryRow | DetailRow): TemplateSummary {
     groupCount: row.groups.length, questionCount: row.groups.reduce((count, group) => count + ("questions" in group ? group.questions.length : group._count.questions), 0) };
 }
 function detail(row: DetailRow): TemplateDetail {
-  return { ...summary(row), groups: row.groups.map((group) => ({ id: group.id, title: group.title, position: group.position, weight: Number(group.weight),
+  return { ...summary(row), groups: row.groups.map((group) => ({ id: group.id, title: group.title, position: group.position, weight: Number(group.weight), isAssessmentGroup: group.isAssessmentGroup,
     questions: group.questions.map((question) => ({ ...question, weight: Number(question.weight) })) })) };
 }
 function conflict(): never { throw new AuthError("Mẫu đã thay đổi trong một phiên khác. Hãy tải lại trước khi tiếp tục.", 409, "TEMPLATE_REVISION_CONFLICT"); }
@@ -68,7 +68,7 @@ async function readTemplate(tx: Prisma.TransactionClient, id: string): Promise<D
   return row;
 }
 function content(row: DetailRow, name = row.name): ValidatedTemplateInput {
-  return parseTemplateInput(templateInputSchema, { name, groups: row.groups.map((group) => ({ title: group.title, position: group.position, weight: Number(group.weight),
+  return parseTemplateInput(templateInputSchema, { name, groups: row.groups.map((group) => ({ title: group.title, position: group.position, weight: Number(group.weight), isAssessmentGroup: group.isAssessmentGroup,
     questions: group.questions.map((question) => ({ label: question.label, type: question.type, position: question.position,
       required: question.required, allowNA: question.allowNA, weight: Number(question.weight),
       ...(question.type === "LIKERT" ? { scaleMin: question.scaleMin ?? 1, scaleMax: question.scaleMax ?? 5 } : {}),
@@ -78,7 +78,7 @@ function content(row: DetailRow, name = row.name): ValidatedTemplateInput {
 }
 function tree(input: ValidatedTemplateInput) {
   return { create: [...input.groups].sort((a, b) => a.position - b.position).map((group) => ({
-    id: randomUUID(), title: group.title, position: group.position, weight: group.weight,
+    id: randomUUID(), title: group.title, position: group.position, weight: group.weight, isAssessmentGroup: group.isAssessmentGroup,
     questions: { create: [...group.questions].sort((a, b) => a.position - b.position).map((question) => ({
       id: randomUUID(), label: question.label, type: question.type, position: question.position, required: question.required,
       allowNA: question.allowNA, weight: question.weight,

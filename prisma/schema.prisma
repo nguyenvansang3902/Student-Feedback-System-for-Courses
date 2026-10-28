@@ -28,6 +28,9 @@ enum Role {
   CAN_BO_DBCL
   LANH_DAO
   ADMIN
+  PHONG_DAO_TAO
+  PHONG_KHAO_THI
+  THANH_TRA
 }
 
 enum ScopeType {
@@ -63,6 +66,7 @@ enum CampaignScope {
 
 enum CampaignStatus {
   NHAP
+  CHO_XAC_NHAN_DL
   CHO_DUYET
   DA_DUYET
   DANG_MO
@@ -89,7 +93,9 @@ enum FeedbackCategory {
   NOI_DUNG_DE_CUONG
   TAI_LIEU
   KIEM_TRA_DANH_GIA
-  CSVC_LICH_HOC
+  THI_KET_THUC_HOC_PHAN
+  TO_CHUC_LOP_HOC
+  KHIEU_NAI_NGHIEM_TRONG
   KHAC
 }
 
@@ -129,33 +135,33 @@ enum SessionPurpose {
 }
 
 model User {
-  id                   String               @id @default(uuid()) @db.Char(36)
-  loginCode            String               @unique @db.VarChar(32)
-  email                String               @unique @db.VarChar(254)
-  displayName          String               @db.VarChar(160)
-  passwordHash         String?              @db.VarChar(255)
-  status               UserStatus           @default(PENDING_ACTIVATION)
-  mustChangePassword   Boolean              @default(true)
-  createdAt            DateTime             @default(now()) @db.DateTime(3)
-  updatedAt            DateTime             @updatedAt @db.DateTime(3)
-  roles                RoleAssignment[]
-  teaching             TeachingAssignment[]
-  enrollments          Enrollment[]
-  sessions             UserSession[]
-  authTokens           AuthToken[]
-  totp                 TotpCredential?
-  templates            SurveyTemplate[]
-  createdCampaigns     SurveyCampaign[]     @relation("CampaignCreator")
-  approvedCampaigns    SurveyCampaign[]     @relation("CampaignApprover")
-  campaignHistory      CampaignHistory[]
-  tasks                SurveyTask[]
-  feedbackSent         Feedback[]           @relation("FeedbackAuthor")
-  feedbackAssigned     Feedback[]           @relation("FeedbackAssignee")
-  feedbackRecipients   FeedbackRecipient[]
-  feedbackMessages     FeedbackMessage[]
-  feedbackHistory      FeedbackHistory[]
-  settings             SystemSetting[]
-  audit                AuditLog[]
+  id                 String               @id @default(uuid()) @db.Char(36)
+  loginCode          String               @unique @db.VarChar(32)
+  email              String               @unique @db.VarChar(254)
+  displayName        String               @db.VarChar(160)
+  passwordHash       String?              @db.VarChar(255)
+  status             UserStatus           @default(PENDING_ACTIVATION)
+  mustChangePassword Boolean              @default(true)
+  createdAt          DateTime             @default(now()) @db.DateTime(3)
+  updatedAt          DateTime             @updatedAt @db.DateTime(3)
+  roles              RoleAssignment[]
+  teaching           TeachingAssignment[]
+  enrollments        Enrollment[]
+  sessions           UserSession[]
+  authTokens         AuthToken[]
+  totp               TotpCredential?
+  templates          SurveyTemplate[]
+  createdCampaigns   SurveyCampaign[]     @relation("CampaignCreator")
+  approvedCampaigns  SurveyCampaign[]     @relation("CampaignApprover")
+  campaignHistory    CampaignHistory[]
+  tasks              SurveyTask[]
+  feedbackSent       Feedback[]           @relation("FeedbackAuthor")
+  feedbackAssigned   Feedback[]           @relation("FeedbackAssignee")
+  feedbackRecipients FeedbackRecipient[]
+  feedbackMessages   FeedbackMessage[]
+  feedbackHistory    FeedbackHistory[]
+  settings           SystemSetting[]
+  audit              AuditLog[]
 
   @@index([status])
 }
@@ -267,20 +273,20 @@ model RoleAssignment {
 }
 
 model UserSession {
-  id               String       @id @default(uuid()) @db.Char(36)
-  userId           String       @db.Char(36)
-  refreshTokenHash String       @unique @db.Char(64)
-  familyId         String       @db.Char(36)
+  id               String         @id @default(uuid()) @db.Char(36)
+  userId           String         @db.Char(36)
+  refreshTokenHash String         @unique @db.Char(64)
+  familyId         String         @db.Char(36)
   purpose          SessionPurpose @default(FULL)
-  mfaVerifiedAt    DateTime?     @db.DateTime(3)
-  expiresAt        DateTime     @db.DateTime(3)
-  createdAt        DateTime     @default(now()) @db.DateTime(3)
-  revokedAt        DateTime?    @db.DateTime(3)
-  userAgent        String?      @db.VarChar(512)
-  rotatedFromId    String?      @unique @db.Char(36)
-  user             User         @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  previous         UserSession? @relation("Rotation", fields: [rotatedFromId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  next             UserSession? @relation("Rotation")
+  mfaVerifiedAt    DateTime?      @db.DateTime(3)
+  expiresAt        DateTime       @db.DateTime(3)
+  createdAt        DateTime       @default(now()) @db.DateTime(3)
+  revokedAt        DateTime?      @db.DateTime(3)
+  userAgent        String?        @db.VarChar(512)
+  rotatedFromId    String?        @unique @db.Char(36)
+  user             User           @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  previous         UserSession?   @relation("Rotation", fields: [rotatedFromId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  next             UserSession?   @relation("Rotation")
 
   @@index([userId, revokedAt])
   @@index([familyId])
@@ -349,13 +355,14 @@ model SurveyTemplate {
 }
 
 model CriterionGroup {
-  id         String         @id @default(uuid()) @db.Char(36)
-  templateId String         @db.Char(36)
-  title      String         @db.VarChar(200)
-  position   Int
-  weight     Decimal        @default(1) @db.Decimal(10, 4)
-  template   SurveyTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  questions  Question[]
+  isAssessmentGroup Boolean        @default(false)
+  id                String         @id @default(uuid()) @db.Char(36)
+  templateId        String         @db.Char(36)
+  title             String         @db.VarChar(200)
+  position          Int
+  weight            Decimal        @default(1) @db.Decimal(10, 4)
+  template          SurveyTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  questions         Question[]
 
   @@unique([templateId, position])
 }
@@ -426,12 +433,12 @@ model SurveyCampaign {
 }
 
 model CampaignSection {
-  campaignId   String            @db.Char(36)
-  sectionId    String            @db.Char(36)
-  campaign     SurveyCampaign    @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  section      CourseSection     @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  tasks        SurveyTask[]
-  result       AggregateResult?
+  campaignId String           @db.Char(36)
+  sectionId  String           @db.Char(36)
+  campaign   SurveyCampaign   @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  section    CourseSection    @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  tasks      SurveyTask[]
+  result     AggregateResult?
 
   @@id([campaignId, sectionId])
   @@index([sectionId])

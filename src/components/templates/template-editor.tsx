@@ -32,6 +32,7 @@ type DraftGroup = {
   key: string;
   title: string;
   weight: number;
+  isAssessmentGroup: boolean;
   questions: DraftQuestion[];
 };
 const option = (label = "") => ({ key: crypto.randomUUID(), label });
@@ -49,6 +50,7 @@ const newGroup = (): DraftGroup => ({
   key: crypto.randomUUID(),
   title: "",
   weight: 1,
+  isAssessmentGroup: false,
   questions: [newQuestion()],
 });
 function toDraft(item?: TemplateDetail): DraftGroup[] {
@@ -57,6 +59,7 @@ function toDraft(item?: TemplateDetail): DraftGroup[] {
         key: group.id,
         title: group.title,
         weight: group.weight,
+        isAssessmentGroup: group.isAssessmentGroup,
         questions: group.questions.map((question) => ({
           key: question.id,
           label: question.label,
@@ -76,6 +79,7 @@ function toDraft(item?: TemplateDetail): DraftGroup[] {
           key: "initial-group",
           title: "",
           weight: 1,
+          isAssessmentGroup: false,
           questions: [
             {
               key: "initial-question",
@@ -223,6 +227,7 @@ export function TemplateEditor({ initial }: { initial?: TemplateDetail }) {
         title: group.title,
         position: index + 1,
         weight: group.weight,
+        isAssessmentGroup: group.isAssessmentGroup,
         questions: group.questions.map((question, at) => ({
           label: question.label,
           type: question.type,
@@ -527,6 +532,20 @@ export function TemplateEditor({ initial }: { initial?: TemplateDetail }) {
                     />
                   </Field>
                 </div>
+                <label className="mt-4 flex items-start gap-3 text-sm text-slate-700">
+                  <input
+                    id={`group-assessment-${group.key}`}
+                    type="checkbox"
+                    checked={group.isAssessmentGroup}
+                    onChange={(event) =>
+                      updateGroup(groupIndex, {
+                        isAssessmentGroup: event.target.checked,
+                      })
+                    }
+                    className="mt-0.5 h-4 w-4 accent-teal-700"
+                  />
+                  Nhóm tiêu chí kiểm tra, đánh giá
+                </label>
                 <div className="mt-6 space-y-5">
                   {group.questions.map((question, questionIndex) => (
                     <article
@@ -826,6 +845,11 @@ export function TemplateEditor({ initial }: { initial?: TemplateDetail }) {
               <p className="mt-2 text-sm text-slate-600">
                 Trọng số nhóm: {group.weight}
               </p>
+              {group.isAssessmentGroup && (
+                <p className="mt-2 text-sm font-semibold text-teal-800">
+                  Nhóm tiêu chí kiểm tra, đánh giá
+                </p>
+              )}
               <ol className="mt-4 space-y-4">
                 {group.questions.map((question, at) => (
                   <li key={question.id} className="rounded-xl bg-slate-50 p-4">

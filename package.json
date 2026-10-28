@@ -20,6 +20,7 @@
     "db:generate": "prisma generate && prisma generate --schema prisma/design.prisma",
     "db:prepare": "node scripts/prepare-database.mjs",
     "db:deploy": "prisma migrate deploy",
+    "predb:deploy": "node scripts/amendment-preflight.mjs",
     "db:migrate": "prisma migrate dev",
     "design:diagrams": "node scripts/export-erd.mjs",
     "design:check": "node scripts/export-erd.mjs --check",

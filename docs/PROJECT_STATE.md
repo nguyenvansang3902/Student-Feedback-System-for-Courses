@@ -1,37 +1,36 @@
 # Trạng thái dự án
 
-- Đề tài: website quản lý khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026.
-- Khởi động 02/10; Tuần 2 làm 21/10, Tuần 3 làm 21–22/10, Tuần 4–5 làm 22/10; không ghi lùi ngày.
-- Tuần hiện tại: Tuần 6 — mẫu phiếu khảo sát; bắt đầu 22/10, tiếp tục 28/10/2026 theo lệnh người dùng.
-- Mốc kế hoạch Tuần 6 giả định 04–10/11; làm sớm theo yêu cầu, nhóm đối chiếu lịch trường.
+- Đề tài: website khảo sát và phản hồi sinh viên về môn học; kế hoạch15tuần từ30/09/2026, khởi động thực tế02/10.
+- Tuần hiện tại: Tuần 6 — đã nghiệm thu; chốt việc bù G1 của Điều chỉnh số01, thực hiện28–29/10/2026 (Asia/Saigon).
+- Tuần1–6 đã hoàn thành ở main5346de9 trước điều chỉnh; không ghi lùi ngày hoặc sửa báo cáo tuần cũ.
+- Chưa có lệnh BẮT ĐẦU TUẦN 7. Chỉ làm G1; sau G1 dừng, không triển khai workflow các tuần sau.
 
-## Nền đã nghiệm thu đến Tuần 5
+## Nền đã nghiệm thu trước điều chỉnh
 
-- Auth/MFA/RBAC, CRUD danh mục/khóa kỳ, import CSV/XLSX, demo riêng: FR cũ 46/163 = 28,2%.
-- Main 4969ad7 có CI 39776322662 check+smoke xanh; giữ dữ liệu, bốn file nguồn và bằng chứng lịch sử.
-- Seed 3 size, 2 đợt và phản hồi giả được phép làm sớm; không có UI/API nghiệp vụ các tuần sau.
+- Auth/JWT/refresh, ADMIN TOTP, RBAC, quản lý người dùng, danh mục/import và mẫu phiếu FR30–35.
+- Tuần6:279test/24file, SQL10, HTTPauth24+quản trị28+danh mục22+mẫu20, CLI5, seed11; build qua.
+- CI mã68087ed đã qua check/smoke; bằng chứng lịch sử: NGHIEM_THU_TUAN_06.md và báo cáo tuan-06.md.
+- Tiến độ lịch sử62/163=38,0%; Điều chỉnh01 thêm21FR, mẫu số mới219. Không so hai tỷ lệ như cùng phạm vi.
 
-## Tuần 6 đã nghiệm thu
+## Việc bù G1
 
-- Service/policy mẫu phiếu: nhóm/câu/thứ tự, đủ 5 loại, trọng số, bắt buộc/NA, phiên bản/khóa/nhân bản/mặc định.
-- Chỉ ĐBCL GLOBAL thao tác; kiểm đủ 7 vai trò, ADMIN không có quyền ngầm. Origin/CSRF riêng templates.
-- Ghi giữ mutex đầu transaction, đọc lại phiên/quyền và CAS expectedRevision; khóa/đợt đã duyệt/có đáp án chặn sửa.
-- Migration 20261022125000_week6_template_revision đã deploy main: thêm revision1+updatedAt, không xóa dữ liệu.
-- Runtime31/blueprint39; bốn bảng mẫu có chức năng, 11 bảng khác còn chỉ seed. Hai schema đồng bộ qua kiểm thiết kế.
-- Thêm family seed mặc định mới đủ 5 loại, giữ nội dung/ID mẫu cũ và lựa chọn mặc định tùy chỉnh.
-- Check279/279 trong24file, lint/typecheck/ERD, SQL10 và build Next16.4.3 qua ngày28/10; audit full/production0.
-- HTTP/MySQL Tuần6 20/20; hồi quy auth24, CLI5, Tuần4 28, Tuần5 22 qua, fixture dọn. Seed11/11 qua.
-- UI14nhóm/10viewport qua,0JSerror/overflow/thiếu nhãn; fixture dọn, seed giữ nguyên. 10PNG và ERD mới đã xem.
-- CI40633183047 đúng mã68087ed đã qua check+smoke; CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
-- FR30–35 đã tick:62/163=38,0%, M4=16/16; ADR007, giải thích5câu, nghiệm thu/báo cáo9mục/QA đã cập nhật.
+- Lưu nguyên văn BO_SUNG_01_TAC_NHAN.md; cập nhật đặc tả, kế hoạch, mẫu báo cáo, ma trận10vai trò và truy vết; AGENTS chỉ thêm3dòng.
+- Role thêm PHONG_DAO_TAO/PHONG_KHAO_THI/THANH_TRA; gán GLOBAL hợp lệ; MFA cấu hình được đủ10vai trò.
+- PĐT ghi dữ liệu đào tạo/import; ADMIN MFA ghi khoa/bộ môn; ĐBCL chỉ đọc danh mục và vẫn quản lý mẫu phiếu.
+- Mở khóa kỳ cần lý do10–500ký tự, CAS/mutex/fresh guard, audit và email ĐBCL sau commit; UI hiển thị kết quả gửi.
+- isAssessmentGroup defaultfalse đi xuyên editor/DTO/DB/preview/version/clone; mẫu khóa không sửa được.
+- Seed thêm PDT2026001, KT2026001, TT2026001, TT2026002 và family mặc định3nhóm7câu/1nhóm đánh giá; giữ lựa chọn tùy chỉnh.
+- Migration20261028220000_amendment_01_roles_assessment đã deploy main; npm db:deploy có preflight enum cũ và đúng Docker/cổng đích.
+- Đã đối chiếu16tập hash:1.568tài khoản cũ, cây2mẫu cũ, đợt/task/78phiếu/234đáp án/3tổng hợp/phản hồi/lịch sử không đổi.
+- Runtime31/blueprint46;7bảng bổ sung và Feedback.identityLevel chỉ thiết kế, chưa migrate/chưa có service/UI.
+- Kiểm cục bộ và UI đã qua trong phạm vi ghi tại NGHIEM_THU_BO_SUNG_01.md; đang chốt gate/CI trước tick FR mới.
 
-## Giới hạn
+## Giới hạn và việc tiếp theo
 
-- Đợt khảo sát/phê duyệt, nộp phiếu, kết quả và xử lý phản hồi vẫn theo các tuần sau.
-- Preview chỉ thử giao diện; không tạo task/response/answer. SMTP chưa outbox; MFA chưa xoay ciphertext tự động.
-- Chỉ dữ liệu giả; không reset/xóa DB/volume, không deploy công khai, không gán đóng góp sinh viên.
-
-## Chạy và tiếp theo
-
-- README: Compose, auth:key, db:prepare/db:deploy/db:seed, dev; mở localhost:3000; DBCL2026001 để thử mẫu.
-- Dừng đúng Tuần6; khi được yêu cầu Tuần7 mới làm đợt/phê duyệt, tích hợp khóa mẫu trong transaction duyệt.
+- FR160/TC-ALL-01 chỉ kiểm chức năng hiện có; kiểm kết quả/hồ sơ/thống kê/tệp xuất còn chờ tuần tương ứng, chưa tick toàn bộ.
+- SMTP sau commit chưa có outbox/retry bền; FAILED/NO_RECIPIENT được báo rõ, không nhận thông báo thành công giả.
+- Hai tài khoản Thanh tra phục vụ demo nền; chưa có hồ sơ hoặc phép thử xung đột lợi ích tương lai.
+- Seed readiness, phản hồi mới, hồ sơ TT, cảnh báo và kết quả gộp bổ sung khi triển khai Tuần7/9–12.
+- Mốc15tuần giữ nguyên; ước lượng tác động trong báo cáo G1, sinh viên tự điền ngày/tên GVHD yêu cầu.
+- Chỉ dữ liệu giả; không reset/xóa DB/volume, không deploy công khai, không ghi công AI thành đóng góp sinh viên.
+- Chạy theo README; PĐT dùng /danh-muc, ĐBCL dùng /mau-phieu. Chờ đúng lệnh BẮT ĐẦU TUẦN 7 sau G1.

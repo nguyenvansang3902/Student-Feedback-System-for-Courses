@@ -7,12 +7,13 @@ import {
 } from "./template-input";
 
 export const defaultTemplateInput: TemplateInput = {
-  name: "Mẫu khảo sát môn học mặc định — đủ loại câu",
+  name: "Mẫu khảo sát môn học mặc định — kiểm tra, đánh giá",
   groups: [
     {
       title: "Trải nghiệm học tập",
       position: 1,
       weight: 2,
+      isAssessmentGroup: false,
       questions: [
         {
           label: "Giảng viên trình bày nội dung rõ ràng",
@@ -64,6 +65,7 @@ export const defaultTemplateInput: TemplateInput = {
       title: "Góp ý cải thiện",
       position: 2,
       weight: 1,
+      isAssessmentGroup: false,
       questions: [
         {
           label: "Bạn có được thông báo rõ tiêu chí đánh giá không?",
@@ -78,6 +80,23 @@ export const defaultTemplateInput: TemplateInput = {
           position: 2,
           required: false,
           allowNA: false,
+        },
+      ],
+    },
+    {
+      title: "Kiểm tra, đánh giá",
+      position: 3,
+      weight: 1,
+      isAssessmentGroup: true,
+      questions: [
+        {
+          label: "Việc kiểm tra, đánh giá phù hợp với nội dung học phần",
+          type: "LIKERT",
+          position: 1,
+          required: true,
+          allowNA: true,
+          scaleMin: 1,
+          scaleMax: 5,
         },
       ],
     },
@@ -97,7 +116,8 @@ export async function seedDefaultTemplate(
   authorizeConsole(actor);
   if (process.env.NODE_ENV === "production")
     throw new Error("Mẫu demo chỉ được seed trong môi trường phát triển.");
-  const id = context.id("week6-default-template"),
+  // Mỗi cấu trúc tích hợp có họ riêng: tuyệt đối không viết lại cây đã khóa.
+  const id = context.id("amendment1-default-template"),
     existing = await tx.surveyTemplate.findUnique({
       where: { id },
       select: { id: true },
@@ -108,18 +128,22 @@ export async function seedDefaultTemplate(
     where: { isDefault: true },
     select: { id: true },
   });
+  const previousBuiltinIds = [
+    context.legacyDefaultId,
+    context.id("week6-default-template"),
+  ];
   const promote =
     selected.length === 0 ||
-    (selected.length === 1 && selected[0].id === context.legacyDefaultId);
+    (selected.length === 1 && previousBuiltinIds.includes(selected[0].id));
   if (promote)
     await tx.surveyTemplate.updateMany({
-      where: { id: context.legacyDefaultId, isDefault: true },
+      where: { id: { in: previousBuiltinIds }, isDefault: true },
       data: { isDefault: false, revision: { increment: 1 } },
     });
   await tx.surveyTemplate.create({
     data: {
       id,
-      familyId: context.id("week6-default-family"),
+      familyId: context.id("amendment1-default-family"),
       version: 1,
       name: input.name,
       status: "DA_KHOA",
@@ -128,13 +152,14 @@ export async function seedDefaultTemplate(
       createdById: context.createdById,
       groups: {
         create: input.groups.map((group, gi) => ({
-          id: context.id(`week6-default-group:${gi}`),
+          id: context.id(`amendment1-default-group:${gi}`),
           title: group.title,
           position: group.position,
           weight: group.weight,
+          isAssessmentGroup: group.isAssessmentGroup,
           questions: {
             create: group.questions.map((question, qi) => ({
-              id: context.id(`week6-default-question:${gi}:${qi}`),
+              id: context.id(`amendment1-default-question:${gi}:${qi}`),
               label: question.label,
               type: question.type,
               position: question.position,
@@ -147,7 +172,7 @@ export async function seedDefaultTemplate(
                 question.type === "LIKERT" ? (question.scaleMax ?? 5) : null,
               options: {
                 create: question.options.map((option, oi) => ({
-                  id: context.id(`week6-default-option:${gi}:${qi}:${oi}`),
+                  id: context.id(`amendment1-default-option:${gi}:${qi}:${oi}`),
                   label: option.label,
                   position: option.position,
                 })),

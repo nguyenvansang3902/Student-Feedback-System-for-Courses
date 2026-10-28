@@ -8,3 +8,7 @@ prisma/migrations/20261022072500_week5_demo_data/migration.sql text eol=lf
 prisma/migrations/20261022125000_week6_template_revision/migration.sql text eol=lf
 docs/assets/tuan-06/**/*.svg text eol=lf
 docs/assets/tuan-06/*.svg text eol=lf
+docs/assets/bo-sung-01/**/*.svg text eol=lf
+docs/assets/bo-sung-01/*.svg text eol=lf
+prisma/migrations/20261028220000_amendment_01_roles_assessment/migration.sql text eol=lf
+docs/BO_SUNG_01_TAC_NHAN.md -text

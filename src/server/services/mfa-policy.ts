@@ -8,8 +8,8 @@ import { requireCan } from "../policies/can";
 import { assertFreshActor, lockAdminMutations, parseInput } from "./access";
 
 const policyInput = z.object({ requiredRoles: z.array(z.enum([
-  "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN",
-])).min(1).max(7).refine((roles) => roles.includes("ADMIN") && new Set(roles).size === roles.length) }).strict();
+  "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA",
+])).min(1).max(10).refine((roles) => roles.includes("ADMIN") && new Set(roles).size === roles.length) }).strict();
 
 export async function getMfaPolicy(actor: AuthActor): Promise<{ requiredRoles: Role[] }> {
   requireCan(actor, "mfa-policy:read");

@@ -17,6 +17,7 @@ import {
   listCatalog,
   listCatalogTeachers,
   lockSemester,
+  unlockSemester,
   saveCatalog,
 } from "@/server/services/catalog";
 import {
@@ -216,11 +217,20 @@ export async function POST(request: NextRequest, context: Context) {
           input,
         ),
       });
-    if (path.length === 3 && path[0] === "semesters" && path[2] === "lock") {
+    if (
+      path.length === 3 &&
+      path[0] === "semesters" &&
+      ["lock", "unlock"].includes(path[2])
+    ) {
       const data = z
         .object({ reason: z.string().trim().min(10).max(500) })
         .strict()
         .parse(input);
+      if (path[2] === "unlock")
+        return authJson({
+          ok: true,
+          ...(await unlockSemester(actor, path[1], data)),
+        });
       return authJson({
         ok: true,
         item: await lockSemester(actor, path[1], data),

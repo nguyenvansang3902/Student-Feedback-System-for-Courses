@@ -37,6 +37,7 @@ export default async function AdminLayout({
             >
               {[
                 ["/quan-tri/nguoi-dung", "Người dùng"],
+                ["/danh-muc/khoa", "Khoa và bộ môn"],
                 ["/quan-tri/nhat-ky", "Nhật ký kiểm toán"],
                 ["/quan-tri/chinh-sach-mfa", "Chính sách hai bước"],
                 ["/tai-khoan", "Tài khoản của tôi"],

@@ -270,9 +270,9 @@ function ConfirmAction({
 }: {
   entity: CatalogEntity;
   item: CatalogRecord;
-  action: "delete" | "lock";
+  action: "delete" | "lock" | "unlock";
   close: () => void;
-  saved: () => void;
+  saved: (message?: string) => void;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
@@ -282,11 +282,26 @@ function ConfirmAction({
     setBusy(true);
     setError(undefined);
     try {
-      await catalogRequest(
+      const result = await catalogRequest<{
+        notification?: {
+          status: string;
+          sent: number;
+          failed: number;
+          auditRecorded: boolean;
+        };
+      }>(
         `/api/catalog/${entity}/${encodeURIComponent(item.id)}/${action}`,
-        action === "lock" ? { reason: String(data.get("reason") ?? "") } : {},
+        action !== "delete" ? { reason: String(data.get("reason") ?? "") } : {},
       );
-      saved();
+      saved(
+        action === "unlock" &&
+          (result.notification?.status !== "SENT" ||
+            !result.notification.auditRecorded)
+          ? "Đã mở khóa học kỳ. Thông báo ĐBCL chưa hoàn tất; cần kiểm tra email và biên nhận thông báo trước khi tiếp tục cập nhật dữ liệu."
+          : action === "unlock"
+            ? "Đã mở khóa học kỳ và gửi thông báo đến cán bộ Đảm bảo chất lượng."
+            : undefined,
+      );
     } catch (error) {
       setError(messageOf(error));
     } finally {
@@ -302,17 +317,24 @@ function ConfirmAction({
         id="confirm-catalog-title"
         className="text-lg font-bold text-slate-950"
       >
-        {action === "lock" ? "Khóa sổ học kỳ" : "Xác nhận xóa"}: {item.code}
+        {action === "lock"
+          ? "Khóa sổ học kỳ"
+          : action === "unlock"
+            ? "Mở khóa học kỳ"
+            : "Xác nhận xóa"}
+        : {item.code}
       </h2>
       <p className="mt-3 text-sm leading-7 text-slate-700">
         {action === "lock"
-          ? "Sau khi khóa sổ, dữ liệu của học kỳ chỉ được xem. Ứng dụng không hỗ trợ tự mở khóa. Hãy kiểm tra danh mục và đăng ký học trước khi xác nhận."
-          : "Thao tác xóa không thể hoàn tác. Bản ghi đang được tham chiếu hoặc thuộc học kỳ đã khóa sẽ bị từ chối; với khoa, bộ môn hoặc môn học, có thể chọn ngừng sử dụng khi cần giữ lịch sử."}
+          ? "Sau khi khóa sổ, dữ liệu của học kỳ chỉ được xem. Hãy kiểm tra danh mục và đăng ký học trước khi xác nhận. Chỉ Phòng Đào tạo được mở khóa kèm lý do."
+          : action === "unlock"
+            ? "Dữ liệu đào tạo sẽ được phép cập nhật trở lại. Hệ thống ghi nhật ký và gửi email cho cán bộ Đảm bảo chất lượng để kiểm tra tác động đến khảo sát."
+            : "Thao tác xóa không thể hoàn tác. Bản ghi đang được tham chiếu hoặc thuộc học kỳ đã khóa sẽ bị từ chối; với khoa, bộ môn hoặc môn học, có thể chọn ngừng sử dụng khi cần giữ lịch sử."}
       </p>
       <form onSubmit={submit} className="mt-4 space-y-4">
-        {action === "lock" && (
+        {action !== "delete" && (
           <Field
-            label="Lý do khóa sổ"
+            label={action === "unlock" ? "Lý do mở khóa" : "Lý do khóa sổ"}
             id="lock-reason"
             hint="Từ 10 đến 500 ký tự. Chỉ nhập lý do nghiệp vụ, không nhập thông tin nhạy cảm."
           >
@@ -344,7 +366,9 @@ function ConfirmAction({
               ? "Đang xử lý…"
               : action === "lock"
                 ? "Xác nhận khóa sổ"
-                : "Xác nhận xóa bản ghi"}
+                : action === "unlock"
+                  ? "Xác nhận mở khóa"
+                  : "Xác nhận xóa bản ghi"}
           </button>
           <button
             type="button"
@@ -396,13 +420,19 @@ function RecordDetails({
   );
 }
 
-export function CatalogPanel({ entity }: { entity: CatalogEntity }) {
+export function CatalogPanel({
+  entity,
+  writable,
+}: {
+  entity: CatalogEntity;
+  writable: boolean;
+}) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [form, setForm] = useState<{ item: CatalogRecord | null } | null>(null);
   const [confirm, setConfirm] = useState<{
     item: CatalogRecord;
-    action: "delete" | "lock";
+    action: "delete" | "lock" | "unlock";
   } | null>(null);
   const [message, setMessage] = useState<string>();
   const query = new URLSearchParams({
@@ -413,10 +443,10 @@ export function CatalogPanel({ entity }: { entity: CatalogEntity }) {
   const resource = useCatalogResource<CatalogList>(
     `/api/catalog/${entity}?${query}`,
   );
-  function done() {
+  function done(message?: string) {
     setForm(null);
     setConfirm(null);
-    setMessage("Đã lưu thay đổi. Danh sách đang được cập nhật.");
+    setMessage(message ?? "Đã lưu thay đổi. Danh sách đang được cập nhật.");
     resource.reload();
   }
   function filter(event: FormEvent<HTMLFormElement>) {
@@ -441,20 +471,27 @@ export function CatalogPanel({ entity }: { entity: CatalogEntity }) {
             học kỳ đã khóa sổ được giữ ở chế độ chỉ đọc.
           </p>
         </div>
-        <button
-          type="button"
-          className={buttonStyle}
-          onClick={() => {
-            setForm({ item: null });
-            setConfirm(null);
-            setMessage(undefined);
-          }}
-        >
-          + Thêm {catalogLabels[entity].toLowerCase()}
-        </button>
+        {writable && (
+          <button
+            type="button"
+            className={buttonStyle}
+            onClick={() => {
+              setForm({ item: null });
+              setConfirm(null);
+              setMessage(undefined);
+            }}
+          >
+            + Thêm {catalogLabels[entity].toLowerCase()}
+          </button>
+        )}
       </div>
       <Notice message={message} />
-      {form && (
+      {!writable && (
+        <p className="mt-4 text-sm text-slate-600">
+          Bạn đang xem danh mục ở chế độ chỉ đọc.
+        </p>
+      )}
+      {writable && form && (
         <CatalogForm
           key={`${entity}:${form.item?.id ?? "new"}`}
           entity={entity}
@@ -463,7 +500,7 @@ export function CatalogPanel({ entity }: { entity: CatalogEntity }) {
           saved={done}
         />
       )}
-      {confirm && (
+      {writable && confirm && (
         <ConfirmAction
           key={`${confirm.action}:${confirm.item.id}`}
           entity={entity}
@@ -525,45 +562,50 @@ export function CatalogPanel({ entity }: { entity: CatalogEntity }) {
                   {item.name}
                 </h2>
                 <RecordDetails entity={entity} item={item} />
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    disabled={!!item.lockedAt}
-                    className={secondaryStyle}
-                    onClick={() => {
-                      setForm({ item });
-                      setConfirm(null);
-                      setMessage(undefined);
-                    }}
-                  >
-                    Chỉnh sửa
-                  </button>
-                  <button
-                    type="button"
-                    disabled={!!item.lockedAt}
-                    className={secondaryStyle}
-                    onClick={() => {
-                      setConfirm({ item, action: "delete" });
-                      setForm(null);
-                      setMessage(undefined);
-                    }}
-                  >
-                    Xóa
-                  </button>
-                  {entity === "semesters" && !item.lockedAt && (
+                {writable && (
+                  <div className="mt-5 flex flex-wrap gap-2">
                     <button
                       type="button"
+                      disabled={!!item.lockedAt}
                       className={secondaryStyle}
                       onClick={() => {
-                        setConfirm({ item, action: "lock" });
+                        setForm({ item });
+                        setConfirm(null);
+                        setMessage(undefined);
+                      }}
+                    >
+                      Chỉnh sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled={!!item.lockedAt}
+                      className={secondaryStyle}
+                      onClick={() => {
+                        setConfirm({ item, action: "delete" });
                         setForm(null);
                         setMessage(undefined);
                       }}
                     >
-                      Khóa sổ
+                      Xóa
                     </button>
-                  )}
-                </div>
+                    {entity === "semesters" && (
+                      <button
+                        type="button"
+                        className={secondaryStyle}
+                        onClick={() => {
+                          setConfirm({
+                            item,
+                            action: item.lockedAt ? "unlock" : "lock",
+                          });
+                          setForm(null);
+                          setMessage(undefined);
+                        }}
+                      >
+                        {item.lockedAt ? "Mở khóa" : "Khóa sổ"}
+                      </button>
+                    )}
+                  </div>
+                )}
               </article>
             ))}
           </div>

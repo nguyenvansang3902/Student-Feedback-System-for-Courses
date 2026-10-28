@@ -37,22 +37,53 @@ const request = (token?: string) =>
   });
 afterEach(() => vi.useRealTimers());
 describe("W5 FR-20/21 BR-32/34 — CSRF danh mục", () => {
-  it("ĐBCL GLOBAL có phiên đầy đủ dùng token danh mục, không cần vai trò ADMIN", () => {
+  it("ĐBCL GLOBAL có phiên đầy đủ lấy token bảo vệ phiên; token không tự cấp quyền ghi", () => {
     const actor = dbcl();
     expect(() =>
       assertCatalogCsrf(request(issueCatalogCsrf(actor)), actor),
     ).not.toThrow();
   });
-  it("từ chối ADMIN đơn vai trò, người dùng sai vai trò hoặc sai phạm vi", () => {
+  it("PĐT và ADMIN MFA lấy token danh mục; từ chối người dùng sai vai trò/phạm vi", () => {
     const actor = dbcl();
+    for (const role of ["PHONG_DAO_TAO", "ADMIN"] as const) {
+      const current = {
+        ...actor,
+        roles: [role],
+        mfa: role === "ADMIN",
+        assignments: [
+          {
+            role,
+            scopeType: "GLOBAL" as const,
+            facultyId: null,
+            departmentId: null,
+          },
+        ],
+      };
+      expect(() =>
+        assertCatalogCsrf(request(issueCatalogCsrf(current)), current),
+      ).not.toThrow();
+      if (role === "ADMIN")
+        expect(() => issueCatalogCsrf({ ...current, mfa: false })).toThrow();
+    }
     for (const other of [
       {
         ...actor,
-        roles: ["ADMIN" as const],
-        mfa: true,
+        roles: ["PHONG_KHAO_THI" as const],
         assignments: [
           {
-            role: "ADMIN" as const,
+            role: "PHONG_KHAO_THI" as const,
+            scopeType: "GLOBAL" as const,
+            facultyId: null,
+            departmentId: null,
+          },
+        ],
+      },
+      {
+        ...actor,
+        roles: ["THANH_TRA" as const],
+        assignments: [
+          {
+            role: "THANH_TRA" as const,
             scopeType: "GLOBAL" as const,
             facultyId: null,
             departmentId: null,

@@ -56,15 +56,25 @@ export default async function WorkspacePage({
               Soạn và quản lý mẫu phiếu khảo sát →
             </Link>
           )}
-          {role === "CAN_BO_DBCL" && can(actor, "catalog:list") && (
+          {can(actor, "catalog:list") && (
             <Link
               href="/danh-muc"
               className={`mt-6 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
             >
-              Quản lý danh mục và nhập dữ liệu →
+              {can(actor, "imports:manage")
+                ? "Quản lý dữ liệu đào tạo và nhập tệp"
+                : "Xem danh mục theo quyền được cấp"}{" "}
+              →
             </Link>
           )}
-          <WorkspaceSections />
+          {can(actor, "sections:list") ? (
+            <WorkspaceSections />
+          ) : (
+            <p className="mt-7 text-sm leading-7 text-slate-600">
+              Không gian của bạn đã được cấp. Chức năng xử lý hồ sơ sẽ được mở
+              khi triển khai đến giai đoạn tương ứng.
+            </p>
+          )}
         </div>
       </div>
     </main>

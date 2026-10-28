@@ -139,6 +139,7 @@ async function actor(
   role: Role,
   ordinal: number,
   mfa = false,
+  scope: { facultyId?: string; departmentId?: string } = {},
 ): Promise<Client & { id: string }> {
   const user = await db.user.create({
     data: {
@@ -148,7 +149,22 @@ async function actor(
       passwordHash: await hash(password, 12),
       status: "ACTIVE",
       mustChangePassword: false,
-      roles: { create: { role, scopeType: "GLOBAL", scopeKey: "GLOBAL" } },
+      roles: {
+        create: {
+          role,
+          ...scope,
+          scopeType: scope.facultyId
+            ? "FACULTY"
+            : scope.departmentId
+              ? "DEPARTMENT"
+              : "GLOBAL",
+          scopeKey: scope.facultyId
+            ? `FACULTY:${scope.facultyId}`
+            : scope.departmentId
+              ? `DEPARTMENT:${scope.departmentId}`
+              : "GLOBAL",
+        },
+      },
     },
     include: { roles: true },
   });
@@ -175,7 +191,7 @@ async function actor(
   }
   for (const value of client.jar.values()) secrets.add(value);
   const csrf = await req("/api/catalog/csrf", client);
-  if (role === "CAN_BO_DBCL") {
+  if (["PHONG_DAO_TAO", "CAN_BO_DBCL", "ADMIN"].includes(role)) {
     assert.equal(csrf.status, 200);
     client.csrf = csrf.data.csrfToken;
     secrets.add(client.csrf);
@@ -294,21 +310,25 @@ try {
     await delay(1000);
   }
   assert(ready);
-  const quality = await actor("CAN_BO_DBCL", 1),
-    otherQuality = await actor("CAN_BO_DBCL", 2),
+  const quality = await actor("PHONG_DAO_TAO", 1),
+    otherQuality = await actor("PHONG_DAO_TAO", 2),
     student = await actor("SINH_VIEN", 3),
     teacher = await actor("GIANG_VIEN", 4),
-    admin = await actor("ADMIN", 5, true);
+    admin = await actor("ADMIN", 5, true),
+    qualityReader = await actor("CAN_BO_DBCL", 6),
+    exams = await actor("PHONG_KHAO_THI", 7),
+    inspection = await actor("THANH_TRA", 8),
+    leader = await actor("LANH_DAO", 9);
   assert.equal((await req("/api/catalog/faculties")).status, 401);
-  for (const denied of [student, teacher, admin])
+  for (const denied of [student, teacher, exams, inspection, leader])
     assert.equal((await req("/api/catalog/faculties", denied)).status, 403);
   pass(
-    "BR-34: khách, sinh viên, giảng viên và ADMIN đã MFA không có quyền ĐBCL bị từ chối",
+    "TC-PDT-01: khách và vai trò không quản lý danh mục bị chặn; ADMIN chỉ quản lý tổ chức",
   );
   assert.equal(
     (
       await req(
-        "/api/catalog/faculties",
+        "/api/catalog/semesters",
         quality,
         { code: "BAD", name: "Sai" },
         { csrf: false },
@@ -319,7 +339,7 @@ try {
   assert.equal(
     (
       await req(
-        "/api/catalog/faculties",
+        "/api/catalog/semesters",
         quality,
         { code: "BAD", name: "Sai" },
         { origin: "https://evil.invalid" },
@@ -330,7 +350,7 @@ try {
   assert.equal(
     (
       await req(
-        "/api/catalog/faculties",
+        "/api/catalog/semesters",
         { ...quality, csrf: otherQuality.csrf },
         { code: "BAD", name: "Sai" },
       )
@@ -341,12 +361,12 @@ try {
   const faculty = await create(
     "faculties",
     { code: `${prefix}-K`, name: "Khoa kiểm thử" },
-    quality,
+    admin,
   );
   const department = await create(
     "departments",
     { code: `${prefix}-BM`, name: "Bộ môn kiểm thử", facultyId: faculty.id },
-    quality,
+    admin,
   );
   const course = await create(
     "courses",
@@ -379,6 +399,21 @@ try {
     quality,
   );
   pass("FR-20: tạo đủ sáu danh mục theo quan hệ, gồm phân công giảng viên");
+  const departmentHead = await actor("TRUONG_BO_MON", 10, false, {
+    departmentId: department.id,
+  });
+  const facultyHead = await actor("TRUONG_KHOA", 11, false, {
+    facultyId: faculty.id,
+  });
+  const scopedDenied = [
+    student,
+    teacher,
+    departmentHead,
+    facultyHead,
+    exams,
+    inspection,
+    leader,
+  ];
   for (const [kind, item] of [
     ["faculties", faculty],
     ["departments", department],
@@ -389,8 +424,18 @@ try {
   ] as const) {
     const path = `/api/catalog/${kind}/${encodeURIComponent(item.id)}`;
     assert.equal((await req(path, quality)).status, 200);
-    for (const denied of [student, teacher, admin]) {
+    const organization = kind === "faculties" || kind === "departments";
+    assert.equal((await req(path, qualityReader)).status, 200);
+    assert.equal((await req(path, admin)).status, organization ? 200 : 403);
+    for (const denied of scopedDenied) {
       assert.equal((await req(path, denied)).status, 403);
+      assert.equal((await req(path, denied, {})).status, 403);
+      assert.equal((await req(`${path}/delete`, denied, {})).status, 403);
+    }
+    for (const denied of [
+      qualityReader,
+      ...(organization ? [quality] : [admin]),
+    ]) {
       assert.equal((await req(path, denied, {})).status, 403);
       assert.equal((await req(`${path}/delete`, denied, {})).status, 403);
     }
@@ -408,11 +453,11 @@ try {
     404,
   );
   pass(
-    "BR-34: mọi route ID đọc/sửa/xóa và khóa học kỳ chặn truy cập trái vai trò; ID lạ trả 404",
+    "TC-ALL-01 một phần: ma trận 10 vai trò trên route ID đọc/sửa/xóa; ĐBCL chỉ đọc, ADMIN chỉ tổ chức, PĐT chỉ dữ liệu đào tạo",
   );
   assert.equal(
     (
-      await req(`/api/catalog/faculties/${faculty.id}`, quality, {
+      await req(`/api/catalog/faculties/${faculty.id}`, admin, {
         code: faculty.code,
         name: "Khoa đã cập nhật",
         isActive: true,
@@ -453,7 +498,7 @@ try {
     400,
   );
   assert.equal(
-    (await req(`/api/catalog/faculties/${faculty.id}/delete`, quality, {}))
+    (await req(`/api/catalog/faculties/${faculty.id}/delete`, admin, {}))
       .status,
     409,
   );
@@ -820,7 +865,7 @@ try {
       (
         await req(
           `/api/catalog/${kind}/${encodeURIComponent(item.id)}`,
-          quality,
+          kind === "faculties" || kind === "departments" ? admin : quality,
           input,
         )
       ).status,
@@ -830,7 +875,7 @@ try {
       (
         await req(
           `/api/catalog/${kind}/${encodeURIComponent(item.id)}/delete`,
-          quality,
+          kind === "faculties" || kind === "departments" ? admin : quality,
           {},
         )
       ).status,
@@ -847,6 +892,77 @@ try {
   );
   pass(
     "BR-17: sáu loại danh mục liên quan học kỳ khóa chỉ đọc, kể cả đổi khoa/bộ môn/môn gián tiếp",
+  );
+  for (const denied of [admin, qualityReader, ...scopedDenied]) {
+    assert.equal(
+      (
+        await req(`/api/catalog/semesters/${semester.id}/unlock`, denied, {
+          reason: "Không có quyền mở khóa",
+        })
+      ).status,
+      403,
+    );
+    assert.equal(
+      (
+        await req(
+          "/api/catalog/import/students/preview",
+          denied,
+          upload(
+            "loginCode,email,displayName\nFAKE,fake@fixture.invalid,Giả",
+            "fixture.csv",
+          ),
+        )
+      ).status,
+      403,
+    );
+  }
+  assert.equal(
+    (
+      await req(`/api/catalog/semesters/${semester.id}/unlock`, quality, {
+        reason: "ngắn",
+      })
+    ).status,
+    400,
+  );
+  const unlocked = await req(
+    `/api/catalog/semesters/${semester.id}/unlock`,
+    quality,
+    { reason: "Đối soát và điều chỉnh dữ liệu kiểm thử" },
+  );
+  assert.equal(unlocked.status, 200);
+  assert.equal(unlocked.data.item.lockedAt, null);
+  assert.equal(unlocked.data.notification.status, "SENT");
+  assert.equal(unlocked.data.notification.auditRecorded, true);
+  assert.equal(
+    (
+      await req(`/api/catalog/semesters/${semester.id}/unlock`, quality, {
+        reason: "Mở khóa lặp lại không được phép",
+      })
+    ).status,
+    409,
+  );
+  const unlockEvents = await db.auditLog.findMany({
+    where: {
+      actorId: quality.id,
+      objectId: semester.id,
+      action: { in: ["SEMESTER_UNLOCKED", "SEMESTER_UNLOCK_NOTIFICATION"] },
+    },
+  });
+  assert.equal(unlockEvents.length, 2);
+  const unlockMessages = await (
+    await fetch("http://127.0.0.1:8025/api/v1/messages?limit=100")
+  ).json();
+  assert(
+    unlockMessages.messages.some(
+      (message: { Subject: string; To: { Address: string }[] }) =>
+        message.Subject.includes("mở khóa học kỳ") &&
+        message.To.some(
+          (to) => to.Address === `${prefix.toLowerCase()}-6@fixture.invalid`,
+        ),
+    ),
+  );
+  pass(
+    "TC-PDT-01/FR-141: chỉ PĐT mở khóa với lý do, CAS chống lặp; audit thật và Mailpit nhận thông báo ĐBCL",
   );
   const raceSemester = await create(
     "semesters",
@@ -884,10 +1000,10 @@ try {
   const disposable = await create(
     "faculties",
     { code: `${prefix}-DEL`, name: "Khoa chưa dùng" },
-    quality,
+    admin,
   );
   assert.equal(
-    (await req(`/api/catalog/faculties/${disposable.id}/delete`, quality, {}))
+    (await req(`/api/catalog/faculties/${disposable.id}/delete`, admin, {}))
       .status,
     200,
   );
@@ -897,7 +1013,7 @@ try {
   );
   pass("FR-20: xóa thật bản ghi chưa dùng, truy vấn lại trả 404");
   await db.roleAssignment.deleteMany({
-    where: { userId: otherQuality.id, role: "CAN_BO_DBCL" },
+    where: { userId: otherQuality.id, role: "PHONG_DAO_TAO" },
   });
   assert.equal((await req("/api/catalog/faculties", otherQuality)).status, 403);
   assert.equal(
@@ -910,7 +1026,7 @@ try {
     403,
   );
   pass(
-    "BR-34: quyền ĐBCL bị thu hồi có hiệu lực với phiên đang mở và đường tải mẫu",
+    "BR-34: quyền PĐT bị thu hồi có hiệu lực với phiên đang mở và đường tải mẫu",
   );
   const logs = await db.auditLog.findMany({
       where: { OR: [{ actorId: { in: ids } }, { objectId: { in: batchIds } }] },

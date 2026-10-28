@@ -84,6 +84,11 @@ export function TemplatePreview({ template }: { template: TemplateDetail }) {
             <p className="mt-2 text-sm text-slate-600">
               Trọng số nhóm: {group.weight}
             </p>
+            {group.isAssessmentGroup && (
+              <p className="mt-2 text-sm font-semibold text-teal-800">
+                Nhóm tiêu chí kiểm tra, đánh giá
+              </p>
+            )}
             <div className="mt-6 space-y-7">
               {group.questions.map((question, questionIndex) => {
                 const answer = answers[question.id] ?? {};

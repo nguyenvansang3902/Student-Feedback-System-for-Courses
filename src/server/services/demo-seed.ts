@@ -132,6 +132,18 @@ export async function seedDemo(
       facultyId: null,
       departmentId: null,
     },
+    ...([
+      ["PDT2026001", "PHONG_DAO_TAO"],
+      ["KT2026001", "PHONG_KHAO_THI"],
+      ["TT2026001", "THANH_TRA"],
+      ["TT2026002", "THANH_TRA"],
+    ] as const).map(([loginCode, role]) => ({
+      loginCode,
+      role,
+      scopeType: "GLOBAL" as const,
+      facultyId: null,
+      departmentId: null,
+    })),
   ] as const;
   const operatorUsers = operators.map((p) => ({
     id: demoId(p.loginCode),

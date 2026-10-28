@@ -193,15 +193,55 @@ try {
   const original = await db.user.findUniqueOrThrow({
     where: { loginCode: "DEMO-SV00001" },
   });
+  const legacyId = demoId("survey-data:template"),
+    previousBuiltinId = demoId("week6-default-template"),
+    builtinId = demoId("amendment1-default-template");
+  const oldLockedQuery = {
+    where: {
+      id: { in: [legacyId, previousBuiltinId] },
+      status: "DA_KHOA" as const,
+    },
+    orderBy: { id: "asc" as const },
+    select: {
+      id: true,
+      familyId: true,
+      version: true,
+      name: true,
+      status: true,
+      lockedAt: true,
+      groups: {
+        orderBy: { position: "asc" as const },
+        include: {
+          questions: {
+            orderBy: { position: "asc" as const },
+            include: { options: { orderBy: { position: "asc" as const } } },
+          },
+        },
+      },
+    },
+  };
+  const previousLocked = await db.surveyTemplate.findMany(oldLockedQuery);
   const medium = await run("medium");
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
+  const newOperators = await db.user.findMany({
+    where: { loginCode: { in: ["PDT2026001", "KT2026001", "TT2026001", "TT2026002"] } },
+    include: { roles: true }, orderBy: { loginCode: "asc" },
+  });
+  assert.deepEqual(newOperators.map((user) => [user.loginCode, ...user.roles.map((grant) => `${grant.role}:${grant.scopeKey}`)]), [
+    ["KT2026001", "PHONG_KHAO_THI:GLOBAL"], ["PDT2026001", "PHONG_DAO_TAO:GLOBAL"],
+    ["TT2026001", "THANH_TRA:GLOBAL"], ["TT2026002", "THANH_TRA:GLOBAL"],
+  ]);
+  assert(newOperators.every((user) => user.status === "ACTIVE" && user.passwordHash));
+  results.push("G1: seed bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra chưa có workflow hồ sơ");
   const frozenSurvey = await surveySnapshot();
   results.push(
     "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
   );
-  const legacyId = demoId("survey-data:template"),
-    builtinId = demoId("week6-default-template");
+  assert.deepEqual(
+    await db.surveyTemplate.findMany(oldLockedQuery),
+    previousLocked,
+  );
   const selected = await db.surveyTemplate.findMany({
     where: { isDefault: true },
     include: {
@@ -211,7 +251,15 @@ try {
   assert.equal(selected.length, 1);
   assert.equal(selected[0].id, builtinId);
   assert.equal(selected[0].status, "DA_KHOA");
+  assert.equal(selected[0].groups.length, 3);
+  assert.deepEqual(
+    selected[0].groups
+      .filter((group) => group.isAssessmentGroup)
+      .map((group) => group.title),
+    ["Kiểm tra, đánh giá"],
+  );
   const builtinQuestions = selected[0].groups.flatMap((g) => g.questions);
+  assert.equal(builtinQuestions.length, 7);
   assert.deepEqual([...new Set(builtinQuestions.map((q) => q.type))].sort(), [
     "BOOLEAN",
     "LIKERT",
@@ -224,7 +272,7 @@ try {
       .filter((q) => q.type === "LIKERT")
       .map((q) => q.scaleMax)
       .sort(),
-    [4, 5],
+    [4, 5, 5],
   );
   const legacyBefore = await db.surveyTemplate.findUniqueOrThrow({
     where: { id: legacyId },
@@ -241,9 +289,15 @@ try {
     },
   });
   assert.equal(legacyBefore.groups.flatMap((g) => g.questions).length, 3);
-  assert.equal(await db.surveyTemplate.count(), 2);
+  assert.equal(
+    await db.surveyTemplate.count(),
+    2 +
+      Number(
+        previousLocked.some((template) => template.id === previousBuiltinId),
+      ),
+  );
   results.push(
-    "FR-35: họ mẫu mặc định mới đủ 5 loại/2 thang Likert, giữ mẫu 3 câu cũ và phiếu/kết quả",
+    "TC-FR148-06/07: họ mẫu mới 3 nhóm/7 câu, đúng 1 nhóm Kiểm tra, đánh giá; giữ nguyên UUID/cây hai họ cũ và phiếu/kết quả",
   );
   const defaultMetadata = await db.surveyTemplate.findMany({
     where: { id: { in: [legacyId, builtinId] } },
@@ -292,6 +346,10 @@ try {
       })
     ).groups,
     legacyBefore.groups,
+  );
+  assert.deepEqual(
+    await db.surveyTemplate.findMany(oldLockedQuery),
+    previousLocked,
   );
   results.push(
     "FR-35/BR-05: seed lại giữ lựa chọn mặc định đã đổi và không ghi lại cây câu hỏi cũ",

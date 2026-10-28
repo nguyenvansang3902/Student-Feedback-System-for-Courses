@@ -19,7 +19,7 @@ function fixture() {
   db.surveyTemplate.findUnique.mockResolvedValue(null);
   db.surveyTemplate.findMany.mockResolvedValue([]);
   db.surveyTemplate.updateMany.mockResolvedValue({ count: 0 });
-  db.surveyTemplate.create.mockResolvedValue({ id: id("week6-default-template") });
+  db.surveyTemplate.create.mockResolvedValue({ id: id("amendment1-default-template") });
   db.auditLog.create.mockResolvedValue({});
   return db;
 }
@@ -40,19 +40,20 @@ let db: Fixture;
 beforeEach(() => { vi.stubEnv("NODE_ENV", "test"); db = fixture(); });
 afterEach(() => { vi.unstubAllEnvs(); });
 
-describe("FR-35 / BR-05 — seed mặc định đủ loại, bảo toàn nội dung đã khóa", () => {
-  it("định nghĩa tiếng Việt hợp lệ qua schema server, đủ năm loại và cả hai thang Likert", () => {
+describe("FR-35/148 / BR-05 — seed mặc định đủ loại, bảo toàn nội dung đã khóa", () => {
+  it("TC-FR148-06: mặc định có đúng một nhóm Kiểm tra, đánh giá và đủ năm loại, hai thang Likert", () => {
     const input = parseTemplateInput(templateInputSchema, defaultTemplateInput);
     const questions = input.groups.flatMap((group) => group.questions);
     expect(new Set(questions.map((question) => question.type))).toEqual(new Set(["LIKERT", "SINGLE_CHOICE", "MULTIPLE_CHOICE", "TEXT", "BOOLEAN"]));
-    expect(questions.filter((question) => question.type === "LIKERT").map((question) => [question.scaleMin, question.scaleMax])).toEqual([[1, 5], [1, 4]]);
-    expect(input.groups).toHaveLength(2);
-    expect(questions).toHaveLength(6);
+    expect(questions.filter((question) => question.type === "LIKERT").map((question) => [question.scaleMin, question.scaleMax])).toEqual([[1, 5], [1, 4], [1, 5]]);
+    expect(input.groups).toHaveLength(3);
+    expect(questions).toHaveLength(7);
+    expect(input.groups.filter((group) => group.isAssessmentGroup)).toEqual([expect.objectContaining({ title: "Kiểm tra, đánh giá", position: 3 })]);
     expect(questions.some((question) => question.required)).toBe(true);
     expect(questions.some((question) => !question.required)).toBe(true);
     expect(questions.some((question) => question.allowNA)).toBe(true);
     expect(questions.some((question) => !question.allowNA)).toBe(true);
-    expect(input.groups.map((group) => group.weight)).toEqual([2, 1]);
+    expect(input.groups.map((group) => group.weight)).toEqual([2, 1, 1]);
   });
 
   it.each<ServerConsoleActor | null>([null, { kind: "SERVER_CONSOLE", reason: "ngắn" },
@@ -67,38 +68,39 @@ describe("FR-35 / BR-05 — seed mặc định đủ loại, bảo toàn nội d
     expectNoAccess(db);
   });
 
-  it("cài mới tạo họ riêng v1 đã khóa và ID mới cho toàn bộ cây, không sửa câu/phiếu/kết quả cũ", async () => {
+  it("TC-FR148-07: cài mới tạo họ riêng v1 đã khóa và ID mới cho toàn bộ cây, không sửa câu/phiếu/kết quả cũ", async () => {
     const old = { id: context.legacyDefaultId, familyId: id("legacy-family"), name: "Mẫu cũ đã có kết quả", revision: 7, lockedAt: new Date("2026-10-01"),
       groups: [{ id: id("legacy-group"), questions: [{ id: id("legacy-question"), label: "Câu cũ", answers: [{ id: id("legacy-answer"), valueNumber: 4 }] }] }],
       result: { id: id("legacy-result"), overallScore: 4 } };
     const snapshot = structuredClone(old);
     await seedDefaultTemplate(actor, transaction(db), context);
     const created = db.surveyTemplate.create.mock.calls[0][0].data;
-    expect(created).toMatchObject({ id: id("week6-default-template"), familyId: id("week6-default-family"), version: 1,
+    expect(created).toMatchObject({ id: id("amendment1-default-template"), familyId: id("amendment1-default-family"), version: 1,
       status: "DA_KHOA", lockedAt: expect.any(Date), isDefault: true, createdById: context.createdById });
     const newIds = idsIn(created);
-    expect(newIds).toHaveLength(15); // template + 2 nhóm + 6 câu + 6 lựa chọn
+    expect(newIds).toHaveLength(17); // template + 3 nhóm + 7 câu + 6 lựa chọn
     expect(new Set(newIds).size).toBe(newIds.length);
     for (const createdId of newIds) expect(idsIn(old)).not.toContain(createdId);
     expect(created.familyId).not.toBe(old.familyId);
-    expect(created.groups.create.flatMap((group: { questions: { create: unknown[] } }) => group.questions.create)).toHaveLength(6);
+    expect(created.groups.create.flatMap((group: { questions: { create: unknown[] } }) => group.questions.create)).toHaveLength(7);
+    expect(created.groups.create.map((group: { isAssessmentGroup: boolean }) => group.isAssessmentGroup)).toEqual([false, false, true]);
     expectNoChildWrites(db);
     expect(db.surveyTemplate.update).not.toHaveBeenCalled();
     expect(db.surveyTemplate.deleteMany).not.toHaveBeenCalled();
     expect(old).toEqual(snapshot);
   });
 
-  it("không có mặc định thì chọn mẫu mới, chỉ thử bỏ cờ đúng ID legacy và không cập nhật toàn bảng", async () => {
+  it("không có mặc định thì chọn mẫu mới, chỉ bỏ cờ đúng ID tích hợp trước và không cập nhật toàn bảng", async () => {
     await seedDefaultTemplate(actor, transaction(db), context);
     expect(db.surveyTemplate.create.mock.calls[0][0].data.isDefault).toBe(true);
-    expect(db.surveyTemplate.updateMany).toHaveBeenCalledExactlyOnceWith({ where: { id: context.legacyDefaultId, isDefault: true },
+    expect(db.surveyTemplate.updateMany).toHaveBeenCalledExactlyOnceWith({ where: { id: { in: [context.legacyDefaultId, id("week6-default-template")] }, isDefault: true },
       data: { isDefault: false, revision: { increment: 1 } } });
     expectNoChildWrites(db);
   });
 
-  it("chỉ mẫu legacy đang mặc định thì chuyển cờ và tăng revision metadata, giữ nguyên nội dung khóa", async () => {
-    const legacy = { id: context.legacyDefaultId, isDefault: true, revision: 9,
-      name: "Tên cũ", status: "DA_KHOA", lockedAt: new Date("2026-10-01"), groups: [{ title: "Nhóm cũ", label: "Câu cũ" }] };
+  it.each(["legacy", "week6"])("TC-FR148-08: chỉ mẫu tích hợp %s đang mặc định thì chuyển metadata, giữ nguyên cờ/cây/UUID đã khóa", async (previous) => {
+    const legacy = { id: previous === "legacy" ? context.legacyDefaultId : id("week6-default-template"), isDefault: true, revision: 9,
+      name: "Tên cũ", status: "DA_KHOA", lockedAt: new Date("2026-10-01"), groups: [{ id: id("old-locked-group"), title: "Nhóm cũ", label: "Câu cũ", isAssessmentGroup: false }] };
     const frozenContent = structuredClone({ name: legacy.name, status: legacy.status, lockedAt: legacy.lockedAt, groups: legacy.groups });
     db.surveyTemplate.findMany.mockResolvedValue([{ id: legacy.id }]);
     db.surveyTemplate.updateMany.mockImplementation(async () => { legacy.isDefault = false; legacy.revision += 1; return { count: 1 }; });
@@ -110,9 +112,9 @@ describe("FR-35 / BR-05 — seed mặc định đủ loại, bảo toàn nội d
     expectNoChildWrites(db);
   });
 
-  it.each(["custom-only", "legacy-and-custom"])("giữ lựa chọn tùy chỉnh khi đã có %s; mẫu tích hợp mới không tự trở thành mặc định", async (selected) => {
+  it.each(["custom-only", "legacy-and-custom", "week6-and-custom"])("TC-FR148-09: giữ lựa chọn tùy chỉnh khi đã có %s; mẫu tích hợp mới không tự trở thành mặc định", async (selected) => {
     const custom = { id: id("custom-default") };
-    db.surveyTemplate.findMany.mockResolvedValue(selected === "custom-only" ? [custom] : [{ id: context.legacyDefaultId }, custom]);
+    db.surveyTemplate.findMany.mockResolvedValue(selected === "custom-only" ? [custom] : [{ id: selected === "legacy-and-custom" ? context.legacyDefaultId : id("week6-default-template") }, custom]);
     await seedDefaultTemplate(actor, transaction(db), context);
     expect(db.surveyTemplate.create.mock.calls[0][0].data.isDefault).toBe(false);
     expect(db.surveyTemplate.updateMany).not.toHaveBeenCalled();
@@ -121,9 +123,9 @@ describe("FR-35 / BR-05 — seed mặc định đủ loại, bảo toàn nội d
   });
 
   it("chạy lại khi họ tích hợp đã tồn tại không đọc/chọn lại mặc định, sửa hoặc reset cây", async () => {
-    db.surveyTemplate.findUnique.mockResolvedValue({ id: id("week6-default-template") });
+    db.surveyTemplate.findUnique.mockResolvedValue({ id: id("amendment1-default-template") });
     await seedDefaultTemplate(actor, transaction(db), context);
-    expect(db.surveyTemplate.findUnique).toHaveBeenCalledExactlyOnceWith({ where: { id: id("week6-default-template") }, select: { id: true } });
+    expect(db.surveyTemplate.findUnique).toHaveBeenCalledExactlyOnceWith({ where: { id: id("amendment1-default-template") }, select: { id: true } });
     expect(db.surveyTemplate.findMany).not.toHaveBeenCalled();
     for (const table of Object.values(db)) for (const action of [table.create, table.update, table.updateMany, table.deleteMany]) expect(action).not.toHaveBeenCalled();
   });
@@ -131,7 +133,7 @@ describe("FR-35 / BR-05 — seed mặc định đủ loại, bảo toàn nội d
   it("audit chỉ metadata console/số lượng, không chứa nội dung cấu trúc hoặc lý do người vận hành", async () => {
     await seedDefaultTemplate(actor, transaction(db), context);
     expect(db.auditLog.create).toHaveBeenCalledExactlyOnceWith({ data: { actorId: null, action: "DEFAULT_TEMPLATE_SEEDED", objectType: "SurveyTemplate",
-      objectId: id("week6-default-template"), redactedSummary: { console: true, isDefault: true, groupCount: 2, questionCount: 6 } } });
+      objectId: id("amendment1-default-template"), redactedSummary: { console: true, isDefault: true, groupCount: 3, questionCount: 7 } } });
     const log = JSON.stringify(db.auditLog.create.mock.calls);
     for (const content of [actor.reason, defaultTemplateInput.name, ...defaultTemplateInput.groups.map((group) => group.title),
       ...defaultTemplateInput.groups.flatMap((group) => group.questions.map((question) => question.label))]) expect(log).not.toContain(content);

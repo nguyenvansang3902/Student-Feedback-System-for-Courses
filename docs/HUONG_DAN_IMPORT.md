@@ -1,23 +1,24 @@
-# Hướng dẫn danh mục và import Excel/CSV — Tuần 5
+# Hướng dẫn danh mục và import Excel/CSV — cập nhật Điều chỉnh số 01/G1
 
-Thực hiện ngày **22/10/2026**, theo phạm vi Tuần 5. Dùng dữ liệu giả khi thử; kết quả chạy thật xem [nghiệm thu](NGHIEM_THU_TUAN_05.md).
+Chức năng gốc được nghiệm thu Tuần 5 ngày **22/10/2026**; [nghiệm thu Tuần 5](NGHIEM_THU_TUAN_05.md) giữ bằng chứng và phân quyền tại thời điểm đó. Hướng dẫn này áp dụng quyền mới của [Điều chỉnh số 01](BO_SUNG_01_TAC_NHAN.md): **PĐT ghi dữ liệu đào tạo/import; ADMIN có MFA ghi khoa/bộ môn; ĐBCL chỉ đọc danh mục**. Xem [ma trận hiện tại](MA_TRAN_QUYEN.md) và [truy vết](TRUY_VET.md) để đối chiếu nghiệm thu G1. Dùng dữ liệu giả khi thử.
 
 ## 1. Mở đúng môi trường và tài khoản
 
 1. Chạy ứng dụng theo [README](../README.md). Môi trường chính thường ở `http://localhost:3000`; `npm.cmd run demo` tạo môi trường demo riêng, mặc định `http://127.0.0.1:3001`.
-2. Trong demo, đăng nhập `DBCL2026001` bằng mật khẩu mẫu trong README rồi mở **Danh mục & nhập liệu** (`/danh-muc`). Tài khoản có gán hợp lệ `CAN_BO_DBCL` vận hành phần này. ADMIN đơn vai trò không có quyền danh mục.
+2. Trong demo, đăng nhập `PDT2026001` bằng mật khẩu mẫu trong README rồi mở **Danh mục** (`/danh-muc`). Tài khoản có grant hợp lệ `PHONG_DAO_TAO` quản lý dữ liệu đào tạo và **Nhập dữ liệu**. ADMIN đã hoàn thành MFA chỉ quản lý khoa/bộ môn; `DBCL2026001` chỉ đọc danh mục, không import.
 3. Giữ đúng địa chỉ ứng dụng đã in ra khi chạy. Nếu phiên hết hạn hoặc quyền vừa đổi, đăng nhập lại; tệp đã sửa hoặc xác nhận preview cũ phải chạy thử lại.
 
 Demo chỉ tạo dữ liệu giả cục bộ và bị chặn production. Mỗi `npm run demo` tạo DB mới; dữ liệu đã thử ở DB demo trước vẫn được giữ nhưng không tự xuất hiện trong DB mới. Không chạy lệnh reset để làm theo hướng dẫn này.
 
 ## 2. Chuẩn bị danh mục trước khi nhập
 
-Tạo theo thứ tự **khoa → bộ môn → môn học → học kỳ → lớp học phần**. Môn/bộ môn/khoa phải hoạt động; học kỳ chưa khóa sổ. Nhập tài khoản sinh viên/giảng viên trước khi nhập đăng ký hoặc phân công.
+ADMIN có MFA tạo **khoa → bộ môn** trước. Sau đó PĐT tạo **môn học → học kỳ → lớp học phần**, nhập hồ sơ sinh viên/giảng viên trước khi nhập đăng ký hoặc phân công. PĐT đọc khoa/bộ môn để chọn liên kết nhưng không sửa cấu trúc tổ chức. Môn/bộ môn/khoa phải hoạt động; học kỳ chưa khóa sổ. Tạo/khóa tài khoản đăng nhập trực tiếp vẫn do ADMIN; import SV/GV giữ hành vi tạo tài khoản chờ kích hoạt, ghi actor PĐT.
 
 - Mỗi mã khoa, bộ môn, môn học, học kỳ là duy nhất. Mã lớp duy nhất trong từng học kỳ.
 - Khoa/bộ môn/môn học có trạng thái hoạt động. Dữ liệu đang được tham chiếu không xóa được; ứng dụng trả lỗi rõ thay vì xóa bản ghi phụ thuộc.
 - Lớp có thể có nhiều giảng viên; tối đa một người được đánh dấu phụ trách chính. Phân công giảng viên thực hiện tại danh mục, không có loại import phân công trong Tuần 5.
-- **Khóa sổ** cần lý do ít nhất 10 ký tự. Sau khi khóa, học kỳ và dữ liệu liên quan chỉ đọc; không có nút mở lại. Việc sửa/xóa khoa/bộ môn/môn học ảnh hưởng lớp trong kỳ khóa cũng bị chặn. Chỉ thử khóa trên kỳ giả dùng riêng.
+- **Khóa sổ** và **Mở khóa** ở danh sách học kỳ chỉ dành cho PĐT, cần lý do 10–500 ký tự. Khi khóa, học kỳ và dữ liệu liên quan chỉ đọc; sửa/xóa khoa/bộ môn/môn ảnh hưởng lớp trong kỳ khóa cũng bị chặn. Khi mở khóa, hệ thống ghi audit và gửi thông báo cho ĐBCL đang hoạt động. Chỉ thử trên kỳ giả dùng riêng.
+- Email mở khóa gửi sau commit. Nếu SMTP lỗi, không có người nhận hoặc không ghi được biên nhận, giao diện báo thông báo chưa hoàn tất; học kỳ vẫn đã mở. Kiểm Mailpit/SMTP và audit, không lặp thao tác như thể dữ liệu chưa đổi. Chưa có outbox hoặc gửi lại nền tự động.
 
 ## 3. Tải mẫu và điền đúng cột
 
@@ -87,13 +88,16 @@ Không đưa token, liên kết kích hoạt hay mật khẩu vào Git, log ho�
 | `UNSAFE_CELL`, `FORMULA_NOT_ALLOWED` | Chuyển ô thành giá trị văn bản/số thuần, bỏ công thức/liên kết |
 | `DUPLICATE_IN_FILE`, `ALREADY_EXISTS` | Loại bản ghi trùng; kiểm danh mục/tài khoản đang có; import chỉ tạo mới |
 | `REFERENCE_NOT_FOUND`, `INACTIVE_REFERENCE`, `INVALID_STUDENT` | Tạo/kiểm mã tham chiếu và trạng thái hoạt động; sinh viên cần gán vai trò hợp lệ |
-| `SEMESTER_LOCKED` | Chọn kỳ còn mở; không có mở lại kỳ bằng màn hình này |
+| `SEMESTER_LOCKED` | Chọn kỳ còn mở hoặc để PĐT mở khóa tại danh sách học kỳ, kèm lý do và kiểm thông báo ĐBCL; quay lại chạy thử tệp từ đầu |
+| `SEMESTER_ALREADY_OPEN` / `SEMESTER_STATE_CHANGED` | Tải lại danh sách và kiểm trạng thái hiện tại trước khi thao tác; không lặp lệnh mở khóa cũ |
 | `INVALID_IMPORT_PREVIEW`, `IMPORT_VALIDATION_FAILED`, `IMPORT_CONFLICT` | Tải dữ liệu mới, chọn lại tệp và chạy thử lại |
 | `IMPORT_ALREADY_COMMITTED` | Lần nhập đã ghi; kiểm danh sách, không cần bấm lại |
-| 401/403 hoặc CSRF hết hạn | Đăng nhập lại đúng tài khoản ĐBCL, tải lại trang và chạy thử lại |
+| 401/403 hoặc CSRF hết hạn | Đăng nhập lại đúng tài khoản PĐT để nhập tệp; ADMIN chỉ khoa/bộ môn, ĐBCL chỉ đọc. Tải lại trang và chạy thử lại |
 
 ## 7. Kịch bản kiểm tra tối thiểu
 
 Tạo kỳ và mã riêng để thử, tải mẫu rồi nhập một bản ghi mới hợp lệ. Xác nhận số lượng tăng đúng một. Tiếp theo tạo tệp hai dòng gồm một dòng đúng và một email sai: chạy thử phải chỉ đúng dòng lỗi và chưa tăng số lượng. Sửa tệp, chạy thử rồi khóa kỳ bằng fixture riêng trước khi xác nhận nhập lớp/đăng ký: máy chủ phải từ chối ghi.
 
 Các bước này là hướng dẫn cho người nghiệm thu. Kết quả bộ test, tranh chấp MySQL và giao diện thực sự đã chạy được ghi riêng trong [nghiệm thu](NGHIEM_THU_TUAN_05.md), không suy từ hướng dẫn.
+
+Với G1, kiểm thêm bằng tài khoản riêng: PĐT ghi lớp/import được; ADMIN có MFA ghi khoa/bộ môn nhưng bị chặn ghi lớp/import; ĐBCL chỉ đọc; Khảo thí/Thanh tra không được mở dữ liệu danh mục thô. Thử mở khóa kỳ giả phải có lý do, audit và thư ĐBCL; nếu thư lỗi thì trạng thái kỳ vẫn mở và thông báo phải phản ánh đúng. Các bước này chưa thay kết quả nghiệm thu G1 tại [TRUY_VET](TRUY_VET.md).

@@ -27,7 +27,7 @@ function session(current: AuthActor) {
       status: "ACTIVE", mustChangePassword: false, roles: current.assignments } };
 }
 function input() {
-  return { name: "Mẫu kiểm thử giả", groups: [{ title: "Nhóm giả", position: 1, weight: 1.2345, questions: [
+  return { name: "Mẫu kiểm thử giả", groups: [{ title: "Nhóm giả", position: 1, weight: 1.2345, isAssessmentGroup: true, questions: [
     { label: "Likert giả", type: "LIKERT" as const, position: 1, required: true, allowNA: true, weight: 1, options: [] },
     { label: "Chọn một giả", type: "SINGLE_CHOICE" as const, position: 2, required: true, allowNA: false, weight: 2, options: [{ label: "Một", position: 1 }, { label: "Hai", position: 2 }] },
     { label: "Chọn nhiều giả", type: "MULTIPLE_CHOICE" as const, position: 3, required: false, allowNA: true, weight: 0.1, options: [{ label: "Ba", position: 1 }, { label: "Bốn", position: 2 }] },
@@ -56,10 +56,35 @@ beforeEach(() => {
 describe("FR-30/31 — cấu trúc và giới hạn trình soạn", () => {
   it("nhận đủ năm loại; mặc định Likert 1–5, cờ và trọng số có giá trị mặc định", async () => {
     const data = parseTemplateInput(templateInputSchema, { name: " Mẫu ", groups: [{ title: " Nhóm ", position: 1, questions: [{ label: " Câu ", type: "LIKERT", position: 1 }] }] });
-    expect(data).toMatchObject({ name: "Mẫu", groups: [{ title: "Nhóm", weight: 1, questions: [{ label: "Câu", required: true, allowNA: false, weight: 1, options: [] }] }] });
+    expect(data).toMatchObject({ name: "Mẫu", groups: [{ title: "Nhóm", weight: 1, isAssessmentGroup: false, questions: [{ label: "Câu", required: true, allowNA: false, weight: 1, options: [] }] }] });
     await createTemplate(current, data);
     expect(db.surveyTemplate.create.mock.calls[0][0].data.groups.create[0].questions.create[0]).toMatchObject({ scaleMin: 1, scaleMax: 5 });
     expect(templateInputSchema.safeParse(input()).success).toBe(true);
+  });
+  it("TC-FR148-01: chỉ nhận cờ boolean thật, thiếu cờ mặc định false và lưu/đọc cờ true", async () => {
+    const data = input(), group = data.groups[0];
+    for (const invalid of ["true", "false", 0, 1, null, []]) {
+      const body = { ...data, groups: [{ ...group, isAssessmentGroup: invalid }] };
+      expect(() => parseTemplateInput(templateInputSchema, body)).toThrow("Nhóm kiểm tra, đánh giá");
+    }
+    expect(parseTemplateInput(templateInputSchema, { ...data, groups: [{ ...group, isAssessmentGroup: false }] }).groups[0].isAssessmentGroup).toBe(false);
+    const created = await createTemplate(current, data);
+    expect(db.surveyTemplate.create.mock.calls[0][0].data.groups.create[0]).toMatchObject({ isAssessmentGroup: true });
+    expect(created.groups[0].isAssessmentGroup).toBe(true);
+    expect((await getTemplate(current, template.id)).groups[0].isAssessmentGroup).toBe(true);
+    expect(db.surveyTemplate.findUnique.mock.calls[0][0].select.groups.select.isAssessmentGroup).toBe(true);
+  });
+  it("TC-FR148-02: đổi cờ cùng nhóm khi sắp thứ tự, không gán cờ theo vị trí mảng", async () => {
+    const data = input(), group = data.groups[0];
+    await createTemplate(current, { ...data, groups: [
+      { ...group, title: "Nhóm đánh giá", position: 9, isAssessmentGroup: true },
+      { ...group, title: "Nhóm khác", position: 2, isAssessmentGroup: false },
+    ] });
+    expect(db.surveyTemplate.create.mock.calls[0][0].data.groups.create.map((item: { title: string; isAssessmentGroup: boolean }) => [item.title, item.isAssessmentGroup])).toEqual([
+      ["Nhóm khác", false], ["Nhóm đánh giá", true],
+    ]);
+    await updateTemplate(current, template.id, { ...data, groups: [{ ...group, isAssessmentGroup: false }], expectedRevision: 1 });
+    expect(db.surveyTemplate.update.mock.calls[0][0].data.groups.create[0].isAssessmentGroup).toBe(false);
   });
   it("nhận Likert 1–4 và trọng số bốn số lẻ, không nhận thang khác/điểm của câu không phải Likert", () => {
     const data = input(); const question = data.groups[0].questions[0];
@@ -101,7 +126,7 @@ describe("FR-30/31 — cấu trúc và giới hạn trình soạn", () => {
 });
 
 describe("FR-30–35, BR-05/30/34 — quyền, bất biến phiên bản và khóa", () => {
-  it.each<Role>(["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN"])("ma trận bảy tác nhân: %s", (role) => {
+  it.each<Role>(["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"])("TC-ALL-01: ma trận mẫu phiếu mười tác nhân: %s", (role) => {
     for (const action of ["templates:list", "templates:read", "templates:write"]) expect(can(actor(role), action)).toBe(role === "CAN_BO_DBCL");
   });
   it("ĐBCL sai phạm vi, phiên hạn chế và ADMIN+ĐBCL thiếu MFA bị từ chối", () => {
@@ -111,8 +136,8 @@ describe("FR-30–35, BR-05/30/34 — quyền, bất biến phiên bản và kh�
     expect(can(combined, "templates:write")).toBe(true); expect(can({ ...combined, mfa: false }, "templates:write")).toBe(false);
     expect(can(current, "templates:delete")).toBe(false);
   });
-  it("từ chối mọi service/ID trước DB khi không có quyền (IDOR)", async () => {
-    const denied = actor("ADMIN"), body = { expectedRevision: 1 };
+  it.each<Role>(["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"])("TC-ALL-01: từ chối mọi service/ID mẫu phiếu trước DB (IDOR): %s", async (role) => {
+    const denied = actor(role), body = { expectedRevision: 1 };
     for (const attempt of [() => listTemplates(denied), () => getTemplate(denied, template.id), () => getDefaultTemplate(denied),
       () => createTemplate(denied, input()), () => updateTemplate(denied, template.id, { ...input(), ...body }), () => lockTemplate(denied, template.id, body),
       () => createTemplateVersion(denied, template.id, body), () => cloneTemplate(denied, template.id, body), () => setDefaultTemplate(denied, template.id, body)])
@@ -201,22 +226,34 @@ describe("FR-30–35, BR-05/30/34 — quyền, bất biến phiên bản và kh�
     template.groups = []; db.surveyTemplate.updateMany.mockClear();
     await expect(lockTemplate(current, template.id, { expectedRevision: 1 })).rejects.toMatchObject({ code: "INVALID_TEMPLATE" }); expect(db.surveyTemplate.updateMany).not.toHaveBeenCalled();
   });
-  it("BR-05: phiên bản mới cùng họ max+1, nguồn khóa không đổi; mọi ID con mới", async () => {
+  it.each([false, true])("TC-FR148-03 / BR-05: phiên bản mới cùng họ max+1 giữ cờ %s, nguồn khóa không đổi; mọi ID con mới", async (isAssessmentGroup) => {
+    template.groups[0].isAssessmentGroup = isAssessmentGroup;
     template.status = "DA_KHOA"; template.lockedAt = new Date(); template.isDefault = true; const original = JSON.stringify(template);
     await createTemplateVersion(current, template.id, { expectedRevision: 1, name: "Phiên bản mới" });
     expect(db.surveyTemplate.aggregate).toHaveBeenCalledWith({ where: { familyId: template.familyId }, _max: { version: true } });
     const created = db.surveyTemplate.create.mock.calls[0][0].data;
     expect(created).toMatchObject({ familyId: template.familyId, version: 5, status: "NHAP", lockedAt: null, isDefault: false, name: "Phiên bản mới", createdById: current.userId });
     expect(created.id).not.toBe(template.id); expect(created.groups.create[0].id).not.toBe(template.groups[0].id);
+    expect(created.groups.create[0].isAssessmentGroup).toBe(isAssessmentGroup);
     expect(created.groups.create[0].questions.create[1].options.create[0].id).not.toBe(template.groups[0].questions[1].options[0].id);
     expect(JSON.stringify(template)).toBe(original); expect(db.surveyTemplate.updateMany).not.toHaveBeenCalled();
   });
-  it("nhân bản tạo họ mới v1 nháp, không kế thừa mặc định/khóa", async () => {
+  it.each([false, true])("TC-FR148-04: nhân bản giữ cờ %s trong họ mới v1 nháp, không kế thừa mặc định/khóa", async (isAssessmentGroup) => {
+    template.groups[0].isAssessmentGroup = isAssessmentGroup;
     template.status = "DA_KHOA"; template.lockedAt = new Date(); template.isDefault = true;
     await cloneTemplate(current, template.id, { expectedRevision: 1 });
     const created = db.surveyTemplate.create.mock.calls[0][0].data;
     expect(created).toMatchObject({ version: 1, status: "NHAP", isDefault: false, lockedAt: null }); expect(created.familyId).not.toBe(template.familyId);
+    expect(created.groups.create[0].isAssessmentGroup).toBe(isAssessmentGroup);
     expect(db.surveyTemplate.aggregate).not.toHaveBeenCalled(); expect(db.surveyTemplate.updateMany).not.toHaveBeenCalled();
+  });
+  it("TC-FR148-05 / BR-05: không thể thay cờ trên mẫu đã khóa, cây và UUID gốc nguyên vẹn", async () => {
+    template.status = "DA_KHOA"; template.lockedAt = new Date();
+    const frozen = structuredClone(template), data = input();
+    await expect(updateTemplate(current, template.id, { ...data, expectedRevision: 1, groups: [{ ...data.groups[0], isAssessmentGroup: false }] })).rejects.toMatchObject({ code: "TEMPLATE_LOCKED" });
+    expect(template).toEqual(frozen);
+    expect(db.criterionGroup.deleteMany).not.toHaveBeenCalled();
+    expect(db.surveyTemplate.updateMany).not.toHaveBeenCalled();
   });
   it("mặc định phải là mẫu khóa hợp lệ; giữ nguyên nội dung khóa, revision metadata tăng cả hai phía", async () => {
     await expect(setDefaultTemplate(current, template.id, { expectedRevision: 1 })).rejects.toMatchObject({ code: "TEMPLATE_NOT_LOCKED" });

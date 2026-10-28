@@ -853,7 +853,7 @@ try {
   pass("Cấu hình không cho tắt MFA bắt buộc ADMIN");
   expectStatus(
     await request("/api/admin/mfa-policy", adminJar1, {
-      requiredRoles: ["ADMIN", "SINH_VIEN"],
+      requiredRoles: ["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"],
       stepUpCode: await freshCode(enrolled1.secret, admin1.id),
     }),
     200,
@@ -871,7 +871,7 @@ try {
     "Sinhviên mới bắtbuộcMFAkhôngđượcsetup.",
   );
   pass(
-    "Bật MFA cho vai trò khác thu hồi phiên cũ; đăng nhập mới bị buộc setup",
+    "G1: cấu hình đủ 10 vai trò MFA; thu hồi phiên cũ và buộc setup khi đăng nhập mới",
   );
   const rateLogin = await signIn(rateStudent);
   ensure(

@@ -1,17 +1,18 @@
-# ERD toàn hệ thống — cập nhật Tuần 6
+# ERD toàn hệ thống — Điều chỉnh số 01 (việc bù G1)
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 6 ngày **22/10/2026**. Kế hoạch Tuần 6 giả định 04–10/11/2026; làm sớm theo lệnh người dùng, không ghi lùi ngày. Tuần 6 hiện thực mẫu phiếu, bổ sung revision/updatedAt trên SurveyTemplate; chưa có workflow/UI/API lập và duyệt đợt, nộp phiếu hoặc xử lý phản hồi. ERD phân biệt thiết kế dữ liệu với chức năng đã chạy.
+Thiết kế khởi tạo **21/10/2026**, cập nhật việc bù G1 của Điều chỉnh số 01 ngày **28/10/2026**. Tuần 1–6 đã hoàn thành; G1 bổ sung ba vai trò, chuyển chủ sở hữu dữ liệu đào tạo và cờ nhóm kiểm tra, đánh giá. Chưa bắt đầu Tuần 7 và chưa có workflow/UI/API lập hoặc duyệt đợt, nộp phiếu, kết quả hay xử lý phản hồi. ERD phân biệt thiết kế dữ liệu tương lai với chức năng đã chạy.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**31 model Tuần 6**, gồm 4 bảng mẫu đã có service/UI/API và 11 bảng chỉ seed demo). SHA-256 DMMF thiết kế: `0f8ac7726c236f1ba0f622af90bce726dad84321256ee1b875eaf1d24d78b6ff`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**46 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**31 model**, gồm 4 bảng mẫu đã có service/UI/API và 11 bảng chỉ seed demo). **15 model còn chỉ thiết kế**, chưa migrate. SHA-256 DMMF thiết kế: `c1e361cc05de595ac669db33e113b03b494505a1c7353add2fbe9a95fc0df5d5`.
 
 ## Cách đọc và tái tạo
 
-- Tuần 2 có chín model nền; Tuần 3 thêm UserSession/AuthToken/RateLimitBucket/AuditLog; Tuần 4 thêm TotpCredential/TotpRecoveryCode/SystemSetting, tổng 16. Tuần 5 thêm **15 model seed demo** theo quyền người dùng ngày 22/10/2026, tổng **31 runtime / 39 thiết kế**. Tuần 6 giữ số model, hiện thực 4 bảng mẫu và bổ sung 2 cột SurveyTemplate. **8 model còn lại** chưa migrate. Báo cáo/gallery các tuần trước giữ bằng chứng tại thời điểm đó.
+- Tuần 2 có chín model nền; Tuần 3–4 thêm xác thực, MFA và cấu hình, tổng 16. Tuần 5 thêm 15 model seed demo theo quyền người dùng ngày 22/10/2026, tổng 31 runtime / 39 thiết kế. Tuần 6 hiện thực 4 bảng mẫu. G1 giữ **31 runtime**, bổ sung enum 10 vai trò, trạng thái/loại phản hồi và cột CriterionGroup.isAssessmentGroup; thiết kế thêm 7 model cho các tuần sau, thành **46 thiết kế / 15 model chưa migrate**. Báo cáo/gallery các tuần trước giữ nguyên bằng chứng lịch sử.
 - 4 bảng mẫu phiếu đã hiện thực Tuần 6: SurveyTemplate, CriterionGroup, Question, QuestionOption. **11 bảng còn chỉ seed:** SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, SurveyResponse, SurveyAnswer, AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Bảng seed không đồng nghĩa hoàn thành FR chức năng các tuần sau; chưa có UI/API đợt, nộp phiếu, kết quả hoặc phản hồi.
-- SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè, updatedAt là metadata chỉnh mẫu. Hai cột mới không nằm trên SurveyResponse/SurveyAnswer và không thay thiết kế ẩn danh. Chỉ thân Mermaid miền khảo sát đổi do thêm hai thuộc tính; ba thân còn lại được đối chiếu với snapshot Tuần 5. Xem bằng chứng render tại SO_DO_TUAN_06.md.
-- Bốn sơ đồ có đúng 39 model chính (9 + 14 + 7 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
+- SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè. CriterionGroup.isAssessmentGroup mặc định false do ĐBCL đặt ở form nhóm, được giữ khi nhân bản/tạo phiên bản; cây mẫu khóa cũ không tự đổi. Cờ này chưa mở trang kết quả gộp của Khảo thí (Tuần 9). Những thay đổi này không tạo liên kết từ SurveyResponse/SurveyAnswer sang danh tính.
+- Model chỉ thiết kế cho các tuần sau: `ImprovementPlan`, `ImprovementHistory`, `FeedbackRating`, `Attachment`, `SlaEscalation`, `SurveyReminder`, `Notification`, `EmailOutbox`, `CampaignDataConfirmation`, `InspectionCase`, `InspectionCaseNote`, `InspectionCaseEvent`, `SurveyAnomalyFlag`, `ExamReviewRecommendation`, `ImportBatch`. Các bảng xác nhận dữ liệu, hồ sơ Thanh tra, bất thường, kiến nghị và lô nhập chưa có migration/runtime workflow trong G1.
+- Bốn sơ đồ có đúng 46 model chính (10 + 17 + 10 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.
 - SVG tổng quan dạng thẻ được exporter sinh trực tiếp từ DMMF, **không phải render Mermaid**. SVG liệt kê PK/UK/FK và số scalar; các khối Mermaid là ERD đầy đủ thuộc tính/liên kết. Mở SVG trong trình xem để đọc ngay cả khi trình xem Markdown không hỗ trợ Mermaid.
@@ -23,15 +24,15 @@ Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**39 mode
 
 `SurveyTask` giữ trạng thái hoàn thành và ngày DONE, độc lập với phiếu. Hạn chế vẫn là ẩn danh mức ứng dụng: người có quyền hạ tầng có thể suy luận từ DB/log và lớp ít người; ngưỡng công bố BR-07 vẫn bắt buộc. Kênh Feedback có liên kết tác giả để đối thoại, khác thiết kế SurveyResponse.
 
-## 1. Nền người dùng và danh mục — 9 model chính
+## 1. Nền người dùng và danh mục — 10 model chính
 
-Model chính: `User`, `Faculty`, `Department`, `Semester`, `Course`, `CourseSection`, `TeachingAssignment`, `Enrollment`, `RoleAssignment`.
+Model chính: `User`, `Faculty`, `Department`, `Semester`, `Course`, `CourseSection`, `TeachingAssignment`, `Enrollment`, `RoleAssignment`, `ImportBatch`.
 
 Không cần model ngữ cảnh ngoài nhóm.
 
-![ERD tổng quan Nền người dùng và danh mục](assets/tuan-06/erd-nen-danh-muc.svg)
+![ERD tổng quan Nền người dùng và danh mục](assets/bo-sung-01/erd-nen-danh-muc.svg)
 
-[Mở SVG tổng quan](assets/tuan-06/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/bo-sung-01/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -111,6 +112,21 @@ erDiagram
     String facultyId FK "NULL; Char(36)"
     String departmentId FK "NULL; Char(36)"
   }
+  %% ImportBatch: model chính
+  ImportBatch {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String kind "NOT NULL; VarChar(32)"
+    String fileName "NOT NULL; VarChar(255)"
+    String fileHash "NOT NULL; Char(64)"
+    Int validRows "NOT NULL"
+    Int errorRows "NOT NULL"
+    String importedById FK "NOT NULL; Char(36)"
+    ImportBatchStatus status "NOT NULL; enum; default NHAP"
+    Json appliedReferences "NULL"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+    DateTime appliedAt "NULL; DateTime(3)"
+    DateTime revertedAt "NULL; DateTime(3)"
+  }
   Faculty ||--o{ Department : "faculty: facultyId"
   Department ||--o{ Course : "department: departmentId"
   Course ||--o{ CourseSection : "course: courseId"
@@ -122,6 +138,7 @@ erDiagram
   User ||--o{ RoleAssignment : "user: userId"
   Faculty |o--o{ RoleAssignment : "faculty: facultyId"
   Department |o--o{ RoleAssignment : "department: departmentId"
+  User ||--o{ ImportBatch : "importedBy: importedById"
 ```
 
 | Model chính        | PK                     | UK (mỗi cặp ngoặc là một khóa, không phải từng cột độc lập) |
@@ -135,6 +152,7 @@ erDiagram
 | TeachingAssignment | (sectionId, teacherId) | —                                                           |
 | Enrollment         | (id)                   | (sectionId, studentId)                                      |
 | RoleAssignment     | (id)                   | (userId, role, scopeKey)                                    |
+| ImportBatch        | (id)                   | —                                                           |
 
 | Model.field                | FK → đích                       | Bắt buộc | onDelete / onUpdate |
 | -------------------------- | ------------------------------- | -------- | ------------------- |
@@ -149,16 +167,17 @@ erDiagram
 | RoleAssignment.user        | (userId) → User(id)             | Có       | Restrict / Restrict |
 | RoleAssignment.faculty     | (facultyId) → Faculty(id)       | Không    | Restrict / Restrict |
 | RoleAssignment.department  | (departmentId) → Department(id) | Không    | Restrict / Restrict |
+| ImportBatch.importedBy     | (importedById) → User(id)       | Có       | Restrict / Restrict |
 
-## 2. Khảo sát, giải trình và nhắc khảo sát — 14 model chính
+## 2. Khảo sát, giải trình và nhắc khảo sát — 17 model chính
 
-Model chính: `SurveyTemplate`, `CriterionGroup`, `Question`, `QuestionOption`, `SurveyCampaign`, `CampaignSection`, `CampaignHistory`, `SurveyTask`, `SurveyResponse`, `SurveyAnswer`, `AggregateResult`, `ImprovementPlan`, `ImprovementHistory`, `SurveyReminder`.
+Model chính: `SurveyTemplate`, `CriterionGroup`, `Question`, `QuestionOption`, `SurveyCampaign`, `CampaignSection`, `CampaignHistory`, `SurveyTask`, `SurveyResponse`, `SurveyAnswer`, `AggregateResult`, `ImprovementPlan`, `ImprovementHistory`, `SurveyReminder`, `CampaignDataConfirmation`, `SurveyAnomalyFlag`, `ExamReviewRecommendation`.
 
-Ngữ cảnh lặp: `CourseSection`, `Department`, `Faculty`, `Semester`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
+Ngữ cảnh lặp: `Course`, `CourseSection`, `Department`, `Faculty`, `Semester`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/tuan-06/erd-khao-sat.svg)
+![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/bo-sung-01/erd-khao-sat.svg)
 
-[Mở SVG tổng quan](assets/tuan-06/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/bo-sung-01/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -178,6 +197,7 @@ erDiagram
   }
   %% CriterionGroup: model chính
   CriterionGroup {
+    Boolean isAssessmentGroup "NOT NULL; default false"
     String id PK "NOT NULL; Char(36); default uuid(4)"
     String templateId FK, UK "NOT NULL; Char(36)"
     String title "NOT NULL; VarChar(200)"
@@ -315,6 +335,56 @@ erDiagram
     String studentId FK, UK "NOT NULL; Char(36)"
     DateTime reminderDate UK "NOT NULL; Date"
   }
+  %% CampaignDataConfirmation: model chính
+  CampaignDataConfirmation {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String campaignId FK "NOT NULL; Char(36)"
+    DataConfirmationStatus status "NOT NULL; enum"
+    String confirmedById FK "NOT NULL; Char(36)"
+    DateTime occurredAt "NOT NULL; DateTime(3); default now()"
+    String snapshotHash "NOT NULL; Char(64)"
+    Int sectionCount "NOT NULL"
+    Int pairCount "NOT NULL"
+    Json warnings "NOT NULL"
+    String reason "NULL; VarChar(1000)"
+  }
+  %% SurveyAnomalyFlag: model chính
+  SurveyAnomalyFlag {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String campaignId FK, UK "NOT NULL; Char(36)"
+    String sectionId FK, UK "NOT NULL; Char(36)"
+    String ruleCode UK "NOT NULL; VarChar(32)"
+    Json metrics "NOT NULL"
+    AnomalyReviewStatus status "NOT NULL; enum; default CHO_XEM_XET"
+    String reviewedById FK "NULL; Char(36)"
+    String note "NULL; Text"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+    DateTime reviewedAt "NULL; DateTime(3)"
+  }
+  %% ExamReviewRecommendation: model chính
+  ExamReviewRecommendation {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String campaignId FK "NOT NULL; Char(36)"
+    String courseId FK "NOT NULL; Char(36)"
+    String senderId FK "NOT NULL; Char(36)"
+    String recipientId FK "NOT NULL; Char(36)"
+    String body "NOT NULL; Text"
+    ExamRecommendationStatus status "NOT NULL; enum; default DA_GUI"
+    ExamRecommendationOutcome outcome "NULL; enum"
+    String responseReason "NULL; Text"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+    DateTime dueAt "NOT NULL; DateTime(3)"
+    DateTime respondedAt "NULL; DateTime(3)"
+  }
+  %% Course: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
+  Course {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String code UK "NOT NULL; VarChar(32)"
+    String name "NOT NULL; VarChar(200)"
+    Decimal credits "NOT NULL; Decimal(4,1)"
+    Boolean isActive "NOT NULL; default true"
+    String departmentId FK "NOT NULL; Char(36)"
+  }
   %% CourseSection: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
   CourseSection {
     String id PK "NOT NULL; Char(36); default uuid(4)"
@@ -383,67 +453,89 @@ erDiagram
   User ||--o{ ImprovementHistory : "actor: actorId"
   SurveyCampaign ||--o{ SurveyReminder : "campaign: campaignId"
   User ||--o{ SurveyReminder : "student: studentId"
+  SurveyCampaign ||--o{ CampaignDataConfirmation : "campaign: campaignId"
+  User ||--o{ CampaignDataConfirmation : "confirmedBy: confirmedById"
+  SurveyCampaign ||--o{ SurveyAnomalyFlag : "campaign: campaignId"
+  CourseSection ||--o{ SurveyAnomalyFlag : "section: sectionId"
+  User |o--o{ SurveyAnomalyFlag : "reviewedBy: reviewedById"
+  SurveyCampaign ||--o{ ExamReviewRecommendation : "campaign: campaignId"
+  Course ||--o{ ExamReviewRecommendation : "course: courseId"
+  User ||--o{ ExamReviewRecommendation : "sender: senderId"
+  User ||--o{ ExamReviewRecommendation : "recipient: recipientId"
 ```
 
-| Model chính        | PK                      | UK (mỗi cặp ngoặc là một khóa, không phải từng cột độc lập) |
-| ------------------ | ----------------------- | ----------------------------------------------------------- |
-| SurveyTemplate     | (id)                    | (familyId, version)                                         |
-| CriterionGroup     | (id)                    | (templateId, position)                                      |
-| Question           | (id)                    | (groupId, position)                                         |
-| QuestionOption     | (id)                    | (questionId, position)                                      |
-| SurveyCampaign     | (id)                    | —                                                           |
-| CampaignSection    | (campaignId, sectionId) | —                                                           |
-| CampaignHistory    | (id)                    | —                                                           |
-| SurveyTask         | (id)                    | (campaignId, sectionId, studentId)                          |
-| SurveyResponse     | (id)                    | —                                                           |
-| SurveyAnswer       | (id)                    | (responseId, questionId)                                    |
-| AggregateResult    | (id)                    | (campaignId, sectionId)                                     |
-| ImprovementPlan    | (id)                    | (campaignId, sectionId, teacherId)                          |
-| ImprovementHistory | (id)                    | —                                                           |
-| SurveyReminder     | (id)                    | (campaignId, studentId, reminderDate)                       |
+| Model chính              | PK                      | UK (mỗi cặp ngoặc là một khóa, không phải từng cột độc lập) |
+| ------------------------ | ----------------------- | ----------------------------------------------------------- |
+| SurveyTemplate           | (id)                    | (familyId, version)                                         |
+| CriterionGroup           | (id)                    | (templateId, position)                                      |
+| Question                 | (id)                    | (groupId, position)                                         |
+| QuestionOption           | (id)                    | (questionId, position)                                      |
+| SurveyCampaign           | (id)                    | —                                                           |
+| CampaignSection          | (campaignId, sectionId) | —                                                           |
+| CampaignHistory          | (id)                    | —                                                           |
+| SurveyTask               | (id)                    | (campaignId, sectionId, studentId)                          |
+| SurveyResponse           | (id)                    | —                                                           |
+| SurveyAnswer             | (id)                    | (responseId, questionId)                                    |
+| AggregateResult          | (id)                    | (campaignId, sectionId)                                     |
+| ImprovementPlan          | (id)                    | (campaignId, sectionId, teacherId)                          |
+| ImprovementHistory       | (id)                    | —                                                           |
+| SurveyReminder           | (id)                    | (campaignId, studentId, reminderDate)                       |
+| CampaignDataConfirmation | (id)                    | —                                                           |
+| SurveyAnomalyFlag        | (id)                    | (campaignId, sectionId, ruleCode)                           |
+| ExamReviewRecommendation | (id)                    | —                                                           |
 
-| Model.field                 | FK → đích                                                        | Bắt buộc | onDelete / onUpdate |
-| --------------------------- | ---------------------------------------------------------------- | -------- | ------------------- |
-| SurveyTemplate.createdBy    | (createdById) → User(id)                                         | Có       | Restrict / Restrict |
-| CriterionGroup.template     | (templateId) → SurveyTemplate(id)                                | Có       | Restrict / Restrict |
-| Question.group              | (groupId) → CriterionGroup(id)                                   | Có       | Restrict / Restrict |
-| QuestionOption.question     | (questionId) → Question(id)                                      | Có       | Restrict / Restrict |
-| SurveyCampaign.semester     | (semesterId) → Semester(id)                                      | Có       | Restrict / Restrict |
-| SurveyCampaign.template     | (templateId) → SurveyTemplate(id)                                | Có       | Restrict / Restrict |
-| SurveyCampaign.faculty      | (facultyId) → Faculty(id)                                        | Không    | Restrict / Restrict |
-| SurveyCampaign.department   | (departmentId) → Department(id)                                  | Không    | Restrict / Restrict |
-| SurveyCampaign.createdBy    | (createdById) → User(id)                                         | Có       | Restrict / Restrict |
-| SurveyCampaign.approvedBy   | (approvedById) → User(id)                                        | Không    | Restrict / Restrict |
-| CampaignSection.campaign    | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
-| CampaignSection.section     | (sectionId) → CourseSection(id)                                  | Có       | Restrict / Restrict |
-| CampaignHistory.campaign    | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
-| CampaignHistory.actor       | (actorId) → User(id)                                             | Không    | Restrict / Restrict |
-| SurveyTask.cohort           | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
-| SurveyTask.student          | (studentId) → User(id)                                           | Có       | Restrict / Restrict |
-| SurveyAnswer.response       | (responseId) → SurveyResponse(id)                                | Có       | Restrict / Restrict |
-| AggregateResult.cohort      | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
-| ImprovementPlan.cohort      | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
-| ImprovementPlan.teacher     | (teacherId) → User(id)                                           | Có       | Restrict / Restrict |
-| ImprovementPlan.confirmedBy | (confirmedById) → User(id)                                       | Không    | Restrict / Restrict |
-| ImprovementHistory.plan     | (planId) → ImprovementPlan(id)                                   | Có       | Restrict / Restrict |
-| ImprovementHistory.actor    | (actorId) → User(id)                                             | Có       | Restrict / Restrict |
-| SurveyReminder.campaign     | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
-| SurveyReminder.student      | (studentId) → User(id)                                           | Có       | Restrict / Restrict |
+| Model.field                          | FK → đích                                                        | Bắt buộc | onDelete / onUpdate |
+| ------------------------------------ | ---------------------------------------------------------------- | -------- | ------------------- |
+| SurveyTemplate.createdBy             | (createdById) → User(id)                                         | Có       | Restrict / Restrict |
+| CriterionGroup.template              | (templateId) → SurveyTemplate(id)                                | Có       | Restrict / Restrict |
+| Question.group                       | (groupId) → CriterionGroup(id)                                   | Có       | Restrict / Restrict |
+| QuestionOption.question              | (questionId) → Question(id)                                      | Có       | Restrict / Restrict |
+| SurveyCampaign.semester              | (semesterId) → Semester(id)                                      | Có       | Restrict / Restrict |
+| SurveyCampaign.template              | (templateId) → SurveyTemplate(id)                                | Có       | Restrict / Restrict |
+| SurveyCampaign.faculty               | (facultyId) → Faculty(id)                                        | Không    | Restrict / Restrict |
+| SurveyCampaign.department            | (departmentId) → Department(id)                                  | Không    | Restrict / Restrict |
+| SurveyCampaign.createdBy             | (createdById) → User(id)                                         | Có       | Restrict / Restrict |
+| SurveyCampaign.approvedBy            | (approvedById) → User(id)                                        | Không    | Restrict / Restrict |
+| CampaignSection.campaign             | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| CampaignSection.section              | (sectionId) → CourseSection(id)                                  | Có       | Restrict / Restrict |
+| CampaignHistory.campaign             | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| CampaignHistory.actor                | (actorId) → User(id)                                             | Không    | Restrict / Restrict |
+| SurveyTask.cohort                    | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
+| SurveyTask.student                   | (studentId) → User(id)                                           | Có       | Restrict / Restrict |
+| SurveyAnswer.response                | (responseId) → SurveyResponse(id)                                | Có       | Restrict / Restrict |
+| AggregateResult.cohort               | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
+| ImprovementPlan.cohort               | (campaignId, sectionId) → CampaignSection(campaignId, sectionId) | Có       | Restrict / Restrict |
+| ImprovementPlan.teacher              | (teacherId) → User(id)                                           | Có       | Restrict / Restrict |
+| ImprovementPlan.confirmedBy          | (confirmedById) → User(id)                                       | Không    | Restrict / Restrict |
+| ImprovementHistory.plan              | (planId) → ImprovementPlan(id)                                   | Có       | Restrict / Restrict |
+| ImprovementHistory.actor             | (actorId) → User(id)                                             | Có       | Restrict / Restrict |
+| SurveyReminder.campaign              | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| SurveyReminder.student               | (studentId) → User(id)                                           | Có       | Restrict / Restrict |
+| CampaignDataConfirmation.campaign    | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| CampaignDataConfirmation.confirmedBy | (confirmedById) → User(id)                                       | Có       | Restrict / Restrict |
+| SurveyAnomalyFlag.campaign           | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| SurveyAnomalyFlag.section            | (sectionId) → CourseSection(id)                                  | Có       | Restrict / Restrict |
+| SurveyAnomalyFlag.reviewedBy         | (reviewedById) → User(id)                                        | Không    | Restrict / Restrict |
+| ExamReviewRecommendation.campaign    | (campaignId) → SurveyCampaign(id)                                | Có       | Restrict / Restrict |
+| ExamReviewRecommendation.course      | (courseId) → Course(id)                                          | Có       | Restrict / Restrict |
+| ExamReviewRecommendation.sender      | (senderId) → User(id)                                            | Có       | Restrict / Restrict |
+| ExamReviewRecommendation.recipient   | (recipientId) → User(id)                                         | Có       | Restrict / Restrict |
 
-## 3. Phản hồi liên tục — 7 model chính
+## 3. Phản hồi liên tục — 10 model chính
 
-Model chính: `Feedback`, `FeedbackRecipient`, `FeedbackMessage`, `FeedbackHistory`, `FeedbackRating`, `Attachment`, `SlaEscalation`.
+Model chính: `Feedback`, `FeedbackRecipient`, `FeedbackMessage`, `FeedbackHistory`, `FeedbackRating`, `Attachment`, `SlaEscalation`, `InspectionCase`, `InspectionCaseNote`, `InspectionCaseEvent`.
 
-Ngữ cảnh lặp: `CourseSection`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
+Ngữ cảnh lặp: `CourseSection`, `SurveyAnomalyFlag`, `SurveyCampaign`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Phản hồi liên tục](assets/tuan-06/erd-phan-hoi.svg)
+![ERD tổng quan Phản hồi liên tục](assets/bo-sung-01/erd-phan-hoi.svg)
 
-[Mở SVG tổng quan](assets/tuan-06/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/bo-sung-01/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
   %% Feedback: model chính
   Feedback {
+    FeedbackIdentityLevel identityLevel "NOT NULL; enum; default AN_DANH_HOAN_TOAN"
     String id PK "NOT NULL; Char(36); default uuid(4)"
     String sectionId FK "NOT NULL; Char(36)"
     String authorId FK "NOT NULL; Char(36)"
@@ -519,12 +611,87 @@ erDiagram
     Int level UK "NOT NULL"
     DateTime processedAt "NOT NULL; DateTime(3); default now()"
   }
+  %% InspectionCase: model chính
+  InspectionCase {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String feedbackId FK, UK "NULL; Char(36)"
+    String anomalyFlagId FK, UK "NULL; Char(36)"
+    String campaignId FK "NULL; Char(36)"
+    String sectionId FK "NOT NULL; Char(36)"
+    InspectionSource source "NOT NULL; enum"
+    InspectionViolation violation "NULL; enum"
+    InspectionStatus status "NOT NULL; enum; default TIEP_NHAN"
+    InspectionConclusion conclusion "NULL; enum"
+    String reason "NULL; Text"
+    String studentSummary "NULL; Text"
+    String assigneeId FK "NULL; Char(36)"
+    String createdById FK "NULL; Char(36)"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+    DateTime acceptDueAt "NOT NULL; DateTime(3)"
+    DateTime completeDueAt "NOT NULL; DateTime(3)"
+    DateTime acceptedAt "NULL; DateTime(3)"
+    DateTime closedAt "NULL; DateTime(3)"
+  }
+  %% InspectionCaseNote: model chính
+  InspectionCaseNote {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String caseId FK "NOT NULL; Char(36)"
+    String authorId FK "NOT NULL; Char(36)"
+    String body "NOT NULL; Text"
+    Json internalFiles "NULL"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+  }
+  %% InspectionCaseEvent: model chính
+  InspectionCaseEvent {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String caseId FK "NOT NULL; Char(36)"
+    String actorId FK "NOT NULL; Char(36)"
+    InspectionStatus fromStatus "NULL; enum"
+    InspectionStatus toStatus "NOT NULL; enum"
+    String reason "NULL; Text"
+    DateTime occurredAt "NOT NULL; DateTime(3); default now()"
+  }
   %% CourseSection: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
   CourseSection {
     String id PK "NOT NULL; Char(36); default uuid(4)"
     String code UK "NOT NULL; VarChar(32)"
     String courseId FK "NOT NULL; Char(36)"
     String semesterId FK, UK "NOT NULL; Char(36)"
+  }
+  %% SurveyAnomalyFlag: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
+  SurveyAnomalyFlag {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String campaignId FK, UK "NOT NULL; Char(36)"
+    String sectionId FK, UK "NOT NULL; Char(36)"
+    String ruleCode UK "NOT NULL; VarChar(32)"
+    Json metrics "NOT NULL"
+    AnomalyReviewStatus status "NOT NULL; enum; default CHO_XEM_XET"
+    String reviewedById FK "NULL; Char(36)"
+    String note "NULL; Text"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
+    DateTime reviewedAt "NULL; DateTime(3)"
+  }
+  %% SurveyCampaign: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
+  SurveyCampaign {
+    String id PK "NOT NULL; Char(36); default uuid(4)"
+    String title "NOT NULL; VarChar(200)"
+    String semesterId FK "NOT NULL; Char(36)"
+    String templateId FK "NOT NULL; Char(36)"
+    CampaignScope scope "NOT NULL; enum"
+    String facultyId FK "NULL; Char(36)"
+    String departmentId FK "NULL; Char(36)"
+    DateTime startsAt "NOT NULL; DateTime(3)"
+    DateTime endsAt "NOT NULL; DateTime(3)"
+    CampaignStatus status "NOT NULL; enum; default NHAP"
+    Int minResponses "NOT NULL; default 5"
+    Decimal minRate "NOT NULL; Decimal(5,4); default 0.3"
+    Decimal warningScore "NOT NULL; Decimal(5,2); default 3"
+    Int explanationDays "NOT NULL; default 14"
+    Boolean mandatory "NOT NULL; default false"
+    String createdById FK "NOT NULL; Char(36)"
+    String approvedById FK "NULL; Char(36)"
+    DateTime approvedAt "NULL; DateTime(3)"
+    DateTime createdAt "NOT NULL; DateTime(3); default now()"
   }
   %% User: model ngữ cảnh lặp; chỉ FK từ nhóm chính được vẽ
   User {
@@ -550,32 +717,55 @@ erDiagram
   Feedback ||--o| FeedbackRating : "feedback: feedbackId"
   Feedback ||--o{ Attachment : "feedback: feedbackId"
   Feedback ||--o{ SlaEscalation : "feedback: feedbackId"
+  Feedback |o--o| InspectionCase : "feedback: feedbackId"
+  SurveyAnomalyFlag |o--o| InspectionCase : "anomalyFlag: anomalyFlagId"
+  SurveyCampaign |o--o{ InspectionCase : "campaign: campaignId"
+  CourseSection ||--o{ InspectionCase : "section: sectionId"
+  User |o--o{ InspectionCase : "assignee: assigneeId"
+  User |o--o{ InspectionCase : "createdBy: createdById"
+  InspectionCase ||--o{ InspectionCaseNote : "inspectionCase: caseId"
+  User ||--o{ InspectionCaseNote : "author: authorId"
+  InspectionCase ||--o{ InspectionCaseEvent : "inspectionCase: caseId"
+  User ||--o{ InspectionCaseEvent : "actor: actorId"
 ```
 
-| Model chính       | PK                   | UK (mỗi cặp ngoặc là một khóa, không phải từng cột độc lập) |
-| ----------------- | -------------------- | ----------------------------------------------------------- |
-| Feedback          | (id)                 | —                                                           |
-| FeedbackRecipient | (feedbackId, userId) | —                                                           |
-| FeedbackMessage   | (id)                 | —                                                           |
-| FeedbackHistory   | (id)                 | —                                                           |
-| FeedbackRating    | (feedbackId)         | —                                                           |
-| Attachment        | (id)                 | (storageKey)                                                |
-| SlaEscalation     | (id)                 | (feedbackId, level)                                         |
+| Model chính         | PK                   | UK (mỗi cặp ngoặc là một khóa, không phải từng cột độc lập) |
+| ------------------- | -------------------- | ----------------------------------------------------------- |
+| Feedback            | (id)                 | —                                                           |
+| FeedbackRecipient   | (feedbackId, userId) | —                                                           |
+| FeedbackMessage     | (id)                 | —                                                           |
+| FeedbackHistory     | (id)                 | —                                                           |
+| FeedbackRating      | (feedbackId)         | —                                                           |
+| Attachment          | (id)                 | (storageKey)                                                |
+| SlaEscalation       | (id)                 | (feedbackId, level)                                         |
+| InspectionCase      | (id)                 | (feedbackId); (anomalyFlagId)                               |
+| InspectionCaseNote  | (id)                 | —                                                           |
+| InspectionCaseEvent | (id)                 | —                                                           |
 
-| Model.field                | FK → đích                       | Bắt buộc | onDelete / onUpdate |
-| -------------------------- | ------------------------------- | -------- | ------------------- |
-| Feedback.section           | (sectionId) → CourseSection(id) | Có       | Restrict / Restrict |
-| Feedback.author            | (authorId) → User(id)           | Có       | Restrict / Restrict |
-| Feedback.assignee          | (assigneeId) → User(id)         | Không    | Restrict / Restrict |
-| FeedbackRecipient.feedback | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
-| FeedbackRecipient.user     | (userId) → User(id)             | Có       | Restrict / Restrict |
-| FeedbackMessage.feedback   | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
-| FeedbackMessage.author     | (authorId) → User(id)           | Có       | Restrict / Restrict |
-| FeedbackHistory.feedback   | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
-| FeedbackHistory.actor      | (actorId) → User(id)            | Không    | Restrict / Restrict |
-| FeedbackRating.feedback    | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
-| Attachment.feedback        | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
-| SlaEscalation.feedback     | (feedbackId) → Feedback(id)     | Có       | Restrict / Restrict |
+| Model.field                        | FK → đích                               | Bắt buộc | onDelete / onUpdate |
+| ---------------------------------- | --------------------------------------- | -------- | ------------------- |
+| Feedback.section                   | (sectionId) → CourseSection(id)         | Có       | Restrict / Restrict |
+| Feedback.author                    | (authorId) → User(id)                   | Có       | Restrict / Restrict |
+| Feedback.assignee                  | (assigneeId) → User(id)                 | Không    | Restrict / Restrict |
+| FeedbackRecipient.feedback         | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| FeedbackRecipient.user             | (userId) → User(id)                     | Có       | Restrict / Restrict |
+| FeedbackMessage.feedback           | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| FeedbackMessage.author             | (authorId) → User(id)                   | Có       | Restrict / Restrict |
+| FeedbackHistory.feedback           | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| FeedbackHistory.actor              | (actorId) → User(id)                    | Không    | Restrict / Restrict |
+| FeedbackRating.feedback            | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| Attachment.feedback                | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| SlaEscalation.feedback             | (feedbackId) → Feedback(id)             | Có       | Restrict / Restrict |
+| InspectionCase.feedback            | (feedbackId) → Feedback(id)             | Không    | Restrict / Restrict |
+| InspectionCase.anomalyFlag         | (anomalyFlagId) → SurveyAnomalyFlag(id) | Không    | Restrict / Restrict |
+| InspectionCase.campaign            | (campaignId) → SurveyCampaign(id)       | Không    | Restrict / Restrict |
+| InspectionCase.section             | (sectionId) → CourseSection(id)         | Có       | Restrict / Restrict |
+| InspectionCase.assignee            | (assigneeId) → User(id)                 | Không    | Restrict / Restrict |
+| InspectionCase.createdBy           | (createdById) → User(id)                | Không    | Restrict / Restrict |
+| InspectionCaseNote.inspectionCase  | (caseId) → InspectionCase(id)           | Có       | Restrict / Restrict |
+| InspectionCaseNote.author          | (authorId) → User(id)                   | Có       | Restrict / Restrict |
+| InspectionCaseEvent.inspectionCase | (caseId) → InspectionCase(id)           | Có       | Restrict / Restrict |
+| InspectionCaseEvent.actor          | (actorId) → User(id)                    | Có       | Restrict / Restrict |
 
 ## 4. Xác thực, thông báo, cấu hình và kiểm toán — 9 model chính
 
@@ -583,9 +773,9 @@ Model chính: `UserSession`, `AuthToken`, `TotpCredential`, `TotpRecoveryCode`, 
 
 Ngữ cảnh lặp: `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/tuan-06/erd-he-thong.svg)
+![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/bo-sung-01/erd-he-thong.svg)
 
-[Mở SVG tổng quan](assets/tuan-06/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/bo-sung-01/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -724,25 +914,35 @@ erDiagram
 
 ## Danh mục enum từ DMMF
 
-| Enum              | Giá trị                                                                                           |
-| ----------------- | ------------------------------------------------------------------------------------------------- |
-| UserStatus        | PENDING_ACTIVATION, ACTIVE, DISABLED                                                              |
-| Role              | SINH_VIEN, GIANG_VIEN, TRUONG_BO_MON, TRUONG_KHOA, CAN_BO_DBCL, LANH_DAO, ADMIN                   |
-| ScopeType         | GLOBAL, FACULTY, DEPARTMENT                                                                       |
-| AuthTokenKind     | ACTIVATION, PASSWORD_RESET                                                                        |
-| TemplateStatus    | NHAP, DA_KHOA                                                                                     |
-| QuestionType      | LIKERT, SINGLE_CHOICE, MULTIPLE_CHOICE, TEXT, BOOLEAN                                             |
-| CampaignScope     | GLOBAL, FACULTY, DEPARTMENT, SECTIONS                                                             |
-| CampaignStatus    | NHAP, CHO_DUYET, DA_DUYET, DANG_MO, DA_DONG, DA_TONG_HOP, DA_CONG_BO, LUU_TRU, HUY                |
-| TaskStatus        | PENDING, DONE                                                                                     |
-| ModerationStatus  | CHO_KIEM_DUYET, HIEN_THI, DA_AN                                                                   |
-| ImprovementStatus | CAN_GIAI_TRINH, DA_GUI, CAN_BO_SUNG, DA_XAC_NHAN                                                  |
-| FeedbackCategory  | GIANG_DAY, NOI_DUNG_DE_CUONG, TAI_LIEU, KIEM_TRA_DANH_GIA, CSVC_LICH_HOC, KHAC                    |
-| FeedbackSeverity  | GOP_Y, DE_XUAT, KHIEU_NAI                                                                         |
-| FeedbackStatus    | MOI, DA_TIEP_NHAN, DANG_XU_LY, DA_TRA_LOI, DA_DONG, TU_CHOI                                       |
-| FeedbackEvent     | GUI, TIEP_NHAN, BAT_DAU_XU_LY, TRA_LOI, DONG, CHUYEN_TIEP, TU_CHOI, MO_LAI, LEO_THANG, KIEM_DUYET |
-| DeliveryStatus    | PENDING, SENT, FAILED                                                                             |
-| SessionPurpose    | FULL, PASSWORD_CHANGE, MFA_SETUP, MFA_VERIFY                                                      |
+| Enum                      | Giá trị                                                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| UserStatus                | PENDING_ACTIVATION, ACTIVE, DISABLED                                                                                            |
+| Role                      | SINH_VIEN, GIANG_VIEN, TRUONG_BO_MON, TRUONG_KHOA, CAN_BO_DBCL, LANH_DAO, ADMIN, PHONG_DAO_TAO, PHONG_KHAO_THI, THANH_TRA       |
+| ScopeType                 | GLOBAL, FACULTY, DEPARTMENT                                                                                                     |
+| AuthTokenKind             | ACTIVATION, PASSWORD_RESET                                                                                                      |
+| TemplateStatus            | NHAP, DA_KHOA                                                                                                                   |
+| QuestionType              | LIKERT, SINGLE_CHOICE, MULTIPLE_CHOICE, TEXT, BOOLEAN                                                                           |
+| CampaignScope             | GLOBAL, FACULTY, DEPARTMENT, SECTIONS                                                                                           |
+| CampaignStatus            | NHAP, CHO_XAC_NHAN_DL, CHO_DUYET, DA_DUYET, DANG_MO, DA_DONG, DA_TONG_HOP, DA_CONG_BO, LUU_TRU, HUY                             |
+| TaskStatus                | PENDING, DONE                                                                                                                   |
+| ModerationStatus          | CHO_KIEM_DUYET, HIEN_THI, DA_AN                                                                                                 |
+| ImprovementStatus         | CAN_GIAI_TRINH, DA_GUI, CAN_BO_SUNG, DA_XAC_NHAN                                                                                |
+| FeedbackCategory          | GIANG_DAY, NOI_DUNG_DE_CUONG, TAI_LIEU, KIEM_TRA_DANH_GIA, THI_KET_THUC_HOC_PHAN, TO_CHUC_LOP_HOC, KHIEU_NAI_NGHIEM_TRONG, KHAC |
+| FeedbackSeverity          | GOP_Y, DE_XUAT, KHIEU_NAI                                                                                                       |
+| FeedbackStatus            | MOI, DA_TIEP_NHAN, DANG_XU_LY, DA_TRA_LOI, DA_DONG, TU_CHOI                                                                     |
+| FeedbackEvent             | GUI, TIEP_NHAN, BAT_DAU_XU_LY, TRA_LOI, DONG, CHUYEN_TIEP, TU_CHOI, MO_LAI, LEO_THANG, KIEM_DUYET                               |
+| DeliveryStatus            | PENDING, SENT, FAILED                                                                                                           |
+| SessionPurpose            | FULL, PASSWORD_CHANGE, MFA_SETUP, MFA_VERIFY                                                                                    |
+| FeedbackIdentityLevel     | AN_DANH_HOAN_TOAN, CHO_THANH_TRA_BIET                                                                                           |
+| DataConfirmationStatus    | DA_XAC_NHAN, TRA_VE                                                                                                             |
+| InspectionSource          | PHAN_HOI_NGHIEM_TRONG, CHUYEN_PHAN_HOI, BAT_THUONG_KHAO_SAT                                                                     |
+| InspectionViolation       | VI_PHAM_QUY_CHE_GIANG_DAY, GAY_AP_LUC_KHI_KHAO_SAT, HANH_VI_KHONG_PHU_HOP, VI_PHAM_QUY_CHE_THI_KIEM_TRA, KHAC_NGHIEM_TRONG      |
+| InspectionStatus          | TIEP_NHAN, XAC_MINH, KET_LUAN, THONG_BAO, DONG, TU_CHOI, CHUYEN_LAI                                                             |
+| InspectionConclusion      | CO_CAN_CU, KHONG_CAN_CU, KHONG_DU_THONG_TIN, CHUYEN_DON_VI_KHAC                                                                 |
+| AnomalyReviewStatus       | CHO_XEM_XET, BINH_THUONG, CAN_LUU_Y, CHUYEN_XAC_MINH                                                                            |
+| ExamRecommendationStatus  | DA_GUI, DA_PHAN_HOI                                                                                                             |
+| ExamRecommendationOutcome | DA_TIEP_THU, KHONG_TIEP_THU                                                                                                     |
+| ImportBatchStatus         | NHAP, DA_AP_DUNG, DA_HOAN_TAC                                                                                                   |
 
 ## Giới hạn và quy tắc ngoài ERD
 

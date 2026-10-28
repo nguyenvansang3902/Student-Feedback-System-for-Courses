@@ -18,10 +18,11 @@ const safeKeys = new Set([
   "reasonProvided", "reasonLength", "source", "recoveryCodeCount",
   "kind", "size", "console", "futureModules", "created", "newUsers",
   "familyId", "sourceId", "version", "revision", "groupCount", "questionCount", "previousDefaultCount", "isDefault",
+  "notificationStatus", "recipients", "sent", "failed",
 ]);
 const safeText = new Set([
   "ACTIVE", "DISABLED", "PENDING_ACTIVATION", "GLOBAL", "FACULTY", "DEPARTMENT",
-  "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN",
+  "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA",
   "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY", "TOTP", "RECOVERY_CODE",
   "totp", "recovery", "password", "server-console",
   "NHAP", "DA_KHOA",
@@ -30,10 +31,11 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fieldText = new Map<string, ReadonlySet<string>>([
   ["kind", new Set(["students", "teachers", "sections", "enrollments"])],
   ["size", new Set(["small", "medium", "large"])],
+  ["notificationStatus", new Set(["PENDING", "SENT", "FAILED", "NO_RECIPIENT"])],
   ["purpose", new Set(["ACTIVATION", "PASSWORD_RESET", "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY"])],
 ]);
 const fieldBoolean = new Set(["console", "futureModules", "reasonProvided", "isDefault"]);
-const fieldNumber = new Set(["created", "newUsers", "reasonLength", "groupCount", "questionCount", "previousDefaultCount"]);
+const fieldNumber = new Set(["created", "newUsers", "reasonLength", "groupCount", "questionCount", "previousDefaultCount", "recipients", "sent", "failed"]);
 
 function redactField(key: string, value: unknown, depth: number): Prisma.InputJsonValue | null {
   if (depth > 4) return null;
