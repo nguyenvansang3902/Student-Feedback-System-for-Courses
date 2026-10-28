@@ -2,11 +2,11 @@
 
 Nguồn: Mục7 đặc tả. P0=3, P1=2, P2=1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. Mẫu số gồm cả FR chưa xếp tuần.
 
-Tuần5 thực hiện **22/10/2026**, sớm hơn mốc giả định **28/10–03/11**, theo yêu cầu người dùng. Thêm FR-20/21/22/101: **46/163=28,2%**, M3 **9/9=100%**, M11 **6/11=54,5%**. Tỷ lệ này tính chức năng đã chạy, không tính độ lớn thiết kế.
+Tuần6 bắt đầu **22/10**, tiếp tục **28/10/2026**, sớm hơn mốc giả định **04–10/11**, theo yêu cầu người dùng. Thêm FR-30–35: **62/163=38,0%**, M4 **16/16=100%**; M3 vẫn9/9 và M11 vẫn6/11. Tỷ lệ này tính chức năng đã chạy, không tính độ lớn thiết kế. Tuần5 giữ bằng chứng lịch sử46/163.
 
-Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngoại lệ chỉ tạo dữ liệu giả; các FR mẫu phiếu, khảo sát, nộp phiếu, kết quả, xử lý phản hồi vẫn chưa hoàn thành. Runtime31/blueprint39, không reset dữ liệu cũ. [CI 39775473219](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/39775473219) của mã `a844f3f2f9fdcd8a71ef5587358c8446075b5294` đã qua cả `check` và `smoke`; CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
+Người dùng đã cho phép seed khảo sát/phản hồi trước lịch. Ngoại lệ chỉ tạo dữ liệu giả; các FR đợt khảo sát, nộp phiếu, kết quả, xử lý phản hồi vẫn chưa hoàn thành. Runtime31/blueprint39, không reset dữ liệu cũ. [CI mã Tuần6 40633183047](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40633183047) của mã `68087ed7ecc68028ac78475696f4ee69a5d2e056` đã qua `check` và `smoke`; CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
 
-Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_05.md), [báo cáo](bao-cao-tien-do/tuan-05.md), [QA](QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](SO_DO_TUAN_05.md), [hướng dẫn import](HUONG_DAN_IMPORT.md), [truy vết](TRUY_VET.md). Lịch sử Tuần1–4 giữ kết quả tại thời điểm nghiệm thu; health vẫn database:not_checked.
+Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-cao-tien-do/tuan-06.md), [QA](QA_GIAO_DIEN_TUAN_06.md), [sơ đồ](SO_DO_TUAN_06.md), [truy vết](TRUY_VET.md). Full279/279, HTTP20/20, seed11/11, QA14nhóm/10viewport; preview không ghi phiếu. Lịch sử Tuần1–5 giữ kết quả tại thời điểm nghiệm thu; health vẫn database:not_checked. Workflow duyệt đợt tự khóa mẫu chờ Tuần7.
 
 ## M1 Xác thực và phiên
 
@@ -34,12 +34,12 @@ Bằng chứng: [nghiệm thu](NGHIEM_THU_TUAN_05.md), [báo cáo](bao-cao-tien-
 
 ## M4 Mẫu phiếu
 
-- [ ] FR-30 [P0] trình soạn mẫu (nhóm tiêu chí, câu hỏi, thứ tự) (Tuần 6)
-- [ ] FR-31 [P0] các loại câu hỏi, bắt buộc, "Không áp dụng", trọng số (Tuần 6)
-- [ ] FR-32 [P0] phiên bản và khóa (Tuần 6)
-- [ ] FR-33 [P0] xem trước (Tuần 6)
-- [ ] FR-34 [P1] nhân bản mẫu (Tuần 6)
-- [ ] FR-35 [P1] mẫu mặc định có sẵn (Tuần 6)
+- [x] FR-30 [P0] trình soạn mẫu (nhóm tiêu chí, câu hỏi, thứ tự) (Tuần 6)
+- [x] FR-31 [P0] các loại câu hỏi, bắt buộc, "Không áp dụng", trọng số (Tuần 6)
+- [x] FR-32 [P0] phiên bản và khóa (Tuần 6)
+- [x] FR-33 [P0] xem trước (Tuần 6)
+- [x] FR-34 [P1] nhân bản mẫu (Tuần 6)
+- [x] FR-35 [P1] mẫu mặc định có sẵn (Tuần 6)
 
 ## M5 Đợt khảo sát
 
