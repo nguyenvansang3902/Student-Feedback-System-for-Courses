@@ -1,6 +1,6 @@
 # Ma trận quyền 10 vai trò — Điều chỉnh số 01
 
-Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu này gồm quyền của chức năng đã có đến Tuần7 và thiết kế cho các tuần sau. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
+Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu này gồm quyền của chức năng đã có đến Tuần8 và thiết kế cho các tuần sau. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
 
 ## 1. Vai trò và phạm vi hợp lệ
 
@@ -57,6 +57,20 @@ Nguồn thực thi G1: `src/server/policies/can.ts`, `services/access.ts`, `serv
 
 Dùng GLOBAL hợp lệ cho bốn vai trò trên; ADMIN không có quyền ngầm đọc/ghi đợt. Nhiều grant được xét theo từng quyền và vẫn phải đáp ứng MFA. PĐT xem số lớp/cặp của readiness, không được endpoint tiến độ task. Chặn khóa học kỳ khi còn DA_DUYET/DANG_MO, đồng bộ khóa với duyệt/mở. Queue email chỉ xử lý bởi console scheduler, chưa có trung tâm thông báo cho tuần tương lai. Bằng chứng kiểm thật ghi tại nghiệm thu Tuần7.
 
+## 2.2. Phần triển khai Tuần 8
+
+| Chức năng / dữ liệu | SV có grant GLOBAL hợp lệ | Chín vai trò còn lại nếu không có grant SV |
+| --- | --- | --- |
+| Danh sách/lọc/count nhiệm vụ | R own, lọc studentId ngay truy vấn | — |
+| Chi tiết nhiệm vụ/form và xác nhận | R own; nhiệm vụ người khác/ID lạ cùng404 | — |
+| Nộp phiếu | W own, chỉ PENDING/đợt mở/đúng giờ/kỳ chưa khóa/mẫu khóa | — |
+| Xem lại ID hoặc nội dung phiếu đã nộp | —; chỉ trạng thái/ngày hoàn thành | — |
+| Nháp trình duyệt | Cục bộ user/task/templateversion, không API nháp | — |
+
+`student-surveys:list/read/submit` yêu cầu phiên FULL và grant SINH_VIEN hợp lệ; service đọc lại phiên/quyền và kiểm MFA hiện tại sau mutex chung. Tài khoản ADMIN+SV vẫn phải MFA; ADMIN đơn vai trò không được quyền nộp. Lấy studentId từ actor, không nhận từ body; task chốt xác định quyền dù Enrollment đổi sau mở. Không dùng quyền metadata lớp hoặc tiến độ đợt để mở nội dung phiếu. Kết quả chưa có trong Tuần8.
+
+Nguồn: `services/student-surveys.ts`, `student-survey-input.ts`, `policies/can.ts`, CSRF mục đích student-surveys và `/api/student-surveys`. HTTP kiểm10vai trò/IDOR/fresh rights; test privacy đi qua route/service để bắt trường cầu nối và sink log/audit/queue. Kết quả cổng cuối và giới hạn nằm tại [nghiệm thu Tuần8](NGHIEM_THU_TUAN_08.md); không suy toàn bộ FR-160 đã xong.
+
 ## 3. Chức năng tương lai — thiết kế, chưa nghiệm thu trong G1
 
 Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; **G** dữ liệu gộp có ngưỡng; **S** tóm tắt; **I** chỉ số bất thường. Tất cả ô dưới đây là quyền yêu cầu khi tới tuần triển khai, chưa có nghĩa đã mở chức năng.
@@ -66,7 +80,7 @@ Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; *
 | Tạo/trình/quản lý đợt — đã chuyển sang mục2.1 | — | — | — | — | R/W | R duyệt | — | R phạm vi xác nhận | — | — |
 | Readiness/xác nhận/trả về dữ liệu — đã chuyển sang mục2.1 | — | — | — | — | R + nhận cảnh báo | R sau xác nhận | — | R/W | — | — |
 | Lô nhập/hoàn tác chưa bị đợt chốt dùng — Tuần 7, P1 | — | — | — | — | — | — | — | R/W | — | — |
-| Làm khảo sát/nhiệm vụ — Tuần 8 | R/W own | — | — | — | — | — | — | — | — | — |
+| Làm khảo sát/nhiệm vụ — đã chuyển sang mục2.2 | R/W own | — | — | — | — | — | — | — | — | — |
 | Tiến độ hoàn thành, không nội dung phiếu — Tuần 7–9 | R own | — | R bộ môn | R khoa | R GLOBAL | R GLOBAL | — | Chỉ phạm vi dữ liệu xác nhận | — | — |
 | Kết quả thông thường — Tuần 9 | — | R own, đã công bố | R bộ môn, đã công bố | R khoa, đã công bố | R từ tổng hợp | R từ tổng hợp | — | — | G theo BR-57 | I theo BR-65 từ Tuần 12 |
 | Góp ý tự luận đã kiểm duyệt — Tuần 9 | — | R lớp mình | R bộ môn | R khoa | R/kiểm duyệt | Theo quyền nghiệp vụ | — | — | — | — |

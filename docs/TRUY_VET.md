@@ -1,4 +1,4 @@
-# Bảng truy vết yêu cầu — Tuần 7 sau Điều chỉnh số 01
+# Bảng truy vết yêu cầu — Tuần 8 sau Điều chỉnh số 01
 
 Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **21–27/10/2026**. Tuần 3 làm **21–22/10**, sau mốc 14–20/10; bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
 
@@ -105,11 +105,11 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-45 | 7 | Gia hạn/đóng sớm/hủy/rút trước mở | campaigns.ts, campaign-notifications.ts, mail.ts | W7-HTTP11–13; W7-SETTINGS10–12: reason/state, queue/dedup, SMTP/backoff/lease; giới hạn SMTP mục4.4 |
 | FR-46 | 7 | /dot-khao-sat/:id, tiến độ theo lớp | campaigns.ts::getCampaignProgress, SurveyTask groupBy | W7-HTTP10:4task/1DONE=25%, paging, không định danh SV/phiếu/đáp án, PĐT403 |
 | FR-47  | 9            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | nhắc chưa hoàn thành; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-50  | 8            | [WF-04](wireframes/tuan-02.html#wf-04)                                         | surveys / task của actor; chưa triển khai                    | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-51  | 8            | [WF-05](wireframes/tuan-02.html#wf-05)                                         | surveys / form và nháp browser; chưa triển khai              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-52  | 8            | [WF-05](wireframes/tuan-02.html#wf-05)                                         | surveys / form và nháp browser; chưa triển khai              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-53  | 8            | [WF-06](wireframes/tuan-02.html#wf-06)                                         | surveys / submit transaction; chưa triển khai                | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-54  | 8            | [WF-06](wireframes/tuan-02.html#wf-06)                                         | surveys / submit transaction; chưa triển khai                | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-50 | 8 | /khao-sat, [WF-04](wireframes/tuan-02.html#wf-04) | student-surveys.ts::listStudentSurveys; can.ts; survey-list.tsx | Unit/HTTP taskown/list/count/paging/IDOR; gate cuối mục4.5 đã qua |
+| FR-51 | 8 | /khao-sat/:taskId, [WF-05](wireframes/tuan-02.html#wf-05) | getStudentSurvey, student-survey-input.ts, survey-form.tsx | Năm loại/cả hai thang/NA/bắtbuộc, server kiểm lại; unit/HTTP, QA cuối mục4.5 |
+| FR-52 | 8 | Form/nháp cục bộ | survey-draft.ts, survey-form.tsx, logout-button.tsx | Unit whitelist/version/quota/retention, epoch/đa tab/clock; QA cuối mục4.5 đã qua |
+| FR-53 | 8 | POST /api/student-surveys/:taskId/submit | submitStudentSurvey: CAS task+response+answers cùng transaction, DATE Việt Nam | HTTP20POST chỉ1success/19x409, duplicate/frozen; rollback/DTO/log và gate cuối mục4.5 |
+| FR-54 | 8 | /khao-sat/:taskId/da-nop | survey-confirmation.tsx, getStudentSurvey; POST chỉ status/day | PENDING chuyển form, DONE template=null, không đọc/ID/bản sao phiếu; mất phản hồi đọc lại task, QA cuối mục4.5 |
 | FR-60  | 9            | [WF-10](wireframes/tuan-02.html#wf-10)                                         | results / aggregation / công bố; chưa triển khai             | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-61  | 9            | [WF-10](wireframes/tuan-02.html#wf-10)                                         | results / aggregation / công bố; chưa triển khai             | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-62  | 9            | [WF-10](wireframes/tuan-02.html#wf-10)                                         | results / aggregation / công bố; chưa triển khai             | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -167,9 +167,9 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | BR    | Wireframe / luồng                                                                                                      | Thiết kế / miền phụ trách                                                                 | Test hiện có hoặc phần cần viết                                                                                    |
 | ----- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | BR-01 | Đợt mở và tiến độ nhiệm vụ | CampaignSection/SurveyTask tạo cùng transaction DANG_MO; xác nhận/hash BR-52/53 | W7-HTTP08/09: chốt4SV hiện tại khi hash lệch, 20ensure không nhân đôi; thay đăng ký/thêm lớp sau mở không đổi task |
-| BR-02 | [WF-06](wireframes/tuan-02.html#wf-06)                                                                                 | Cập nhật có điều kiện task + response/answers cùng transaction                            | Chưa có; Tuần 8 kiểm nộp lần hai và 20 request                                                                     |
-| BR-03 | [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06), [WF-16](wireframes/tuan-02.html#wf-16) | THIET_KE_AN_DANH, ADR-003; vùng phiếu biệt lập                                            | Có test DMMF 5.6a; chưa có 5.6b/c/d và log/export runtime                                                          |
-| BR-04 | [WF-04](wireframes/tuan-02.html#wf-04), [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06) | Service submit kiểm thời gian/trạng thái/mẫu/giá trị                                      | Chưa có; Tuần 8 kiểm ngoài giờ, câu bắt buộc, sai metadata/loại                                                    |
+| BR-02 | [WF-06](wireframes/tuan-02.html#wf-06) | student-surveys.ts: CAS task + response/answers cùng transaction | Tuần8 HTTP lần2x409/20POSTchỉ1phiếu; rollback cưỡng bức và gate cuối mục4.5 |
+| BR-03 | [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06), [WF-16](wireframes/tuan-02.html#wf-16) | THIET_KE_AN_DANH, ADR003/009, vùng phiếu biệt lập, DTO/log whitelist | DMMF5.6a, privacy unit route→service, HTTP5.6b/c và DTO/log hiện có; export CSV/Excel/PDF Tuần12 chưa kiểm |
+| BR-04 | [WF-04](wireframes/tuan-02.html#wf-04), [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06) | student-survey-input.ts/submit: mẫu khóa/nămloại/NA/time; lifecycle đóng now>endsAt | Unit đúng endsAt vẫn nhận; HTTP ngoài giờ/sai trạng thái/kỳ khóa/mẫu/loại/option/bắtbuộc; gate cuối mục4.5 |
 | BR-05 | Mẫu phiếu và lãnh đạo duyệt đợt | templates.ts; campaigns.ts::validateTemplateForApproval, mutex/CAS | Tuần6 bảo vệ cây mẫu; W7-HTTP07/13 khóa mẫu cùng transaction duyệt, rút đợt vẫn giữ mẫu khóa; campaign-services unit |
 | BR-06 | Máy trạng thái và lịch sử đợt | campaigns.ts, campaign-lifecycle.ts; revision/requestId/requestHash | W7-HTTP07/11/13–16: lý do, sai trạng thái, idempotency, CAS, first access/catch-up và duyệt trễ; [sơ đồ](assets/tuan-07/campaign-state.svg) |
 | BR-07 | [WF-10](wireframes/tuan-02.html#wf-10), [WF-16](wireframes/tuan-02.html#wf-16)                                         | Results / ngưỡng số phiếu và tỷ lệ / policy                                               | Chưa có; Tuần 9 kiểm cả hai ngưỡng và dữ liệu gộp                                                                  |
@@ -270,10 +270,27 @@ Lệnh người dùng cho phép tiếp tục Tuần7 sau G1; quyết định b�
 
 Lượt HTTP/MySQL đợt **19/19** và cấu hình/queue **13/13** đã qua, fixture được dọn và cấu hình thử được khôi phục; kết quả máy nằm trong .local/week7-http-result.json và .local/week7-settings-http-result.json ngoài Git. Các sửa tiếp sau phải chạy lại kiểm liên quan; tổng test/CI cuối lấy từ báo cáo nghiệm thu, không cộng lượt targeted thành test riêng. Mốc Tuần7 này không thay tiêu chí ẩn danh5.6 hoặc nhận hoàn thành workflow tương lai.
 
+## 4.5. Truy vết hiện thực và kiểm Tuần 8 — 29–30/10/2026
+
+Người dùng yêu cầu bắt đầu và tiếp tục đến khi hoàn tất Tuần 8. Chốt FR-50–54 sau check/build/HTTP/MySQL/UI và CI đúng nguồn 6edad31 đều qua. Chưa tổng hợp/công bố; không sửa bằng chứng lịch sử để nhận chức năng mới.
+
+| Yêu cầu / quy tắc | Hiện thực | Kiểm đã qua và giới hạn |
+| --- | --- | --- |
+| FR-50; BR-01/34 | student-surveys.ts::listStudentSurveys/readOwnedTask; survey-list; can.ts | HTTP 16/16 gồm 10 vai trò, list/count/page/filter của actor, ID lạ/người khác cùng 404; Enrollment đổi sau chốt không đổi quyền; phiên/grant/MFA mới |
+| FR-51; BR-04/05 | student-survey-input.ts; template projection; survey-form | Unit/HTTP năm loại, hai thang Likert, BOOLEAN=false, TEXTtrim4000, bắt buộc/NA/tùy chọn; câu/option lạ, lặp và trộn loại bị chặn |
+| FR-52; BR-03 | survey-draft/client/clock, logout-button | Nháp chỉ localStorage theo user/task/version,20 nháp/7 ngày/256KiB, không token; QA khôi phục/nháp hỏng/storage bị chặn/đa tab/logout/đồng hồ/gia hạn/GET muộn qua |
+| FR-53; BR-02/03/04 | submitStudentSurvey, transaction helper | HTTP nộp lại 409;20 POST chỉ 1 response/6 answers; UUIDv4 và2 DATE cùng ngày Việt Nam. Trigger lỗi chèn đáp án cho HTTP 500/PENDING/0 response/0 answer, bỏ trigger rồi retry thành công, fixture dọn |
+| FR-54; BR-03/34 | DONE DTO/template=null, survey-confirmation, GET task | PENDING chuyển về form, DONE chỉ trạng thái/ngày, không đọc response/answer hoặc nội dung; QA mất phản hồi sau commit và tab cũ qua |
+| BR-04/17 | availability/lifecycle/CAS; giờ server | Đúng endsAt còn mở,1 ms sau đóng; HTTP trước giờ/đã đóng/kỳ khóa/mẫu chưa khóa bị chặn |
+| BR-03/30/34;5.6(d) hiện có | student-survey-body, CSRF riêng, DTO whitelist, normalizedError, Prisma log[] | Unit route→service kiểm danh sách trường ghi/DTO, trường cầu nối, sentinel, lỗi và sink console/audit/queue; HTTP Origin/CSRF/bytecap 256 KiB/logscan qua. Export kết quả Tuần 12 chưa có |
+| Sơ đồ/giải thích | [ADR009](decisions/ADR-009-nop-phieu-an-danh.md), [giải thích](GIAI_THICH/tuan-08.md), [sơ đồ](SO_DO_TUAN_08.md) | Nguồn Mermaid/SVG mới, ERD46 design/34 runtime/12 design-only; không migration mới hoặc sửa assets lịch sử |
+
+Unit liên quan: student-surveys, student-survey-input/body/client/clock/draft/privacy, campaign-lifecycle và schema-anonymity. Fullcheck 646/646 trong 39 tệp/schema/ERD/lint/TS và build 16.4.3 qua ngày 30/10; HTTP/MySQL test:week8 qua 16/16/cleaned=true, kết quả riêng .local/week8-http-result.json ngoài Git.27 tập main trước/sau khớp hash. UI 13 nhóm/34 PNG đã xem và [CI nguồn 6edad31](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40925339620) qua check/smoke đúng SHA. Chốt 117/219=53,4%, 41/84 FR tại [nghiệm thu Tuần 8](NGHIEM_THU_TUAN_08.md); không cộng lượt targeted/lượt lỗi vào số đạt. CI main/tài liệu cuối đối chiếu riêng.
+
 ## 5. Quy tắc cập nhật
 
 Khi hiện thực mỗi tuần, thay tên miền dự kiến bằng đường dẫn service/policy thật và tên test gắn mã, ghi command/commit/CI/ảnh thật; chỉ tick PROGRESS sau test và nghiệm thu. Tệp xuất/trạng thái chưa hoàn thành là luồng riêng, không ghép với phiếu. Các sơ đồ, wireframe, blueprint và checklist là thiết kế có thể review, không thay bằng chứng runtime.
 
-### Chốt bằng chứng nguồn Tuần7
+### Chốt bằng chứng nguồn Tuần 7
 
 Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b, [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA, gồm migration sạch Linux và hồi quy tuần trước. Check572/32file; build; HTTP19+13 trên nguồn saufixlease; seed14; UI11nhóm26viewport26PNG; sơ đồ5Mermaid/10PNG. Hash24tập main khớp,648link nội bộ/5mục bảo vệ/48tệp lịch sử/AGENTS/prompt bổ sung qua. Chấp nhận FR-40–46/100/142–144,103/219=47,0%; FR-145/160 chưa tick. Main/tài liệu cuối theo CI riêng.

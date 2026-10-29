@@ -147,3 +147,27 @@ Người dùng yêu cầu tiếp tục Tuần 7 sau gián đoạn. AI hỗ trợ
 ## Chốt phần chính Tuần7 — 29/10/2026
 
 AI hỗ trợ service/API/UI, cấu hình ngưỡng, migration, readiness seed, scheduler/outbox, kiểm thử và tài liệu. Người dùng quyết định chặn khóa kỳ khi còn đợt đã duyệt/đang mở. Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b; [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) check/smoke qua. Check572/32file, build, SQL16, HTTP19+13, seed14, UI11nhóm26viewport26PNG và sơ đồ5Mermaid/10PNG đã kiểm. Hash24tập dữ liệu cũ giữ nguyên; prompt/AGENTS/phần5.6/8.3–8.6 và báo cáo/ảnh cũ không đổi. Các lỗi migration collation, generated-output ESLint, Reactkey/HMR/testharness và maillease đã ghi rõ/kiểm lại; không nhận lượt lỗi là qua. Tick11FR,103/219=47,0%; FR-145 chưa thực hiện, FR-160 chờ đủ phạm vi. Không gán công AI cho sinh viên, không điền ngày/tên GVHD yêu cầu.
+
+## Bắt đầu Tuần8 — 29/10/2026
+
+Theo yêu cầu trực tiếp của người dùng. AI hỗ trợ service/API/UI nhiệm vụ/nộp phiếu, kiểm ẩn danh/concurrency/rollback, nháp cục bộ và tài liệu. Không sửa thiết kế bảo vệ5.6/8.3–8.6 hoặc báo cáo/ảnh cũ. Chưa nhận nghiệm thu FR-50–54; FR-145 còn chờ.
+
+## Tiếp tục Tuần 8 — 30/10/2026
+
+Người dùng yêu cầu tiếp tục đến khi hoàn tất Tuần 8 sau gián đoạn. AI và agent hỗ trợ mã, bộ kiểm và tài liệu; không ghi thành đóng góp thực tế của sinh viên. Mốc giả định 18–24/11 khác ngày thao tác 29–30/10; không ghi lùi hoặc điền ngày/tên GVHD.
+
+| Phần AI hỗ trợ | Hiện thực và kết quả |
+| --- | --- |
+| Nhiệm vụ và nộp phiếu | student-surveys.ts, student-survey-input.ts, policy/CSRF/API; chỉ nhiệm vụ của actor, quyền mới, mẫu khóa, năm loại/NA/hai thang; CAS và giao dịch, ngày Việt Nam, DTO không cầu nối |
+| Giao diện và nháp | /khao-sat, form/xác nhận, survey-draft/clock/client; kiểm phiên bản, giới hạn lưu, dọn đăng xuất/DONE/trạng thái server, tín hiệu đa tab và đọc lại task sau mất phản hồi POST |
+| Biên thời hạn | Lifecycle đóng khi now>endsAt; test đúng endsAt vẫn mở, bám BR-04, không đổi đặc tả bảo vệ |
+| Kiểm thực tế | Check 646/646 trong 39 tệp, schema/ERD/lint/TypeScript và build Next 16.4.3 qua trên nguồn 6edad31; HTTP/MySQL 16/16, fixture sạch; 20 POST chỉ 1 thành công/19 bị 409; lỗi chèn đáp án rollback rồi retry thành công |
+| Giao diện và CI | UI 13 nhóm/17 trạng thái/34 viewport/34 PNG đã mở xem, không lỗi trong phép đo và seed giữ nguyên; CI 40925339620 qua check/smoke đúng SHA 6edad31 |
+| Riêng tư | DMMF và privacy unit qua route/service, payload/DTO/lỗi/sink; không audit/queue/log nộp. Chưa có xuất kết quả, phải kiểm CSV/Excel/PDF khi Tuần 12 hiện thực |
+| Dữ liệu và tài liệu | Không migration mới, 34 runtime/46 design; hash 27 tập main khớp. ADR009, giải thích5 câu,3 sơ đồ mới/ERD, báo cáo 10 mục, README/truy vết/ma trận/chương 4 nháp; bảo toàn phần nguồn và lịch sử |
+
+Lượt HTTP đầu dừng sau 14 nhóm vì user ứng dụng không được tạo trigger MySQL1419. Helper đặc quyền chỉ cho đúng DB marker/server UUID/câu hỏi fixture; lượt kế gặp guard chuỗi tab escaped của mysqlbatch. Đã sửa phép đối chiếu, dọn đúng fixture và kiểm hash 34 model còn lại giữ nguyên, rồi chạy lại 16/16 qua. Không đổi GLOBAL, nâng quyền user ứng dụng hoặc reset DB để vượt lỗi; không tính lượt lỗi là qua.
+
+QA phát hiện thông báo nháp hỏng bị mất khi StrictMode chạy lại effect. Đã dùng cache chỉ chứa thông báo và xóa cả bản nháp trong bộ nhớ khi DONE/đăng xuất/tín hiệu giữa tab; cache không giữ câu trả lời. Harness còn sửa polling tab nền và chờ repaint sau lỗi ảnh lặp mảng; chạy lại toàn bộ, chỉ dùng 34 ảnh cuối đã xem. Check/build đã chạy lại trên nguồn cuối, không tính các lượt lỗi là nghiệm thu.
+
+Chốt FR-50–54: 117/219=53,4%, 41/84 FR; [nghiệm thu Tuần 8](NGHIEM_THU_TUAN_08.md) liên kết nguồn 6edad31/CI 40925339620 và ảnh thật. Web 3000/scheduler đã mở lại, MySQL/Mailpit healthy. CI main/tài liệu cuối đối chiếu riêng. Không reset dữ liệu hoặc làm trước tổng hợp/công bố. FR-145 vẫn backlog, FR-160 chưa đầy đủ; không gán đóng góp/giờ làm cho sinh viên.

@@ -105,3 +105,20 @@ Các test bổ sung khi triển khai: task người khác, câu hỏi/option t�
 ## 8. Hạn chế phải trình bày khi bảo vệ
 
 Người có quyền DB/binlog/transaction trace có thể suy luận từ thời điểm ghi và những hàng thay đổi cùng transaction. Scalar campaign/lớp có thể được JOIN thủ công để tìm tập sinh viên; không có FK chỉ chặn đường quan hệ được ứng dụng khai báo, không ngăn DBA truy vấn. IP/proxy log, thứ tự request hoặc nội dung “tôi là lớp trưởng…” cũng có thể tiết lộ. Ngày nộp vẫn thu hẹp tập người và lớp ít sinh viên dễ bị suy đoán. Ngưỡng công bố, trộn thứ tự, kiểm duyệt và hạn chế log giảm rủi ro, không bảo đảm ẩn danh tuyệt đối. Đề tài không tuyên bố chống được người quản trị hạ tầng chủ động theo dõi.
+
+## 9. Hiện thực và bằng chứng Tuần 8 — 29–30/10/2026
+
+Mục1–8 giữ thiết kế và bằng chứng lịch sử Tuần 2; những câu “chưa triển khai ở Tuần 2” mô tả đúng mốc cũ. Tuần 8 đã có `student-surveys.ts`/`student-survey-input.ts`, API `/api/student-surveys`, trang `/khao-sat`, nháp cục bộ và xác nhận. [ADR-009](decisions/ADR-009-nop-phieu-an-danh.md) nêu quyết định triển khai; [nghiệm thu Tuần 8](NGHIEM_THU_TUAN_08.md) ghi nguồn/CI/QA cuối. Không sửa hợp đồng đặc tả 5.6.
+
+| Phần kiểm | Kết quả thực tế ngày 30/10 | Giới hạn |
+| --- | --- | --- |
+| Schema5.6(a) | Fullcheck 646/646 trong 39 tệp qua, gồm DMMF runtime/design, đồ thị và mutation test hiện có | Runtime34/design46, không migration hoặc cầu nối mới; không chặn DBA JOIN thủ công |
+| Nộp lần hai5.6(b) | HTTP409, số response/answers không tăng; DONE detail không có ID/nội dung phiếu | Dựa vào task chốt, không dùng danh tính trên phiếu |
+| Đồng thời5.6(c) |20 POST trên MySQL thật:1 thành công/19 bị 409,1 response/6 answers/task DONE | Không chứng minh tải1.500 request hoặc mọi tình huống hạ tầng |
+| Rollback5.6(c) | Trigger riêng ép lỗi chèn câu trả lời:HTTP 500/task PENDING/0 response/0 answer; bỏ trigger retry thành công | Trigger giới hạn DB marker/server UUID/câu hỏi fixture, đã dọn; không đổiGLOBAL hoặc quyền user ứng dụng |
+| DTO/log5.6(d), phần hiện có | Privacy unit qua route→service, whitelist ghi/DTO, sentinel/lỗi/console/audit/queue; HTTP/logscan không nội dung/ID phiếu/cầu nối | Mock không thay đồng thờiMySQL, chưa kiểm proxy/APM/analytics bên ngoài |
+| Xuất kết quả5.6(d) | Chưa có chức năng xuất khảo sát ở Tuần 8 | Phải kiểm CSV/Excel/PDF, metadata/sheetẩn khi Tuần 12 hiện thực; không nhận phần tương lai đã qua |
+
+HTTP 16/16 qua với fixture/trigger dọn sạch; buildNext 16.4.3 qua và27 tập main trước/sau khớp hash. UI13 nhóm/34 PNG đã xem và CI nguồn 6edad31/check/smoke đã qua; chốt FR-50–54 theo báo cáo nghiệm thu, CI main/tài liệu cuối đối chiếu riêng. Không suy từ seed đã có phiếu rằng luồng tổng hợp/công bố/kiểm duyệt hoặc export đã hoàn thành.
+
+Hiện thực nhận đúng khoảng đóng `[startsAt, endsAt]`; server kiểm mới phiên/quyền/chủ task/trạng thái/kỳ/mẫu/giá trị trong transaction, không xét lại Enrollment sau chốt. POST chỉ trả DONE/ngày Việt Nam; task và phiếu lưu cùng quy ướcDATE, không giờ nộp chính xác. Không audit nộp hoặc queue mang người với phiếu. Nháp chỉlocalStorage theo user/task/templateversion, không có token/API nháp; dọn theo DONE/trạng thái server/đăng xuất và tín hiệu giữa tab. Mất phản hồi sau POST thì đọc task trước, không tự retry nộp.

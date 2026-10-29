@@ -56,11 +56,11 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M6 Làm khảo sát
 
-- [ ] FR-50 [P0] danh sách khảo sát của sinh viên (hạn chót, trạng thái) (Tuần 8)
-- [ ] FR-51 [P0] form động, thanh tiến trình, kiểm tra hợp lệ (Tuần 8)
-- [ ] FR-52 [P1] nháp phía trình duyệt (Tuần 8)
-- [ ] FR-53 [P0] nộp ẩn danh một lần (Tuần 8)
-- [ ] FR-54 [P0] màn hình xác nhận đã nộp (Tuần 8)
+- [x] FR-50 [P0] danh sách khảo sát của sinh viên (hạn chót, trạng thái) (Tuần 8)
+- [x] FR-51 [P0] form động, thanh tiến trình, kiểm tra hợp lệ (Tuần 8)
+- [x] FR-52 [P1] nháp phía trình duyệt (Tuần 8)
+- [x] FR-53 [P0] nộp ẩn danh một lần (Tuần 8)
+- [x] FR-54 [P0] màn hình xác nhận đã nộp (Tuần 8)
 
 ## M7 Kết quả
 
@@ -169,3 +169,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 ## Nghiệm thu phần chính Tuần 7 — 29/10/2026
 
 FR-40–46, FR-100 và FR-142–144 đã qua check572/572 (32file), build, SQL16, HTTP19+13, seed14, UI11nhóm/26viewport/26PNG. [CI nguồn 39d5648](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA. Thêm32điểm: **103/219=47,0%**,36/84FR. FR-145 P1 có điều kiện chưa thực hiện, giữ backlog và chưa được người dùng cắt; FR-160 còn chờ đủ phạm vi Tuần13. [Báo cáo Tuần7](bao-cao-tien-do/tuan-07.md).
+
+## Nghiệm thu Tuần 8 — 30/10/2026
+
+FR-50–54 đã qua check 646/646 trong 39 tệp, build Next 16.4.3, HTTP/MySQL 16/16 và UI 13 nhóm/17 trạng thái/34 viewport/34 PNG đã xem. Nguồn `6edad31fef16ee11f5ace82645107b0b7153742d` và [CI 40925339620](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40925339620) đã qua check/smoke đúng SHA; main/tài liệu cuối đối chiếu riêng. 20 POST đồng thời chỉ 1 thành công/19 bị 409, lỗi chèn đáp án rollback nguyên tử; fixture sạch và 27 tập main giữ hash. Chốt thêm 14 điểm: **117/219=53,4%, 41/84 FR**, M6=14/14. Kế hoạch lũy kế Tuần 8 là 119/219=54,3%; còn 2 điểm FR-145 P1 có điều kiện, chưa thực hiện hoặc được người dùng cắt. FR-160 vẫn chưa tick. Xem [nghiệm thu](NGHIEM_THU_TUAN_08.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-08.md) và [QA](QA_GIAO_DIEN_TUAN_08.md). 5.6(d) kiểm DTO/log hiện có; chưa nhận export CSV/Excel/PDF kết quả ở Tuần 12 đã qua. Chưa bắt đầu Tuần 9.

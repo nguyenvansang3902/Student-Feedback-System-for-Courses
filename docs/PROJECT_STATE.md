@@ -1,36 +1,33 @@
 # Trạng thái dự án
 
-- Đề tài: website khảo sát và phản hồi sinh viên về môn học;15tuần từ30/09/2026, khởi động thực tế02/10.
-- Tuần hiện tại: Tuần 7 — đã nghiệm thu phần chính ngày29/10/2026 (Asia/Saigon).
-- Người dùng yêu cầu tiếp tục tuần kế tiếp sau G1 và tiếp tục Tuần7 bằng lời tự nhiên; không gán là đã gõ câu lệnh mẫu.
-- Tuần1–6/G1 và báo cáo lịch sử được giữ. Mốc Tuần7 giả định11–17/11; làm sớm theo lệnh, không ghi lùi ngày.
+- Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
+- Tuần hiện tại: Tuần 8 — đã nghiệm thu FR-50–54 ngày 30/10/2026, theo yêu cầu bắt đầu 29/10 và tiếp tục của người dùng.
+- Mốc kế hoạch giả định: 18–24/11; làm sớm theo lệnh, không ghi lùi ngày, nhóm đối chiếu lịch trường.
+- Nguồn ứng dụng: 6edad31fef16ee11f5ace82645107b0b7153742d, nhánh feat/week8-anonymous-surveys; CI 40925339620 qua check/smoke đúng SHA.
 
-## Phần đã nghiệm thu
+## Đã hoàn thành
 
-- ĐBCL tạo/sửa/trình đợt; bốn phạm vi, lịch giờ Việt Nam và ngưỡng riêng.
-- PĐT kiểm RS-01–06, lỗi chặn/cảnh báo cần ghi chú; xác nhận/trả về và lưu snapshot/hash/người/thời gian.
-- Lãnh đạo duyệt/từ chối, duyệt khóa phiên bản mẫu cùng transaction; duyệt muộn có thể mở ngay khi đến giờ.
-- Scheduler/ensure mở và đóng idempotent, chốt task từ đăng ký hiện tại; drift vẫn mở/audit/cảnh báo PĐT-ĐBCL; sau mở không resync task.
-- Rút trước mở cần vòng xác nhận/duyệt mới; gia hạn tăng hạn, đóng sớm/hủy theo trạng thái có lý do; tiến độ task không trả định danh sinh viên/đáp án.
-- FR-100: ADMIN MFA ghi cấu hình bằng TOTP mới/CAS; ĐBCL/PĐT/LĐ chỉ đọc. Bốn ngưỡng lưu riêng theo đợt, ngưỡng RS-04 dùng cấu hình readiness hiện tại.
-- Người dùng chọn chặn khóa học kỳ khi còn DA_DUYET hoặc DANG_MO; mutex chung với duyệt/mở, đã kiểm race.
-- Queue email có dedup/lease/CAS/renew trước SMTP/retry5lần; SMTP ngoài giao dịch, scheduler xử lý thư qua Mailpit cục bộ.
+- Tuần 1–6/G1 và phần chính Tuần 7 đã nghiệm thu; báo cáo và ảnh lịch sử giữ nguyên, xem NGHIEM_THU_TUAN_07.md.
+- Tuần 8: nhiệm vụ của chính sinh viên, form năm loại/NA/hai thang, nháp cục bộ, nộp ẩn danh một lần và xác nhận.
+- Nộp bằng CAS task PENDING→DONE, UUID phiếu/đáp án trong cùng giao dịch; ngày Việt Nam, không cầu nối danh tính hoặc audit nộp.
+- Đọc lại phiên/quyền, IDOR trả 404, CSRF riêng và body 256 KiB; nhiệm vụ đã chốt quyết định quyền, không xét lại Enrollment.
+- BR-04 nhận đúng endsAt, đóng sau mốc; server quyết định, đồng hồ client chỉ hiển thị.
+- Check cuối: 646/646 trong 39 tệp, schema/ERD/lint/TypeScript và build Next 16.4.3 qua trên nguồn 6edad31.
+- HTTP 16/16, fixture sạch;20 POST chỉ 1 thành công/19 bị 409; lỗi chèn đáp án rollback PENDING/0 phiếu/0 đáp án rồi retry thành công.
+- UI: 13 nhóm/17 trạng thái/34 viewport/34 PNG đã xem; không lỗi/tràn ngang/thiếu nhãn trong phép đo, fixture sạch và seed giữ nguyên.
+- Không migration mới: 34 runtime/46 design/12 model chỉ thiết kế;27 tập dữ liệu main trước/sau khớp hash, không reset DB/volume.
+- ADR009, 5 câu bảo vệ, 3 sơ đồ mới/ERD, báo cáo 10 mục, ảnh, README, truy vết và nhật ký AI đã cập nhật.
+- Tiến độ: 117/219=53,4%, 41/84 FR; M6=14/14. Kế hoạch Tuần 8 là 119/219, còn 2 điểm của FR-145.
 
-## Bằng chứng nguồn cuối
+## Quyết định, cách chạy và phần còn lại
 
-- Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b; [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) check/smoke thành công đúng SHA. CI main/tài liệu cuối đối chiếu SHA riêng trong Actions.
-- npm run check:572/572 trong32file; schema/ERD/lint/TypeScript qua. npm run build Next16.4.3 qua.
-- SQL16; HTTP Tuần7 19/19, ngưỡng/email13/13; seed14/14; fixture dọn, cấu hình test khôi phục.
-- UI11nhóm/26viewport/26PNG đã xem, không pageerror/Reacterror/tràn ngang/thiếu nhãn trong phép đo; ADMIN TOTP thật. Sơ đồ5Mermaid/10PNG đã xem.
-- Bảy migration đồng bộ; runtime34/blueprint46. Sửa collation migration mới dở bằng DDL đã đối chiếu, không reset/drop. Hash24tập dữ liệu cũ khớp sau migration/seed; giữ78phiếu/234đáp án/3tổng hợp cũ.
-- Dependency audit0; kiểm648liên kết nội bộ,5mục bảo vệ,48tệp lịch sử và AGENTS/prompt bổ sung không đổi.
-- Tiến độ:103/219=47,0%,36/84FR. FR-40–46/100/142–144 tick; FR-145/160 chưa tick.
-
-## Cách mở và phần còn lại
-
-- Web chính http://localhost:3000/dot-khao-sat; demo DBCL2026001/PDT2026001/LD2026001 theo README. Web và scheduler nền đã được mở trong phiên; sau tắt máy khởi động lại theo README.
-- FR-145 ImportBatch/hoàn tác là P1 có điều kiện, chưa thực hiện, giữ backlog; chưa có quyết định cắt của người dùng.
-- Tuần8 là danh sách nhiệm vụ/form/nộp ẩn danh; chỉ bắt đầu khi người dùng yêu cầu. Kết quả/công bố/Khảo thí/Thanh tra theo tuần sau, không suy hoàn thành từ seed.
-- Scheduler cần chạy để xử lý theo lịch mà không đợi truy cập. SMTP vẫn có cửa sổ gửi lặp sau crash giữa SMTP nhận và ghi SENT; không nhận exactly-once email.
-- Chưa kiểm tải1500request/WCAG hoặc mọi thiết bị. Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh.
-- Tài liệu: NGHIEM_THU_TUAN_07.md, QA_GIAO_DIEN_TUAN_07.md, SO_DO_TUAN_07.md, ADR-008, bao-cao-tien-do/tuan-07.md và nháp chương4.
+- Người dùng chọn chặn khóa học kỳ khi còn DA_DUYET/DANG_MO; mutex chung với duyệt/mở/khóa.
+- Web chính http://localhost:3000/khao-sat và scheduler đã mở lại; MySQL/Mailpit healthy, khách vào khảo sát chuyển về đăng nhập.
+- Xem form: DEMO-SV00001/Demo2026!HocTap, chọn đợt còn hạn. SV2026001 có thể trống; hướng dẫn chi tiết theo README.
+- ĐBCL/PĐT/lãnh đạo dùng /dot-khao-sat; tài khoản demo theo README. Sau tắt máy khởi động lại theo README.
+- FR-145 ImportBatch/hoàn tác là P1 có điều kiện chưa làm, giữ backlog và chưa được người dùng cắt; FR-160 đầy đủ chờ Tuần 13.
+- 5.6(d) đã kiểm DTO/log hiện có; export CSV/Excel/PDF kết quả chưa có, phải kiểm khi Tuần 12 hiện thực. Giữ đặc tả bảo vệ.
+- Chưa kiểm tải 1.500 request/WCAG/mọi thiết bị/log proxy; ẩn danh ở mức ứng dụng, không chống DBA/binlog/tự tiết lộ.
+- CI main/tài liệu cuối đối chiếu riêng sau push; chưa dùng CI nguồn để nhận SHA main khác đã qua.
+- Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh; không viết quy trình hiện tại ở trường.
+- Bước tiếp: giữ nghiệm thu Tuần 8, theo dõi FR-145; chỉ bắt đầu Tuần 9 khi người dùng yêu cầu.
