@@ -139,3 +139,7 @@ Docker tắt sau gián đoạn được mở bằng shortcut trong Explorer, eng
 [NGHIEM_THU_BO_SUNG_01](NGHIEM_THU_BO_SUNG_01.md) ghi tệp thay đổi, mâu thuẫn code cũ thực tế do ĐBCL ghi danh mục, phạm vi G1 và ước lượng tiến độ. Ước lượng G1 1–2ngày công, phần còn lại8–12ngày công, không phải số giờ hay đóng góp thực tế sinh viên. Chưa bắt đầu Tuần7; chỉ tiếp tục khi có đúng lệnh BẮT ĐẦU TUẦN 7.
 
 **Chốt G1 ngày29/10/2026:** [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) đúng mã `023b619134c58ee79a7ebbdd5882d24cdb034f59` đã qua check/smoke; cập nhật FR-140/141/148 và tiến độ71/219=32,4%, FR-160 vẫn một phần/chưa tick. Kiểm tài liệu604liên kết nội bộ,84FR duy nhất,5mục bảo vệ nguyên nội dung, AGENTS thêm3dòng; prompt bổ sung giữ nguyên SHA-256; báo cáo/ảnhTuần6 và Git blob migration cũ không đổi. Dừng G1, không bắt đầu Tuần7.
+
+## Tiếp tục Tuần 7 — 29/10/2026
+
+Người dùng yêu cầu tiếp tục Tuần 7 sau gián đoạn. AI hỗ trợ workflow đợt, readiness, chốt nhiệm vụ, cấu hình ngưỡng, lập lịch, kiểm thử và tài liệu. Quyết định nghiệp vụ do người dùng chọn: chặn khóa học kỳ khi còn đợt đã duyệt/đang mở. Đang kiểm migration collation và bảo toàn hash24 tập dữ liệu cũ; chưa ghi nhận nghiệm thu hoặc đóng góp sinh viên.

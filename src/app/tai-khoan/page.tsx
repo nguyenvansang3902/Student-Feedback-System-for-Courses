@@ -45,20 +45,12 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("CAN_BO_DBCL"))
     return {
       title: "Không gian đảm bảo chất lượng",
-      sections: [
-        "Đợt khảo sát",
-        "Tổng hợp và công bố kết quả",
-        "Theo dõi cải tiến",
-      ],
+      sections: ["Tổng hợp và công bố kết quả", "Theo dõi cải tiến"],
     };
   if (roles.includes("LANH_DAO"))
     return {
       title: "Không gian lãnh đạo",
-      sections: [
-        "Duyệt đợt khảo sát",
-        "Kết quả toàn trường",
-        "Theo dõi cải tiến",
-      ],
+      sections: ["Kết quả toàn trường", "Theo dõi cải tiến"],
     };
   if (roles.includes("TRUONG_KHOA") || roles.includes("TRUONG_BO_MON"))
     return {
@@ -211,6 +203,14 @@ export default async function AccountPage() {
                 Không gian được cấp quyền
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
+                {can(actor, "campaigns:list") && (
+                  <Link
+                    href="/dot-khao-sat"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Đợt khảo sát môn học <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 {can(actor, "templates:list") && (
                   <Link
                     href="/mau-phieu"

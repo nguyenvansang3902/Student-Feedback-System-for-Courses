@@ -2,6 +2,40 @@ import nodemailer from "nodemailer";
 import { getAuthConfig } from "@/lib/env";
 import { getAuthLimits } from "@/server/auth/limits";
 
+/** Email vận hành đợt; chỉ worker outbox nội bộ gọi, không gửi nội dung phiếu. */
+export async function sendCampaignMail(input: {
+  to: string;
+  title: string;
+  body: string;
+}): Promise<void> {
+  const config = getAuthConfig();
+  const transporter = nodemailer.createTransport({
+    host: config.smtpHost,
+    port: config.smtpPort,
+    secure: config.smtpPort === 465,
+    ...(config.smtpUser && config.smtpPassword
+      ? { auth: { user: config.smtpUser, pass: config.smtpPassword } }
+      : {}),
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 5000,
+    logger: false,
+    debug: false,
+  });
+  try {
+    await transporter.sendMail({
+      from: config.smtpFrom,
+      to: input.to,
+      subject: input.title,
+      text: input.body,
+      disableFileAccess: true,
+      disableUrlAccess: true,
+    });
+  } finally {
+    transporter.close();
+  }
+}
+
 type AccountMail = {
   to: string;
   kind: "ACTIVATION" | "PASSWORD_RESET";

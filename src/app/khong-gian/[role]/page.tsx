@@ -48,6 +48,19 @@ export default async function WorkspacePage({
           <h1 className="mt-3 text-3xl font-bold text-slate-950">
             {roleLabels[role]}
           </h1>
+          {can(actor, "campaigns:list") && (
+            <Link
+              href="/dot-khao-sat"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
+              {can(actor, "campaigns:confirm")
+                ? "Kiểm tra và xác nhận dữ liệu khảo sát"
+                : can(actor, "campaigns:approve")
+                  ? "Xem và phê duyệt đợt khảo sát"
+                  : "Quản lý đợt khảo sát môn học"}{" "}
+              →
+            </Link>
+          )}
           {role === "CAN_BO_DBCL" && can(actor, "templates:list") && (
             <Link
               href="/mau-phieu"

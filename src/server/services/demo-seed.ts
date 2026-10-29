@@ -8,6 +8,7 @@ import { authorizeConsole, type ServerConsoleActor } from "../policies/console";
 import { lockAdminMutations } from "./access";
 import { seedDemoSurveyData } from "./demo-survey-seed";
 import { seedDefaultTemplate } from "./seed-template-default";
+import { seedWeek7ReadinessData } from "./week7-demo-seed";
 
 export const demoSizes = {
   small: {
@@ -132,12 +133,14 @@ export async function seedDemo(
       facultyId: null,
       departmentId: null,
     },
-    ...([
-      ["PDT2026001", "PHONG_DAO_TAO"],
-      ["KT2026001", "PHONG_KHAO_THI"],
-      ["TT2026001", "THANH_TRA"],
-      ["TT2026002", "THANH_TRA"],
-    ] as const).map(([loginCode, role]) => ({
+    ...(
+      [
+        ["PDT2026001", "PHONG_DAO_TAO"],
+        ["KT2026001", "PHONG_KHAO_THI"],
+        ["TT2026001", "THANH_TRA"],
+        ["TT2026002", "THANH_TRA"],
+      ] as const
+    ).map(([loginCode, role]) => ({
       loginCode,
       role,
       scopeType: "GLOBAL" as const,
@@ -374,6 +377,14 @@ export async function seedDemo(
         createdById: demoId("DBCL2026001"),
         legacyDefaultId: demoId("survey-data:template"),
       });
+      const readinessData = await seedWeek7ReadinessData(actor, tx, {
+        id: demoId,
+        departmentId: departments[0].id,
+        teacherIds: teachers.map((teacher) => teacher.id),
+        studentIds: students.map((student) => student.id),
+        createdById: demoId("DBCL2026001"),
+        templateId: demoId("amendment1-default-template"),
+      });
       await tx.auditLog.create({
         data: {
           actorId: null,
@@ -393,6 +404,7 @@ export async function seedDemo(
         ...counts,
         enrollments: enrollments.length,
         surveyData,
+        readinessData,
       };
     },
     { maxWait: 15000, timeout: 60000 },

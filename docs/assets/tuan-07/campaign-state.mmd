@@ -1,0 +1,58 @@
+---
+title: "Tuần 7 — vòng duyệt, mở và đóng đợt khảo sát"
+config:
+  state:
+    wrappingWidth: 340
+    minNodeWidth: 180
+    nodeSpacing: 40
+    rankSpacing: 45
+---
+stateDiagram-v2
+  direction TB
+  %% Đối chiếu campaigns.ts và campaign-lifecycle.ts ngày 29/10/2026.
+  %% Chỉ các trạng thái có workflow hiện thực ở Tuần 7 được vẽ thành node.
+  state "Nháp · NHAP" as NHAP
+  state "Chờ PĐT xác nhận dữ liệu · CHO_XAC_NHAN_DL" as CHO_XAC_NHAN_DL
+  state "Chờ lãnh đạo duyệt · CHO_DUYET" as CHO_DUYET
+  state "Đã duyệt · DA_DUYET" as DA_DUYET
+  state "Đang mở · DANG_MO" as DANG_MO
+  state "Đã đóng · DA_DONG" as DA_DONG
+  state "Đã hủy · HUY" as HUY
+
+  [*] --> NHAP : ĐBCL tạo đợt
+  NHAP --> NHAP : ĐBCL sửa nháp · kiểm revision
+  NHAP --> CHO_XAC_NHAN_DL : ĐBCL trình đợt
+  CHO_XAC_NHAN_DL --> CHO_DUYET : PĐT xác nhận · lưu snapshot và hash
+  CHO_XAC_NHAN_DL --> NHAP : PĐT trả về · cần lý do
+  CHO_DUYET --> DA_DUYET : Lãnh đạo duyệt · khóa mẫu cùng transaction
+  CHO_DUYET --> NHAP : Lãnh đạo từ chối · cần lý do
+  DA_DUYET --> NHAP : ĐBCL rút trước mở · cần lý do, duyệt lại từ đầu
+  DA_DUYET --> DANG_MO : Đến startsAt · ensure hoặc scheduler chốt nhiệm vụ
+  DANG_MO --> DANG_MO : ĐBCL gia hạn · hạn mới muộn hơn, lý do, queue email SV
+  DANG_MO --> DA_DONG : Đến endsAt · ensure hoặc scheduler đóng
+  DANG_MO --> DA_DONG : ĐBCL đóng sớm · cần lý do
+  NHAP --> HUY : ĐBCL hủy · cần lý do
+  CHO_XAC_NHAN_DL --> HUY : ĐBCL hủy · cần lý do
+  CHO_DUYET --> HUY : ĐBCL hủy · cần lý do
+  DA_DUYET --> HUY : ĐBCL hủy trước mở · cần lý do
+
+  note left of CHO_XAC_NHAN_DL
+    RS-01/02/03 là lỗi chặn xác nhận.
+    RS-04/05/06 là cảnh báo, cần ghi chú.
+    PĐT chỉ xác nhận khi hết lỗi chặn.
+  end note
+  note right of DA_DUYET
+    Cấm khóa học kỳ còn đợt DA_DUYET hoặc DANG_MO.
+    Rút đợt không mở khóa mẫu đã khóa.
+    Duyệt trễ sau startsAt thì mở ngay cùng transaction.
+  end note
+  note right of DANG_MO
+    Chốt theo dữ liệu hiện tại dù hash lệch lúc xác nhận.
+    Hash lệch tạo audit và queue cảnh báo PĐT/ĐBCL.
+    Sau mở, thay đăng ký không đổi SurveyTask đã chốt.
+  end note
+  note right of DA_DONG
+    Điểm dừng workflow hiện thực Tuần 7.
+    Tổng hợp/công bố thuộc Tuần 9, ngoài phạm vi này.
+    Không biểu diễn trạng thái tương lai thành node đã làm.
+  end note

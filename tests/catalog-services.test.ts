@@ -39,6 +39,7 @@ const { db, sendUnlockMail } = vi.hoisted(() => {
       userSession: delegate(),
       systemSetting: delegate(),
       auditLog: delegate(),
+      surveyCampaign: delegate(),
       $transaction: vi.fn(),
       $executeRaw: vi.fn(),
       $queryRaw: vi.fn(),
@@ -466,6 +467,37 @@ describe("FR-20/21/22, BR-17/30/34 — quyền danh mục và khóa sổ", () =>
       displayName: true,
     });
   });
+  it.each(["DA_DUYET", "DANG_MO"])(
+    "BR-17/53: chặn khóa kỳ khi có đợt %s theo quyết định người dùng",
+    async (status) => {
+      const current = actor();
+      db.userSession.findUnique.mockResolvedValue(session(current));
+      db.surveyCampaign.findFirst.mockResolvedValue({
+        id: randomUUID(),
+        status,
+      });
+      await expect(
+        lockSemester(current, semester.id, {
+          reason: "Đã kiểm tra dữ liệu kỳ",
+        }),
+      ).rejects.toMatchObject({
+        status: 409,
+        code: "SEMESTER_HAS_ACTIVE_CAMPAIGN",
+      });
+      expect(db.surveyCampaign.findFirst).toHaveBeenCalledWith({
+        where: {
+          semesterId: semester.id,
+          status: { in: ["DA_DUYET", "DANG_MO"] },
+        },
+        select: { id: true },
+      });
+      expect(db.semester.updateMany).not.toHaveBeenCalled();
+      expect(db.auditLog.create).not.toHaveBeenCalled();
+      expect(db.$queryRaw.mock.invocationCallOrder[0]).toBeLessThan(
+        db.surveyCampaign.findFirst.mock.invocationCallOrder[0],
+      );
+    },
+  );
   it("khóa sổ có CAS, audit người/thời điểm/ngữ cảnh không ghi nguyên văn lý do", async () => {
     const current = actor();
     db.userSession.findUnique.mockResolvedValue(session(current));

@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1632"
+  height="1532"
+  viewBox="0 0 1632 1532"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">ERD tổng quan: Phản hồi liên tục</title>
+  <desc id="description">
+    10 model chính và 4 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 7:
+    46 model thiết kế, 34 runtime, 12 model chỉ thiết kế. Đợt, xác nhận và hàng
+    chờ email thuộc phạm vi hiện thực; 7 bảng phiếu/kết quả/phản hồi còn chỉ
+    seed. Chi tiết toàn bộ scalar nằm trong ERD.md.
+  </desc>
+  <style>
+    text {
+      font-family: "Segoe UI", Arial, sans-serif;
+      fill: #0f172a;
+    }
+    .heading {
+      font-size: 29px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 17px;
+      fill: #475569;
+    }
+    .model {
+      font-size: 22px;
+      font-weight: 700;
+      fill: #fff;
+    }
+    .meta {
+      font-size: 15px;
+      fill: #475569;
+    }
+    .field {
+      font-size: 15px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+    .foot {
+      font-size: 14px;
+      fill: #475569;
+    }
+  </style>
+  <rect width="1632" height="1532" fill="#f8fafc" />
+  <text x="27" y="48" class="heading">Phản hồi liên tục</text>
+  <text x="27" y="82" class="sub">
+    10 model chính · 4 model ngữ cảnh · PK / UK / FK lấy từ DMMF thật
+  </text>
+  <text x="27" y="113" class="sub">
+    SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ
+    scalar và liên kết ở docs/ERD.md.
+  </text>
+  <text x="27" y="143" class="sub">
+    Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối
+    Response/Answer.
+  </text>
+  <g aria-label="Feedback">
+    <rect
+      x="27"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="207" class="model">Feedback</text>
+    <text x="45" y="248" class="meta">
+      Tuần 5: chỉ seed dữ liệu demo · 22 scalar
+    </text>
+    <text x="45" y="277" class="field">PK (id)</text>
+    <text x="45" y="300" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="45" y="323" class="field">FK (authorId) → User (id)</text>
+    <text x="45" y="346" class="field">FK (assigneeId) → User (id)</text>
+  </g>
+  <g aria-label="FeedbackRecipient">
+    <rect
+      x="561"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="207" class="model">FeedbackRecipient</text>
+    <text x="579" y="248" class="meta">
+      Tuần 5: chỉ seed dữ liệu demo · 2 scalar
+    </text>
+    <text x="579" y="277" class="field">PK (feedbackId, userId)</text>
+    <text x="579" y="300" class="field">FK (feedbackId) → Feedback (id)</text>
+    <text x="579" y="323" class="field">FK (userId) → User (id)</text>
+  </g>
+  <g aria-label="FeedbackMessage">
+    <rect
+      x="1095"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="207" class="model">FeedbackMessage</text>
+    <text x="1113" y="248" class="meta">
+      Tuần 5: chỉ seed dữ liệu demo · 7 scalar
+    </text>
+    <text x="1113" y="277" class="field">PK (id)</text>
+    <text x="1113" y="300" class="field">FK (feedbackId) → Feedback (id)</text>
+    <text x="1113" y="323" class="field">FK (authorId) → User (id)</text>
+  </g>
+  <g aria-label="FeedbackHistory">
+    <rect
+      x="27"
+      y="385"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="416" class="model">FeedbackHistory</text>
+    <text x="45" y="457" class="meta">
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
+    </text>
+    <text x="45" y="486" class="field">PK (id)</text>
+    <text x="45" y="509" class="field">FK (feedbackId) → Feedback (id)</text>
+    <text x="45" y="532" class="field">FK (actorId) → User (id)</text>
+  </g>
+  <g aria-label="FeedbackRating">
+    <rect
+      x="561"
+      y="385"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="416" class="model">FeedbackRating</text>
+    <text x="579" y="457" class="meta">
+      Thiết kế tương lai; chưa migration · 4 scalar
+    </text>
+    <text x="579" y="486" class="field">PK (feedbackId)</text>
+    <text x="579" y="509" class="field">FK (feedbackId) → Feedback (id)</text>
+  </g>
+  <g aria-label="Attachment">
+    <rect
+      x="1095"
+      y="385"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="416" class="model">Attachment</text>
+    <text x="1113" y="457" class="meta">
+      Thiết kế tương lai; chưa migration · 8 scalar
+    </text>
+    <text x="1113" y="486" class="field">PK (id)</text>
+    <text x="1113" y="509" class="field">UK1 (storageKey)</text>
+    <text x="1113" y="532" class="field">FK (feedbackId) → Feedback (id)</text>
+  </g>
+  <g aria-label="SlaEscalation">
+    <rect
+      x="27"
+      y="571"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="602" class="model">SlaEscalation</text>
+    <text x="45" y="643" class="meta">
+      Thiết kế tương lai; chưa migration · 4 scalar
+    </text>
+    <text x="45" y="672" class="field">PK (id)</text>
+    <text x="45" y="695" class="field">UK1 (feedbackId, level)</text>
+    <text x="45" y="718" class="field">FK (feedbackId) → Feedback (id)</text>
+  </g>
+  <g aria-label="InspectionCase">
+    <rect
+      x="561"
+      y="571"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="602" class="model">InspectionCase</text>
+    <text x="579" y="643" class="meta">
+      Thiết kế tương lai; chưa migration · 18 scalar
+    </text>
+    <text x="579" y="672" class="field">PK (id)</text>
+    <text x="579" y="695" class="field">UK1 (feedbackId)</text>
+    <text x="579" y="718" class="field">UK2 (anomalyFlagId)</text>
+    <text x="579" y="741" class="field">FK (feedbackId) → Feedback (id)</text>
+    <text x="579" y="764" class="field">
+      FK (anomalyFlagId) → SurveyAnomalyFlag (id)
+    </text>
+    <text x="579" y="787" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="579" y="810" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="579" y="833" class="field">FK (assigneeId) → User (id)</text>
+    <text x="579" y="856" class="field">FK (createdById) → User (id)</text>
+  </g>
+  <g aria-label="InspectionCaseNote">
+    <rect
+      x="1095"
+      y="571"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="602" class="model">InspectionCaseNote</text>
+    <text x="1113" y="643" class="meta">
+      Thiết kế tương lai; chưa migration · 6 scalar
+    </text>
+    <text x="1113" y="672" class="field">PK (id)</text>
+    <text x="1113" y="695" class="field">
+      FK (caseId) → InspectionCase (id)
+    </text>
+    <text x="1113" y="718" class="field">FK (authorId) → User (id)</text>
+  </g>
+  <g aria-label="InspectionCaseEvent">
+    <rect
+      x="27"
+      y="895"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="895" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="923" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="926" class="model">InspectionCaseEvent</text>
+    <text x="45" y="967" class="meta">
+      Thiết kế tương lai; chưa migration · 7 scalar
+    </text>
+    <text x="45" y="996" class="field">PK (id)</text>
+    <text x="45" y="1019" class="field">FK (caseId) → InspectionCase (id)</text>
+    <text x="45" y="1042" class="field">FK (actorId) → User (id)</text>
+  </g>
+  <g aria-label="CourseSection">
+    <rect
+      x="561"
+      y="895"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="561" y="895" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="561" y="923" width="510" height="20" fill="#64748b" />
+    <text x="579" y="926" class="model">CourseSection</text>
+    <text x="579" y="967" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 4 scalar
+    </text>
+    <text x="579" y="996" class="field">PK (id)</text>
+    <text x="579" y="1019" class="field">UK1 (semesterId, code)</text>
+    <text x="579" y="1042" class="field">FK (courseId) → Course (id)</text>
+    <text x="579" y="1065" class="field">FK (semesterId) → Semester (id)</text>
+  </g>
+  <g aria-label="SurveyAnomalyFlag">
+    <rect
+      x="1095"
+      y="895"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="1095" y="895" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="1095" y="923" width="510" height="20" fill="#64748b" />
+    <text x="1113" y="926" class="model">SurveyAnomalyFlag</text>
+    <text x="1113" y="967" class="meta">
+      Ngữ cảnh lặp · Thiết kế tương lai; chưa migration · 10 scalar
+    </text>
+    <text x="1113" y="996" class="field">PK (id)</text>
+    <text x="1113" y="1019" class="field">
+      UK1 (campaignId, sectionId, ruleCode)
+    </text>
+    <text x="1113" y="1042" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="1113" y="1065" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="1113" y="1088" class="field">FK (reviewedById) → User (id)</text>
+  </g>
+  <g aria-label="SurveyCampaign">
+    <rect
+      x="27"
+      y="1127"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="27" y="1127" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="27" y="1155" width="510" height="20" fill="#64748b" />
+    <text x="45" y="1158" class="model">SurveyCampaign</text>
+    <text x="45" y="1199" class="meta">
+      Ngữ cảnh lặp · Tuần 7: đợt/xác nhận/thông báo đợt · 24 scalar
+    </text>
+    <text x="45" y="1228" class="field">PK (id)</text>
+    <text x="45" y="1251" class="field">FK (semesterId) → Semester (id)</text>
+    <text x="45" y="1274" class="field">
+      FK (templateId) → SurveyTemplate (id)
+    </text>
+    <text x="45" y="1297" class="field">FK (facultyId) → Faculty (id)</text>
+    <text x="45" y="1320" class="field">
+      FK (departmentId) → Department (id)
+    </text>
+    <text x="45" y="1343" class="field">FK (createdById) → User (id)</text>
+    <text x="45" y="1366" class="field">FK (approvedById) → User (id)</text>
+    <text x="45" y="1389" class="field">
+      Tuần 7: revision/CAS, mốc chốt và hash; cờ lệch dữ
+    </text>
+    <text x="45" y="1412" class="field">liệu.</text>
+  </g>
+  <g aria-label="User">
+    <rect
+      x="561"
+      y="1127"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="561" y="1127" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="561" y="1155" width="510" height="20" fill="#64748b" />
+    <text x="579" y="1158" class="model">User</text>
+    <text x="579" y="1199" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 9 scalar
+    </text>
+    <text x="579" y="1228" class="field">PK (id)</text>
+    <text x="579" y="1251" class="field">UK1 (loginCode)</text>
+    <text x="579" y="1274" class="field">UK2 (email)</text>
+  </g>
+  <text x="27" y="1471" class="foot">
+    Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 34 runtime / 12
+    chỉ thiết kế · Tuần 7, cập nhật thực tế 29/10/2026
+  </text>
+  <text x="27" y="1496" class="foot">
+    SHA-256 DMMF:
+    bca4073a102d6c09bbee9b90882d08c750e6ea82ec7fafaeaacd9a153538eb20
+  </text>
+</svg>

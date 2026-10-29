@@ -25,6 +25,16 @@ export type PolicyAction =
   | "templates:list"
   | "templates:read"
   | "templates:write"
+  | "campaigns:list"
+  | "campaigns:read"
+  | "campaigns:write"
+  | "campaigns:submit"
+  | "campaigns:confirm"
+  | "campaigns:approve"
+  | "campaigns:operate"
+  | "campaigns:progress"
+  | "campaign-settings:read"
+  | "campaign-settings:write"
   | "audit:list"
   | "mfa-policy:read"
   | "mfa-policy:write"
@@ -112,6 +122,32 @@ export function can(
   const grants = actorGrants(actor);
   if (adminActions.has(action))
     return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
+  if (action === "campaign-settings:write")
+    return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
+  if (action === "campaign-settings:read")
+    return grants.some((grant) =>
+      ["ADMIN", "CAN_BO_DBCL", "LANH_DAO", "PHONG_DAO_TAO"].includes(
+        grant.role,
+      ),
+    );
+  if (["campaigns:list", "campaigns:read"].includes(action))
+    return grants.some((grant) =>
+      ["CAN_BO_DBCL", "LANH_DAO", "PHONG_DAO_TAO"].includes(grant.role),
+    );
+  if (
+    ["campaigns:write", "campaigns:submit", "campaigns:operate"].includes(
+      action,
+    )
+  )
+    return grants.some((grant) => grant.role === "CAN_BO_DBCL");
+  if (action === "campaigns:confirm")
+    return grants.some((grant) => grant.role === "PHONG_DAO_TAO");
+  if (action === "campaigns:approve")
+    return grants.some((grant) => grant.role === "LANH_DAO");
+  if (action === "campaigns:progress")
+    return grants.some((grant) =>
+      ["CAN_BO_DBCL", "LANH_DAO"].includes(grant.role),
+    );
   if (["templates:list", "templates:read", "templates:write"].includes(action))
     return grants.some((grant) => grant.role === "CAN_BO_DBCL");
   if (action === "imports:manage")

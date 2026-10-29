@@ -1,10 +1,10 @@
-# Bảng truy vết yêu cầu — Điều chỉnh số 01 sau Tuần 6
+# Bảng truy vết yêu cầu — Tuần 7 sau Điều chỉnh số 01
 
 Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **21–27/10/2026**. Tuần 3 làm **21–22/10**, sau mốc 14–20/10; bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
 
 **Cách đọc mốc lịch sử trước điều chỉnh:** Tuần6 bắt đầu22/10, tiếp tục28/10 (mốc giả định04–10/11). FR-01–08/10–12/20–22/30–35/101/102 đã nghiệm thu trong phạm vi mã hiện có. Tiến độ62/163=38,0%. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.
 
-Điều chỉnh số01 thêm 21 FR và 19 BR theo [prompt nguyên văn](BO_SUNG_01_TAC_NHAN.md). Mẫu số mới 219; số 62/163 phía trên giữ nguyên tại mốc nghiệm thu Tuần6. Bằng chứng Tuần1–6 dưới đây có trước điều chỉnh: kiểm bảy vai trò không thay kiểm mười vai trò. G1 đã hoàn tất quyền/dữ liệu nền/mẫu; chưa có lệnh **BẮT ĐẦU TUẦN 7**. Ma trận chi tiết: [MA_TRAN_QUYEN](MA_TRAN_QUYEN.md).
+Điều chỉnh số01 thêm 21 FR và 19 BR theo [prompt nguyên văn](BO_SUNG_01_TAC_NHAN.md). Mẫu số mới 219; số 62/163 phía trên giữ nguyên tại mốc nghiệm thu Tuần6. Bằng chứng Tuần1–6 dưới đây có trước điều chỉnh: kiểm bảy vai trò không thay kiểm mười vai trò. G1 đã hoàn tất quyền/dữ liệu nền/mẫu; người dùng sau đó yêu cầu tiếp tục tuần kế và tiếp tục Tuần7. Phiên29/10 triển khai theo lệnh tự nhiên đó, không ghi nhận đã gõ câu lệnh nguyên văn. Bằng chứng mới ở mục4.4. Ma trận chi tiết: [MA_TRAN_QUYEN](MA_TRAN_QUYEN.md).
 
 ## 1. Bằng chứng lịch sử Tuần 2 tại thời điểm nghiệm thu
 
@@ -92,18 +92,18 @@ BR-05 đã kiểm bảo vệ mẫu khóa/được đợt đã duyệt tham chi�
 
 ## 3. FR đang triển khai hoặc còn ở mức thiết kế
 
-FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–22 hiện chuyển chủ sở hữu: PĐT dữ liệu đào tạo/import, ADMIN khoa/bộ môn; kiểm quyền mới truy vết FR-140/141 và TC-PDT-01. Bằng chứng Tuần5 vẫn giữ đúng thời điểm và không tự chứng minh quyền mới. Các dòng tương lai vẫn chưa hoàn thành; ba FR G1 có bằng chứng riêng dưới đây. Schema hoặc thiết kế không thay giao diện/service nghiệp vụ.
+FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–22 hiện chuyển chủ sở hữu: PĐT dữ liệu đào tạo/import, ADMIN khoa/bộ môn; kiểm quyền mới truy vết FR-140/141 và TC-PDT-01. Bằng chứng Tuần5 vẫn giữ đúng thời điểm và không tự chứng minh quyền mới. Các dòng tương lai vẫn chưa hoàn thành; ba FR G1 và các FR Tuần7 có bằng chứng riêng dưới đây/mục4.4. Schema hoặc thiết kế không thay giao diện/service nghiệp vụ.
 
 | Mã FR  | Tuần dự kiến | Wireframe / luồng thiết kế                                                     | Miền service/policy dự kiến                                  | Test nghiệm thu FR                                                                                 |
 | ------ | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | FR-09  | P2, chưa xếp | [WF-01](wireframes/tuan-02.html#wf-01)                                         | phiên/thiết bị; chưa triển khai                              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-40  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-41  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns; có bảng/seed, chưa service/UI                                     | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-42  | 7            | [WF-09](wireframes/tuan-02.html#wf-09)                                         | campaigns / phê duyệt; có bảng/seed, chưa service/UI                         | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-43  | 7            | [WF-04](wireframes/tuan-02.html#wf-04), [WF-08](wireframes/tuan-02.html#wf-08) | campaigns / snapshot tasks; có bảng/seed, chưa service/UI                    | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-44  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns / ensure*; chưa triển khai                         | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-45  | 7            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | campaigns / ensure*; chưa triển khai                         | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-46  | 7            | [WF-04](wireframes/tuan-02.html#wf-04), [WF-08](wireframes/tuan-02.html#wf-08) | campaigns / snapshot tasks; chỉ blueprint                    | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-40 | 7 | /dot-khao-sat/moi và /dot-khao-sat/:id | campaigns.ts::createCampaign/updateCampaign, campaign-input.ts, can.ts | Unit campaign-services; W7-HTTP04/14 kiểm bốn phạm vi và CAS; bảng bằng chứng mục4.4 |
+| FR-41 | 7 | GLOBAL/FACULTY/DEPARTMENT/SECTIONS | campaign-input.ts, campaigns.ts, campaign-readiness.ts | W7-HTTP04: đúng lớp hiện tại, paging, chặn lớp khác kỳ và payload sai scope |
+| FR-42 | 7 | ĐBCL trình → PĐT xác nhận → lãnh đạo duyệt/từ chối | campaigns.ts::performCampaignAction, khóa mẫu cùng transaction | W7-HTTP05–07/13/16, campaign-services; lý do, vòng xác nhận mới, duyệt muộn mở ngay |
+| FR-43 | 7 | Chốt lớp/nhiệm vụ khi mở | campaign-lifecycle.ts::advanceCampaignState, campaign-readiness.ts | W7-HTTP08/09:20ensure, hash lệch chốt hiện tại, đăng ký sau mở không đổi task |
+| FR-44 | 7 | Scheduler và ensure qua list/detail/action | scripts/scheduler.ts, campaign-lifecycle.ts, campaigns.ts | W7-HTTP08/12/15/16: CLI thật, first access, catch-up OPEN→CLOSE/giờ thật, lặp an toàn |
+| FR-45 | 7 | Gia hạn/đóng sớm/hủy/rút trước mở | campaigns.ts, campaign-notifications.ts, mail.ts | W7-HTTP11–13; W7-SETTINGS10–12: reason/state, queue/dedup, SMTP/backoff/lease; giới hạn SMTP mục4.4 |
+| FR-46 | 7 | /dot-khao-sat/:id, tiến độ theo lớp | campaigns.ts::getCampaignProgress, SurveyTask groupBy | W7-HTTP10:4task/1DONE=25%, paging, không định danh SV/phiếu/đáp án, PĐT403 |
 | FR-47  | 9            | [WF-08](wireframes/tuan-02.html#wf-08)                                         | nhắc chưa hoàn thành; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-50  | 8            | [WF-04](wireframes/tuan-02.html#wf-04)                                         | surveys / task của actor; chưa triển khai                    | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-51  | 8            | [WF-05](wireframes/tuan-02.html#wf-05)                                         | surveys / form và nháp browser; chưa triển khai              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -132,7 +132,7 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-92  | 12           | [WF-16](wireframes/tuan-02.html#wf-16)                                         | reports / export; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-93  | 12           | [WF-16](wireframes/tuan-02.html#wf-16)                                         | reports / export; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-94  | 12           | [WF-16](wireframes/tuan-02.html#wf-16)                                         | reports / export; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-100 | 7            | [WF-17](wireframes/tuan-02.html#wf-17)                                         | Settings nền đã migrate; chưa cấu hình ngưỡng khảo sát                                      | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-100 | 7 | /quan-tri/cau-hinh-khao-sat | survey-settings.ts, API survey-settings, ADMIN MFA/TOTP/CSRF/Origin | W7-SETTINGS01–09:10roles, biên ngưỡng, actual TOTP/replay, CAS, mặc định đợt, audit, fresh revoke |
 | FR-103 | 14           | CLI sao lưu/phục hồi; chưa có script                                           | backup / restore; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-110 | P2, chưa xếp | Chưa có màn riêng; AI tắt mặc định                                             | mở rộng AI, cần người dùng đồng ý; chưa triển khai           | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-111 | P2, chưa xếp | [WF-08](wireframes/tuan-02.html#wf-08)                                         | API trạng thái hoàn thành; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -140,9 +140,9 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 
 | FR-140 | G1 / bù Tuần6 | Danh mục đào tạo/import; ADMIN khoa/bộ môn | can.ts, catalog.ts, imports.ts và menu; điều chỉnh từ code ĐBCL cũ | Đạt G1: TC-PDT-01/TC-ALL-01 phần hiện có; rbac-policy/rbac-services/catalog/import tests, verify-week5 HTTP23, UI; CI mục4.3 |
 | FR-141 | G1 / bù Tuần6 | PĐT khóa/mở khóa học kỳ | catalog.ts, audit.ts, mail.ts; guard kỳ khóa | Đạt G1: BR-51; HTTP19 của verify-week5 kiểm lý do/CAS/audit/Mailpit, unit SMTP fail/no-recipient; UI khóa/mở thật |
-| FR-142 | 7 | Readiness đợt RS-01–RS-06 | campaign readiness/confirmation; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-02; blocking/warning/snapshot/hash |
-| FR-143 | 7 | PĐT xác nhận/trả về dữ liệu đợt | CampaignDataConfirmation và transition; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-02; CHO_XAC_NHAN_DL→CHO_DUYET/trả NHAP có lý do |
-| FR-144 | 7 | Cảnh báo dữ liệu đổi khi đợt mở | recompute hash/freeze/notifications; chưa triển khai | Chưa nghiệm thu mới: TC-PDT-03; vẫn chốt hiện tại, không đổi task sau chốt |
+| FR-142 | 7 | Readiness RS-01–RS-06 trong chi tiết đợt | campaign-readiness.ts, survey-settings.ts | TC-PDT-02: W7-HTTP05/06, W7-SETTINGS07, readiness unit và seed W7; RS01–03 chặn/RS04–06 cần note |
+| FR-143 | 7 | PĐT xác nhận hoặc trả về NHAP có lý do | campaigns.ts, CampaignDataConfirmation theo revision | TC-PDT-02: W7-HTTP05/07/13, campaign-services; snapshot/hash/người xác nhận bất biến và vòng xác nhận mới |
+| FR-144 | 7 | Hash lệch khi mở: chốt hiện tại và cảnh báo PĐT/ĐBCL | campaign-lifecycle.ts, campaign-notifications.ts, EmailOutbox | TC-PDT-03: W7-HTTP08/09/12, W7-SETTINGS10–12; audit/queue/Mailpit, không resync nhiệm vụ |
 | FR-145 | 7, P1 | Lô nhập/hoàn tác chưa dùng trong đợt đã chốt | ImportBatch; chưa triển khai, không tự cắt | Chưa nghiệm thu mới: BR-55; thiếu test, chỉ hiện thực nếu đủ thời gian |
 | FR-146 | 10 | Hàng đợi TO_CHUC_LOP_HOC | feedback routing/PĐT; chưa triển khai | Chưa nghiệm thu mới: BR-54; scope, SLA, forward, privacy Tuần10–11 |
 | FR-147 | 12, P1 | Dashboard PĐT | reports/readiness/feedback; chưa triển khai | Chưa nghiệm thu mới: BR-67; ngưỡng và không định danh, kiểm tệp xuất |
@@ -166,12 +166,12 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 
 | BR    | Wireframe / luồng                                                                                                      | Thiết kế / miền phụ trách                                                                 | Test hiện có hoặc phần cần viết                                                                                    |
 | ----- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| BR-01 | [WF-04](wireframes/tuan-02.html#wf-04), [WF-08](wireframes/tuan-02.html#wf-08)                                         | CampaignSection/SurveyTask snapshot lúc mở; bổ sung xác nhận/hash BR-52/53                   | Chưa có; Tuần 7 kiểm đăng ký sau mở không đổi task                                                                 |
+| BR-01 | Đợt mở và tiến độ nhiệm vụ | CampaignSection/SurveyTask tạo cùng transaction DANG_MO; xác nhận/hash BR-52/53 | W7-HTTP08/09: chốt4SV hiện tại khi hash lệch, 20ensure không nhân đôi; thay đăng ký/thêm lớp sau mở không đổi task |
 | BR-02 | [WF-06](wireframes/tuan-02.html#wf-06)                                                                                 | Cập nhật có điều kiện task + response/answers cùng transaction                            | Chưa có; Tuần 8 kiểm nộp lần hai và 20 request                                                                     |
 | BR-03 | [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06), [WF-16](wireframes/tuan-02.html#wf-16) | THIET_KE_AN_DANH, ADR-003; vùng phiếu biệt lập                                            | Có test DMMF 5.6a; chưa có 5.6b/c/d và log/export runtime                                                          |
 | BR-04 | [WF-04](wireframes/tuan-02.html#wf-04), [WF-05](wireframes/tuan-02.html#wf-05), [WF-06](wireframes/tuan-02.html#wf-06) | Service submit kiểm thời gian/trạng thái/mẫu/giá trị                                      | Chưa có; Tuần 8 kiểm ngoài giờ, câu bắt buộc, sai metadata/loại                                                    |
-| BR-05 | /mau-phieu, trình soạn/khóa/phiên bản | services/templates.ts, mutex/CAS, family/version/lock | Tuần6 unit/HTTP20/UI14 qua, gồm trạng thái đợt đã duyệt và cây/phiếu cũ bất biến; workflow phê duyệt tự khóa trong cùng transaction chờ Tuần7 |
-| BR-06 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-09](wireframes/tuan-02.html#wf-09)                                         | Campaign state machine / history / quyền / thời gian                                      | Chưa có; Tuần 7 kiểm duyệt, lý do, không đổi phạm vi/mẫu                                                           |
+| BR-05 | Mẫu phiếu và lãnh đạo duyệt đợt | templates.ts; campaigns.ts::validateTemplateForApproval, mutex/CAS | Tuần6 bảo vệ cây mẫu; W7-HTTP07/13 khóa mẫu cùng transaction duyệt, rút đợt vẫn giữ mẫu khóa; campaign-services unit |
+| BR-06 | Máy trạng thái và lịch sử đợt | campaigns.ts, campaign-lifecycle.ts; revision/requestId/requestHash | W7-HTTP07/11/13–16: lý do, sai trạng thái, idempotency, CAS, first access/catch-up và duyệt trễ; [sơ đồ](assets/tuan-07/campaign-state.svg) |
 | BR-07 | [WF-10](wireframes/tuan-02.html#wf-10), [WF-16](wireframes/tuan-02.html#wf-16)                                         | Results / ngưỡng số phiếu và tỷ lệ / policy                                               | Chưa có; Tuần 9 kiểm cả hai ngưỡng và dữ liệu gộp                                                                  |
 | BR-08 | [WF-03](wireframes/tuan-02.html#wf-03), [WF-10](wireframes/tuan-02.html#wf-10)                                         | Results policy / trạng thái công bố và phạm vi; thêm KT BR-57, TT BR-65                                            | Chưa có; Tuần 9 kiểm trước/sau công bố theo role                                                                   |
 | BR-09 | [WF-11](wireframes/tuan-02.html#wf-11)                                                                                 | Moderation + audit actor cán bộ, không ghép sinh viên                                     | Chưa có; Tuần 9 kiểm ẩn/hiện, lý do và audit đã che dữ liệu                                                        |
@@ -180,9 +180,9 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | BR-12 | [WF-04](wireframes/tuan-02.html#wf-04), [WF-08](wireframes/tuan-02.html#wf-08), [WF-10](wireframes/tuan-02.html#wf-10) | Tỷ lệ DONE / snapshot task                                                                | Chưa có; Tuần 9 kiểm 4/10=40% và mẫu số bằng 0                                                                     |
 | BR-13 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-16](wireframes/tuan-02.html#wf-16)                                         | Task status list / scope / reminder / audit                                               | Chưa có; Tuần 9 kiểm không kèm nội dung, audit và tối đa 1 nhắc/ngày                                               |
 | BR-14 | [WF-08](wireframes/tuan-02.html#wf-08)                                                                                 | API/tệp trạng thái hoàn thành, P2                                                         | Chưa có; chưa xếp tuần, không tích hợp hệ thống điểm thật                                                          |
-| BR-15 | [WF-08](wireframes/tuan-02.html#wf-08)                                                                                 | Campaign gia hạn/đóng sớm, reason/history/notification                                    | Chưa có; Tuần 7 kiểm đúng quyền, lý do và thông báo                                                                |
+| BR-15 | Gia hạn và đóng sớm đợt đang mở | campaigns.ts::performCampaignAction, Notification/EmailOutbox | W7-HTTP11/12 và W7-SETTINGS10–12: đúng quyền/state, hạn mới muộn hơn, lý do, queue theo cohort/Mailpit/retry |
 | BR-16 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-10](wireframes/tuan-02.html#wf-10), [WF-18](wireframes/tuan-02.html#wf-18) | Nhiều TeachingAssignment, đánh giá ở mức lớp                                              | Có SQL nền chặn phân công trùng; chưa test khảo sát chung lớp Tuần 7–9                                             |
-| BR-17 | [WF-08](wireframes/tuan-02.html#wf-08), [WF-12](wireframes/tuan-02.html#wf-12), [WF-18](wireframes/tuan-02.html#wf-18) | Semester.lockedAt, service mọi thao tác ghi theo kỳ; chủ sở hữu PĐT BR-51                                       | Bằng chứng lịch sử: SQL W2-DB-07 chỉ kiểm ngày; Tuần5 có guard khóa sổ. Đổi quyền PĐT và mở khóa có lý do/thông báo truy vết BR-51 trong G1                                          |
+| BR-17 | Dữ liệu học kỳ khóa chỉ đọc; PĐT BR-51 | catalog.ts và campaigns.ts dùng chung mutex; quyết định người dùng29/10 chặn khóa khi có DA_DUYET/DANG_MO | W7-HTTP06/07/09/17: chặn ghi và race khóa kỳ/duyệt; kỳ khóa không đồng thời có đợt đã duyệt/đang mở |
 | BR-18 | Không gian vai trò và API lớp tối thiểu Tuần 4 | `policies/can.ts`, `services/workspace.ts`; ADMIN không suy quyền nghiệp vụ; mở rộng BR-68 | Policy/service targeted và UI chặn vai trò qua; khảo sát/kết quả/phản hồi chưa có mã nên chưa kiểm nội dung các module đó |
 | BR-20 | [WF-12](wireframes/tuan-02.html#wf-12)                                                                                 | Feedback policy theo Enrollment và kỳ hiện hành/liền trước                                | Chưa có; Tuần 10 kiểm lớp người khác và kỳ ngoài cấu hình                                                          |
 | BR-21 | [WF-12](wireframes/tuan-02.html#wf-12), [WF-13](wireframes/tuan-02.html#wf-13)                                         | Routing/recipients/assignee/history                                                       | Chưa có; Tuần 10 kiểm từng loại, khiếu nại và chuyển tiếp                                                          |
@@ -206,8 +206,8 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | --- | --- | --- | --- | --- |
 | BR-50 | FR-140; FR-20–22 | G1 bù Tuần6 | can/catalog/import + audit actor PĐT | Đạt G1: TC-PDT-01, verify-week5 HTTP23; actor audit và quyền đọc/ghi theo entity |
 | BR-51 | FR-141 | G1 bù Tuần6 | khóa/mở học kỳ: reason/audit/thông báo ĐBCL | Đạt G1: catalog-services tests, verify-week5 HTTP19, UI; thư Mailpit và audit sau commit |
-| BR-52 | FR-142/143 | 7 | readiness RS-01–RS-06 + bản chụp xác nhận | TC-PDT-02; chưa triển khai |
-| BR-53 | FR-144; FR-43 | 7 | mã băm khi mở, chốt hiện tại/cảnh báo/không đổi task sau chốt | TC-PDT-03; chưa triển khai |
+| BR-52 | FR-142/143 | 7 | readiness RS01–06 và snapshot theo revision | TC-PDT-02 đạt kiểm W7-HTTP05–07/13, W7-SETTINGS07; unit campaign-readiness/services, seed W7 |
+| BR-53 | FR-144; FR-43 | 7 | Tính lại hash khi mở, chốt hiện tại/cảnh báo/giữ task sau chốt | TC-PDT-03 đạt kiểm W7-HTTP08/09/12, unit lifecycle/notifications và queueDB/Mailpit W7-SETTINGS10–12 |
 | BR-54 | FR-146 | 10–11 | PĐT đúng loại/lý do chuyển/SLA2–5/leo thang | Chưa triển khai/test |
 | BR-55 | FR-145 | 7, P1 | ImportBatch/hash/hoàn tác chỉ khi chưa chốt | Chưa triển khai/test; không tự cắt |
 | BR-56 | FR-149 | 10–11 | KT đúng loại/SLA2–5/lời nhắc phúc khảo | TC-KT-02; chưa triển khai |
@@ -231,8 +231,8 @@ Mã giữ nguyên đặc tả, không có BR-19 hoặc BR-29. Test cấu trúc �
 | Mã test | Tuần/phạm vi | Yêu cầu | Điều phải chứng minh | Trạng thái/bằng chứng hiện tại |
 | --- | --- | --- | --- | --- |
 | TC-PDT-01 | G1 bù Tuần6 | FR-140, BR-50 | ADMIN tạo/sửa lớp và import bị chặn; PĐT thành công. Kiểm DBCL mất quyền ghi, ADMIN chỉ tổ chức, actor audit. | Đạt G1: tests/rbac-policy, catalog-services, import-services; scripts/verify-week5.ts HTTP01/04/07–19/22, tổng23/23; CI mục4.3 |
-| TC-PDT-02 | 7 | FR-142/143, BR-52 | RS-01/02/03 chặn, RS-04/05/06 cảnh báo; không xác nhận khi còn chặn; lưu hash/snapshot, trả về phải có lý do. | Chưa triển khai. |
-| TC-PDT-03 | 7 | FR-144, BR-01/53 | Xác nhận → đổi đăng ký → mở: vẫn chốt theo dữ liệu hiện tại, có audit/cảnh báo PĐT+ĐBCL; đổi sau chốt không đổi task. | Chưa triển khai. |
+| TC-PDT-02 | 7 | FR-142/143, BR-52 | RS01/02/03 chặn, RS04/05/06 cảnh báo; lưu hash/snapshot; trả về cần lý do. | Đạt kiểm W7-HTTP05–07/13; campaign-readiness/services; W7-SETTINGS07 và seed W7. Nghiệm thu cuối mục4.4. |
+| TC-PDT-03 | 7 | FR-144, BR-01/53 | Xác nhận → đổi đăng ký → mở chốt hiện tại, cảnh báo PĐT/ĐBCL; thay sau chốt không đổi task. | Đạt kiểm W7-HTTP08/09/12:20ensure, drift/audit/queue, chốt4SV, thay đăng ký sau mở; W7-SETTINGS10–12 SMTP thật. Mục4.4. |
 | TC-KT-01 | 9 | FR-150, BR-57 | Chỉ nhóm cờ sau công bố; ≥2 GV khác nhau/tổng phiếu đủ ngưỡng; không lớp/GV/tự luận, thiếu ngưỡng có thông báo. | Chưa triển khai; G1 chỉ có cờ, chưa có kết quả gộp. |
 | TC-KT-02 | 10–11 | FR-149, BR-56 | Đúng hàng đợi thi/lời nhắc phúc khảo, ẩn danh, chuyển có lý do, tiếp nhận2/trả lời5ngày và leo thang. | Chưa triển khai. |
 | TC-TT-01 | 10 | FR-153/155, BR-61 | GV/TBM/TK liên quan không thấy/không được giao; kể cả tài khoản có TT; list/count/detail/attachment không lộ và trả404. | Chưa triển khai. |
@@ -250,6 +250,25 @@ Mã hiện thực G1: `023b619134c58ee79a7ebbdd5882d24cdb034f59`; [CI 4075064480
 - Migration deploy main, diff không lệch; hash16tập trước/sau giữ1.568tài khoản cũ, cây2mẫu cũ, đợt/task/78phiếu/234đáp án/3tổng hợp/phản hồi/lịch sử. Supplement SHA-256 khớp file người dùng; kiểm604liên kết nội bộ,5mục bảo vệ,3dòng AGENTS,84FR duy nhất qua. Báo cáo/ảnh Tuần6 và Git blob migration cũ không đổi.
 
 [Báo cáo phiên](NGHIEM_THU_BO_SUNG_01.md) mô tả tệp, mâu thuẫn, giới hạn và ước lượng. Chốt **FR-140/141/148**, tổng71/219=32,4%; FR-160/TC-ALL-01 chỉ phần hiện có, **chưa tick toàn bộ**. Bằng chứng Tuần6 ở mục1.4 giữ đúng bảy vai trò tại thời điểm đó. Không nhận kiểm chức năng hoặc tệp xuất chưa hiện thực; chưa bắt đầu Tuần7.
+
+## 4.4. Truy vết hiện thực và kiểm Tuần 7 — 29/10/2026
+
+Lệnh người dùng cho phép tiếp tục Tuần7 sau G1; quyết định bổ sung chặn khóa kỳ khi còn DA_DUYET hoặc DANG_MO. Không thay bằng chứng lịch sử Tuần1–6/G1. Các dòng Tuần7 phía trên được nối với đường dẫn hiện thực và kiểm thật; tick tiến độ, build, UI và CI cuối đối chiếu trong [nghiệm thu Tuần7](NGHIEM_THU_TUAN_07.md).
+
+| Yêu cầu / quy tắc | Hiện thực | Kiểm đã chạy và giới hạn |
+| --- | --- | --- |
+| FR-40/41; BR-17/34 | campaigns.ts, campaign-input.ts, can.ts; /dot-khao-sat | W7-HTTP01–04/14:10roles, API/CSRF/Origin/bytecap,4scopes/paging, CAS. campaign-services/ui-boundaries unit. |
+| FR-42/142/143; BR-05/06/52; TC-PDT-02 | campaign-readiness.ts, campaigns.ts, CampaignDataConfirmation | W7-HTTP05–07/13/16: RS01–06, warning note, snapshot, return/reject/withdraw/reconfirm, khóa mẫu, duyệt muộn. Seed W7 riêng không viết lại cây mẫu/phiếu. |
+| FR-43/44/144; BR-01/06/53; TC-PDT-03 | campaign-lifecycle.ts, scripts/scheduler.ts, Notification/EmailOutbox | W7-HTTP08/09/12/15/16:20ensure đồng thời, chốt cohort hiện tại/hash lệch, task cố định, CLI/first access/catch-up/giờ thật. Không nhận đã có API sinh viên nộp phiếu. |
+| FR-45; BR-15/30 | campaigns.ts, campaign-notifications.ts, mail.ts | W7-HTTP11–13 và W7-SETTINGS10–12: reason/state/idempotency, queue/dedup, Mailpit, retry/backoff, lease và FAILED rõ. SMTP có thể gửi lại sau crash ở khoảng đã nhận thư/chưa ghiSENT; không cam kết exactly-once SMTP. |
+| FR-46 | campaigns.ts::getCampaignProgress, SurveyTask groupBy | W7-HTTP10:4task/1DONE=25%, paging lớp, không studentId/response/answer; PĐT không có quyền tiến độ. Chưa tính/tổng hợp kết quả môn học. |
+| FR-100; BR-30/32/34/52 | survey-settings.ts; API survey-settings; ADMIN MFA và step-up | W7-SETTINGS01–09:10roles, actualencryptedTOTP HTTPsave/replay, ngưỡng/JSON/8KiB, CAS2phiên, default dùng ở đợt mới/không hồi tố, RS04threshold3, audit và freshrevocation. |
+| BR-17/51 và quyết định người dùng | catalog.ts::lockSemester dùng mutex cùng approve/ensure | W7-HTTP06/07/09/17: kỳ khóa chỉ đọc, không khóa khi đã duyệt/mở; race khóa/duyệt giữ invariant. |
+| BR-30/34; TC-ALL-01 phần hiện có | access.ts, can.ts, csrf.ts, audit.ts, các service mới | W7-HTTP18/19 và W7-SETTINGS08/09/13: quyền/phiên bị thu hồi có hiệu lực, audit/log không payload/bí mật. FR-160 toàn bộ và kiểm tệp xuất vẫn chờ Tuần13. |
+| Sơ đồ và giải thích | [ERD](ERD.md), [sơ đồ trạng thái](assets/tuan-07/campaign-state.svg), [giải thích](GIAI_THICH/tuan-07.md) | [SO_DO_TUAN_07](SO_DO_TUAN_07.md):46design/34runtime/12design-only,5Mermaid render qua/10PNG cuối đã xem. Không suy nghiệp vụ đúng chỉ từ ảnh. |
+| FR-145 / BR-55 | ImportBatch vẫn chỉ thiết kế | P1 có điều kiện trong Tuần7, chưa hiện thực/kiểm/tick; không ghi nhận đã hoàn tất hoặc tự cắt. |
+
+Lượt HTTP/MySQL đợt **19/19** và cấu hình/queue **13/13** đã qua, fixture được dọn và cấu hình thử được khôi phục; kết quả máy nằm trong .local/week7-http-result.json và .local/week7-settings-http-result.json ngoài Git. Các sửa tiếp sau phải chạy lại kiểm liên quan; tổng test/CI cuối lấy từ báo cáo nghiệm thu, không cộng lượt targeted thành test riêng. Mốc Tuần7 này không thay tiêu chí ẩn danh5.6 hoặc nhận hoàn thành workflow tương lai.
 
 ## 5. Quy tắc cập nhật
 

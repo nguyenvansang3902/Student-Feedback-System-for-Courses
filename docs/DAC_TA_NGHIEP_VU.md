@@ -1,4 +1,4 @@
-> Điều chỉnh số 01 đã được người dùng yêu cầu áp dụng. Phần thay đổi theo [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md); các quy tắc ẩn danh và bảo mật không nêu thay đổi vẫn giữ nguyên. Phạm vi triển khai hiện tại chỉ là việc bù G1 sau Tuần 6; chưa bắt đầu Tuần 7.
+> Điều chỉnh số 01 đã được người dùng yêu cầu áp dụng. Phần thay đổi theo [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md); các quy tắc ẩn danh và bảo mật không nêu thay đổi vẫn giữ nguyên. G1 đã hoàn tất; hiện triển khai Tuần 7 theo lệnh tiếp tục trực tiếp của người dùng.
 
 ## 3\. BỐI CẢNH ĐỀ TÀI
 
@@ -61,6 +61,8 @@ Mô hình: mỗi người dùng có một hoặc nhiều **gán vai trò** gồm
 * DA\_DONG → DA\_TONG\_HOP: chạy tổng hợp kết quả.
 * DA\_TONG\_HOP → DA\_CONG\_BO: CAN\_BO\_DBCL công bố sau khi kiểm duyệt.
 * DA\_CONG\_BO → LUU\_TRU: khi học kỳ khóa sổ.
+* Gia hạn khi DANG_MO do CAN_BO_DBCL, hạn mới phải muộn hơn hạn cũ, có lý do và thông báo sinh viên. Rút DA_DUYET về NHAP trước mở cần lý do và phải trình/xác nhận/duyệt lại; mẫu đã khóa vẫn giữ khóa.
+* Quyết định người dùng ngày29/10/2026: PHONG_DAO_TAO không khóa học kỳ khi còn đợt DA_DUYET hoặc DANG_MO. Dùng cùng mutex với duyệt/mở để không lọt cuộc đua khóa kỳ.
 * Hủy (HUY) được phép từ NHAP, CHO_XAC_NHAN_DL, CHO_DUYET, DA_DUYET (có lý do), không được sau khi đã mở.
 * Mọi chuyển trạng thái phải **idempotent và an toàn khi chạy đồng thời** (cập nhật có điều kiện theo trạng thái cũ), và ghi lịch sử.
 

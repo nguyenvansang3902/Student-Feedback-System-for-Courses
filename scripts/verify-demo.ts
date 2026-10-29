@@ -4,6 +4,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { hash } from "bcryptjs";
 import { getDb } from "../src/lib/db";
 import {
+  assertReadinessConfirmable,
+  readCampaignReadiness,
+} from "../src/server/services/campaign-readiness";
+import {
   seedDemo,
   demoId,
   type DemoSize,
@@ -224,16 +228,128 @@ try {
   const medium = await run("medium");
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
-  const newOperators = await db.user.findMany({
-    where: { loginCode: { in: ["PDT2026001", "KT2026001", "TT2026001", "TT2026002"] } },
-    include: { roles: true }, orderBy: { loginCode: "asc" },
+  const week7Campaigns = await db.surveyCampaign.findMany({
+    where: {
+      id: {
+        in: [demoId("week7:campaign:ready"), demoId("week7:campaign:blocked")],
+      },
+    },
+    include: { semester: { select: { lockedAt: true } } },
+    orderBy: { id: "asc" },
   });
-  assert.deepEqual(newOperators.map((user) => [user.loginCode, ...user.roles.map((grant) => `${grant.role}:${grant.scopeKey}`)]), [
-    ["KT2026001", "PHONG_KHAO_THI:GLOBAL"], ["PDT2026001", "PHONG_DAO_TAO:GLOBAL"],
-    ["TT2026001", "THANH_TRA:GLOBAL"], ["TT2026002", "THANH_TRA:GLOBAL"],
-  ]);
-  assert(newOperators.every((user) => user.status === "ACTIVE" && user.passwordHash));
-  results.push("G1: seed bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra chưa có workflow hồ sơ");
+  assert.equal(week7Campaigns.length, 2);
+  assert(
+    week7Campaigns.every(
+      (campaign) => campaign.status === "NHAP" && !campaign.approvedAt,
+    ),
+  );
+  const readyCampaign = week7Campaigns.find(
+    (campaign) => campaign.id === demoId("week7:campaign:ready"),
+  )!;
+  const blockedCampaign = week7Campaigns.find(
+    (campaign) => campaign.id === demoId("week7:campaign:blocked"),
+  )!;
+  const week7Snapshot = async () =>
+    JSON.stringify({
+      campaigns: await db.surveyCampaign.findMany({
+        where: { id: { in: week7Campaigns.map((campaign) => campaign.id) } },
+        orderBy: { id: "asc" },
+        include: {
+          history: { orderBy: { id: "asc" } },
+          sections: { orderBy: { sectionId: "asc" } },
+        },
+      }),
+      student: await db.user.findUniqueOrThrow({
+        where: { loginCode: "W7-SV2026001" },
+        include: { roles: { orderBy: { id: "asc" } } },
+      }),
+      semesters: await db.semester.findMany({
+        where: {
+          id: { in: week7Campaigns.map((campaign) => campaign.semesterId) },
+        },
+        orderBy: { id: "asc" },
+      }),
+    });
+  const originalWeek7 = await week7Snapshot();
+  const [ready, blocked] = await db.$transaction(async (tx) =>
+    Promise.all([
+      readCampaignReadiness(tx, readyCampaign),
+      readCampaignReadiness(tx, blockedCampaign),
+    ]),
+  );
+  assert.equal(ready.readiness.canConfirm, true);
+  assert.deepEqual(
+    [...new Set(ready.readiness.warnings.map((issue) => issue.code))].sort(),
+    ["RS-04", "RS-05", "RS-06"],
+  );
+  assert.throws(() => assertReadinessConfirmable(ready.readiness));
+  assert.doesNotThrow(() =>
+    assertReadinessConfirmable(
+      ready.readiness,
+      "Ghi chú giả xác nhận các cảnh báo dữ liệu.",
+    ),
+  );
+  assert.equal(blocked.readiness.canConfirm, false);
+  assert.deepEqual(
+    [
+      ...new Set(
+        [...blocked.readiness.blockers, ...blocked.readiness.warnings].map(
+          (issue) => issue.code,
+        ),
+      ),
+    ].sort(),
+    ["RS-01", "RS-02", "RS-03", "RS-04", "RS-05", "RS-06"],
+  );
+  assert.throws(() =>
+    assertReadinessConfirmable(
+      blocked.readiness,
+      "Ghi chú không được vượt lỗi chặn.",
+    ),
+  );
+  assert.equal(blocked.cohort.sections.length, 4);
+  assert.equal(blocked.cohort.pairs.length, 13);
+  assert.equal(ready.cohort.pairs.length, 7);
+  assert(
+    ready.cohort.pairs.some(
+      (pair) => pair.studentId === demoId("week7:pending-student"),
+    ),
+  );
+  assert.equal(
+    await db.surveyTask.count({
+      where: {
+        campaignId: { in: week7Campaigns.map((campaign) => campaign.id) },
+      },
+    }),
+    0,
+  );
+  results.push(
+    "TC-PDT-02 phần seed: bundle W7 riêng đủ RS-01–06; cảnh báo cần ghi chú, lỗi chặn không xác nhận; chỉ đọc readiness, không task/SMTP",
+  );
+  const newOperators = await db.user.findMany({
+    where: {
+      loginCode: { in: ["PDT2026001", "KT2026001", "TT2026001", "TT2026002"] },
+    },
+    include: { roles: true },
+    orderBy: { loginCode: "asc" },
+  });
+  assert.deepEqual(
+    newOperators.map((user) => [
+      user.loginCode,
+      ...user.roles.map((grant) => `${grant.role}:${grant.scopeKey}`),
+    ]),
+    [
+      ["KT2026001", "PHONG_KHAO_THI:GLOBAL"],
+      ["PDT2026001", "PHONG_DAO_TAO:GLOBAL"],
+      ["TT2026001", "THANH_TRA:GLOBAL"],
+      ["TT2026002", "THANH_TRA:GLOBAL"],
+    ],
+  );
+  assert(
+    newOperators.every((user) => user.status === "ACTIVE" && user.passwordHash),
+  );
+  results.push(
+    "G1: seed bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra chưa có workflow hồ sơ",
+  );
   const frozenSurvey = await surveySnapshot();
   results.push(
     "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
@@ -404,6 +520,37 @@ try {
   >`SELECT COUNT(*) AS total FROM (SELECT sectionId FROM TeachingAssignment GROUP BY sectionId HAVING SUM(isLead)>1) AS invalidLeads`;
   assert.equal(Number(lead[0].total), 0);
   results.push("Tăng size không tạo hai giảng viên chính trong một lớp");
+  assert.equal(await week7Snapshot(), originalWeek7);
+  const week7Student = await db.user.findUniqueOrThrow({
+    where: { loginCode: "W7-SV2026001" },
+  });
+  assert.equal(week7Student.passwordHash, null);
+  const changedWeek7Hash = await hash("KiemThuMatKhauW7DaDoi!2026", 12);
+  await db.user.update({
+    where: { id: week7Student.id },
+    data: { passwordHash: changedWeek7Hash, status: "DISABLED" },
+  });
+  try {
+    await run("large");
+    const preserved = await db.user.findUniqueOrThrow({
+      where: { id: week7Student.id },
+    });
+    assert.equal(preserved.passwordHash, changedWeek7Hash);
+    assert.equal(preserved.status, "DISABLED");
+  } finally {
+    await db.user.update({
+      where: { id: week7Student.id },
+      data: {
+        passwordHash: week7Student.passwordHash,
+        status: week7Student.status,
+        updatedAt: week7Student.updatedAt,
+      },
+    });
+  }
+  assert.equal(await week7Snapshot(), originalWeek7);
+  results.push(
+    "Seed lại/tăng size giữ bundle W7 và mật khẩu/trạng thái đã đổi; không viết lại lịch sử hoặc dữ liệu khảo sát cũ",
+  );
   Object.assign(process.env, { NODE_ENV: "production" });
   await assert.rejects(seedDemo(actor, "small"));
   Object.assign(process.env, { NODE_ENV: "development" });

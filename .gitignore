@@ -10,6 +10,7 @@ node_modules/
 .next-demo/
 .next-week5/
 .next-week6/
+.next-week7/
 src/generated/
 out/
 coverage/
@@ -24,3 +25,5 @@ test-results/
 Thumbs.db
 .idea/
 .vscode/
+
+.next-week7-settings/

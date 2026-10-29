@@ -191,6 +191,9 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
         "FeedbackRecipient",
         "FeedbackMessage",
         "FeedbackHistory",
+        "CampaignDataConfirmation",
+        "Notification",
+        "EmailOutbox",
       ].sort(),
     );
   });
@@ -199,7 +202,9 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
     for (const model of foundation.datamodel.models) {
       const expected = model.fields.filter((field) => field.kind !== "object");
       const actual = getModel(model.name).fields.filter(
-        (field) => field.kind !== "object" && !(model.name === "Feedback" && field.name === "identityLevel"),
+        (field) =>
+          field.kind !== "object" &&
+          !(model.name === "Feedback" && field.name === "identityLevel"),
       );
       expect(actual, model.name).toEqual(expected);
       for (const field of model.fields.filter(
@@ -225,17 +230,62 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
   });
 
   it("Điều chỉnh 01: đúng 10 role, cờ nhóm mặc định false; mô hình tương lai chưa migrate", () => {
-    const roles = ["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"];
-    expect(foundation.datamodel.enums.find((item) => item.name === "Role")?.values.map((item) => item.name)).toEqual(roles);
-    const group = foundation.datamodel.models.find((item) => item.name === "CriterionGroup")!;
-    expect(group.fields.find((item) => item.name === "isAssessmentGroup")).toMatchObject({type: "Boolean", isRequired: true, default: false});
-    expect(getModel("Feedback").fields.find((item) => item.name === "identityLevel")).toMatchObject({type: "FeedbackIdentityLevel", default: "AN_DANH_HOAN_TOAN"});
-    expect(foundation.datamodel.models.find((item) => item.name === "Feedback")?.fields.some((item) => item.name === "identityLevel")).toBe(false);
+    const roles = [
+      "SINH_VIEN",
+      "GIANG_VIEN",
+      "TRUONG_BO_MON",
+      "TRUONG_KHOA",
+      "CAN_BO_DBCL",
+      "LANH_DAO",
+      "ADMIN",
+      "PHONG_DAO_TAO",
+      "PHONG_KHAO_THI",
+      "THANH_TRA",
+    ];
+    expect(
+      foundation.datamodel.enums
+        .find((item) => item.name === "Role")
+        ?.values.map((item) => item.name),
+    ).toEqual(roles);
+    const group = foundation.datamodel.models.find(
+      (item) => item.name === "CriterionGroup",
+    )!;
+    expect(
+      group.fields.find((item) => item.name === "isAssessmentGroup"),
+    ).toMatchObject({ type: "Boolean", isRequired: true, default: false });
+    expect(
+      getModel("Feedback").fields.find((item) => item.name === "identityLevel"),
+    ).toMatchObject({
+      type: "FeedbackIdentityLevel",
+      default: "AN_DANH_HOAN_TOAN",
+    });
+    expect(
+      foundation.datamodel.models
+        .find((item) => item.name === "Feedback")
+        ?.fields.some((item) => item.name === "identityLevel"),
+    ).toBe(false);
     expect(models).toHaveLength(46);
-    for (const name of ["CampaignDataConfirmation", "InspectionCase", "InspectionCaseNote", "InspectionCaseEvent", "SurveyAnomalyFlag", "ExamReviewRecommendation", "ImportBatch"]) {
+    for (const name of [
+      "InspectionCase",
+      "InspectionCaseNote",
+      "InspectionCaseEvent",
+      "SurveyAnomalyFlag",
+      "ExamReviewRecommendation",
+      "ImportBatch",
+    ]) {
       expect(getModel(name)).toBeDefined();
-      expect(foundation.datamodel.models.some((model) => model.name === name)).toBe(false);
+      expect(
+        foundation.datamodel.models.some((model) => model.name === name),
+      ).toBe(false);
     }
+    for (const name of [
+      "CampaignDataConfirmation",
+      "Notification",
+      "EmailOutbox",
+    ])
+      expect(
+        foundation.datamodel.models.some((model) => model.name === name),
+      ).toBe(true);
   });
 });
 

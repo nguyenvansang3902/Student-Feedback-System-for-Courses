@@ -1,9 +1,9 @@
 # Trạng thái dự án
 
 - Đề tài: website khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 6 — đã xong; hoàn tất việc bù G1 Điều chỉnh số 01, thực hiện 28–29/10/2026 (Asia/Saigon).
+- Tuần hiện tại: Tuần 7 — đang nghiệm thu, thực hiện ngày29/10/2026 (Asia/Saigon).
 - Đã xác minh Tuần 1–6 hoàn thành ở main5346de9 trước điều chỉnh; không sửa báo cáo tuần cũ hoặc ghi lùi ngày.
-- Dừng sau G1. Chưa có lệnh BẮT ĐẦU TUẦN 7; chưa triển khai workflow các tuần sau.
+- Người dùng đã yêu cầu tiếp tục tuần kế tiếp sau G1 và tiếp tục Tuần7; đây là lệnh bằng lời tự nhiên, không gán đã gõ câu lệnh mẫu.
 
 ## Nền và việc bù đã nghiệm thu
 
@@ -35,4 +35,11 @@
 - Seed readiness/phản hồi mới/hồ sơ/cảnh báo/kết quả gộp bổ sung khi triển khai đúng Tuần7/9–12.
 - Ước lượng trong báo cáo G1; nhóm tự điền ngày/tên GVHD yêu cầu. Không gán công AI thành đóng góp sinh viên.
 - Chỉ dữ liệu giả; không reset/xóa DB/volume hoặc deploy công khai. Mốc15 tuần giữ nguyên, không tự cắt tính năng.
-- Chạy theo README: PĐT /danh-muc, ĐBCL /mau-phieu. Chỉ tiếp tục khi có đúng lệnh **BẮT ĐẦU TUẦN 7**.
+- Tuần 7: workflow ĐBCL → PĐT → lãnh đạo, readiness, mở/đóng và chốt task, cấu hình ngưỡng; chưa nghiệm thu. Không làm giao diện trả lời Tuần 8.
+
+## Phiên Tuần 7 đang thực hiện
+
+- Nguồn đang ở nhánh feat/week7-survey-campaigns; không tick FR trước kiểm thử thực tế.
+- Người dùng đã chọn chặn khóa học kỳ nếu còn đợt DA_DUYET hoặc DANG_MO (giải quyết tình huống BR-17/53).
+- Migration mới gặp MySQL 3780 do collation bảng mới khác khóa ngoại hiện có; đang phục hồi từng DDL đã áp dụng, không reset hoặc xóa bảng/dữ liệu.
+- Snapshot hash 24 tập dữ liệu cũ được giữ trong .local để đối chiếu sau migration/seed.

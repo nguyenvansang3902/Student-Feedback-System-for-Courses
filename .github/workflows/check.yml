@@ -48,6 +48,8 @@ jobs:
         run: npm run test:week5
       - name: Kiểm tra mẫu phiếu, phiên bản, khóa và preview không ghi dữ liệu
         run: npm run test:week6
+      - name: Kiểm tra đợt, readiness, lịch mở đóng và cấu hình ngưỡng qua HTTP
+        run: npm run test:week7 && npm run test:week7:settings
       - name: Kiểm tra seed và demo trong database mới riêng
         run: npm run test:demo
       - name: Chạy lint, typecheck và test

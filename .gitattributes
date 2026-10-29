@@ -12,3 +12,7 @@ docs/assets/bo-sung-01/**/*.svg text eol=lf
 docs/assets/bo-sung-01/*.svg text eol=lf
 prisma/migrations/20261028220000_amendment_01_roles_assessment/migration.sql text eol=lf
 docs/BO_SUNG_01_TAC_NHAN.md -text
+prisma/migrations/20261029030000_week7_campaigns/migration.sql text eol=lf
+docs/assets/tuan-07/*.svg text eol=lf
+docs/assets/tuan-07/**/*.svg text eol=lf
+docs/assets/tuan-07/*.mmd text eol=lf

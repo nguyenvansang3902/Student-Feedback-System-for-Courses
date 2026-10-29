@@ -40,6 +40,7 @@ export default async function AdminLayout({
                 ["/danh-muc/khoa", "Khoa và bộ môn"],
                 ["/quan-tri/nhat-ky", "Nhật ký kiểm toán"],
                 ["/quan-tri/chinh-sach-mfa", "Chính sách hai bước"],
+                ["/quan-tri/cau-hinh-khao-sat", "Ngưỡng khảo sát"],
                 ["/tai-khoan", "Tài khoản của tôi"],
               ].map(([href, label]) => (
                 <Link

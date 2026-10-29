@@ -293,6 +293,7 @@ enum FeedbackEvent {
 }
 
 enum DeliveryStatus {
+  PROCESSING
   PENDING
   SENT
   FAILED
@@ -428,6 +429,11 @@ model QuestionOption {
 }
 
 model SurveyCampaign {
+  revision            Int                        @default(1)
+  updatedAt           DateTime                   @default(now()) @updatedAt @db.DateTime(3)
+  openedAt            DateTime?                  @db.DateTime(3)
+  openedSnapshotHash  String?                    @db.Char(64)
+  dataDriftDetected   Boolean                    @default(false)
   dataConfirmations   CampaignDataConfirmation[]
   anomalyFlags        SurveyAnomalyFlag[]
   inspectionCases     InspectionCase[]
@@ -484,16 +490,21 @@ model CampaignSection {
 }
 
 model CampaignHistory {
-  id         String         @id @default(uuid()) @db.Char(36)
-  campaignId String         @db.Char(36)
-  actorId    String?        @db.Char(36)
-  fromStatus CampaignStatus
-  toStatus   CampaignStatus
-  reason     String?        @db.Text
-  occurredAt DateTime       @default(now()) @db.DateTime(3)
-  campaign   SurveyCampaign @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  actor      User?          @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  action           String?        @db.VarChar(50)
+  requestId        String?        @db.Char(36)
+  requestHash      String?        @db.Char(64)
+  campaignRevision Int?
+  id               String         @id @default(uuid()) @db.Char(36)
+  campaignId       String         @db.Char(36)
+  actorId          String?        @db.Char(36)
+  fromStatus       CampaignStatus
+  toStatus         CampaignStatus
+  reason           String?        @db.Text
+  occurredAt       DateTime       @default(now()) @db.DateTime(3)
+  campaign         SurveyCampaign @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor            User?          @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 
+  @@unique([campaignId, requestId])
   @@index([campaignId, occurredAt])
   @@index([actorId])
 }
@@ -738,6 +749,8 @@ model Notification {
 }
 
 model EmailOutbox {
+  leaseToken     String?        @db.Char(36)
+  leaseUntil     DateTime?      @db.DateTime(3)
   id             String         @id @default(uuid()) @db.Char(36)
   notificationId String         @unique @db.Char(36)
   idempotencyKey String         @unique @db.VarChar(160)
@@ -841,19 +854,21 @@ enum ImportBatchStatus {
 }
 
 model CampaignDataConfirmation {
-  id            String                 @id @default(uuid()) @db.Char(36)
-  campaignId    String                 @db.Char(36)
-  status        DataConfirmationStatus
-  confirmedById String                 @db.Char(36)
-  occurredAt    DateTime               @default(now()) @db.DateTime(3)
-  snapshotHash  String                 @db.Char(64)
-  sectionCount  Int
-  pairCount     Int
-  warnings      Json
-  reason        String?                @db.VarChar(1000)
-  campaign      SurveyCampaign         @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  confirmedBy   User                   @relation(fields: [confirmedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  campaignRevision Int
+  id               String                 @id @default(uuid()) @db.Char(36)
+  campaignId       String                 @db.Char(36)
+  status           DataConfirmationStatus
+  confirmedById    String                 @db.Char(36)
+  occurredAt       DateTime               @default(now()) @db.DateTime(3)
+  snapshotHash     String                 @db.Char(64)
+  sectionCount     Int
+  pairCount        Int
+  warnings         Json
+  reason           String?                @db.VarChar(1000)
+  campaign         SurveyCampaign         @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  confirmedBy      User                   @relation(fields: [confirmedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
 
+  @@unique([campaignId, campaignRevision])
   @@index([campaignId, occurredAt])
   @@index([confirmedById])
 }

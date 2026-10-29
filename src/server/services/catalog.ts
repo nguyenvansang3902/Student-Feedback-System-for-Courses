@@ -984,6 +984,17 @@ export async function lockSemester(
         409,
         "SEMESTER_LOCKED",
       );
+    if (
+      await tx.surveyCampaign.findFirst({
+        where: { semesterId: key, status: { in: ["DA_DUYET", "DANG_MO"] } },
+        select: { id: true },
+      })
+    )
+      throw new AuthError(
+        "Không thể khóa học kỳ khi còn đợt khảo sát đã duyệt hoặc đang mở.",
+        409,
+        "SEMESTER_HAS_ACTIVE_CAMPAIGN",
+      );
     const changed = await tx.semester.updateMany({
       where: { id: key, lockedAt: null },
       data: { lockedAt: new Date() },

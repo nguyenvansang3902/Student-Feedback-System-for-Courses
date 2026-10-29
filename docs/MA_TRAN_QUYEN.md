@@ -1,6 +1,6 @@
 # Ma trận quyền 10 vai trò — Điều chỉnh số 01
 
-Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu này gồm quyền của chức năng đã có trong G1 và thiết kế cho các tuần sau. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
+Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu này gồm quyền của chức năng đã có đến Tuần7 và thiết kế cho các tuần sau. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
 
 ## 1. Vai trò và phạm vi hợp lệ
 
@@ -44,14 +44,27 @@ Mẫu đã khóa, mẫu gắn đợt đã duyệt hoặc có đáp án không đ
 
 Nguồn thực thi G1: `src/server/policies/can.ts`, `services/access.ts`, `services/workspace.ts`, `services/users.ts`, `services/catalog.ts`, `services/imports.ts`, `services/templates.ts`, `services/template-input.ts`. Service đọc lại actor/grant từ DB trước thao tác; list/count/detail dùng cùng scope. Menu ẩn không thay kiểm quyền API. Test mới và mã nghiệm thu chỉ được ghi hoàn tất sau khi chạy thật.
 
+## 2.1. Phần triển khai Tuần 7
+
+| Chức năng | ĐBCL | PĐT | LĐ | ADMIN MFA | Sáu vai trò còn lại |
+| --- | --- | --- | --- | --- | --- |
+| Danh sách/chi tiết/lựa chọn/readiness đợt | R | R | R | — | — |
+| Tạo/sửa/trình/rút/gia hạn/đóng/hủy | W theo trạng thái | — | — | — | — |
+| Xác nhận/trả về dữ liệu | — | W theo trạng thái | — | — | — |
+| Duyệt/từ chối | — | — | W theo trạng thái | — | — |
+| Tiến độ task/tỉ lệ theo lớp, không định danh SV | R | — | R | — | — |
+| Ngưỡng khảo sát mặc định | R | R | R | R/W + TOTP mới khi ghi | — |
+
+Dùng GLOBAL hợp lệ cho bốn vai trò trên; ADMIN không có quyền ngầm đọc/ghi đợt. Nhiều grant được xét theo từng quyền và vẫn phải đáp ứng MFA. PĐT xem số lớp/cặp của readiness, không được endpoint tiến độ task. Chặn khóa học kỳ khi còn DA_DUYET/DANG_MO, đồng bộ khóa với duyệt/mở. Queue email chỉ xử lý bởi console scheduler, chưa có trung tâm thông báo cho tuần tương lai. Bằng chứng kiểm thật ghi tại nghiệm thu Tuần7.
+
 ## 3. Chức năng tương lai — thiết kế, chưa nghiệm thu trong G1
 
 Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; **G** dữ liệu gộp có ngưỡng; **S** tóm tắt; **I** chỉ số bất thường. Tất cả ô dưới đây là quyền yêu cầu khi tới tuần triển khai, chưa có nghĩa đã mở chức năng.
 
 | Chức năng / mốc | SV | GV | TBM | TK | ĐBCL | LĐ | ADMIN | PĐT | KT | TT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Tạo/trình/quản lý đợt — Tuần 7 | — | — | — | — | R/W | R duyệt | — | R phạm vi xác nhận | — | — |
-| Readiness/xác nhận/trả về dữ liệu — Tuần 7 | — | — | — | — | R + nhận cảnh báo | R sau xác nhận | — | R/W | — | — |
+| Tạo/trình/quản lý đợt — đã chuyển sang mục2.1 | — | — | — | — | R/W | R duyệt | — | R phạm vi xác nhận | — | — |
+| Readiness/xác nhận/trả về dữ liệu — đã chuyển sang mục2.1 | — | — | — | — | R + nhận cảnh báo | R sau xác nhận | — | R/W | — | — |
 | Lô nhập/hoàn tác chưa bị đợt chốt dùng — Tuần 7, P1 | — | — | — | — | — | — | — | R/W | — | — |
 | Làm khảo sát/nhiệm vụ — Tuần 8 | R/W own | — | — | — | — | — | — | — | — | — |
 | Tiến độ hoàn thành, không nội dung phiếu — Tuần 7–9 | R own | — | R bộ môn | R khoa | R GLOBAL | R GLOBAL | — | Chỉ phạm vi dữ liệu xác nhận | — | — |

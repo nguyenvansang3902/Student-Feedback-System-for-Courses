@@ -5,56 +5,222 @@ import type { AuthActor } from "../auth/types";
 import { requireCan } from "../policies/can";
 import { assertFreshActor, pageInput, parseInput } from "./access";
 
-const inputSchema = pageInput.extend({
-  action: z.string().regex(/^[A-Z0-9_.:-]{1,100}$/i).optional(),
-  actorId: z.uuid().optional(), objectType: z.string().regex(/^[A-Za-z0-9_]{1,64}$/).optional(),
-  from: z.iso.datetime({ offset: true }).optional(), to: z.iso.datetime({ offset: true }).optional(),
-}).strict().refine((input) => !input.from || !input.to || new Date(input.from) <= new Date(input.to));
+const inputSchema = pageInput
+  .extend({
+    action: z
+      .string()
+      .regex(/^[A-Z0-9_.:-]{1,100}$/i)
+      .optional(),
+    actorId: z.uuid().optional(),
+    objectType: z
+      .string()
+      .regex(/^[A-Za-z0-9_]{1,64}$/)
+      .optional(),
+    from: z.iso.datetime({ offset: true }).optional(),
+    to: z.iso.datetime({ offset: true }).optional(),
+  })
+  .strict()
+  .refine(
+    (input) =>
+      !input.from || !input.to || new Date(input.from) <= new Date(input.to),
+  );
 
 const safeKeys = new Set([
-  "before", "after", "status", "roles", "role", "scopeType", "facultyId", "departmentId",
-  "purpose", "mfa", "success", "count", "revokedSessions", "requiredRoles", "enabled",
-  "method", "mfaRequired", "usedRecoveryCode", "recoveryCodesGenerated",
-  "reasonProvided", "reasonLength", "source", "recoveryCodeCount",
-  "kind", "size", "console", "futureModules", "created", "newUsers",
-  "familyId", "sourceId", "version", "revision", "groupCount", "questionCount", "previousDefaultCount", "isDefault",
-  "notificationStatus", "recipients", "sent", "failed",
+  "before",
+  "after",
+  "status",
+  "roles",
+  "role",
+  "scopeType",
+  "facultyId",
+  "departmentId",
+  "purpose",
+  "mfa",
+  "success",
+  "count",
+  "revokedSessions",
+  "requiredRoles",
+  "enabled",
+  "method",
+  "mfaRequired",
+  "usedRecoveryCode",
+  "recoveryCodesGenerated",
+  "reasonProvided",
+  "reasonLength",
+  "source",
+  "recoveryCodeCount",
+  "kind",
+  "size",
+  "console",
+  "futureModules",
+  "created",
+  "newUsers",
+  "familyId",
+  "sourceId",
+  "version",
+  "revision",
+  "groupCount",
+  "questionCount",
+  "previousDefaultCount",
+  "isDefault",
+  "notificationStatus",
+  "recipients",
+  "sent",
+  "failed",
+  "minResponses",
+  "minRate",
+  "warningScore",
+  "explanationDays",
+  "multiTeacherWarningThreshold",
+  "sectionCount",
+  "pairCount",
+  "taskCount",
+  "dataDriftDetected",
+  "campaignRevision",
+  "queued",
 ]);
 const safeText = new Set([
-  "ACTIVE", "DISABLED", "PENDING_ACTIVATION", "GLOBAL", "FACULTY", "DEPARTMENT",
-  "SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA",
-  "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY", "TOTP", "RECOVERY_CODE",
-  "totp", "recovery", "password", "server-console",
-  "NHAP", "DA_KHOA",
+  "ACTIVE",
+  "DISABLED",
+  "PENDING_ACTIVATION",
+  "GLOBAL",
+  "FACULTY",
+  "DEPARTMENT",
+  "SINH_VIEN",
+  "GIANG_VIEN",
+  "TRUONG_BO_MON",
+  "TRUONG_KHOA",
+  "CAN_BO_DBCL",
+  "LANH_DAO",
+  "ADMIN",
+  "PHONG_DAO_TAO",
+  "PHONG_KHAO_THI",
+  "THANH_TRA",
+  "FULL",
+  "PASSWORD_CHANGE",
+  "MFA_SETUP",
+  "MFA_VERIFY",
+  "TOTP",
+  "RECOVERY_CODE",
+  "totp",
+  "recovery",
+  "password",
+  "server-console",
+  "NHAP",
+  "DA_KHOA",
+  "CHO_XAC_NHAN_DL",
+  "CHO_DUYET",
+  "DA_DUYET",
+  "DANG_MO",
+  "DA_DONG",
+  "DA_TONG_HOP",
+  "DA_CONG_BO",
+  "LUU_TRU",
+  "HUY",
 ]);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fieldText = new Map<string, ReadonlySet<string>>([
   ["kind", new Set(["students", "teachers", "sections", "enrollments"])],
   ["size", new Set(["small", "medium", "large"])],
-  ["notificationStatus", new Set(["PENDING", "SENT", "FAILED", "NO_RECIPIENT"])],
-  ["purpose", new Set(["ACTIVATION", "PASSWORD_RESET", "FULL", "PASSWORD_CHANGE", "MFA_SETUP", "MFA_VERIFY"])],
+  [
+    "notificationStatus",
+    new Set(["PENDING", "SENT", "FAILED", "NO_RECIPIENT"]),
+  ],
+  [
+    "purpose",
+    new Set([
+      "ACTIVATION",
+      "PASSWORD_RESET",
+      "FULL",
+      "PASSWORD_CHANGE",
+      "MFA_SETUP",
+      "MFA_VERIFY",
+    ]),
+  ],
 ]);
-const fieldBoolean = new Set(["console", "futureModules", "reasonProvided", "isDefault"]);
-const fieldNumber = new Set(["created", "newUsers", "reasonLength", "groupCount", "questionCount", "previousDefaultCount", "recipients", "sent", "failed"]);
+const fieldBoolean = new Set([
+  "console",
+  "futureModules",
+  "reasonProvided",
+  "isDefault",
+]);
+const fieldNumber = new Set([
+  "created",
+  "newUsers",
+  "reasonLength",
+  "groupCount",
+  "questionCount",
+  "previousDefaultCount",
+  "recipients",
+  "sent",
+  "failed",
+]);
 
-function redactField(key: string, value: unknown, depth: number): Prisma.InputJsonValue | null {
+function redactField(
+  key: string,
+  value: unknown,
+  depth: number,
+): Prisma.InputJsonValue | null {
   if (depth > 4) return null;
-  if (key === "familyId" || key === "sourceId") return typeof value === "string" && uuid.test(value) ? value : null;
-  if (key === "version" || key === "revision") return typeof value === "number" && Number.isSafeInteger(value) && value >= 1 ? value : null;
+  const bounds: Record<string, readonly [number, number, boolean]> = {
+    minResponses: [1, 1000, true],
+    minRate: [0, 1, false],
+    warningScore: [1, 5, false],
+    explanationDays: [1, 365, true],
+    multiTeacherWarningThreshold: [2, 20, true],
+    sectionCount: [0, Number.MAX_SAFE_INTEGER, true],
+    pairCount: [0, Number.MAX_SAFE_INTEGER, true],
+    taskCount: [0, Number.MAX_SAFE_INTEGER, true],
+    campaignRevision: [1, Number.MAX_SAFE_INTEGER, true],
+    queued: [0, Number.MAX_SAFE_INTEGER, true],
+  };
+  if (key === "dataDriftDetected")
+    return typeof value === "boolean" ? value : null;
+  if (bounds[key]) {
+    const [min, max, integer] = bounds[key];
+    return typeof value === "number" &&
+      Number.isFinite(value) &&
+      value >= min &&
+      value <= max &&
+      (!integer || Number.isSafeInteger(value))
+      ? value
+      : null;
+  }
+  if (key === "familyId" || key === "sourceId")
+    return typeof value === "string" && uuid.test(value) ? value : null;
+  if (key === "version" || key === "revision")
+    return typeof value === "number" &&
+      Number.isSafeInteger(value) &&
+      value >= 1
+      ? value
+      : null;
   const allowed = fieldText.get(key);
-  if (allowed) return typeof value === "string" && allowed.has(value) ? value : null;
+  if (allowed)
+    return typeof value === "string" && allowed.has(value) ? value : null;
   if (fieldBoolean.has(key)) return typeof value === "boolean" ? value : null;
-  if (fieldNumber.has(key)) return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null;
+  if (fieldNumber.has(key))
+    return typeof value === "number" &&
+      Number.isSafeInteger(value) &&
+      value >= 0
+      ? value
+      : null;
   return redactAuditSummary(value, depth);
 }
 
 /** Lớp bảo vệ đầu ra thứ hai: không phát lại payload/log cũ có trường ngoài allowlist. */
-export function redactAuditSummary(value: unknown, depth = 0): Prisma.InputJsonValue | null {
+export function redactAuditSummary(
+  value: unknown,
+  depth = 0,
+): Prisma.InputJsonValue | null {
   if (depth > 4 || value === null || value === undefined) return null;
   if (typeof value === "boolean") return value;
   if (typeof value === "number") return Number.isFinite(value) ? value : null;
-  if (typeof value === "string") return safeText.has(value) || uuid.test(value) ? value : null;
-  if (Array.isArray(value)) return value.slice(0, 100).map((entry) => redactAuditSummary(entry, depth + 1));
+  if (typeof value === "string")
+    return safeText.has(value) || uuid.test(value) ? value : null;
+  if (Array.isArray(value))
+    return value
+      .slice(0, 100)
+      .map((entry) => redactAuditSummary(entry, depth + 1));
   if (typeof value !== "object") return null;
   const result: Record<string, Prisma.InputJsonValue | null> = {};
   for (const [key, entry] of Object.entries(value)) {
@@ -63,23 +229,61 @@ export function redactAuditSummary(value: unknown, depth = 0): Prisma.InputJsonV
   return result;
 }
 
-export async function listAuditLogs(actor: AuthActor, input: {
-  page?: number; pageSize?: number; action?: string; actorId?: string; objectType?: string; from?: string; to?: string;
-} = {}) {
+export async function listAuditLogs(
+  actor: AuthActor,
+  input: {
+    page?: number;
+    pageSize?: number;
+    action?: string;
+    actorId?: string;
+    objectType?: string;
+    from?: string;
+    to?: string;
+  } = {},
+) {
   requireCan(actor, "audit:list");
-  const { page, pageSize, action, actorId, objectType, from, to } = parseInput(inputSchema, input);
+  const { page, pageSize, action, actorId, objectType, from, to } = parseInput(
+    inputSchema,
+    input,
+  );
   return getDb().$transaction(async (tx) => {
     requireCan(await assertFreshActor(tx, actor), "audit:list");
     const where: Prisma.AuditLogWhereInput = {
-      ...(action ? { action } : {}), ...(actorId ? { actorId } : {}), ...(objectType ? { objectType } : {}),
-      ...(from || to ? { occurredAt: { ...(from ? { gte: new Date(from) } : {}), ...(to ? { lte: new Date(to) } : {}) } } : {}),
+      ...(action ? { action } : {}),
+      ...(actorId ? { actorId } : {}),
+      ...(objectType ? { objectType } : {}),
+      ...(from || to
+        ? {
+            occurredAt: {
+              ...(from ? { gte: new Date(from) } : {}),
+              ...(to ? { lte: new Date(to) } : {}),
+            },
+          }
+        : {}),
     };
     const [records, total] = await Promise.all([
-      tx.auditLog.findMany({ where, select: { id: true, actorId: true, action: true, objectType: true, objectId: true, redactedSummary: true, occurredAt: true },
-        orderBy: [{ occurredAt: "desc" }, { id: "desc" }], skip: (page - 1) * pageSize, take: pageSize }),
+      tx.auditLog.findMany({
+        where,
+        select: {
+          id: true,
+          actorId: true,
+          action: true,
+          objectType: true,
+          objectId: true,
+          redactedSummary: true,
+          occurredAt: true,
+        },
+        orderBy: [{ occurredAt: "desc" }, { id: "desc" }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
       tx.auditLog.count({ where }),
     ]);
-    const items = records.map((record) => ({ ...record, redactedSummary: redactAuditSummary(record.redactedSummary), occurredAt: record.occurredAt.toISOString() }));
+    const items = records.map((record) => ({
+      ...record,
+      redactedSummary: redactAuditSummary(record.redactedSummary),
+      occurredAt: record.occurredAt.toISOString(),
+    }));
     return { items, total, page, pageSize };
   });
 }

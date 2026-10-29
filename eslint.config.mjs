@@ -13,6 +13,8 @@ export default defineConfig([
     ".next-demo/**",
     ".next-week5/**",
     ".next-week6/**",
+    ".next-week7/**",
+    ".next-week7-settings/**",
     "out/**",
     "build/**",
     "src/generated/**",

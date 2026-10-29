@@ -2,17 +2,17 @@
 
 Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/09/2026**, khởi động thực tế **02/10/2026**. Tuần 3 thực hiện **21–22/10/2026**. Tuần 4 theo mốc giả định **21–27/10/2026**, bắt đầu thực tế **22/10/2026**; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-## Phạm vi hiện tại — Điều chỉnh số 01, việc bù G1 sau Tuần 6
+## Phạm vi hiện tại — Tuần 7: đợt khảo sát
 
 Hệ thống có **10 vai trò** theo [prompt bổ sung](docs/BO_SUNG_01_TAC_NHAN.md) và [ma trận quyền](docs/MA_TRAN_QUYEN.md). Phòng Đào tạo quản lý dữ liệu đào tạo/import và khóa, mở khóa học kỳ; ADMIN có MFA quản lý khoa/bộ môn cùng tài khoản, vai trò, cấu hình và nhật ký. ĐBCL đọc danh mục, tiếp tục quản lý mẫu phiếu, không còn ghi danh mục/import chỉ bằng vai trò ĐBCL. Khảo thí và Thanh tra đã có vai trò, tài khoản và không gian riêng; các hàng đợi nghiệp vụ của họ còn theo lộ trình.
 
-Trình soạn và xem trước có cờ **Nhóm tiêu chí kiểm tra, đánh giá**. Seed G1 tạo họ mẫu mặc định mới **3 nhóm/7 câu**, đủ năm loại câu và có đúng một nhóm “Kiểm tra, đánh giá” được đánh dấu; cây mẫu khóa cũ và dữ liệu phiếu/kết quả được giữ. Nếu đã chọn một mẫu tùy chỉnh làm mặc định, seed giữ lựa chọn đó. Runtime hiện có **31 model**, thiết kế đầy đủ **46 model**; các model thiết kế tương lai chưa được migrate thành chức năng.
+Trình soạn và xem trước có cờ **Nhóm tiêu chí kiểm tra, đánh giá**. Seed G1 tạo họ mẫu mặc định mới **3 nhóm/7 câu**, đủ năm loại câu và có đúng một nhóm “Kiểm tra, đánh giá” được đánh dấu; cây mẫu khóa cũ và dữ liệu phiếu/kết quả được giữ. Nếu đã chọn một mẫu tùy chỉnh làm mặc định, seed giữ lựa chọn đó. Runtime hiện có **34 model**, thiết kế đầy đủ **46 model**; các model thiết kế tương lai chưa được migrate thành chức năng.
 
 Sau khi kéo mã mới, dừng web rồi chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed` và mở lại `npm.cmd run dev`. Xem phần [migration](#shadow-và-migration) về preflight bắt buộc. Kết quả kiểm G1 cập nhật tại [PROJECT_STATE](docs/PROJECT_STATE.md), [PROGRESS](docs/PROGRESS.md) và [TRUY_VET](docs/TRUY_VET.md). Những số liệu/CI Tuần 1–6 bên dưới là bằng chứng lịch sử trước điều chỉnh.
 
 Nghiệm thu G1 ngày **29/10/2026**: **346/346 test**, build qua; [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) của mã `023b619` xanh check/smoke. Tiến độ **71/219 = 32,4%** sau mở rộng phạm vi. Xem [báo cáo phiên](docs/NGHIEM_THU_BO_SUNG_01.md) và [QA giao diện](docs/QA_GIAO_DIEN_BO_SUNG_01.md); FR-160 chỉ phần đang có.
 
-G1 chỉ bù nền quyền/dữ liệu/mẫu rồi dừng. Chưa làm readiness, đợt xác nhận, kết quả gộp Khảo thí hay hồ sơ Thanh tra. Tuần 7 chỉ bắt đầu khi người dùng gõ **BẮT ĐẦU TUẦN 7**.
+Người dùng đã yêu cầu tiếp tục Tuần 7 sau G1. ĐBCL tạo/trình đợt tại [/dot-khao-sat](http://localhost:3000/dot-khao-sat), PĐT xác nhận dữ liệu theo RS-01–06, lãnh đạo duyệt. Đến giờ mở, hệ thống chốt nhiệm vụ theo đăng ký hiện tại; thay đổi sau mở không đổi task. ADMIN cấu hình ngưỡng tại /quan-tri/cau-hinh-khao-sat bằng MFA và mã TOTP mới. Bằng chứng cuối xem [nghiệm thu Tuần7](docs/NGHIEM_THU_TUAN_07.md). Giao diện sinh viên trả lời thuộc Tuần8; kết quả gộp Khảo thí và hồ sơ Thanh tra vẫn theo lịch sau.
 
 ### Mốc nghiệm thu lịch sử Tuần 6: mẫu phiếu khảo sát
 
@@ -89,13 +89,15 @@ npm.cmd run demo
 
 Lệnh này cần `.env`, khóa auth, dependencies và Docker Compose đã chuẩn bị theo phần chạy lần đầu. Nó tạo **database demo mới riêng**, deploy migration, seed rồi chạy web tại **[http://127.0.0.1:3001](http://127.0.0.1:3001)**. Không đổi `DATABASE_URL` của ứng dụng chính, không DROP/reset dữ liệu cũ. Ctrl+C dừng web; database demo được giữ. Mỗi lần gọi tạo môi trường mới, nên dữ liệu của lần demo cũ vẫn chiếm dung lượng; không tự động xóa.
 
-Mặc định `DEMO_SIZE=medium`: 3 khoa, 8 bộ môn, 40 môn, 120 lớp, 60 giảng viên, 1.500 sinh viên giả, 4.501 đăng ký (gồm sinh viên demo chính). Có mẫu mặc định G1 ba nhóm/bảy câu đủ năm loại và một nhóm đánh giá được đánh dấu; mẫu lịch sử hiện có được giữ. Có một đợt mở, một đợt đã đóng/công bố với phiếu/kết quả khớp toán học và sáu trạng thái phản hồi giả theo ngoại lệ seed đã được cho phép. Các tài khoản trên dùng được; ADMIN tạo riêng bằng CLI với mật khẩu riêng và TOTP. Seed không chứng minh chức năng xử lý đợt, phiếu hay phản hồi đã hoàn thành.
+Phần danh mục `DEMO-*` trong kỳ `DEMO-HK1-2026`, mặc định `DEMO_SIZE=medium`: 3 khoa, 8 bộ môn, 40 môn, 120 lớp, 60 giảng viên, 1.500 sinh viên giả, 4.501 đăng ký (gồm sinh viên demo chính). Có mẫu mặc định G1 ba nhóm/bảy câu đủ năm loại và một nhóm đánh giá được đánh dấu; mẫu lịch sử hiện có được giữ. Có một đợt mở, một đợt đã đóng/công bố với phiếu/kết quả khớp toán học và sáu trạng thái phản hồi giả theo ngoại lệ seed đã được cho phép. Các tài khoản trên dùng được; ADMIN tạo riêng bằng CLI với mật khẩu riêng và TOTP. Seed không chứng minh chức năng xử lý đợt, phiếu hay phản hồi đã hoàn thành.
 
-| DEMO_SIZE | Khoa / bộ môn / môn / lớp | Giảng viên / sinh viên | Đăng ký trên DB mới |
+| DEMO_SIZE | Khoa / bộ môn / môn / lớp | Giảng viên / sinh viên | Đăng ký trong kỳ DEMO-HK1-2026 |
 | --- | --- | --- | --- |
 | small | 3 / 8 / 8 / 12 | 6 / 30 | 91 |
 | medium | 3 / 8 / 40 / 120 | 60 / 1.500 | 4.501 |
 | large | 3 / 8 / 80 / 240 | 120 / 3.000 | 9.001 |
+
+Bundle W7 bổ sung riêng **1 môn, 2 học kỳ, 8 lớp, 26 đăng ký, 1 sinh viên chờ kích hoạt và 2 đợt nháp** vào mọi size. Các số trong bảng chỉ tính phần DEMO-*; không phải tổng toàn database sau bổ sung.
 
 Đổi size trong `.env`, hoặc `$env:DEMO_SIZE='small'` trước lệnh demo. `npm.cmd run demo -- --prepare` chỉ chuẩn bị dữ liệu, không mở server. `db:seed` bổ sung vào DB đang cấu hình, không giảm/xóa dữ liệu khi đổi xuống size nhỏ, không cân lại đăng ký đã có hay danh sách khảo sát đã chốt; từ chối nếu học kỳ demo đã khóa. Dữ liệu đợt đang mở giữ mốc đã tạo khi seed lại, nên chạy demo mới khi cần mốc thời gian mới.
 
@@ -156,6 +158,25 @@ Migrate dùng schema runtime mặc định; **không thêm `--schema prisma/desi
 
 G1 thêm migration `20261028220000_amendment_01_roles_assessment`: ba enum vai trò, cờ nhóm mặc định false và cập nhật enum đợt/loại phản hồi. Không thêm bảng workflow tương lai vào runtime. Khi chạy **`npm.cmd run db:deploy`**, prehook tự kiểm đúng `DATABASE_URL` trước mọi DDL. Database mới chưa có bảng Feedback được chấp nhận; database đã có phải không còn dòng `CSVC_LICH_HOC`. Nếu có, lệnh dừng để người dùng xác nhận phân loại từng phản hồi sang loại phù hợp; không tự đoán giữa lịch học và phòng học/thiết bị. Giữ dữ liệu, phân loại có kiểm soát rồi chạy lại. Dùng lệnh npm này để giữ preflight, không gọi tắt `prisma migrate deploy` khi nâng cấp bản G1.
 
+## Vận hành đợt khảo sát Tuần 7
+
+1. Đăng nhập ĐBCL (demo DBCL2026001), chọn Đợt khảo sát → Tạo đợt. Chọn kỳ mở, mẫu, một trong bốn phạm vi, lịch theo giờ Việt Nam và ngưỡng; lưu/trình.
+2. Đăng nhập PĐT (PDT2026001), mở đợt đang chờ xác nhận. Sửa dữ liệu danh mục còn lỗi chặn trước, ghi chú nếu có cảnh báo rồi xác nhận; hoặc trả về kèm lý do.
+3. Đăng nhập lãnh đạo (LD2026001), duyệt hoặc từ chối có lý do. Duyệt khóa phiên bản mẫu. Nếu đã đến giờ mở thì mở ngay; nếu chưa thì chờ lịch.
+4. Mở terminal thứ hai ở cùng dự án và chạy scheduler. Giữ web và MySQL hoạt động. Mailpit tại http://localhost:8025 chỉ nhận thư giả cục bộ.
+
+```powershell
+npm.cmd run scheduler
+# Hoặc một lượt cho kiểm tra/vận hành thủ công:
+npm.cmd run scheduler -- --once
+# Chu kỳ60giây mặc định; có thể chọn10..3600giây:
+npm.cmd run scheduler -- --interval 30
+```
+
+Khi không có scheduler, lần truy cập đợt/danh sách tiếp theo sẽ gọi ensure để bắt kịp trạng thái; queue email chờ scheduler xử lý. Không cam kết mở đúng từng giây khi mọi tiến trình đều dừng. Học kỳ không khóa được khi còn đợt đã duyệt hoặc đang mở theo quyết định người dùng. ĐBCL gia hạn/đóng sớm/hủy theo trạng thái, có lý do; tiến độ chỉ đếm nhiệm vụ, không đọc nội dung phiếu. SMTP thử lại tối đa5lần; có thể gửi lặp nếu worker chết giữa SMTP và ghi SENT.
+
+Seed mới thêm hai đợt nháp W7: một đợt cảnh báo có thể xác nhận và một đợt ở kỳ khóa để xem đủ RS-01–06; chưa trình/duyệt hộ người dùng. Chạy seed lặp giữ nguyên dữ liệu đã thao tác. FR-145 ImportBatch/hoàn tác là P1 có điều kiện, chưa nghiệm thu; import CSV/XLSX hiện có vẫn hoạt động theo Tuần5/G1.
+
 ## Kiểm tra
 
 ```powershell
@@ -165,6 +186,8 @@ npm.cmd run test:auth
 npm.cmd run test:week4
 npm.cmd run test:week5
 npm.cmd run test:week6
+npm.cmd run test:week7
+npm.cmd run test:week7:settings
 npm.cmd run test:demo
 npm.cmd run check
 npm.cmd run build
@@ -173,7 +196,7 @@ npm.cmd run progress
 
 | Lệnh               | Phạm vi                                                                                                         |
 | ------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `test:integration` | MySQL thật 31 bảng; ràng buộc nền và phạm vi ba vai trò mới, dùng fixture transaction rồi rollback |
+| `test:integration` | MySQL thật 34 bảng; ràng buộc nền và phạm vi ba vai trò mới, dùng fixture transaction rồi rollback |
 | `test:auth`        | HTTP/MySQL/Mailpit với fixture giả riêng, server thử cổng 3002; cleanup đúng fixture, không dùng tài khoản demo |
 | `check`            | Validate/generate runtime+blueprint, ERD đồng bộ DMMF, ESLint, TypeScript, Vitest                               |
 | `build`            | Next.js production build, không thay thử giao diện/HTTP                                                         |
@@ -182,6 +205,9 @@ npm.cmd run progress
 | `db:seed`          | Bổ sung dữ liệu giả và tài khoản còn thiếu, chặn production, không reset tài khoản đã thử                      |
 | `test:week5` | HTTP/MySQL/Mailpit cổng 3004, output `.next-week5`, dùng lại DB thử có marker Tuần 4; chạy tuần tự các suite |
 | `test:week6` | HTTP/MySQL cổng 3005/output `.next-week6`, dùng DB thử có marker; ma trận mười vai trò của G1, cờ nhóm, phiên bản/khóa/CAS/preview không ghi |
+| `test:week7` | HTTP/MySQL cổng3006: duyệt, readiness, drift, chốt task,20 ensure đồng thời, lịch, gia hạn, tiến độ và scheduler/Mailpit; fixture riêng |
+| `test:week7:settings` | HTTP/MySQL cổng3007: ngưỡng/TOTP thật, ma trận10vai trò, CAS, mặc định và queue/retry/lease/Mailpit |
+| `scheduler` | Mở/đóng đợt và chuyển email đã xếp hàng; chạy liên tục hoặc --once |
 | `test:demo` | Tạo DB demo mới, kiểm seed/size/idempotent, dữ liệu khảo sát và phép tính thật; giữ DB sau kiểm |
 
 `db:seed`, `test:auth` và `build` tự chạy `db:generate` qua npm prehook, nên máy clone mới không cần có Prisma client đã sinh sẵn trong Git. CI ban đầu ở `ed7ed60` từng lỗi vì chạy test auth trước generate; mã `43b937e` đã sửa thứ tự này.
@@ -210,6 +236,8 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 
 - Điều chỉnh số 01/G1: [prompt nguyên văn](docs/BO_SUNG_01_TAC_NHAN.md), [ma trận 10 vai trò](docs/MA_TRAN_QUYEN.md), [đặc tả hiện tại](docs/DAC_TA_NGHIEP_VU.md), [kế hoạch có việc bù](docs/KE_HOACH_15_TUAN.md). Các tài liệu nghiệm thu theo tuần dưới đây giữ bằng chứng lịch sử trước điều chỉnh.
 
+- Tuần 7: [nghiệm thu](docs/NGHIEM_THU_TUAN_07.md), [báo cáo](docs/bao-cao-tien-do/tuan-07.md), [giải thích](docs/GIAI_THICH/tuan-07.md), [ADR-008](docs/decisions/ADR-008-dot-khao-sat-va-chot-danh-sach.md), [QA](docs/QA_GIAO_DIEN_TUAN_07.md), [sơ đồ](docs/SO_DO_TUAN_07.md).
+
 - Tuần 6: [nghiệm thu](docs/NGHIEM_THU_TUAN_06.md), [báo cáo](docs/bao-cao-tien-do/tuan-06.md), [giải thích](docs/GIAI_THICH/tuan-06.md), [ADR-007](docs/decisions/ADR-007-mau-phieu-va-phien-ban.md), [sơ đồ](docs/SO_DO_TUAN_06.md).
 
 - Tuần 5: [nghiệm thu](docs/NGHIEM_THU_TUAN_05.md), [hướng dẫn import](docs/HUONG_DAN_IMPORT.md), [ADR-006](docs/decisions/ADR-006-danh-muc-va-nhap-lieu.md), [giải thích](docs/GIAI_THICH/tuan-05.md), [báo cáo](docs/bao-cao-tien-do/tuan-05.md), [QA giao diện](docs/QA_GIAO_DIEN_TUAN_05.md), [sơ đồ](docs/SO_DO_TUAN_05.md).
@@ -224,4 +252,4 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 - [ERD hiện tại](docs/ERD.md), [kiến trúc](docs/KIEN_TRUC.md), [thiết kế ẩn danh](docs/THIET_KE_AN_DANH.md), [gallery sơ đồ Tuần 2](docs/SO_DO_DA_RENDER.md).
 - [Báo cáo Tuần 1](docs/bao-cao-tien-do/tuan-01.md), [Tuần 2](docs/bao-cao-tien-do/tuan-02.md) giữ nguyên bằng chứng tại thời điểm thực hiện.
 
-AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Sau việc bù G1 dừng; Tuần 7 cần lệnh **BẮT ĐẦU TUẦN 7**. Ngoại lệ seed cũ không cho phép làm trước workflow mới.
+AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Phạm vi hiện tại là Tuần7 theo yêu cầu tiếp tục trực tiếp; chưa bắt đầu Tuần8. Ngoại lệ seed cũ không cho phép làm trước workflow mới.
