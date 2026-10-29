@@ -68,7 +68,7 @@ function workspace(roles: readonly string[]) {
     };
   return {
     title: "Không gian sinh viên",
-    sections: ["Khảo sát của tôi", "Phản hồi của tôi", "Kết quả đã công bố"],
+    sections: ["Phản hồi của tôi", "Kết quả đã công bố"],
   };
 }
 
@@ -203,6 +203,14 @@ export default async function AccountPage() {
                 Không gian được cấp quyền
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
+                {can(actor, "student-surveys:list") && (
+                  <Link
+                    href="/khao-sat"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Khảo sát của tôi <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 {can(actor, "campaigns:list") && (
                   <Link
                     href="/dot-khao-sat"

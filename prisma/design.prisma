@@ -1,5 +1,5 @@
 // THIẾT KẾ TOÀN HỆ THỐNG: xem docs/decisions/ADR-002-schema-theo-tuan.md.
-// Schema áp dụng ở Tuần 2. Bản thiết kế toàn hệ thống: design.prisma.
+// Blueprint 46 model; runtime Tuần 8 ở schema.prisma, chưa tổng hợp/công bố kết quả.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/design-prisma"

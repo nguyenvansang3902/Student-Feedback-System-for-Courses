@@ -41,7 +41,7 @@ function fixture(overrides: Record<string, unknown> = {}) {
       findUniqueOrThrow: vi.fn(async () => structuredClone(row)),
       updateMany: vi.fn(
         async (args: {
-          where: { status: string; revision: number };
+          where: { status: string; revision: number; endsAt?: {lt: Date} };
           data: Record<string, unknown>;
         }) => {
           if (
@@ -303,8 +303,11 @@ describe("BR-01/06/17, FR-43/44 — ensure lifecycle idempotent trong transactio
     expect(tx.surveyTask.createMany).toHaveBeenCalledOnce();
     expect(tx.campaignHistory.create).toHaveBeenCalledTimes(2);
   });
-  it("đóng đợt đang mở khi chạm endsAt, giữ nguyên cohort và không đọc lại sinh viên", async () => {
-    const { client, tx } = fixture({ status: "DANG_MO", endsAt: now });
+  it("BR-04: đóng đợt sau endsAt, giữ nguyên cohort và không đọc lại sinh viên", async () => {
+    const { client, tx } = fixture({
+      status: "DANG_MO",
+      endsAt: new Date(now.getTime() - 1),
+    });
     expect(await advanceCampaignState(client, ids[0], now)).toMatchObject({
       opened: false,
       closed: true,
@@ -314,6 +317,19 @@ describe("BR-01/06/17, FR-43/44 — ensure lifecycle idempotent trong transactio
     expect(tx.campaignHistory.create.mock.calls[0][0].data.action).toBe(
       "AUTO_CLOSE",
     );
+  });
+  it("BR-04: giữ mở tại đúng endsAt inclusive, chỉ đóng sau một millisecond", async () => {
+    const { client, tx } = fixture({ status: "DANG_MO", endsAt: now });
+    expect(await advanceCampaignState(client, ids[0], now)).toMatchObject({
+      closed: false,
+    });
+    expect(tx.surveyCampaign.updateMany).not.toHaveBeenCalled();
+    expect(
+      await advanceCampaignState(client, ids[0], new Date(now.getTime() + 1)),
+    ).toMatchObject({ closed: true });
+    expect(tx.surveyCampaign.updateMany.mock.calls[0][0].where.endsAt).toEqual({
+      lt: new Date(now.getTime() + 1),
+    });
   });
   it("không tự tổng hợp/công bố/lưu trữ trong Tuần7", async () => {
     for (const status of [
@@ -388,7 +404,7 @@ describe("BR-01/06/17, FR-43/44 — ensure lifecycle idempotent trong transactio
     expect(dueCampaignWhere(now)).toEqual({
       OR: [
         { status: "DA_DUYET", startsAt: { lte: now } },
-        { status: "DANG_MO", endsAt: { lte: now } },
+        { status: "DANG_MO", endsAt: { lt: now } },
       ],
     });
   });

@@ -39,7 +39,9 @@
     ".next-week7/types/**/*.ts",
     ".next-week7/dev/types/**/*.ts",
     ".next-week7-settings/types/**/*.ts",
-    ".next-week7-settings/dev/types/**/*.ts"
+    ".next-week7-settings/dev/types/**/*.ts",
+    ".next-week8/types/**/*.ts",
+    ".next-week8/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -48,6 +50,7 @@
     ".next-week5",
     ".next-week6",
     ".next-week7",
-    ".next-week7-settings"
+    ".next-week7-settings",
+    ".next-week8"
   ]
 }

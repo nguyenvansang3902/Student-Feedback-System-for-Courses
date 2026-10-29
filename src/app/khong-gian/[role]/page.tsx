@@ -48,6 +48,14 @@ export default async function WorkspacePage({
           <h1 className="mt-3 text-3xl font-bold text-slate-950">
             {roleLabels[role]}
           </h1>
+          {role === "SINH_VIEN" && can(actor, "student-surveys:list") && (
+            <Link
+              href="/khao-sat"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
+              Làm khảo sát môn học →
+            </Link>
+          )}
           {can(actor, "campaigns:list") && (
             <Link
               href="/dot-khao-sat"
@@ -83,10 +91,12 @@ export default async function WorkspacePage({
           {can(actor, "sections:list") ? (
             <WorkspaceSections />
           ) : (
-            <p className="mt-7 text-sm leading-7 text-slate-600">
-              Không gian của bạn đã được cấp. Chức năng xử lý hồ sơ sẽ được mở
-              khi triển khai đến giai đoạn tương ứng.
-            </p>
+            role !== "SINH_VIEN" && (
+              <p className="mt-7 text-sm leading-7 text-slate-600">
+                Không gian của bạn đã được cấp. Chức năng xử lý hồ sơ sẽ được mở
+                khi triển khai đến giai đoạn tương ứng.
+              </p>
+            )
           )}
         </div>
       </div>

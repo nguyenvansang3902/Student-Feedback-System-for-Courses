@@ -1,0 +1,21 @@
+flowchart TD
+  A["Đã chuẩn bị lifecycle trong transaction riêng"] --> B["BEGIN nộp phiếu"]
+  B --> C["ADMIN_MUTATION_LOCK trước SELECT thường<br/>Đọc lại phiên FULL và grant SINH_VIEN GLOBAL<br/>Task theo id + studentId; danh sách đã chốt"]
+  C --> F["Kiểm PENDING; DANG_MO; kỳ chưa khóa; mẫu DA_KHOA<br/>startsAt ≤ giờ server ≤ endsAt<br/>Câu thuộc mẫu, bắt buộc, loại, NA, thang và option"]
+  F --> I["Tính một ngày nghiệp vụ Asia/Ho_Chi_Minh<br/>UPDATE task có điều kiện PENDING → DONE<br/>kèm điều kiện chủ, đợt, lớp, hạn, kỳ, mẫu"]
+  I --> J{"Đúng 1 hàng?"}
+  J -- Không --> R["ROLLBACK toàn bộ giao dịch nộp"]
+  J -- Có --> K["INSERT SurveyResponse<br/>UUID ngẫu nhiên; scalar đợt/lớp; submittedDate DATE"]
+  K --> L["INSERT SurveyAnswer<br/>UUID; responseId; questionId scalar; giá trị đã kiểm"]
+  L --> M["COMMIT<br/>task DONE và phiếu cùng tồn tại"]
+  M --> N["Chỉ trả DONE + doneDate<br/>Không responseId/answerId hoặc nội dung"]
+  C -. Lỗi hoặc không thuộc actor .-> R
+  F -. Không hợp lệ .-> R
+  K -. Lỗi .-> R
+  L -. Lỗi .-> R
+  R --> O["Lỗi chung; task/phiếu giữ nguyên trước giao dịch<br/>Trạng thái lifecycle đã commit riêng vẫn được giữ"]
+  N --> P["Xóa nháp; đọc lại task nếu mất kết nối<br/>Lần sau gặp DONE: chặn nộp lại"]
+  classDef success fill:#dcfce7,stroke:#166534,color:#14532d
+  classDef failure fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
+  class M,N,P success
+  class R,O failure

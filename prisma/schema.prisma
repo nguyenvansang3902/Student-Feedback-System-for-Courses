@@ -1,4 +1,4 @@
-// Tuần 7: đợt, chốt danh sách và thông báo bắt buộc; chưa có nộp phiếu/kết quả.
+// Tuần 8: nhiệm vụ và nộp khảo sát ẩn danh; chưa tổng hợp hoặc công bố kết quả.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"

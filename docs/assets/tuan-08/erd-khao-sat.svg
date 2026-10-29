@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1632"
+  height="2228"
+  viewBox="0 0 1632 2228"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">ERD tổng quan: Khảo sát, giải trình và nhắc khảo sát</title>
+  <desc id="description">
+    17 model chính và 6 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 8:
+    46 model thiết kế, 34 runtime, 12 model chỉ thiết kế. Nhiệm vụ và nộp phiếu
+    ẩn danh dùng Response/Answer sẵn có; 5 bảng kết quả/phản hồi còn chỉ seed.
+    Chi tiết toàn bộ scalar nằm trong ERD.md.
+  </desc>
+  <style>
+    text {
+      font-family: "Segoe UI", Arial, sans-serif;
+      fill: #0f172a;
+    }
+    .heading {
+      font-size: 29px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 17px;
+      fill: #475569;
+    }
+    .model {
+      font-size: 22px;
+      font-weight: 700;
+      fill: #fff;
+    }
+    .meta {
+      font-size: 15px;
+      fill: #475569;
+    }
+    .field {
+      font-size: 15px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+    .foot {
+      font-size: 14px;
+      fill: #475569;
+    }
+  </style>
+  <rect width="1632" height="2228" fill="#f8fafc" />
+  <text x="27" y="48" class="heading">
+    Khảo sát, giải trình và nhắc khảo sát
+  </text>
+  <text x="27" y="82" class="sub">
+    17 model chính · 6 model ngữ cảnh · PK / UK / FK lấy từ DMMF thật
+  </text>
+  <text x="27" y="113" class="sub">
+    SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ
+    scalar và liên kết ở docs/ERD.md.
+  </text>
+  <text x="27" y="143" class="sub">
+    Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối
+    Response/Answer.
+  </text>
+  <g aria-label="SurveyTemplate">
+    <rect
+      x="27"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="207" class="model">SurveyTemplate</text>
+    <text x="45" y="248" class="meta">
+      Tuần 6 + G1: mẫu phiếu/nhóm đánh giá · 11 scalar
+    </text>
+    <text x="45" y="277" class="field">PK (id)</text>
+    <text x="45" y="300" class="field">UK1 (familyId, version)</text>
+    <text x="45" y="323" class="field">FK (createdById) → User (id)</text>
+  </g>
+  <g aria-label="CriterionGroup">
+    <rect
+      x="561"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="207" class="model">CriterionGroup</text>
+    <text x="579" y="248" class="meta">
+      Tuần 6 + G1: mẫu phiếu/nhóm đánh giá · 6 scalar
+    </text>
+    <text x="579" y="277" class="field">PK (id)</text>
+    <text x="579" y="300" class="field">UK1 (templateId, position)</text>
+    <text x="579" y="323" class="field">
+      FK (templateId) → SurveyTemplate (id)
+    </text>
+    <text x="579" y="346" class="field">
+      G1: isAssessmentGroup Boolean, mặc định false.
+    </text>
+  </g>
+  <g aria-label="Question">
+    <rect
+      x="1095"
+      y="176"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="207" class="model">Question</text>
+    <text x="1113" y="248" class="meta">
+      Tuần 6 + G1: mẫu phiếu/nhóm đánh giá · 10 scalar
+    </text>
+    <text x="1113" y="277" class="field">PK (id)</text>
+    <text x="1113" y="300" class="field">UK1 (groupId, position)</text>
+    <text x="1113" y="323" class="field">
+      FK (groupId) → CriterionGroup (id)
+    </text>
+  </g>
+  <g aria-label="QuestionOption">
+    <rect
+      x="27"
+      y="385"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="416" class="model">QuestionOption</text>
+    <text x="45" y="457" class="meta">
+      Tuần 6 + G1: mẫu phiếu/nhóm đánh giá · 4 scalar
+    </text>
+    <text x="45" y="486" class="field">PK (id)</text>
+    <text x="45" y="509" class="field">UK1 (questionId, position)</text>
+    <text x="45" y="532" class="field">FK (questionId) → Question (id)</text>
+  </g>
+  <g aria-label="SurveyCampaign">
+    <rect
+      x="561"
+      y="385"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="416" class="model">SurveyCampaign</text>
+    <text x="579" y="457" class="meta">
+      Tuần 7: đợt/xác nhận/thông báo đợt · 24 scalar
+    </text>
+    <text x="579" y="486" class="field">PK (id)</text>
+    <text x="579" y="509" class="field">FK (semesterId) → Semester (id)</text>
+    <text x="579" y="532" class="field">
+      FK (templateId) → SurveyTemplate (id)
+    </text>
+    <text x="579" y="555" class="field">FK (facultyId) → Faculty (id)</text>
+    <text x="579" y="578" class="field">
+      FK (departmentId) → Department (id)
+    </text>
+    <text x="579" y="601" class="field">FK (createdById) → User (id)</text>
+    <text x="579" y="624" class="field">FK (approvedById) → User (id)</text>
+    <text x="579" y="647" class="field">
+      Tuần 7: revision/CAS, mốc chốt và hash; cờ lệch dữ
+    </text>
+    <text x="579" y="670" class="field">liệu.</text>
+  </g>
+  <g aria-label="CampaignSection">
+    <rect
+      x="1095"
+      y="385"
+      width="510"
+      height="299"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="385" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="413" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="416" class="model">CampaignSection</text>
+    <text x="1113" y="457" class="meta">
+      Tuần 7: đợt/xác nhận/thông báo đợt · 2 scalar
+    </text>
+    <text x="1113" y="486" class="field">PK (campaignId, sectionId)</text>
+    <text x="1113" y="509" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="1113" y="532" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+  </g>
+  <g aria-label="CampaignHistory">
+    <rect
+      x="27"
+      y="709"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="709" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="737" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="740" class="model">CampaignHistory</text>
+    <text x="45" y="781" class="meta">
+      Tuần 7: đợt/xác nhận/thông báo đợt · 11 scalar
+    </text>
+    <text x="45" y="810" class="field">PK (id)</text>
+    <text x="45" y="833" class="field">UK1 (campaignId, requestId)</text>
+    <text x="45" y="856" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="45" y="879" class="field">FK (actorId) → User (id)</text>
+  </g>
+  <g aria-label="SurveyTask">
+    <rect
+      x="561"
+      y="709"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="709" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="737" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="740" class="model">SurveyTask</text>
+    <text x="579" y="781" class="meta">
+      Tuần 7: đợt/xác nhận/thông báo đợt · 6 scalar
+    </text>
+    <text x="579" y="810" class="field">PK (id)</text>
+    <text x="579" y="833" class="field">
+      UK1 (campaignId, sectionId, studentId)
+    </text>
+    <text x="579" y="856" class="field">
+      FK (campaignId, sectionId) → CampaignSection
+    </text>
+    <text x="579" y="879" class="field">(campaignId, sectionId)</text>
+    <text x="579" y="902" class="field">FK (studentId) → User (id)</text>
+    <text x="579" y="925" class="field">
+      Tuần 8: PENDING → DONE có điều kiện; chỉ ngày, không
+    </text>
+    <text x="579" y="948" class="field">ID phiếu.</text>
+  </g>
+  <g aria-label="SurveyResponse">
+    <rect
+      x="1095"
+      y="709"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#0f766e"
+      stroke-width="2"
+    />
+    <rect x="1095" y="709" width="510" height="48" rx="14" fill="#0f766e" />
+    <rect x="1095" y="737" width="510" height="20" fill="#0f766e" />
+    <text x="1113" y="740" class="model">SurveyResponse</text>
+    <text x="1113" y="781" class="meta">
+      Tuần 8: nộp phiếu ẩn danh · 4 scalar
+    </text>
+    <text x="1113" y="810" class="field">PK (id)</text>
+    <text x="1113" y="833" class="field">
+      VÙNG ẨN DANH: chỉ Response ↔ Answer; metadata scalar
+    </text>
+    <text x="1113" y="856" class="field">không phải FK.</text>
+    <text x="1113" y="879" class="field">
+      Tuần 8: nộp ẩn danh bằng UUID và DATE; không ghi cầu
+    </text>
+    <text x="1113" y="902" class="field">nối danh tính.</text>
+  </g>
+  <g aria-label="SurveyAnswer">
+    <rect
+      x="27"
+      y="987"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#0f766e"
+      stroke-width="2"
+    />
+    <rect x="27" y="987" width="510" height="48" rx="14" fill="#0f766e" />
+    <rect x="27" y="1015" width="510" height="20" fill="#0f766e" />
+    <text x="45" y="1018" class="model">SurveyAnswer</text>
+    <text x="45" y="1059" class="meta">
+      Tuần 8: nộp phiếu ẩn danh · 10 scalar
+    </text>
+    <text x="45" y="1088" class="field">PK (id)</text>
+    <text x="45" y="1111" class="field">UK1 (responseId, questionId)</text>
+    <text x="45" y="1134" class="field">
+      FK (responseId) → SurveyResponse (id)
+    </text>
+    <text x="45" y="1157" class="field">
+      VÙNG ẨN DANH: chỉ Response ↔ Answer; metadata scalar
+    </text>
+    <text x="45" y="1180" class="field">không phải FK.</text>
+    <text x="45" y="1203" class="field">
+      Tuần 8: nộp ẩn danh bằng UUID và DATE; không ghi cầu
+    </text>
+    <text x="45" y="1226" class="field">nối danh tính.</text>
+  </g>
+  <g aria-label="AggregateResult">
+    <rect
+      x="561"
+      y="987"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="987" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="1015" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="1018" class="model">AggregateResult</text>
+    <text x="579" y="1059" class="meta">
+      Tuần 5: chỉ seed dữ liệu demo · 10 scalar
+    </text>
+    <text x="579" y="1088" class="field">PK (id)</text>
+    <text x="579" y="1111" class="field">UK1 (campaignId, sectionId)</text>
+    <text x="579" y="1134" class="field">
+      FK (campaignId, sectionId) → CampaignSection
+    </text>
+    <text x="579" y="1157" class="field">(campaignId, sectionId)</text>
+  </g>
+  <g aria-label="ImprovementPlan">
+    <rect
+      x="1095"
+      y="987"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="987" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="1015" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="1018" class="model">ImprovementPlan</text>
+    <text x="1113" y="1059" class="meta">
+      Thiết kế tương lai; chưa migration · 12 scalar
+    </text>
+    <text x="1113" y="1088" class="field">PK (id)</text>
+    <text x="1113" y="1111" class="field">
+      UK1 (campaignId, sectionId, teacherId)
+    </text>
+    <text x="1113" y="1134" class="field">
+      FK (campaignId, sectionId) → CampaignSection
+    </text>
+    <text x="1113" y="1157" class="field">(campaignId, sectionId)</text>
+    <text x="1113" y="1180" class="field">FK (teacherId) → User (id)</text>
+    <text x="1113" y="1203" class="field">FK (confirmedById) → User (id)</text>
+  </g>
+  <g aria-label="ImprovementHistory">
+    <rect
+      x="27"
+      y="1265"
+      width="510"
+      height="230"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="1265" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="1293" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="1296" class="model">ImprovementHistory</text>
+    <text x="45" y="1337" class="meta">
+      Thiết kế tương lai; chưa migration · 7 scalar
+    </text>
+    <text x="45" y="1366" class="field">PK (id)</text>
+    <text x="45" y="1389" class="field">
+      FK (planId) → ImprovementPlan (id)
+    </text>
+    <text x="45" y="1412" class="field">FK (actorId) → User (id)</text>
+  </g>
+  <g aria-label="SurveyReminder">
+    <rect
+      x="561"
+      y="1265"
+      width="510"
+      height="230"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="1265" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="1293" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="1296" class="model">SurveyReminder</text>
+    <text x="579" y="1337" class="meta">
+      Thiết kế tương lai; chưa migration · 4 scalar
+    </text>
+    <text x="579" y="1366" class="field">PK (id)</text>
+    <text x="579" y="1389" class="field">
+      UK1 (campaignId, studentId, reminderDate)
+    </text>
+    <text x="579" y="1412" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="579" y="1435" class="field">FK (studentId) → User (id)</text>
+  </g>
+  <g aria-label="CampaignDataConfirmation">
+    <rect
+      x="1095"
+      y="1265"
+      width="510"
+      height="230"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="1265" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="1293" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="1296" class="model">CampaignDataConfirmation</text>
+    <text x="1113" y="1337" class="meta">
+      Tuần 7: đợt/xác nhận/thông báo đợt · 11 scalar
+    </text>
+    <text x="1113" y="1366" class="field">PK (id)</text>
+    <text x="1113" y="1389" class="field">
+      UK1 (campaignId, campaignRevision)
+    </text>
+    <text x="1113" y="1412" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="1113" y="1435" class="field">FK (confirmedById) → User (id)</text>
+    <text x="1113" y="1458" class="field">
+      Bản chụp xác nhận PĐT theo revision; lịch sử chỉ
+    </text>
+    <text x="1113" y="1481" class="field">thêm.</text>
+  </g>
+  <g aria-label="SurveyAnomalyFlag">
+    <rect
+      x="27"
+      y="1520"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="1520" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="1548" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="1551" class="model">SurveyAnomalyFlag</text>
+    <text x="45" y="1592" class="meta">
+      Thiết kế tương lai; chưa migration · 10 scalar
+    </text>
+    <text x="45" y="1621" class="field">PK (id)</text>
+    <text x="45" y="1644" class="field">
+      UK1 (campaignId, sectionId, ruleCode)
+    </text>
+    <text x="45" y="1667" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="45" y="1690" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="45" y="1713" class="field">FK (reviewedById) → User (id)</text>
+  </g>
+  <g aria-label="ExamReviewRecommendation">
+    <rect
+      x="561"
+      y="1520"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="1520" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="1548" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="1551" class="model">ExamReviewRecommendation</text>
+    <text x="579" y="1592" class="meta">
+      Thiết kế tương lai; chưa migration · 12 scalar
+    </text>
+    <text x="579" y="1621" class="field">PK (id)</text>
+    <text x="579" y="1644" class="field">
+      FK (campaignId) → SurveyCampaign (id)
+    </text>
+    <text x="579" y="1667" class="field">FK (courseId) → Course (id)</text>
+    <text x="579" y="1690" class="field">FK (senderId) → User (id)</text>
+    <text x="579" y="1713" class="field">FK (recipientId) → User (id)</text>
+  </g>
+  <g aria-label="Course">
+    <rect
+      x="1095"
+      y="1520"
+      width="510"
+      height="207"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="1095" y="1520" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="1095" y="1548" width="510" height="20" fill="#64748b" />
+    <text x="1113" y="1551" class="model">Course</text>
+    <text x="1113" y="1592" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 6 scalar
+    </text>
+    <text x="1113" y="1621" class="field">PK (id)</text>
+    <text x="1113" y="1644" class="field">UK1 (code)</text>
+    <text x="1113" y="1667" class="field">
+      FK (departmentId) → Department (id)
+    </text>
+  </g>
+  <g aria-label="CourseSection">
+    <rect
+      x="27"
+      y="1752"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="27" y="1752" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="27" y="1780" width="510" height="20" fill="#64748b" />
+    <text x="45" y="1783" class="model">CourseSection</text>
+    <text x="45" y="1824" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 4 scalar
+    </text>
+    <text x="45" y="1853" class="field">PK (id)</text>
+    <text x="45" y="1876" class="field">UK1 (semesterId, code)</text>
+    <text x="45" y="1899" class="field">FK (courseId) → Course (id)</text>
+    <text x="45" y="1922" class="field">FK (semesterId) → Semester (id)</text>
+  </g>
+  <g aria-label="Department">
+    <rect
+      x="561"
+      y="1752"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="561" y="1752" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="561" y="1780" width="510" height="20" fill="#64748b" />
+    <text x="579" y="1783" class="model">Department</text>
+    <text x="579" y="1824" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 5 scalar
+    </text>
+    <text x="579" y="1853" class="field">PK (id)</text>
+    <text x="579" y="1876" class="field">UK1 (code)</text>
+    <text x="579" y="1899" class="field">FK (facultyId) → Faculty (id)</text>
+  </g>
+  <g aria-label="Faculty">
+    <rect
+      x="1095"
+      y="1752"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="1095" y="1752" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="1095" y="1780" width="510" height="20" fill="#64748b" />
+    <text x="1113" y="1783" class="model">Faculty</text>
+    <text x="1113" y="1824" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 4 scalar
+    </text>
+    <text x="1113" y="1853" class="field">PK (id)</text>
+    <text x="1113" y="1876" class="field">UK1 (code)</text>
+  </g>
+  <g aria-label="Semester">
+    <rect
+      x="27"
+      y="1961"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="27" y="1961" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="27" y="1989" width="510" height="20" fill="#64748b" />
+    <text x="45" y="1992" class="model">Semester</text>
+    <text x="45" y="2033" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 6 scalar
+    </text>
+    <text x="45" y="2062" class="field">PK (id)</text>
+    <text x="45" y="2085" class="field">UK1 (code)</text>
+  </g>
+  <g aria-label="User">
+    <rect
+      x="561"
+      y="1961"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#f1f5f9"
+      stroke="#64748b"
+      stroke-width="2"
+    />
+    <rect x="561" y="1961" width="510" height="48" rx="14" fill="#64748b" />
+    <rect x="561" y="1989" width="510" height="20" fill="#64748b" />
+    <text x="579" y="1992" class="model">User</text>
+    <text x="579" y="2033" class="meta">
+      Ngữ cảnh lặp · Đã migrate đến Tuần 4 · 9 scalar
+    </text>
+    <text x="579" y="2062" class="field">PK (id)</text>
+    <text x="579" y="2085" class="field">UK1 (loginCode)</text>
+    <text x="579" y="2108" class="field">UK2 (email)</text>
+  </g>
+  <text x="27" y="2167" class="foot">
+    Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 34 runtime / 12
+    chỉ thiết kế · Tuần 8, cập nhật thực tế 29/10/2026
+  </text>
+  <text x="27" y="2192" class="foot">
+    SHA-256 DMMF:
+    bca4073a102d6c09bbee9b90882d08c750e6ea82ec7fafaeaacd9a153538eb20
+  </text>
+</svg>

@@ -16,3 +16,6 @@ prisma/migrations/20261029030000_week7_campaigns/migration.sql text eol=lf
 docs/assets/tuan-07/*.svg text eol=lf
 docs/assets/tuan-07/**/*.svg text eol=lf
 docs/assets/tuan-07/*.mmd text eol=lf
+
+docs/assets/tuan-08/*.svg text eol=lf
+docs/assets/tuan-08/*.mmd text eol=lf

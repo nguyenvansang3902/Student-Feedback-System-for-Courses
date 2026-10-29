@@ -1,0 +1,43 @@
+sequenceDiagram
+  autonumber
+  actor SV as Sinh viên
+  participant UI as Trình duyệt
+  participant RT as Route khảo sát
+  participant SS as StudentSurveyService
+  participant DB as MySQL
+  SV->>UI: Mở nhiệm vụ của mình
+  UI->>RT: GET nhiệm vụ (cookie phiên)
+  RT->>SS: Actor + taskId
+  SS->>DB: Tx chuẩn bị: mutex, quyền mới, task thuộc actor, lifecycle
+  DB-->>SS: Commit trạng thái đợt
+  SS->>DB: Tx đọc: quyền mới, task đã chốt, mẫu khóa, thời hạn
+  SS-->>RT: DTO form
+  RT-->>UI: Form, Cache-Control no-store
+  SV->>UI: Điền 5 loại câu, lưu nháp localStorage
+  Note over UI: Không server draft, không token trong nháp
+  UI->>RT: POST taskId/submit + answers + CSRF
+  RT->>RT: Origin/Host, phiên, policy, CSRF, giới hạn JSON
+  RT->>SS: submit(actor, taskId, answers)
+  SS->>DB: Tx chuẩn bị: quyền, chủ task, lifecycle, commit riêng
+  SS->>DB: BEGIN nộp, mutex trước SELECT, đọc lại quyền/task/mẫu
+  SS->>SS: Kiểm thời hạn, học kỳ, câu bắt buộc/NA/kiểu/lựa chọn
+  Note over SS,DB: Kiểm tra thất bại: rollback trước bước UPDATE
+  SS->>DB: UPDATE đúng task của actor WHERE PENDING và còn hợp lệ
+  alt Không đúng 1 hàng
+    SS->>DB: ROLLBACK
+    SS-->>RT: Lỗi chung, không nội dung/ID phiếu
+    RT-->>UI: HTTP 4xx/5xx, no-store
+  else Đổi đúng một nhiệm vụ
+    SS->>DB: INSERT response UUID + ngày VN, answers UUID
+    alt Chèn lỗi
+      SS->>DB: ROLLBACK task + response + answers
+      SS-->>RT: Lỗi đã che SQL/nội dung
+      RT-->>UI: Tải lại trạng thái, no-store
+    else Chèn thành công
+      SS->>DB: COMMIT
+      SS-->>RT: Chỉ DONE + doneDate
+      RT-->>UI: Xác nhận, no-store, không ID/nội dung phiếu
+      UI->>UI: Xóa nháp, hiển thị đã hoàn thành
+    end
+  end
+  Note over SS,DB: Không audit nộp, không cầu nối qua log, queue, session hoặc correlation

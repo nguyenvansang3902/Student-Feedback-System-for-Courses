@@ -5,7 +5,8 @@ import { authorizeAuthAction } from "@/server/policies/auth";
 import { requireCan } from "@/server/policies/can";
 import { AuthError, type AuthActor } from "./types";
 
-type CsrfPurpose = "admin" | "catalog" | "templates" | "campaigns";
+type CsrfPurpose =
+  "admin" | "catalog" | "templates" | "campaigns" | "student-surveys";
 function signature(payload: string, purpose: CsrfPurpose) {
   return createHmac("sha256", getAuthConfig().jwtSecret)
     .update(`sfs-${purpose}-csrf-v1:${payload}`)
@@ -42,6 +43,19 @@ export function assertCampaignsCsrf(
 ): void {
   requireCan(actor, "campaigns:read");
   assertCsrf(request, actor, "campaigns");
+}
+
+/** Chữ ký riêng cho nộp phiếu; token chỉ ở bộ nhớ phiên trình duyệt. */
+export function issueStudentSurveysCsrf(actor: AuthActor): string {
+  requireCan(actor, "student-surveys:submit");
+  return issueCsrf(actor, "student-surveys");
+}
+export function assertStudentSurveysCsrf(
+  request: NextRequest,
+  actor: AuthActor,
+): void {
+  requireCan(actor, "student-surveys:submit");
+  assertCsrf(request, actor, "student-surveys");
 }
 
 function issueCsrf(actor: AuthActor, purpose: CsrfPurpose): string {

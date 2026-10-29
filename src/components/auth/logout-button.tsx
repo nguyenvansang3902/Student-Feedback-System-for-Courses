@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { authRequest } from "./auth-client";
 import { focusRing } from "./auth-shell";
+import { clearAllSurveyDrafts } from "../student-surveys/survey-draft";
 
 export function LogoutButton() {
   const [busy, setBusy] = useState(false);
@@ -19,9 +20,11 @@ export function LogoutButton() {
         {},
         true,
       );
-      if (response.ok || response.status === 401)
+      if (response.ok || response.status === 401) {
+        clearAllSurveyDrafts();
         window.location.replace("/dang-nhap");
-      else setError(result.message || "Chưa đăng xuất được. Vui lòng thử lại.");
+      } else
+        setError(result.message || "Chưa đăng xuất được. Vui lòng thử lại.");
     } catch {
       setError("Chưa kết nối được với máy chủ. Hãy thử đăng xuất lại.");
     } finally {

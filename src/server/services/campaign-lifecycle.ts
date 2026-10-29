@@ -26,7 +26,7 @@ export const dueCampaignWhere = (
 ): Prisma.SurveyCampaignWhereInput => ({
   OR: [
     { status: "DA_DUYET", startsAt: { lte: now } },
-    { status: "DANG_MO", endsAt: { lte: now } },
+    { status: "DANG_MO", endsAt: { lt: now } },
   ],
 });
 
@@ -105,16 +105,14 @@ export async function advanceCampaignState(
       });
     for (let offset = 0; offset < cohort.pairs.length; offset += 500) {
       await tx.surveyTask.createMany({
-        data: cohort.pairs
-          .slice(offset, offset + 500)
-          .map((pair) => ({
-            id: randomUUID(),
-            campaignId: id,
-            sectionId: pair.sectionId,
-            studentId: pair.studentId,
-            status: "PENDING",
-            doneDate: null,
-          })),
+        data: cohort.pairs.slice(offset, offset + 500).map((pair) => ({
+          id: randomUUID(),
+          campaignId: id,
+          sectionId: pair.sectionId,
+          studentId: pair.studentId,
+          status: "PENDING",
+          doneDate: null,
+        })),
       });
     }
     const nextRevision = campaign.revision + 1;
@@ -197,14 +195,14 @@ export async function advanceCampaignState(
   // Catch up both transitions when the scheduler was absent for the whole window.
   if (
     campaign.status === "DANG_MO" &&
-    campaign.endsAt.getTime() <= now.getTime()
+    campaign.endsAt.getTime() < now.getTime()
   ) {
     const changed = await tx.surveyCampaign.updateMany({
       where: {
         id,
         status: "DANG_MO",
         revision: campaign.revision,
-        endsAt: { lte: now },
+        endsAt: { lt: now },
       },
       data: { status: "DA_DONG", revision: { increment: 1 } },
     });

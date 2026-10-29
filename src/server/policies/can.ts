@@ -33,6 +33,9 @@ export type PolicyAction =
   | "campaigns:approve"
   | "campaigns:operate"
   | "campaigns:progress"
+  | "student-surveys:list"
+  | "student-surveys:read"
+  | "student-surveys:submit"
   | "campaign-settings:read"
   | "campaign-settings:write"
   | "audit:list"
@@ -122,6 +125,14 @@ export function can(
   const grants = actorGrants(actor);
   if (adminActions.has(action))
     return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
+  if (
+    [
+      "student-surveys:list",
+      "student-surveys:read",
+      "student-surveys:submit",
+    ].includes(action)
+  )
+    return grants.some((grant) => grant.role === "SINH_VIEN");
   if (action === "campaign-settings:write")
     return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
   if (action === "campaign-settings:read")

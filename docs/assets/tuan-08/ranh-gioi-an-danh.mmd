@@ -1,0 +1,37 @@
+flowchart TB
+  subgraph BR["Trình duyệt — dữ liệu trên thiết bị"]
+    UI["Form động + xác nhận DONE/ngày"]
+    LS["localStorage: nháp theo tài khoản/task/mẫu<br/>Xóa khi DONE/đăng xuất; không token"]
+    UI <--> LS
+  end
+  subgraph APP["Máy chủ ứng dụng — vùng tin cậy kiểm quyền"]
+    RT["Route: cookie + Origin/Host + CSRF<br/>Giới hạn JSON; HTTP no-store"]
+    SV["Service: actor mới, task thuộc actor<br/>mẫu khóa, thời hạn, validation, transaction"]
+    RT --> SV
+    TASK["SurveyTask: studentId + đợt/lớp<br/>PENDING hoặc DONE + doneDate DATE"]
+    SV --> TASK
+    subgraph ANON["Vùng phiếu — không quan hệ ra ngoài"]
+      RESP["SurveyResponse<br/>UUID; scalar campaignId/sectionId<br/>submittedDate DATE"]
+      ANS["SurveyAnswer<br/>UUID; scalar questionId; giá trị<br/>CHO_KIEM_DUYET"]
+      RESP --> ANS
+    end
+    SV -- "Chỉ metadata đã kiểm + câu trả lời<br/>không actor/task/session/request/IP" --> RESP
+    DTO["DTO xác nhận: DONE + doneDate<br/>không ID/nội dung phiếu"]
+    SV --> DTO
+    SINK["Log / audit / queue / trace<br/>Không nội dung phiếu; không cầu nối danh tính–phiếu<br/>Không audit hành động nộp"]
+    NOTE["TASK và RESP không có đường quan hệ<br/>campaignId/sectionId/questionId là scalar<br/>không endpoint server draft hoặc đọc lại phiếu"]
+  end
+  UI -- "Cookie + taskId + answers + CSRF<br/>HTTPS khi triển khai" --> RT
+  DTO --> UI
+  subgraph INFRA["Hạ tầng — ngoài bảo đảm ẩn danh của ứng dụng"]
+    DBA["DBA / binlog / transaction trace / proxy log<br/>Có thể suy luận thời điểm và các hàng đổi cùng giao dịch"]
+    SMALL["Nhóm ít người, ngày/lớp và tự luận tự nhận diện<br/>vẫn có thể thu hẹp danh tính"]
+  end
+  APP -. "Không cam kết chống theo dõi hạ tầng" .-> DBA
+  ANON -. "Rủi ro suy luận" .-> SMALL
+  classDef identity fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a
+  classDef anonymous fill:#dcfce7,stroke:#15803d,color:#14532d
+  classDef limit fill:#fef3c7,stroke:#b45309,color:#78350f
+  class TASK identity
+  class RESP,ANS anonymous
+  class DBA,SMALL,LS limit
