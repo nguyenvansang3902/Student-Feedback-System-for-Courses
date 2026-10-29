@@ -143,3 +143,7 @@ Docker tắt sau gián đoạn được mở bằng shortcut trong Explorer, eng
 ## Tiếp tục Tuần 7 — 29/10/2026
 
 Người dùng yêu cầu tiếp tục Tuần 7 sau gián đoạn. AI hỗ trợ workflow đợt, readiness, chốt nhiệm vụ, cấu hình ngưỡng, lập lịch, kiểm thử và tài liệu. Quyết định nghiệp vụ do người dùng chọn: chặn khóa học kỳ khi còn đợt đã duyệt/đang mở. Đang kiểm migration collation và bảo toàn hash24 tập dữ liệu cũ; chưa ghi nhận nghiệm thu hoặc đóng góp sinh viên.
+
+## Chốt phần chính Tuần7 — 29/10/2026
+
+AI hỗ trợ service/API/UI, cấu hình ngưỡng, migration, readiness seed, scheduler/outbox, kiểm thử và tài liệu. Người dùng quyết định chặn khóa kỳ khi còn đợt đã duyệt/đang mở. Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b; [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) check/smoke qua. Check572/32file, build, SQL16, HTTP19+13, seed14, UI11nhóm26viewport26PNG và sơ đồ5Mermaid/10PNG đã kiểm. Hash24tập dữ liệu cũ giữ nguyên; prompt/AGENTS/phần5.6/8.3–8.6 và báo cáo/ảnh cũ không đổi. Các lỗi migration collation, generated-output ESLint, Reactkey/HMR/testharness và maillease đã ghi rõ/kiểm lại; không nhận lượt lỗi là qua. Tick11FR,103/219=47,0%; FR-145 chưa thực hiện, FR-160 chờ đủ phạm vi. Không gán công AI cho sinh viên, không điền ngày/tên GVHD yêu cầu.

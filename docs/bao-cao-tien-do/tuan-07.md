@@ -6,7 +6,7 @@
 
 **Kế hoạch giả định:** 11–17/11/2026, tính từng tuần7ngày từ30/09. **Thực hiện:** 29/10/2026 theo yêu cầu tiếp tục trực tiếp của người dùng sau G1. Làm sớm theo lệnh, không đổi ngày lịch sử hoặc điền thay ngày GVHD yêu cầu.
 
-**Trạng thái:** đang hoàn tất nghiệm thu giao diện, kiểm cuối và CI. AI hỗ trợ nháp kỹ thuật; nhóm phải đọc, thử và viết lại bằng lời của mình.
+**Trạng thái:** đã nghiệm thu phần chính FR-40–46/100/142–144; FR-145 P1 có điều kiện chưa thực hiện. AI hỗ trợ nháp kỹ thuật; nhóm phải đọc, thử và viết lại bằng lời của mình.
 
 ## 1. Mục tiêu của tuần
 
@@ -18,24 +18,43 @@ Có trang /dot-khao-sat cho ĐBCL/PĐT/lãnh đạo theo từng quyền. Máy ch
 
 Theo quyết định người dùng, PĐT không khóa học kỳ khi còn đợt DA_DUYET hoặc DANG_MO. Migration thêm ba bảng phục vụ xác nhận/email; runtime34/blueprint46. Đã xử lý collation và so hash24tập dữ liệu cũ khớp sau nâng cấp/seed. Không reset dữ liệu hoặc thay migration lịch sử.
 
-HTTP nghiệp vụ19/19, cấu hình/email13/13, SQL16/16 và seed14/14 đã qua trên dữ liệu giả; fixture dọn và cấu hình test khôi phục. Build đã qua trước vòng rà soát cuối. Kết quả fullcheck/UI/build/CI cuối xem [nghiệm thu](../NGHIEM_THU_TUAN_07.md), [QA](../QA_GIAO_DIEN_TUAN_07.md), [truy vết](../TRUY_VET.md). Commit/CI được ghi sau khi các cổng thực tế hoàn tất.
+HTTP nghiệp vụ19/19, cấu hình/email13/13, SQL16/16 và seed14/14 đã qua trên dữ liệu giả; fixture dọn và cấu hình test khôi phục. Build đã qua trước vòng rà soát cuối. Fullcheck572/572 trong32file, build và UI11nhóm/26viewport/26PNG qua. Kết quả cuối xem [nghiệm thu](../NGHIEM_THU_TUAN_07.md), [QA](../QA_GIAO_DIEN_TUAN_07.md), [truy vết](../TRUY_VET.md). Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b; [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA. CI main sau chốt tài liệu được đối chiếu riêng.
 
 ## 3. Đối chiếu kế hoạch
 
 | Mục | Hiện trạng | Giới hạn |
 | --- | --- | --- |
-| Tạo/sửa/phạm vi/lịch/ngưỡng | Đã có mã và kiểm HTTP | Chờ cổng cuối trước tick |
+| Tạo/sửa/phạm vi/lịch/ngưỡng | Đã có mã và kiểm HTTP | Đã qua cổng cuối và tick FR |
 | Trình → PĐT → lãnh đạo, khóa mẫu | HTTP và trạng thái qua | Không thêm tách người tạo/người duyệt ngoài prompt |
 | Readiness/xác nhận/drift | Đủ RS01–06, snapshot, cảnh báo | Tài khoản pending/disabled vẫn thuộc cohort đăng ký |
 | Chốt task/scheduler/ensure |20ensure đồng thời và bắt kịp cửa sổ qua | Scheduler cần chạy để xử lý mà không đợi truy cập |
 | Gia hạn/đóng/hủy/tiến độ | HTTP và queue qua | Không làm form/nộp phiếu Tuần8 |
 | Cấu hình ngưỡng FR-100 | TOTP thật,10role, CAS qua | Không đổi ngưỡng hồi tố đợt cũ |
 | ImportBatch/hoàn tác FR-145 | Chưa thực hiện | P1 có điều kiện theo kế hoạch; giữ backlog, chưa được người dùng cắt |
-| Tài liệu/sơ đồ/ảnh/nháp hiện thực | Đang chốt | Không sửa báo cáo/ảnh tuần cũ |
+| Tài liệu/sơ đồ/ảnh/nháp hiện thực | Hoàn thành | Không sửa báo cáo/ảnh tuần cũ |
 
 ## 4. Tiến độ lũy kế
 
-Chỉ cập nhật checkbox sau khi nghiệm thu. Lệnh npm run progress tính theo trọng số P0=3/P1=2/P2=1, mẫu số219 và84FR của Điều chỉnh số01; không tính bằng cảm nhận hoặc số file. Mốc G1 là71/219=32,4%,25FR. Số cuối và bảng module sẽ cập nhật sau các cổng cuối trong phiên.
+Sau nghiệm thu11FR, npm run progress trả **103/219=47,0%**,36/84FR. Trọng số P0=3/P1=2/P2=1; mốc G1 là71/219=32,4%,25FR. Kế hoạch lũy kế Tuần7 là105/219=47,9%, còn2điểm do FR-145 P1 có điều kiện chưa thực hiện; không tự coi là đã cắt.
+
+| Module | Tiến độ thực tế |
+| --- | --- |
+| M1 Xác thực và phiên | 95.7% (22/23 điểm) |
+| M2 Người dùng, phân quyền, kiểm toán | 100.0% (9/9 điểm) |
+| M3 Danh mục và nhập liệu | 100.0% (9/9 điểm) |
+| M4 Mẫu phiếu | 100.0% (16/16 điểm) |
+| M5 Đợt khảo sát | 90.9% (20/22 điểm) |
+| M6 Làm khảo sát | 0.0% (0/14 điểm) |
+| M7 Kết quả | 0.0% (0/18 điểm) |
+| M8 Phản hồi | 0.0% (0/19 điểm) |
+| M9 Thông báo | 0.0% (0/7 điểm) |
+| M10 Báo cáo | 0.0% (0/12 điểm) |
+| M11 Hệ thống | 81.8% (9/11 điểm) |
+| M12 Mở rộng | 0.0% (0/3 điểm) |
+| M13 Phòng Đào tạo | 68.2% (15/22 điểm) |
+| M14 Phòng Khảo thí | 23.1% (3/13 điểm) |
+| M15 Phòng Thanh tra | 0.0% (0/18 điểm) |
+| M16 Ma trận quyền mở rộng | 0.0% (0/3 điểm) |
 
 Mốc lịch giả định của Tuần7 ở11–17/11, phiên thực hiện29/10 là sớm theo yêu cầu người dùng; điều này không thay kết luận tiến độ chức năng theo checkbox. Không bịa lịch trường hoặc thời gian đóng góp sinh viên.
 

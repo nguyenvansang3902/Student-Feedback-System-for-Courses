@@ -2,7 +2,7 @@
 
 Thực hiện ngày **29/10/2026**, theo yêu cầu người dùng tiếp tục Tuần7 sau G1. Lệnh bằng lời tự nhiên được ghi nhận đúng nội dung; không gán người dùng đã gõ câu lệnh mẫu. Mốc kế hoạch giả định của Tuần7 là **11–17/11/2026**; nhóm đối chiếu lịch trường. Không ghi lùi ngày hoặc tự điền ngày/tên GVHD yêu cầu.
 
-**Trạng thái phiên:** đang hoàn tất kiểm giao diện, hồi quy và CI; chưa tick chức năng trước cổng cuối.
+**Trạng thái phiên:** đã nghiệm thu FR-40–46/100/142–144. [CI nguồn 39d5648](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) qua check và smoke đúng SHA; main/tài liệu cuối có lượt CI riêng. FR-145 P1 có điều kiện vẫn chưa thực hiện.
 
 ## Phạm vi và hành vi
 
@@ -27,7 +27,9 @@ Giao diện sinh viên trả lời thuộc Tuần8; tổng hợp/công bố thu�
 | Seed mới riêng | 14/14, nâng cấp lặp giữ mật khẩu/trạng thái/mẫu/phiếu cũ | scripts/test-demo.mjs và verify-demo.ts |
 | Build | Next16.4.3 qua, gồm routes/pages mới | next build; chạy lại sau mọi sửa runtime còn phát sinh |
 | Audit phụ thuộc | 0 ở cả năm mức | npm audit JSON, ngày29/10; không thay kiểm bảo mật toàn hệ thống |
-| Giao diện / fullcheck / CI | Đang hoàn tất | Cập nhật cổng cuối trong phiên |
+| Full check |572/572 trong32file, schema/ERD/lint/TypeScript qua | npm run check trên nguồn cuối |
+| Giao diện |11nhóm/26viewport/26PNG,0pageerror/Reacterror/tràn ngang/thiếu nhãn | QA_GIAO_DIEN_TUAN_07.md |
+| CI nguồn |check/smoke qua đúng 39d5648; gồm hồi quy các tuần trước | [Actions](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) |
 
 HTTP nghiệp vụ kiểm ma trận10vai trò; CSRF/Origin/giới hạn thực256KiB; bốn phạm vi; đủ RS và trạng thái; xác nhận rồi đổi đăng ký;20 ensure đồng thời chỉ mở/chốt một lần; đóng/gia hạn/rút/hủy; tiến độ25% từ4task/1DONE; mất grant/phiên có hiệu lực ngay; race khóa kỳ/duyệt. Scheduler CLI hai lượt: lượt đầu gửi4thư thật,2địa chỉ/tài khoản không gửi được ghi FAILED; lượt hai không gửi lại. Đây là dữ liệu giả trong DB có marker riêng.
 
@@ -44,3 +46,9 @@ Seed W7 có marker riêng, hai đợt nháp và tám lớp trong hai kỳ để 
 [ADR-008](decisions/ADR-008-dot-khao-sat-va-chot-danh-sach.md), [giải thích/5 câu bảo vệ](GIAI_THICH/tuan-07.md), [sơ đồ](SO_DO_TUAN_07.md), [nháp chương4](bao-cao-tieu-luan/chuong-4-hien-thuc.md), [báo cáo tuần](bao-cao-tien-do/tuan-07.md), [truy vết](TRUY_VET.md), [ma trận](MA_TRAN_QUYEN.md), README được cập nhật. Các báo cáo/ảnh tuần cũ và phần5.6/8.3–8.6 không thay đổi.
 
 Lịch cần scheduler hoạt động để xử lý mà không đợi truy cập. Email có retry bền nhưng vẫn có thể gửi lặp nếu tiến trình chết sau SMTP nhận trước ghi SENT; không nhận exactly-once email. Chưa kiểm tải đồng thời1500request hoặc tuyên bố chứng nhận WCAG. Kết quả lint/typecheck/unit/build không thay kiểm UI/HTTP/MySQL; các lượt lỗi không được tính là nghiệm thu. Chỉ dữ liệu giả, không deploy công khai hoặc gửi thư ra dịch vụ thật.
+
+## Chốt phiên
+
+Chấp nhận11FR nêu trên, thêm32điểm:103/219=47,0%,36/84FR; không tick FR-145/160. Lượt fullcheck đầu vướng hai output Next mới chưa được ESLint bỏ qua; đã thêm ignore đúng thư mục sinh tự động và chạy lại toàn cổng572qua. Rà soát phát hiện lease email lô sau có thể bị nhận lại: CAS claim thêm leaseUntil và renew/kiểm owner ngay trước SMTP; unit22 cùng HTTP19+13 trên nguồn cuối qua. MySQL20worker chỉ nhận/gửi1thư, retry0 và fixture dọn. Build cuối qua sau sửa. Không tính các lượt lỗi là nghiệm thu.
+
+Đã cập nhật báo cáo10mục/nháp chương4/5câu bảo vệ/README/progress/truy vết/nhật ký AI. Web3000 và scheduler nền hoạt động với DB chính; health200 chỉ xác nhận ứng dụng, database:not_checked vẫn giữ đúng thiết kế. Bằng chứng bảo toàn dữ liệu là hash24tập và Prisma/SQL riêng.

@@ -10,6 +10,8 @@ Trình soạn và xem trước có cờ **Nhóm tiêu chí kiểm tra, đánh gi
 
 Sau khi kéo mã mới, dừng web rồi chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed` và mở lại `npm.cmd run dev`. Xem phần [migration](#shadow-và-migration) về preflight bắt buộc. Kết quả kiểm G1 cập nhật tại [PROJECT_STATE](docs/PROJECT_STATE.md), [PROGRESS](docs/PROGRESS.md) và [TRUY_VET](docs/TRUY_VET.md). Những số liệu/CI Tuần 1–6 bên dưới là bằng chứng lịch sử trước điều chỉnh.
 
+Nghiệm thu phần chính Tuần7 ngày **29/10/2026**: **572/572 test**, build, HTTP19+13, seed14 và UI26viewport qua. [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) của nguồn 39d5648 xanh check/smoke. Tiến độ **103/219=47,0%**; FR-145 P1 có điều kiện chưa thực hiện. [Báo cáo](docs/bao-cao-tien-do/tuan-07.md).
+
 Nghiệm thu G1 ngày **29/10/2026**: **346/346 test**, build qua; [CI 40750644805](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805) của mã `023b619` xanh check/smoke. Tiến độ **71/219 = 32,4%** sau mở rộng phạm vi. Xem [báo cáo phiên](docs/NGHIEM_THU_BO_SUNG_01.md) và [QA giao diện](docs/QA_GIAO_DIEN_BO_SUNG_01.md); FR-160 chỉ phần đang có.
 
 Người dùng đã yêu cầu tiếp tục Tuần 7 sau G1. ĐBCL tạo/trình đợt tại [/dot-khao-sat](http://localhost:3000/dot-khao-sat), PĐT xác nhận dữ liệu theo RS-01–06, lãnh đạo duyệt. Đến giờ mở, hệ thống chốt nhiệm vụ theo đăng ký hiện tại; thay đổi sau mở không đổi task. ADMIN cấu hình ngưỡng tại /quan-tri/cau-hinh-khao-sat bằng MFA và mã TOTP mới. Bằng chứng cuối xem [nghiệm thu Tuần7](docs/NGHIEM_THU_TUAN_07.md). Giao diện sinh viên trả lời thuộc Tuần8; kết quả gộp Khảo thí và hồ sơ Thanh tra vẫn theo lịch sau.

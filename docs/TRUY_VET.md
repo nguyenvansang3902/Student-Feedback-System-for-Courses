@@ -273,3 +273,7 @@ Lượt HTTP/MySQL đợt **19/19** và cấu hình/queue **13/13** đã qua, fi
 ## 5. Quy tắc cập nhật
 
 Khi hiện thực mỗi tuần, thay tên miền dự kiến bằng đường dẫn service/policy thật và tên test gắn mã, ghi command/commit/CI/ảnh thật; chỉ tick PROGRESS sau test và nghiệm thu. Tệp xuất/trạng thái chưa hoàn thành là luồng riêng, không ghép với phiếu. Các sơ đồ, wireframe, blueprint và checklist là thiết kế có thể review, không thay bằng chứng runtime.
+
+### Chốt bằng chứng nguồn Tuần7
+
+Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b, [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA, gồm migration sạch Linux và hồi quy tuần trước. Check572/32file; build; HTTP19+13 trên nguồn saufixlease; seed14; UI11nhóm26viewport26PNG; sơ đồ5Mermaid/10PNG. Hash24tập main khớp,648link nội bộ/5mục bảo vệ/48tệp lịch sử/AGENTS/prompt bổ sung qua. Chấp nhận FR-40–46/100/142–144,103/219=47,0%; FR-145/160 chưa tick. Main/tài liệu cuối theo CI riêng.

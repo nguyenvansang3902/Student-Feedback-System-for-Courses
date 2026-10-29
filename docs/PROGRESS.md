@@ -45,13 +45,13 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M5 Đợt khảo sát
 
-- [ ] FR-40 [P0] tạo/sửa đợt (Tuần 7)
-- [ ] FR-41 [P0] phạm vi (toàn trường/khoa/bộ môn/danh sách lớp) (Tuần 7)
-- [ ] FR-42 [P0] trình duyệt, duyệt, từ chối (Tuần 7)
-- [ ] FR-43 [P0] chốt danh sách và sinh nhiệm vụ khi mở (Tuần 7)
-- [ ] FR-44 [P0] tự động mở/đóng (idempotent) (Tuần 7)
-- [ ] FR-45 [P1] gia hạn, đóng sớm, hủy (Tuần 7)
-- [ ] FR-46 [P0] theo dõi tiến độ và tỉ lệ tham gia (Tuần 7)
+- [x] FR-40 [P0] tạo/sửa đợt (Tuần 7)
+- [x] FR-41 [P0] phạm vi (toàn trường/khoa/bộ môn/danh sách lớp) (Tuần 7)
+- [x] FR-42 [P0] trình duyệt, duyệt, từ chối (Tuần 7)
+- [x] FR-43 [P0] chốt danh sách và sinh nhiệm vụ khi mở (Tuần 7)
+- [x] FR-44 [P0] tự động mở/đóng (idempotent) (Tuần 7)
+- [x] FR-45 [P1] gia hạn, đóng sớm, hủy (Tuần 7)
+- [x] FR-46 [P0] theo dõi tiến độ và tỉ lệ tham gia (Tuần 7)
 - [ ] FR-47 [P1] nhắc sinh viên chưa hoàn thành (Tuần 9)
 
 ## M6 Làm khảo sát
@@ -98,7 +98,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M11 Hệ thống
 
-- [ ] FR-100 [P0] cấu hình ngưỡng (Tuần 7)
+- [x] FR-100 [P0] cấu hình ngưỡng (Tuần 7)
 - [x] FR-101 [P0] dữ liệu demo (seed) (Tuần 5)
 - [x] FR-102 [P0] health check (Tuần 1)
 - [ ] FR-103 [P1] script sao lưu/khôi phục (Tuần 14)
@@ -113,9 +113,9 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 - [x] FR-140 [P0] đổi quyền CRUD dữ liệu đào tạo và import sang PHONG_DAO_TAO; khoa/bộ môn do ADMIN — việc bù G1 (Tuần 6)
 - [x] FR-141 [P0] PĐT khóa/mở khóa học kỳ, mở khóa có lý do, audit và thông báo ĐBCL — việc bù G1 (Tuần 6)
-- [ ] FR-142 [P0] kiểm tra sẵn sàng của đợt theo RS-01–RS-06 (Tuần 7)
-- [ ] FR-143 [P0] PĐT xác nhận hoặc trả về dữ liệu đối tượng khảo sát (Tuần 7)
-- [ ] FR-144 [P0] cảnh báo lệch dữ liệu khi mở đợt, chốt theo dữ liệu hiện tại (Tuần 7)
+- [x] FR-142 [P0] kiểm tra sẵn sàng của đợt theo RS-01–RS-06 (Tuần 7)
+- [x] FR-143 [P0] PĐT xác nhận hoặc trả về dữ liệu đối tượng khảo sát (Tuần 7)
+- [x] FR-144 [P0] cảnh báo lệch dữ liệu khi mở đợt, chốt theo dữ liệu hiện tại (Tuần 7)
 - [ ] FR-145 [P1] lô nhập ImportBatch và hoàn tác khi chưa bị đợt chốt dùng — tùy thời gian, không tự cắt (Tuần 7)
 - [ ] FR-146 [P0] hàng đợi phản hồi TO_CHUC_LOP_HOC của PĐT (Tuần 10)
 - [ ] FR-147 [P1] dashboard PĐT: độ sẵn sàng, lớp lỗi, phản hồi đang chờ (Tuần 12)
@@ -148,8 +148,8 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | --- | --- | --- | --- |
 | BR-50 | P0 | G1/Tuần6 | Đạt G1: policy/service/API/UI và TC-PDT-01 đã qua |
 | BR-51 | P0 | G1/Tuần6 | Đạt G1: lý do/CAS/audit/thư Mailpit thật; SMTP lỗi có trạng thái rõ |
-| BR-52 | P0 | Tuần7 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-53 | P0 | Tuần7 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-52 | P0 | Tuần7 | Đạt: RS-01–06, snapshot, ghi chú cảnh báo và trả về có lý do; TC-PDT-02 qua unit/HTTP/UI |
+| BR-53 | P0 | Tuần7 | Đạt: drift vẫn chốt hiện tại, audit/queue PĐT-ĐBCL, sau mở task bất biến; TC-PDT-03 qua |
 | BR-54 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-55 | P1 | Tuần7 (P1) | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-56 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
@@ -165,3 +165,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-66 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | G1 giữ deny default/ADMIN không có quyền ngầm; kiểm module tương lai chờ Tuần13 |
+
+## Nghiệm thu phần chính Tuần 7 — 29/10/2026
+
+FR-40–46, FR-100 và FR-142–144 đã qua check572/572 (32file), build, SQL16, HTTP19+13, seed14, UI11nhóm/26viewport/26PNG. [CI nguồn 39d5648](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA. Thêm32điểm: **103/219=47,0%**,36/84FR. FR-145 P1 có điều kiện chưa thực hiện, giữ backlog và chưa được người dùng cắt; FR-160 còn chờ đủ phạm vi Tuần13. [Báo cáo Tuần7](bao-cao-tien-do/tuan-07.md).

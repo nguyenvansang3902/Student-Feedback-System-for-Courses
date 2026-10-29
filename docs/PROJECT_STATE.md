@@ -1,45 +1,36 @@
 # Trạng thái dự án
 
-- Đề tài: website khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 7 — đang nghiệm thu, thực hiện ngày29/10/2026 (Asia/Saigon).
-- Đã xác minh Tuần 1–6 hoàn thành ở main5346de9 trước điều chỉnh; không sửa báo cáo tuần cũ hoặc ghi lùi ngày.
-- Người dùng đã yêu cầu tiếp tục tuần kế tiếp sau G1 và tiếp tục Tuần7; đây là lệnh bằng lời tự nhiên, không gán đã gõ câu lệnh mẫu.
+- Đề tài: website khảo sát và phản hồi sinh viên về môn học;15tuần từ30/09/2026, khởi động thực tế02/10.
+- Tuần hiện tại: Tuần 7 — đã nghiệm thu phần chính ngày29/10/2026 (Asia/Saigon).
+- Người dùng yêu cầu tiếp tục tuần kế tiếp sau G1 và tiếp tục Tuần7 bằng lời tự nhiên; không gán là đã gõ câu lệnh mẫu.
+- Tuần1–6/G1 và báo cáo lịch sử được giữ. Mốc Tuần7 giả định11–17/11; làm sớm theo lệnh, không ghi lùi ngày.
 
-## Nền và việc bù đã nghiệm thu
+## Phần đã nghiệm thu
 
-- Auth/JWT/refresh, ADMIN TOTP, RBAC, quản lý người dùng, danh mục/import và mẫu phiếu FR30–35 đã có từ Tuần1–6.
-- Điều chỉnh:10 vai trò; PĐT ghi dữ liệu đào tạo/import, ADMIN MFA ghi khoa/bộ môn, ĐBCL chỉ đọc danh mục và vẫn soạn mẫu.
-- Ba role mới gán GLOBAL hợp lệ; cấu hình MFA nhận đủ10 vai trò, ADMIN vẫn bắt buộc2FA.
-- Mở khóa kỳ cần lý do10–500 ký tự; mutex/CAS/fresh guard, audit và email ĐBCL sau commit; UI báo kết quả gửi.
-- isAssessmentGroup default false xuyên editor/API/DB/preview/clone/version; mẫu khóa không sửa được.
-- Seed thêm PDT2026001/KT2026001/TT2026001/TT2026002, family mặc định3 nhóm7 câu/1 nhóm đánh giá; giữ default tùy chỉnh.
-- Migration20261028220000_amendment_01_roles_assessment đã deploy main; npm db:deploy kiểm enum cũ và đúng Docker/cổng/database trước DDL.
-- Hash16 tập main khớp trước/sau:1.568 tài khoản cũ, cây2 mẫu cũ, đợt/task/78 phiếu/234 đáp án/3 tổng hợp/phản hồi/lịch sử.
-- Runtime31/blueprint46;7 bảng bổ sung và Feedback.identityLevel chỉ thiết kế, chưa migrate/service/UI.
-- Lưu prompt nguyên văn; cập nhật đặc tả/kế hoạch/mẫu báo cáo/truy vết/ma trận; AGENTS chỉ thêm3 dòng; giữ5.6/8.3–8.6.
+- ĐBCL tạo/sửa/trình đợt; bốn phạm vi, lịch giờ Việt Nam và ngưỡng riêng.
+- PĐT kiểm RS-01–06, lỗi chặn/cảnh báo cần ghi chú; xác nhận/trả về và lưu snapshot/hash/người/thời gian.
+- Lãnh đạo duyệt/từ chối, duyệt khóa phiên bản mẫu cùng transaction; duyệt muộn có thể mở ngay khi đến giờ.
+- Scheduler/ensure mở và đóng idempotent, chốt task từ đăng ký hiện tại; drift vẫn mở/audit/cảnh báo PĐT-ĐBCL; sau mở không resync task.
+- Rút trước mở cần vòng xác nhận/duyệt mới; gia hạn tăng hạn, đóng sớm/hủy theo trạng thái có lý do; tiến độ task không trả định danh sinh viên/đáp án.
+- FR-100: ADMIN MFA ghi cấu hình bằng TOTP mới/CAS; ĐBCL/PĐT/LĐ chỉ đọc. Bốn ngưỡng lưu riêng theo đợt, ngưỡng RS-04 dùng cấu hình readiness hiện tại.
+- Người dùng chọn chặn khóa học kỳ khi còn DA_DUYET hoặc DANG_MO; mutex chung với duyệt/mở, đã kiểm race.
+- Queue email có dedup/lease/CAS/renew trước SMTP/retry5lần; SMTP ngoài giao dịch, scheduler xử lý thư qua Mailpit cục bộ.
 
-## Bằng chứng và tiến độ
+## Bằng chứng nguồn cuối
 
-- Check29/10 02:00:346/346 trong25 file; schema/ERD/lint/TypeScript và build Next16.4.3 qua.
-- SQL16, HTTP auth24/quản trị28/danh mục23/mẫu20, CLI5, seed12 nhóm qua; fixture dọn.
-- UI7 nhóm/16 viewport/16 PNG đã xem;0JSerror/overflow/thiếu nhãn; seed không đổi. ERD4 Mermaid render qua/9 PNG đã xem.
-- CI mã023b619: https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40750644805 đã qua check/smoke; CI main/tài liệu cuối đối chiếu đúng SHA trong Actions.
-- FR-140/141/148 đã tick: **71/219 = 32,4%**,25/84 FR. Lịch sử Tuần6 là62/163=38,0%; mẫu số tăng do21 FR mới.
-- FR-160/TC-ALL-01 đạt phần hiện có; nghiệm thu toàn bộ/kiểm tệp xuất chờ Tuần13 nên chưa tick, mốc tính kế hoạch là13.
-- Báo cáo: NGHIEM_THU_BO_SUNG_01.md; QA_GIAO_DIEN_BO_SUNG_01.md; SO_DO_BO_SUNG_01.md; TRUY_VET.md.
+- Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b; [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) check/smoke thành công đúng SHA. CI main/tài liệu cuối đối chiếu SHA riêng trong Actions.
+- npm run check:572/572 trong32file; schema/ERD/lint/TypeScript qua. npm run build Next16.4.3 qua.
+- SQL16; HTTP Tuần7 19/19, ngưỡng/email13/13; seed14/14; fixture dọn, cấu hình test khôi phục.
+- UI11nhóm/26viewport/26PNG đã xem, không pageerror/Reacterror/tràn ngang/thiếu nhãn trong phép đo; ADMIN TOTP thật. Sơ đồ5Mermaid/10PNG đã xem.
+- Bảy migration đồng bộ; runtime34/blueprint46. Sửa collation migration mới dở bằng DDL đã đối chiếu, không reset/drop. Hash24tập dữ liệu cũ khớp sau migration/seed; giữ78phiếu/234đáp án/3tổng hợp cũ.
+- Dependency audit0; kiểm648liên kết nội bộ,5mục bảo vệ,48tệp lịch sử và AGENTS/prompt bổ sung không đổi.
+- Tiến độ:103/219=47,0%,36/84FR. FR-40–46/100/142–144 tick; FR-145/160 chưa tick.
 
-## Giới hạn và việc tiếp theo
+## Cách mở và phần còn lại
 
-- SMTP sau commit chưa có outbox/retry bền; FAILED/NO_RECIPIENT hiển thị rõ, không nhận gửi thành công giả.
-- Hai tài khoản Thanh tra mới chỉ là nền; chưa có hồ sơ hoặc phép thử xung đột lợi ích tương lai.
-- Seed readiness/phản hồi mới/hồ sơ/cảnh báo/kết quả gộp bổ sung khi triển khai đúng Tuần7/9–12.
-- Ước lượng trong báo cáo G1; nhóm tự điền ngày/tên GVHD yêu cầu. Không gán công AI thành đóng góp sinh viên.
-- Chỉ dữ liệu giả; không reset/xóa DB/volume hoặc deploy công khai. Mốc15 tuần giữ nguyên, không tự cắt tính năng.
-- Tuần 7: workflow ĐBCL → PĐT → lãnh đạo, readiness, mở/đóng và chốt task, cấu hình ngưỡng; chưa nghiệm thu. Không làm giao diện trả lời Tuần 8.
-
-## Phiên Tuần 7 đang thực hiện
-
-- Nguồn đang ở nhánh feat/week7-survey-campaigns; không tick FR trước kiểm thử thực tế.
-- Người dùng đã chọn chặn khóa học kỳ nếu còn đợt DA_DUYET hoặc DANG_MO (giải quyết tình huống BR-17/53).
-- Migration mới gặp MySQL 3780 do collation bảng mới khác khóa ngoại hiện có; đang phục hồi từng DDL đã áp dụng, không reset hoặc xóa bảng/dữ liệu.
-- Snapshot hash 24 tập dữ liệu cũ được giữ trong .local để đối chiếu sau migration/seed.
+- Web chính http://localhost:3000/dot-khao-sat; demo DBCL2026001/PDT2026001/LD2026001 theo README. Web và scheduler nền đã được mở trong phiên; sau tắt máy khởi động lại theo README.
+- FR-145 ImportBatch/hoàn tác là P1 có điều kiện, chưa thực hiện, giữ backlog; chưa có quyết định cắt của người dùng.
+- Tuần8 là danh sách nhiệm vụ/form/nộp ẩn danh; chỉ bắt đầu khi người dùng yêu cầu. Kết quả/công bố/Khảo thí/Thanh tra theo tuần sau, không suy hoàn thành từ seed.
+- Scheduler cần chạy để xử lý theo lịch mà không đợi truy cập. SMTP vẫn có cửa sổ gửi lặp sau crash giữa SMTP nhận và ghi SENT; không nhận exactly-once email.
+- Chưa kiểm tải1500request/WCAG hoặc mọi thiết bị. Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh.
+- Tài liệu: NGHIEM_THU_TUAN_07.md, QA_GIAO_DIEN_TUAN_07.md, SO_DO_TUAN_07.md, ADR-008, bao-cao-tien-do/tuan-07.md và nháp chương4.
