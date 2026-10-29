@@ -244,6 +244,11 @@ export function StudentSurveyForm({
   const pending = useRef(false);
   const savingAllowed = useRef(true);
   const draftEpoch = useRef(0);
+  const initialDraftNotice = useRef<{
+    initial: StudentSurveyDetail;
+    userId: string;
+    state: "invalid" | "expired";
+  } | null>(null);
   const clock = useRef(createSurveyClock(serverTime));
   const template = item.template;
   const context: DraftContext | null = template
@@ -264,8 +269,10 @@ export function StudentSurveyForm({
         initial.status === "DONE" ||
         initial.availability === "CLOSED" ||
         initial.availability === "SEMESTER_LOCKED"
-      )
+      ) {
+        initialDraftNotice.current = null;
         clearTaskSurveyDrafts({ userId, taskId: initial.id });
+      }
       return;
     }
     const epoch = draftEpoch.current;
@@ -279,6 +286,16 @@ export function StudentSurveyForm({
       undefined,
       readSurveyClock(clock.current),
     );
+    // Replay effect không được làm mất thông báo sau khi nháp hỏng đã bị dọn.
+    // Ref chỉ giữ trạng thái thông báo, không giữ thêm bản sao đáp án.
+    if (loaded.state === "invalid" || loaded.state === "expired")
+      initialDraftNotice.current = { initial, userId, state: loaded.state };
+    else if (
+      loaded.state === "empty" &&
+      initialDraftNotice.current?.initial === initial &&
+      initialDraftNotice.current.userId === userId
+    )
+      loaded.state = initialDraftNotice.current.state;
     queueMicrotask(() => {
       if (!savingAllowed.current || epoch !== draftEpoch.current) return;
       setDraft({
@@ -331,6 +348,7 @@ export function StudentSurveyForm({
           ["CLOSED", "SEMESTER_LOCKED"].includes(result.item.availability)
         ) {
           savingAllowed.current = false;
+          initialDraftNotice.current = null;
           clearTaskSurveyDrafts({ userId, taskId: item.id });
           setDraft({
             ready: false,
@@ -394,6 +412,7 @@ export function StudentSurveyForm({
         if (event.kind === "logout") {
           draftEpoch.current++;
           savingAllowed.current = false;
+          initialDraftNotice.current = null;
           clearAllSurveyDrafts(undefined, false);
           setDraft({
             ready: false,
@@ -406,6 +425,7 @@ export function StudentSurveyForm({
         if (event.userId !== userId || event.taskId !== item.id) return;
         draftEpoch.current++;
         savingAllowed.current = false;
+        initialDraftNotice.current = null;
         clearTaskSurveyDrafts({ userId, taskId: item.id }, undefined, false);
         setDraft({
           ready: false,
@@ -420,6 +440,7 @@ export function StudentSurveyForm({
 
   function completed() {
     savingAllowed.current = false;
+    initialDraftNotice.current = null;
     clearTaskSurveyDrafts({ userId, taskId: item.id });
     setDraft({ ready: false, answers: {}, message: "" });
     router.replace(`/khao-sat/${item.id}/da-nop`);
@@ -542,6 +563,7 @@ export function StudentSurveyForm({
           result.item.availability === "CLOSED" ||
           result.item.availability === "SEMESTER_LOCKED"
         ) {
+          initialDraftNotice.current = null;
           clearTaskSurveyDrafts({ userId, taskId: item.id });
           setDraft({
             ready: false,
@@ -585,6 +607,7 @@ export function StudentSurveyForm({
         !result.item.canSubmit &&
         ["CLOSED", "SEMESTER_LOCKED"].includes(result.item.availability)
       ) {
+        initialDraftNotice.current = null;
         clearTaskSurveyDrafts({ userId, taskId: item.id });
         setDraft({
           ready: false,
