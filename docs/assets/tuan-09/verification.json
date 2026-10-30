@@ -2,11 +2,11 @@
   "week": 9,
   "recordedOn": "2026-10-30",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "local_checks_passed_ci_pending",
+  "status": "accepted",
   "source": {
     "branch": "feat/week9-survey-results",
     "base": "8af1dee2063187fe167f8ace99317ec9e0eb32e5",
-    "verifiedCommit": null
+    "verifiedCommit": "5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f"
   },
   "quality": {
     "check": {
@@ -97,7 +97,9 @@
     "horizontalOverflows": 0,
     "missingInputLabels": 0,
     "allImagesReviewed": true,
-    "finalFrameRefresh": "pending"
+    "finalFrameRefresh": "passed",
+    "finalFixturePngs": 42,
+    "finalMainDemoPngs": 4
   },
   "preservation": {
     "status": "passed",
@@ -253,15 +255,55 @@
     "outOfBoundsLabels": 0
   },
   "ci": {
-    "status": "pending",
-    "run": null,
-    "commit": null
+    "status": "success",
+    "run": "41079971520",
+    "commit": "5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f",
+    "jobs": {
+      "check": "success",
+      "smoke": "success"
+    },
+    "scope": "application_source",
+    "mainDocumentationCI": "pending_separate_commit"
   },
   "limitations": [
-    "Application-level anonymity; no claim against DBA, binlog, infrastructure logs or self-identifying text.",
-    "No load certification for 1500 simultaneous requests or universal device/WCAG certification.",
-    "Result CSV/Excel/PDF exports belong to Week 12 and are not accepted here.",
-    "FR-145 remains conditional P1 backlog; FR-160 full matrix remains Week 13.",
-    "Only fake local data; no public deployment."
-  ]
+    "Ẩn danh ở mức ứng dụng; không tuyên bố chống DBA, binlog, log hạ tầng hoặc tự luận tự tiết lộ danh tính.",
+    "Chưa chứng nhận tải 1.500 yêu cầu đồng thời, mọi thiết bị hoặc WCAG.",
+    "Xuất kết quả CSV/Excel/PDF thuộc Tuần 12, chưa nghiệm thu ở đây.",
+    "FR-145 còn backlog P1 có điều kiện; FR-160 đầy đủ chờ Tuần 13.",
+    "Chỉ dùng dữ liệu giả cục bộ, không triển khai công khai."
+  ],
+  "restoredMainRuntime": {
+    "web": "http://localhost:3000",
+    "healthStatus": 200,
+    "loginStatus": 200,
+    "databaseHealthy": true,
+    "mailpitHealthy": true,
+    "schedulerRunning": true,
+    "firstBatchLocalMailSent": 38,
+    "firstBatchLocalMailFailed": 0,
+    "preservedOldTablesRechecked": 27
+  },
+  "acceptedRequirements": [
+    "FR-47",
+    "FR-60",
+    "FR-61",
+    "FR-62",
+    "FR-63",
+    "FR-64",
+    "FR-65",
+    "FR-150"
+  ],
+  "progress": {
+    "acceptedWeight": 138,
+    "totalWeight": 219,
+    "percent": 63.0,
+    "acceptedRequirements": 49,
+    "totalRequirements": 84,
+    "plannedWeightWeek9": 140,
+    "backlogGap": 2,
+    "gapRequirement": "FR-145",
+    "M5": "22/22",
+    "M7": "16/18",
+    "M14": "6/13"
+  }
 }

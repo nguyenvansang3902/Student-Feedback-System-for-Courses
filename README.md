@@ -4,7 +4,7 @@ Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/0
 
 ## Phạm vi hiện tại — Tuần 9: kết quả khảo sát
 
-Bắt đầu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã hiện thực và kiểm cục bộ, đang đối chiếu build/CI nguồn cuối, **chưa chốt nghiệm thu Tuần 9**; tiến độ đã nghiệm thu giữ117/219 cho đến khi đủ gate. Kiểm gần nhất797test/50tệp,HTTP11/11,seed15/15,UI14nhóm/46ảnh qua; [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md) ghi chi tiết và giới hạn. Xem [công thức](docs/CONG_THUC_TONG_HOP.md), [báo cáo](docs/bao-cao-tien-do/tuan-09.md). Không làm trước phản hồi/giải trình/xuất báo cáo. Giao diện ưu tiên tên chức năng/hướng dẫn ngắn, hạn chế slogan; đăng nhập không có ví dụ placeholder.
+Bắt đầu và nghiệm thu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã qua **797 kiểm thử/50 tệp**, build Next16.4.3, HTTP/MySQL **12/12**, seed **15/15**, UI **14 nhóm/46 ảnh cuối đã xem** và [CI nguồn 5eb5a84](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520). Tiến độ **138/219=63,0%, 49/84 FR**; CI main/tài liệu cuối đối chiếu riêng. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md), [công thức](docs/CONG_THUC_TONG_HOP.md) và [báo cáo](docs/bao-cao-tien-do/tuan-09.md) để biết bằng chứng và giới hạn. Phản hồi liên tục, giải trình và xuất báo cáo làm theo các tuần sau. Giao diện dùng tên chức năng/hướng dẫn ngắn, hạn chế slogan; đăng nhập không có ví dụ placeholder.
 
 ### Xem và công bố kết quả
 
@@ -16,7 +16,7 @@ Bắt đầu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công 
 - **ĐBCL/TBM/TK**: từ đợt mở danh sách **Chưa hoàn thành** trong phạm vi. Mỗi lần đọc được ghi nhật ký; nhắc chỉ khi đợt còn mở/hạn, tối đa một lần/ngày/SV/đợt, dùng chung với scheduler.
 - **ADMIN đã MFA**: cấu hình xếp mức và từ khóa tại `/quan-tri/cau-hinh-ket-qua`, xác nhận mã TOTP mới khi lưu. Quyền cấu hình không cấp quyền đọc kết quả khảo sát.
 
-So sánh gộp trên số liệu gốc của toàn bộ phiếu, chỉ khi cùng phiên bản mẫu; không có dữ liệu phù hợp thì hiện thông báo, không tự chuyển thang hay ánh xạ phiên bản. Khi học kỳ khóa, các thao tác ghi bị chặn và kết quả đã công bố được lưu trữ, vẫn đọc theo quyền cũ. Dữ liệu cũ không bị reset để tạo tình huống mới. Các bước trên là hướng dẫn bản đang tích hợp; số kiểm thật và SHA cuối chỉ ghi tại nghiệm thu.
+So sánh gộp trên số liệu gốc của toàn bộ phiếu, chỉ khi cùng phiên bản mẫu; không có dữ liệu phù hợp thì hiện thông báo, không tự chuyển thang hay ánh xạ phiên bản. Khi học kỳ khóa, các thao tác ghi bị chặn và kết quả đã công bố được lưu trữ, vẫn đọc theo quyền cũ. Dữ liệu cũ không bị reset để tạo tình huống mới. Các bước trên áp dụng cho bản Tuần9 đã nghiệm thu; số kiểm thật và SHA được ghi tại nghiệm thu.
 
 Seed mới thêm hai đợt **Kết quả khảo sát môn học (giả lập Tuần 9)** và **Kết quả học kỳ trước (giả lập)**: cùng môn có hai GV, hai lớp đủ mẫu/một lớp thiếu, tổng18phiếu/40nhiệm vụ. Chạy `npm.cmd run db:seed` như thường lệ; với máy đã có seed cũ đầy đủ có thể chạy `npm.cmd run db:seed:week9` để chỉ bổ sung bundle mới. Các lệnh đều chỉ dữ liệu giả cục bộ và không viết lại mẫu/phiếu/kết quả cũ. Seed lặp giữ nguyên những thao tác đã làm; không dùng để đặt lại mật khẩu hoặc công bố lại đợt.
 
@@ -104,7 +104,7 @@ Chạy `db:seed` trước. Tài khoản demo ACTIVE có mật khẩu ban đầu 
 | TBM2026001 | tbm2026001@seed.demo.invalid | Trưởng bộ môn, phạm vi bộ môn minh họa 1 |
 | LD2026001 | ld2026001@seed.demo.invalid | Lãnh đạo, phạm vi toàn trường |
 | PDT2026001 | pdt2026001@seed.demo.invalid | Phòng Đào tạo; dữ liệu đào tạo/import và khóa, mở khóa kỳ |
-| KT2026001 | kt2026001@seed.demo.invalid | Phòng Khảo thí; kết quả gộp đang triển khai Tuần 9, hàng đợi phản hồi thi theo Tuần 10 |
+| KT2026001 | kt2026001@seed.demo.invalid | Phòng Khảo thí; xem nhóm đánh giá gộp đã công bố; hàng đợi phản hồi thi theo Tuần 10 |
 | TT2026001 | tt2026001@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ nhất, chưa có luồng hồ sơ |
 | TT2026002 | tt2026002@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ hai phục vụ kiểm quyền theo lộ trình |
 

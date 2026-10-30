@@ -1,34 +1,37 @@
 # Trạng thái dự án
 
 - Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 9 — đang triển khai theo lệnh ngày 30/10/2026; Tuần 8 đã nghiệm thu FR-50–54.
-- Mốc kế hoạch giả định: 18–24/11; làm sớm theo lệnh, không ghi lùi ngày, nhóm đối chiếu lịch trường.
-- Nguồn ứng dụng: 6edad31fef16ee11f5ace82645107b0b7153742d, nhánh feat/week8-anonymous-surveys; CI 40925339620 qua check/smoke đúng SHA.
+- Tuần hiện tại: Tuần 9 — đã nghiệm thu FR-47/60–65/150 ngày 30/10/2026 theo yêu cầu người dùng.
+- Mốc kế hoạch giả định: 25/11–01/12; làm sớm theo lệnh, không ghi lùi ngày, nhóm đối chiếu lịch trường.
+- Nguồn ứng dụng: 5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f, feat/week9-survey-results; CI41079971520 check/smoke đúng SHA thành công.
 
 ## Đã hoàn thành
 
-- Tuần 1–6/G1 và phần chính Tuần 7 đã nghiệm thu; báo cáo và ảnh lịch sử giữ nguyên, xem NGHIEM_THU_TUAN_07.md.
-- Tuần 8: nhiệm vụ của chính sinh viên, form năm loại/NA/hai thang, nháp cục bộ, nộp ẩn danh một lần và xác nhận.
-- Nộp bằng CAS task PENDING→DONE, UUID phiếu/đáp án trong cùng giao dịch; ngày Việt Nam, không cầu nối danh tính hoặc audit nộp.
-- Đọc lại phiên/quyền, IDOR trả 404, CSRF riêng và body 256 KiB; nhiệm vụ đã chốt quyết định quyền, không xét lại Enrollment.
-- BR-04 nhận đúng endsAt, đóng sau mốc; server quyết định, đồng hồ client chỉ hiển thị.
-- Check cuối: 646/646 trong 39 tệp, schema/ERD/lint/TypeScript và build Next 16.4.3 qua trên nguồn 6edad31.
-- HTTP 16/16, fixture sạch;20 POST chỉ 1 thành công/19 bị 409; lỗi chèn đáp án rollback PENDING/0 phiếu/0 đáp án rồi retry thành công.
-- UI: 13 nhóm/17 trạng thái/34 viewport/34 PNG đã xem; không lỗi/tràn ngang/thiếu nhãn trong phép đo, fixture sạch và seed giữ nguyên.
-- Không migration mới: 34 runtime/46 design/12 model chỉ thiết kế;27 tập dữ liệu main trước/sau khớp hash, không reset DB/volume.
-- ADR009, 5 câu bảo vệ, 3 sơ đồ mới/ERD, báo cáo 10 mục, ảnh, README, truy vết và nhật ký AI đã cập nhật.
-- Tiến độ: 117/219=53,4%, 41/84 FR; M6=14/14. Kế hoạch Tuần 8 là 119/219, còn 2 điểm của FR-145.
+- Tuần 1–8/G1 đã nghiệm thu; báo cáo và ảnh lịch sử giữ nguyên, xem NGHIEM_THU_TUAN_08.md.
+- Tuần 9: tổng hợp chính xác câu/nhóm/tổng, ngưỡng số phiếu và tỉ lệ, CAS/requestId/lịch sử, khóa kỳ lưu trữ.
+- Kết quả theo quyền/phạm vi mới; lớp thiếu mẫu ẩn điểm/TEXT. ADMIN/PĐT/SV/Thanh tra không có quyền kết quả ngầm.
+- Khảo thí chỉ nhóm đánh giá gộp môn/bộ môn/khoa sau công bố, đủ mẫu và ít nhất hai GV snapshot; không lớp/GV/TEXT/ID trả lời trong DTO.
+- So sánh bộ môn/khoa/kỳ trước trên thống kê gốc cùng mẫu; khác cấu hình xếp mức vẫn có điểm, bỏ mức chung tùy ý.
+- Kiểm duyệt TEXT có lý do, cờ từ khóa, audit cán bộ/mã đáp án scalar; không tạo quan hệ danh tính–phiếu hoặc giờ nộp chính xác.
+- Danh sách PENDING theo phạm vi, audit mỗi lần xem; nhắc tay/tự động chung khóa ngày Việt Nam, cursor không bỏ đợt sau.
+- Check 797/797 trong 50 tệp, schema/ERD/lint/TypeScript; build Next16.4.3 qua trên nguồn ứng dụng cuối.
+- HTTP/MySQL 12/12 sạch fixture: TC-AGG-01=4,11/40%; 10POST tổng hợp một thành công/chín409; lỗi lớp cuối rollback không lưu kết quả/history/audit rồi retry qua.
+- TOTP thật lưu cấu hình, chặn replay/CAS cũ, gắn cờ ba góp ý; cấu hình và ratebucket thử khôi phục nguyên vẹn.
+- UI 14 nhóm/23 trạng thái/46PNG desktop/mobile đã xem; bốn ảnh cuối chụp lại mainE8 qua, không lỗi trong phép đo.
+- Demo MySQL 15/15; E8 riêng hai đợt/bốn lớp/18 phiếu/40 nhiệm vụ, hai GV cùng môn, đủ/thiếu mẫu và kỳ trước; seed lặp giữ hash.
+- Không migration mới: 34 runtime/46 design/12 model chỉ thiết kế; 27 tập main cũ khớp hash sau seed và UI đọc, không reset DB/volume.
+- Công thức, ADR010, năm câu bảo vệ, báo cáo 10 mục, ba sơ đồ nghiệp vụ/ERD/ảnh/README/truy vết/nhật ký AI đã cập nhật.
+- Tiến độ 138/219=63,0%, 49/84FR; M5=22/22, M7=16/18, M14=6/13. Kế hoạch 140/219, chênh hai điểm FR-145.
 
-## Quyết định, cách chạy và phần còn lại
+## Cách chạy và phần còn lại
 
-- Người dùng chọn chặn khóa học kỳ khi còn DA_DUYET/DANG_MO; mutex chung với duyệt/mở/khóa.
-- Web chính http://localhost:3000/khao-sat và scheduler đã mở lại; MySQL/Mailpit healthy, khách vào khảo sát chuyển về đăng nhập.
-- Xem form: DEMO-SV00001/Demo2026!HocTap, chọn đợt còn hạn. SV2026001 có thể trống; hướng dẫn chi tiết theo README.
-- ĐBCL/PĐT/lãnh đạo dùng /dot-khao-sat; tài khoản demo theo README. Sau tắt máy khởi động lại theo README.
-- FR-145 ImportBatch/hoàn tác là P1 có điều kiện chưa làm, giữ backlog và chưa được người dùng cắt; FR-160 đầy đủ chờ Tuần 13.
-- 5.6(d) đã kiểm DTO/log hiện có; export CSV/Excel/PDF kết quả chưa có, phải kiểm khi Tuần 12 hiện thực. Giữ đặc tả bảo vệ.
-- Chưa kiểm tải 1.500 request/WCAG/mọi thiết bị/log proxy; ẩn danh ở mức ứng dụng, không chống DBA/binlog/tự tiết lộ.
-- CI main/tài liệu cuối đối chiếu riêng sau push; chưa dùng CI nguồn để nhận SHA main khác đã qua.
-- Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh; không viết quy trình hiện tại ở trường.
-- Đang làm: FR-60–65/150, BR-13; tổng hợp/công bố/kiểm duyệt, quyền xem, so sánh và nhắc. Chưa nghiệm thu hoặc cộng điểm Tuần 9.
-- Giao diện theo yêu cầu 30/10: hạn chế slogan, dùng tên chức năng/hướng dẫn ngắn; ô đăng nhập không có ví dụ placeholder. Xem CHINH_SUA_GIAO_DIEN_2026_10_30.md; check 646/646 và QA 8 bố cục qua, tiến độ không đổi.
+- Web chính http://localhost:3000/ket-qua và scheduler đã mở lại; MySQL/Mailpit healthy, health/đăng nhập200.
+- Xem kết quả: DEMO-GV00001 hoặc KT2026001/DBCL2026001, mật khẩu Demo2026!HocTap; chọn đợt giả Tuần9 theo README.
+- HMR lặp sau build/khôi phục tệp kiểu đã được xử lý bằng giữ cache trong .local và khởi động lại dev; không sửa nghiệp vụ/xóa dữ liệu.
+- FR-145 ImportBatch/hoàn tác P1 có điều kiện còn backlog, chưa tự cắt; FR-160 đầy đủ chờ Tuần13.
+- Chưa làm phản hồi liên tục/giải trình/dashboard/xuất file; 5.6(d) xuất CSV/Excel/PDF phải kiểm khi Tuần12 hiện thực.
+- Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.
+- Chỉ dữ liệu giả, không deploy công khai; đóng góp/ngày yêu cầu/GVHD do sinh viên xác minh, không viết quy trình hiện tại ở trường.
+- CI main/tài liệu cuối đối chiếu riêng sau push; không dùng CI nguồn để nhận SHA main khác đã qua.
+- Luôn hạn chế slogan, dùng câu chữ tự nhiên/ngắn; ô đăng nhập không có ví dụ placeholder. Giữ yêu cầu này ở các tuần tiếp theo.
+- Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.

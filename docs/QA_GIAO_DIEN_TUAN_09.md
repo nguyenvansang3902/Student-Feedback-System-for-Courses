@@ -4,12 +4,16 @@ Ngày chạy: **30/10/2026**, hoàn tất lượt fixture lúc **17:38 giờ Vi�
 
 ## Môi trường và phương pháp
 
-- Chrome headless trên Windows, Puppeteer có sẵn trong môi trường làm việc; một Next dev tại `http://127.0.0.1:3009`.
+- Chrome headless trên Windows, Puppeteer có sẵn trong môi trường làm việc. Lượt fixture dùng một Next dev tại `http://127.0.0.1:3009`; sau khi dọn fixture, lượt bổ sung bốn ảnh dùng web chính tại `http://localhost:3000`. Hai máy chủ không chạy đồng thời trong các lượt này.
 - Dùng database kiểm thử riêng đã xác minh marker, tên database và UUID máy chủ bằng harness HTTP. Không chạy thao tác nghiệp vụ của lượt này trên database chính.
-- Harness cấp phiên cho các tài khoản **giả** đã có vai trò và MFA theo fixture. Lượt này **không kiểm chứng đăng nhập bằng biểu mẫu**, thiết lập TOTP thật hay luồng xác thực Docker.
+- Harness cấp phiên cho các tài khoản **giả** đã có vai trò và MFA theo fixture. Lượt fixture không kiểm chứng đăng nhập bằng biểu mẫu, thiết lập TOTP thật hay luồng xác thực Docker. Lượt bổ sung đã đăng nhập qua biểu mẫu bằng tài khoản giảng viên demo giả; kết quả này không đại diện cho tài khoản thật hoặc mọi luồng xác thực.
 - Chụp toàn trang ở **1440 × 1000** và **390 × 844**; ảnh có thể cao hơn viewport. Đo tràn ngang, nhãn trường nhập và lỗi JavaScript/React. Kiểm câu chữ trên các trang mới, giữ yêu cầu không có ví dụ placeholder ở trang đăng nhập.
 - **14 nhóm kiểm tra, 23 trạng thái, 46 viewport/46 PNG** đều qua trong lượt fixture. Đã xem lại toàn bộ ảnh bằng bảng ảnh và xem ảnh gốc kiểm duyệt, kết quả lớp trên mobile, Khảo thí và cấu hình trên mobile.
 - Kết quả máy đọc lưu cục bộ ở `.local/week9-ui-result.json`. Phiên và ngữ cảnh fixture chứa thông tin xác thực được giữ ngoài Git. Harness HTTP đã dọn fixture sau tín hiệu hoàn tất UI; đối chiếu việc dọn dữ liệu trong [nghiệm thu Tuần 9](NGHIEM_THU_TUAN_09.md).
+
+Bốn ảnh `khach-dang-nhap` và `gv-pham-vi` ở hai kích thước đã được chụp lại trên bản cuối, thay đúng bốn ảnh trong tổng số 46. Trang đăng nhập đã kết thúc bước kiểm tra phiên và hiện đầy đủ biểu mẫu trống, không có ví dụ placeholder. Ảnh giảng viên dùng bundle E8 giả Tuần 9: chỉ có lớp được phân công, không có lớp của giảng viên khác; dữ liệu gộp chuẩn chỉ ở bộ môn/khoa, không thêm mức môn học. Đã xem cả bốn ảnh gốc và đo lại: không tràn ngang, thiếu nhãn hoặc lỗi JS/React. Lượt bổ sung chỉ đăng nhập và đọc dữ liệu giả, không ghi nghiệp vụ trên database chính; đăng nhập có tạo phiên/nhật ký theo cơ chế ứng dụng. Kết quả riêng ở `.local/week9-ui-final-result.json` và trường `finalRefresh` của kết quả tổng.
+
+Lượt chụp lại đầu bị ngắt vì dev HMR tải lại trang liên tục sau bước build và khôi phục tệp kiểu sinh tự động khi máy chủ dev đang chạy. Đã dừng đúng tiến trình, kiểm đường dẫn trong workspace, giữ nguyên cache cũ trong `.local` rồi khởi động lại dev với cache mới. Bốn ảnh chạy lại đã qua; không sửa mã nghiệp vụ hoặc reset dữ liệu để xử lý tình huống này. Chỉ dùng bốn ảnh cuối đã xem làm bằng chứng.
 
 ## Kết quả chạy thật
 

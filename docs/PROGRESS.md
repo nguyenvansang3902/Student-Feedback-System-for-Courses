@@ -54,7 +54,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-44 [P0] tự động mở/đóng (idempotent) (Tuần 7)
 - [x] FR-45 [P1] gia hạn, đóng sớm, hủy (Tuần 7)
 - [x] FR-46 [P0] theo dõi tiến độ và tỉ lệ tham gia (Tuần 7)
-- [ ] FR-47 [P1] nhắc sinh viên chưa hoàn thành (Tuần 9)
+- [x] FR-47 [P1] nhắc sinh viên chưa hoàn thành (Tuần 9)
 
 ## M6 Làm khảo sát
 
@@ -66,12 +66,12 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M7 Kết quả
 
-- [ ] FR-60 [P0] tổng hợp (Tuần 9)
-- [ ] FR-61 [P0] ngưỡng công bố (Tuần 9)
-- [ ] FR-62 [P0] công bố (Tuần 9)
-- [ ] FR-63 [P0] trang kết quả theo vai trò và phạm vi (Tuần 9)
-- [ ] FR-64 [P1] so sánh với bộ môn/khoa/kỳ trước (Tuần 9)
-- [ ] FR-65 [P1] kiểm duyệt góp ý tự luận (Tuần 9)
+- [x] FR-60 [P0] tổng hợp (Tuần 9)
+- [x] FR-61 [P0] ngưỡng công bố (Tuần 9)
+- [x] FR-62 [P0] công bố (Tuần 9)
+- [x] FR-63 [P0] trang kết quả theo vai trò và phạm vi (Tuần 9)
+- [x] FR-64 [P1] so sánh với bộ môn/khoa/kỳ trước (Tuần 9)
+- [x] FR-65 [P1] kiểm duyệt góp ý tự luận (Tuần 9)
 - [ ] FR-66 [P1] giải trình và xác nhận (Tuần 11)
 
 ## M8 Phản hồi
@@ -126,7 +126,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 - [x] FR-148 [P0] cờ isAssessmentGroup trong trình soạn/xem trước và một nhóm mặc định Kiểm tra, đánh giá — việc bù G1 (Tuần 6)
 - [ ] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
-- [ ] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
+- [x] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
 - [ ] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
 - [ ] FR-152 [P1] kiến nghị rà soát của Khảo thí và phản hồi trưởng bộ môn (Tuần 11)
 
@@ -155,7 +155,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-54 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-55 | P1 | Tuần7 (P1) | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-56 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Cờ nhóm/default đạt G1; kết quả gộp và TC-KT-01 chờ Tuần9 |
+| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Đạt Tuần9: projection Khảo thí, nhóm có cờ, ít nhất hai GV/đủ mẫu; TC-KT-01 qua unit/HTTP/UI |
 | BR-58 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-59 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-60 | P0 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
@@ -175,3 +175,7 @@ FR-40–46, FR-100 và FR-142–144 đã qua check572/572 (32file), build, SQL16
 ## Nghiệm thu Tuần 8 — 30/10/2026
 
 FR-50–54 đã qua check 646/646 trong 39 tệp, build Next 16.4.3, HTTP/MySQL 16/16 và UI 13 nhóm/17 trạng thái/34 viewport/34 PNG đã xem. Nguồn `6edad31fef16ee11f5ace82645107b0b7153742d` và [CI 40925339620](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40925339620) đã qua check/smoke đúng SHA; main/tài liệu cuối đối chiếu riêng. 20 POST đồng thời chỉ 1 thành công/19 bị 409, lỗi chèn đáp án rollback nguyên tử; fixture sạch và 27 tập main giữ hash. Chốt thêm 14 điểm: **117/219=53,4%, 41/84 FR**, M6=14/14. Kế hoạch lũy kế Tuần 8 là 119/219=54,3%; còn 2 điểm FR-145 P1 có điều kiện, chưa thực hiện hoặc được người dùng cắt. FR-160 vẫn chưa tick. Xem [nghiệm thu](NGHIEM_THU_TUAN_08.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-08.md) và [QA](QA_GIAO_DIEN_TUAN_08.md). 5.6(d) kiểm DTO/log hiện có; chưa nhận export CSV/Excel/PDF kết quả ở Tuần 12 đã qua. Chưa bắt đầu Tuần 9.
+
+## Nghiệm thu Tuần 9 — 30/10/2026
+
+Chốt FR-47/60–65/150 trên nguồn `5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f`, [CI41079971520](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520) check/smoke đúng SHA thành công. Fullcheck 797/797 trong 50 tệp, build Next16.4.3, HTTP/MySQL 12/12 (TOTP thật/rollback/concurrency), seed 15/15 và UI14 nhóm/23 trạng thái/46 PNG cuối đã xem qua. Fixture sạch, cấu hình thử khôi phục, 27 tập dữ liệu main cũ giữ hash. Thêm 21 điểm: **138/219=63,0%, 49/84 FR**; kế hoạch 140/219, còn chênh hai điểm FR-145 P1 có điều kiện. M5=22/22, M7=16/18, M14=6/13; FR-66, FR-80–82 và FR-160 chưa tick. Xem [nghiệm thu](NGHIEM_THU_TUAN_09.md), [báo cáo](bao-cao-tien-do/tuan-09.md) và [QA](QA_GIAO_DIEN_TUAN_09.md). CI main/tài liệu cuối đối chiếu riêng; chưa bắt đầu Tuần10.

@@ -6,7 +6,7 @@
 
 **Mốc kế hoạch giả định:** 25/11–01/12/2026, tính tuần bảy ngày từ 30/09. **Thực hiện:** bắt đầu 30/10/2026 theo yêu cầu trực tiếp; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-**Trạng thái:** mã, kiểm thử cục bộ và bản dựng đã qua; đang đối chiếu CI nguồn cuối trước chốt nghiệm thu. AI hỗ trợ nháp kỹ thuật; nhóm cần thử và viết lại bằng lời của mình.
+**Trạng thái:** đã nghiệm thu FR-47/60–65/150; mã, kiểm thử, bản dựng, UI và CI đúng nguồn ứng dụng đều qua. CI main/tài liệu cuối đối chiếu riêng. AI hỗ trợ nháp kỹ thuật; nhóm cần thử và viết lại bằng lời của mình.
 
 ## 1. Mục tiêu của tuần
 
@@ -16,42 +16,42 @@ Tổng hợp đúng Mục 5.7/TC-AGG-01; công bố theo ngưỡng; trang kết 
 
 Đã hiện thực tính điểm bằng phân số, gộp số liệu gốc, ảnh chụp version2, cấu hình xếp mức/từ khóa, tổng hợp/công bố có mutex/freshactor/CAS/requestId, TEXT-only, đọc theo phạm vi, so sánh, kiểm duyệt và nhắc. Fullcheck gần nhất **797/797 trong 50 tệp** qua. HTTP/MySQL cuối **12/12**: 10 lệnh tổng hợp đồng thời chỉ 1 thành công/9 bị 409; dữ liệu sai ở lớp cuối rollback DA_DONG/revision1/0 kết quả/lịch sử/audit, rồi retry thành công. Cấu hình được lưu bằng TOTP thật, mã dùng lại/CAS cũ bị chặn và từ khóa gắn cờ ba góp ý. Fixture sạch, cấu hình thử đã khôi phục. Không gọi tình huống rollback này là trigger lỗi SQL.
 
-UI **14 nhóm/23 trạng thái/46 PNG đã xem**, không lỗi trong phép đo; [QA](../QA_GIAO_DIEN_TUAN_09.md). Seed MySQL **15/15 nhóm**, E8 hai đợt/bốn lớp/18 phiếu/40 nhiệm vụ, hai giảng viên cùng môn, kỳ trước và lớp thiếu mẫu; seed lặp/tăng size giữ hash. 27 tập main cũ khớp hash, không reset. Ba sơ đồ nghiệp vụ, 4 Mermaid ERD và 4 thẻ, 11 PNG đã xem, không nhãn vượt biên. Production build Next **16.4.3** qua. Nhánh `feat/week9-survey-results` xuất phát từ `8af1dee2063187fe167f8ace99317ec9e0eb32e5`; CI nguồn cuối còn đối chiếu tại [nghiệm thu](../NGHIEM_THU_TUAN_09.md). [Bằng chứng máy đọc](../assets/tuan-09/verification.json) ghi riêng các cổng đã qua và cổng còn chờ.
+UI **14 nhóm/23 trạng thái/46 PNG cuối đã xem**, không lỗi trong phép đo; [QA](../QA_GIAO_DIEN_TUAN_09.md). Seed MySQL **15/15 nhóm**, E8 hai đợt/bốn lớp/18 phiếu/40 nhiệm vụ, hai giảng viên cùng môn, kỳ trước và lớp thiếu mẫu; seed lặp/tăng size giữ hash. 27 tập main cũ khớp hash, không reset. Ba sơ đồ nghiệp vụ, 4 Mermaid ERD và 4 thẻ, 11 PNG đã xem, không nhãn vượt biên. Production build Next **16.4.3** qua. Nguồn `5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f` có [CI 41079971520](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520) check/smoke thành công đúng SHA; CI main/tài liệu cuối đối chiếu riêng tại [nghiệm thu](../NGHIEM_THU_TUAN_09.md). [Bằng chứng máy đọc](../assets/tuan-09/verification.json) ghi kết quả đã xác minh.
 
 ## 3. Đối chiếu kế hoạch
 
-| Mục | Trạng thái tại lượt soạn | Phần còn thiếu trước nghiệm thu |
+| Mục | Kết quả nghiệm thu | Bằng chứng và giới hạn |
 | --- | --- | --- |
-| FR-60 tính điểm; BR-11/12 | Mã/unit/HTTP/UI qua, chờ chốt nguồn | TC-AGG-01, NA/trống, phân số, xếp mức trước làm tròn |
-| FR-61/62 ngưỡng/công bố | Mã/unit/HTTP/UI qua, chờ chốt nguồn | Đồng thời1/9, rollback thật, thiếu mẫu/TEXT-only/requestId/CAS |
-| FR-63 quyền và phạm vi | Unit/HTTP/UI qua, chờ chốt nguồn |10vai trò, đa vai trò, IDOR404, phiên/grant bị thu hồi |
-| FR-64 so sánh | Unit/HTTP/UI qua, chờ chốt nguồn | Gộp toàn phiếu, bộ môn/khoa/kỳ trước và thiếu tương thích |
-| FR-65 kiểm duyệt | Unit/HTTP/UI qua, chờ chốt nguồn | Ba góp ý được duyệt thật, reason/flags/audit, DTO không danh tính |
-| FR-47 danh sách/nhắc | Unit/HTTP/UI qua, chờ chốt nguồn | Audit mỗi lượt xem kể cả rỗng; cùng ngày nhiều lớp/vai trò vẫn1lần/SV/đợt |
-| FR-150 Khảo thí và E8 | HTTP/UI/seed qua, chờ chốt nguồn | ≥2GV snapshot/đủ mẫu, không lớp/GV/TEXT; E8 seed lặp giữ hash |
-| Tài liệu/sơ đồ/kiểm cuối | Bản dựng qua, còn đối chiếu CI | Check 797, HTTP 12, seed 15, UI 46 ảnh, sơ đồ 11 ảnh đã qua; chưa nhận CI cuối |
+| FR-60 tính điểm; BR-11/12 | Đã nghiệm thu | TC-AGG-01, NA/trống, phân số, xếp mức trước làm tròn |
+| FR-61/62 ngưỡng/công bố | Đã nghiệm thu | Đồng thời 1/9, rollback thật, thiếu mẫu/TEXT-only/requestId/CAS |
+| FR-63 quyền và phạm vi | Đã nghiệm thu | 10 vai trò, đa vai trò, IDOR404, phiên/grant bị thu hồi |
+| FR-64 so sánh | Đã nghiệm thu | Gộp toàn phiếu, bộ môn/khoa/kỳ trước và thiếu tương thích |
+| FR-65 kiểm duyệt | Đã nghiệm thu | Ba góp ý được duyệt thật, reason/flags/audit, DTO không danh tính |
+| FR-47 danh sách/nhắc | Đã nghiệm thu | Audit mỗi lượt xem kể cả rỗng; cùng ngày nhiều lớp/vai trò vẫn 1 lần/SV/đợt |
+| FR-150 Khảo thí và E8 | Đã nghiệm thu | ≥2 GV snapshot/đủ mẫu, không lớp/GV/TEXT; E8 seed lặp giữ hash |
+| Tài liệu/sơ đồ/kiểm cuối | CI nguồn ứng dụng qua | Check 797, HTTP 12, seed 15, UI 46 ảnh, sơ đồ 11 ảnh; CI main/tài liệu cuối kiểm riêng |
 | FR-145 | Chưa làm | P1 có điều kiện, giữ backlog; không tự cắt |
 
 ## 4. Tiến độ lũy kế
 
-Lệnh `node scripts/progress.mjs` ngày 30/10 khi chưa tick FR Tuần 9 trả **117/219=53,4%, 41/84 FR**. Kế hoạch lũy kế Tuần 9 là **140/219=63,9%**. Tám FR Tuần 9 gồm FR-47/60–65/150 có trọng số 21 điểm; chỉ cộng sau khi đủ mã/test/nghiệm thu/tài liệu. Không dùng số dòng mã hoặc số bảng để ước lượng phần trăm.
+Nghiệm thu tám FR-47/60–65/150 thêm **21 điểm**, nâng tiến độ từ mốc Tuần 8 là 117/219 lên **138/219=63,0%, 49/84 FR**. Kế hoạch lũy kế Tuần 9 là **140/219=63,9%**; chênh hai điểm do FR-145 P1 có điều kiện chưa thực hiện. Tỉ lệ dùng checkbox có trọng số; không tự cắt backlog hoặc dùng số dòng mã/số bảng để ước lượng.
 
-| Module | Điểm đã nghiệm thu tại lượt soạn |
+| Module | Điểm đã nghiệm thu |
 | --- | --- |
 | M1 Xác thực và phiên | 22/23 |
 | M2 Người dùng, phân quyền, kiểm toán | 9/9 |
 | M3 Danh mục và nhập liệu | 9/9 |
 | M4 Mẫu phiếu | 16/16 |
-| M5 Đợt khảo sát | 20/22 |
+| M5 Đợt khảo sát | 22/22 |
 | M6 Làm khảo sát | 14/14 |
-| M7 Kết quả | 0/18 |
+| M7 Kết quả | 16/18 |
 | M8 Phản hồi | 0/19 |
 | M9 Thông báo | 0/7 |
 | M10 Báo cáo | 0/12 |
 | M11 Hệ thống | 9/11 |
 | M12 Mở rộng | 0/3 |
 | M13 Phòng Đào tạo | 15/22 |
-| M14 Phòng Khảo thí | 3/13 |
+| M14 Phòng Khảo thí | 6/13 |
 | M15 Phòng Thanh tra | 0/18 |
 | M16 Ma trận quyền mở rộng | 0/3 |
 
@@ -80,7 +80,7 @@ Các bước dưới hướng dẫn nhóm thử lại. Lượt UI đã qua trên
 
 ## 9. Bản rút gọn để dán vào hệ thống của trường
 
-Nhóm đã hiện thực tổng hợp, công bố, kiểm duyệt góp ý, so sánh và nhắc sinh viên chưa hoàn thành. Tính điểm dùng phân số và số liệu gốc; lớp thiếu mẫu bị ẩn. Khảo thí chỉ xem nhóm đánh giá gộp đủ điều kiện. Kiểm gần nhất qua 797 test, 12 nhóm HTTP, 15 nhóm seed và 46 ảnh giao diện; bản dựng cũng qua. Đang đối chiếu CI nguồn cuối trước nghiệm thu; tiến độ đã chốt vẫn 117/219 điểm. Lô nhập và hoàn tác P1 còn backlog. Nhóm cần thử lại và điền đóng góp cá nhân.
+Nhóm hoàn thành tổng hợp, công bố, kiểm duyệt góp ý, so sánh và nhắc sinh viên chưa hoàn thành. Điểm tính từ số liệu gốc; lớp thiếu mẫu bị ẩn. Khảo thí chỉ xem nhóm đánh giá gộp đủ điều kiện. Kiểm qua 797 test, 12 nhóm HTTP, 15 nhóm seed và 46 ảnh giao diện; bản dựng và CI đúng nguồn ứng dụng đều qua. Nghiệm thu tám chức năng, tiến độ đạt 138/219 điểm, 49/84 FR. Lô nhập và hoàn tác P1 còn backlog. Nhóm cần thử lại, điền đóng góp cá nhân và đối chiếu CI main cuối.
 
 ## 10. Điều chỉnh so với kế hoạch
 
