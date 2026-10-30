@@ -1,5 +1,7 @@
 # Tiến độ yêu cầu chức năng
 
+Chỉnh câu chữ giao diện ngày 30/10/2026 theo yêu cầu người dùng: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Không thêm FR hoặc điểm; giữ 117/219, 41/84 FR.
+
 Nguồn: Mục7 đặc tả và [Điều chỉnh số01](BO_SUNG_01_TAC_NHAN.md). P0=3, P1=2, P2=1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. Mẫu số gồm cả FR chưa xếp tuần.
 
 **Mốc lịch sử trước điều chỉnh:** Tuần6 bắt đầu **22/10**, tiếp tục **28/10/2026**, sớm hơn mốc giả định **04–10/11**, theo yêu cầu người dùng. Thêm FR-30–35: **62/163=38,0%**, M4 **16/16=100%**; M3 vẫn9/9 và M11 vẫn6/11. Tỷ lệ này tính chức năng đã chạy, không tính độ lớn thiết kế. Tuần5 giữ bằng chứng lịch sử46/163.

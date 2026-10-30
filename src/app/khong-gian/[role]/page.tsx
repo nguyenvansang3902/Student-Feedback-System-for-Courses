@@ -43,7 +43,7 @@ export default async function WorkspacePage({
             ← Tài khoản của tôi
           </Link>
           <p className="mt-7 text-xs font-bold tracking-wider text-teal-800 uppercase">
-            Không gian của bạn
+            Chức năng theo vai trò
           </p>
           <h1 className="mt-3 text-3xl font-bold text-slate-950">
             {roleLabels[role]}
@@ -93,8 +93,7 @@ export default async function WorkspacePage({
           ) : (
             role !== "SINH_VIEN" && (
               <p className="mt-7 text-sm leading-7 text-slate-600">
-                Không gian của bạn đã được cấp. Chức năng xử lý hồ sơ sẽ được mở
-                khi triển khai đến giai đoạn tương ứng.
+                Tài khoản đã có vai trò này. Chức năng xử lý hồ sơ chưa mở.
               </p>
             )
           )}

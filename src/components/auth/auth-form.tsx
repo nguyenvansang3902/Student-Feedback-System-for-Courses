@@ -237,14 +237,14 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
     <div>
       <h2 className="text-lg font-bold text-slate-900">
         {mode === "login"
-          ? "Chào mừng bạn trở lại"
+          ? "Thông tin đăng nhập"
           : emailRequest
             ? "Nhận liên kết qua email"
-            : "Tạo mật khẩu an toàn"}
+            : "Mật khẩu mới"}
       </h2>
       <p className="mt-2 text-sm leading-6 text-slate-500">
         {mode === "login"
-          ? "Sử dụng mã sinh viên, mã giảng viên hoặc email."
+          ? "Nhập mã định danh hoặc email và mật khẩu."
           : emailRequest
             ? "Nhập email được gắn với tài khoản của bạn."
             : "Dùng mật khẩu riêng cho tài khoản của bạn và tránh mật khẩu phổ biến."}
@@ -283,7 +283,6 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
                 required
                 disabled={busy || restoring}
                 error={errors.identifier}
-                placeholder="Ví dụ: SV2026001"
               />
               <Field
                 name="password"

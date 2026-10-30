@@ -23,15 +23,12 @@ export function StudentSurveyConfirmation({
       >
         ✓
       </div>
-      <p className="text-sm font-semibold text-teal-800">
-        Đã hoàn thành nhiệm vụ
-      </p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">
-        Cảm ơn bạn đã gửi khảo sát
+      <h1 className="text-3xl font-bold tracking-tight text-slate-950">
+        Đã nộp khảo sát
       </h1>
       <p className="mt-4 text-sm leading-7 text-slate-600">
-        Hệ thống đã ghi nhận trạng thái hoàn thành. Phiếu đã nộp chỉ một lần và
-        không thể sửa hoặc xóa.
+        Khảo sát đã được ghi nhận. Bạn không thể sửa, xóa hoặc nộp lại phiếu
+        này.
       </p>
       <dl className="mt-6 space-y-4 rounded-xl bg-slate-50 p-5 text-sm">
         <div>
@@ -52,8 +49,8 @@ export function StudentSurveyConfirmation({
         </div>
       </dl>
       <p className="mt-5 text-sm leading-7 text-slate-600">
-        Trang xác nhận chỉ hiển thị trạng thái nhiệm vụ. Nội dung phiếu được lưu
-        riêng, không có liên kết tới tài khoản của bạn trong dữ liệu ứng dụng.
+        Trang này xác nhận bạn đã nộp khảo sát và không hiển thị lại câu trả
+        lời.
       </p>
       <Link href="/khao-sat" className={`mt-7 inline-flex ${buttonStyle}`}>
         Về khảo sát của tôi →

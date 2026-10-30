@@ -755,7 +755,7 @@ try {
     const html = await redirect.response.text();
     assert(
       html.includes(`NEXT_REDIRECT`) &&
-        !html.includes("Cảm ơn bạn đã gửi khảo sát"),
+        !html.includes("Đã nộp khảo sát"),
       "Trang PENDING phải chuyển về form, không giả xác nhận",
     );
   }
@@ -998,7 +998,7 @@ try {
   const confirmation = await req(`/khao-sat/${own.taskId}/da-nop`, student);
   assert.equal(confirmation.status, 200);
   const confirmationHtml = await confirmation.response.text();
-  assert(confirmationHtml.includes("Cảm ơn bạn đã gửi khảo sát"));
+  assert(confirmationHtml.includes("Đã nộp khảo sát"));
   for (const value of [
     privateText,
     response.id,

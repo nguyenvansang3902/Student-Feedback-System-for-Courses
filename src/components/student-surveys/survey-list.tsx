@@ -41,13 +41,12 @@ export function StudentSurveyList({ userId }: { userId: string }) {
   }
   return (
     <>
-      <p className="text-sm font-semibold text-teal-800">Tiếng nói của bạn</p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">
+      <h1 className="text-3xl font-bold tracking-tight text-slate-950">
         Khảo sát của tôi
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-        Các nhiệm vụ được chốt từ lớp học phần của bạn. Mỗi nhiệm vụ chỉ nộp một
-        lần; sau khi nộp, bạn có thể xem trạng thái hoàn thành.
+        Các khảo sát dành cho lớp học phần của bạn. Mỗi khảo sát chỉ được nộp
+        một lần.
       </p>
       <form
         onSubmit={filter}

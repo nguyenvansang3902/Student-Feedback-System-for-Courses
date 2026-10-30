@@ -200,7 +200,7 @@ export default async function AccountPage() {
                 id="spaces-title"
                 className="text-lg font-bold text-slate-900"
               >
-                Không gian được cấp quyền
+                Chức năng của tài khoản
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
                 {can(actor, "student-surveys:list") && (
@@ -257,7 +257,7 @@ export default async function AccountPage() {
                     id="upcoming-title"
                     className="mt-8 text-lg font-bold text-slate-900"
                   >
-                    Các khu vực của bạn
+                    Chức năng chưa mở
                   </h2>
                   <p className="mt-2 text-sm leading-7 text-slate-500">
                     Các chức năng dưới đây chưa mở. Bạn có thể quay lại khi hệ
@@ -290,8 +290,7 @@ export default async function AccountPage() {
           </div>
         </div>
         <footer className="border-t border-slate-200 py-6 text-xs text-slate-500">
-          Khảo sát &amp; phản hồi môn học · Tiếng nói sinh viên, chất lượng học
-          tập
+          Hệ thống khảo sát và phản hồi về môn học
         </footer>
       </div>
     </main>

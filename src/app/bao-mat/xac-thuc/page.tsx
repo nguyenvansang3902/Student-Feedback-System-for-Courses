@@ -17,7 +17,7 @@ export default async function MfaVerifyPage() {
   return (
     <AuthShell
       title="Xác thực hai bước"
-      description="Xác nhận đây là bạn để tiếp tục vào hệ thống."
+      description="Nhập mã xác thực để tiếp tục đăng nhập."
     >
       <MfaForm
         mode="verify"

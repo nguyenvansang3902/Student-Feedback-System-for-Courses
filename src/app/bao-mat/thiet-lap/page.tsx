@@ -17,7 +17,7 @@ export default async function MfaSetupPage() {
   return (
     <AuthShell
       title="Thiết lập xác thực hai bước"
-      description="Thêm một lớp bảo vệ trước khi sử dụng tài khoản."
+      description="Thiết lập ứng dụng xác thực để nhận mã đăng nhập."
     >
       <MfaForm
         mode="setup"

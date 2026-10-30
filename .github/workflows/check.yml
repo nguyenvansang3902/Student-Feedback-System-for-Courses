@@ -105,7 +105,7 @@ jobs:
           done
 
           curl -fsS --max-time 30 http://127.0.0.1:3000/ > "$RUNNER_TEMP/home.html"
-          grep -Fq 'Lắng nghe sinh viên' "$RUNNER_TEMP/home.html"
+          grep -Fq 'Khảo sát và phản hồi về môn học' "$RUNNER_TEMP/home.html"
           curl -fsS --max-time 30 http://127.0.0.1:3000/suc-khoe > "$RUNNER_TEMP/health-page.html"
           grep -Fq 'Ứng dụng đang phản hồi' "$RUNNER_TEMP/health-page.html"
           curl -fsS --max-time 30 http://127.0.0.1:3000/api/health > "$RUNNER_TEMP/health.json"

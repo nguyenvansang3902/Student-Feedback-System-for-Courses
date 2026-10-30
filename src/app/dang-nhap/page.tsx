@@ -18,7 +18,7 @@ export default async function LoginPage() {
   return (
     <AuthShell
       title="Đăng nhập tài khoản"
-      description="Kết nối với không gian khảo sát và phản hồi dành cho bạn."
+      description="Sử dụng tài khoản được cấp để đăng nhập. Nếu chưa có tài khoản, hãy liên hệ đơn vị quản lý."
     >
       <AuthForm mode="login" />
     </AuthShell>

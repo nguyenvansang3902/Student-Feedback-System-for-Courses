@@ -1,5 +1,7 @@
 # Bảng truy vết yêu cầu — Tuần 8 sau Điều chỉnh số 01
 
+Chỉnh giao diện 30/10/2026 theo yêu cầu người dùng, liên quan FR-01/50/54: bỏ slogan thừa và ví dụ trong ô đăng nhập, dùng tiêu đề chức năng; không đổi chính sách hay luồng nộp. Check 646/646, QA 5 nhóm/8 bố cục qua. [Bằng chứng và ảnh mới](CHINH_SUA_GIAO_DIEN_2026_10_30.md); kiểm HTTP và CI smoke dùng tiêu đề mới, bằng chứng Tuần 8 cũ giữ nguyên.
+
 Tuần 4 thực hiện từ **22/10/2026**, mốc kế hoạch giả định **21–27/10/2026**. Tuần 3 làm **21–22/10**, sau mốc 14–20/10; bằng chứng lịch sử Tuần 2 giữ ngày thực hiện 21/10. Nguồn mã/ưu tiên: [đặc tả](DAC_TA_NGHIEP_VU.md), [YEU_CAU](YEU_CAU.md); tiến độ chính thức ở [PROGRESS](PROGRESS.md).
 
 **Cách đọc mốc lịch sử trước điều chỉnh:** Tuần6 bắt đầu22/10, tiếp tục28/10 (mốc giả định04–10/11). FR-01–08/10–12/20–22/30–35/101/102 đã nghiệm thu trong phạm vi mã hiện có. Tiến độ62/163=38,0%. Không nhận quyền toàn hệ thống hoàn tất khi module nghiệp vụ chưa triển khai. WF là wireframe tĩnh, không thay chức năng thực.

@@ -20,9 +20,6 @@ export function Brand() {
         <span className="block text-sm font-bold tracking-tight text-slate-900">
           Khảo sát &amp; phản hồi
         </span>
-        <span className="mt-0.5 block text-xs text-slate-500">
-          Cùng cải tiến từng môn học
-        </span>
       </span>
     </Link>
   );
@@ -60,15 +57,6 @@ export function AuthShell({
             <p className="mt-4 max-w-md text-base leading-8 text-slate-600">
               {description}
             </p>
-            <div className="mt-8 hidden rounded-2xl border border-teal-100 bg-teal-50/70 p-5 lg:block">
-              <p className="text-sm font-semibold text-teal-900">
-                Tiếng nói của bạn tạo nên thay đổi.
-              </p>
-              <p className="mt-2 text-sm leading-7 text-teal-900/75">
-                Sử dụng tài khoản do nhà trường hoặc người quản lý cấp. Nếu chưa
-                có tài khoản, hãy liên hệ đơn vị phụ trách.
-              </p>
-            </div>
           </aside>
           <section
             aria-label={title}
@@ -78,7 +66,7 @@ export function AuthShell({
           </section>
         </div>
         <footer className="border-t border-slate-200 py-6 text-center text-xs leading-6 text-slate-500">
-          Khảo sát &amp; phản hồi môn học · Tôn trọng mọi đóng góp xây dựng
+          Hệ thống khảo sát và phản hồi về môn học
         </footer>
       </div>
     </main>

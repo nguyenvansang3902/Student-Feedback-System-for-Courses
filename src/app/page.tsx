@@ -6,21 +6,23 @@ const features = [
     number: "01",
     title: "Khảo sát môn học",
     description:
-      "Chia sẻ trải nghiệm học tập qua phiếu khảo sát của từng lớp học phần.",
+      "Xem và hoàn thành các khảo sát của lớp học phần trong thời hạn.",
     icon: "▤",
+    href: "/khao-sat",
   },
   {
     number: "02",
-    title: "Gửi và theo dõi phản hồi",
-    description:
-      "Đóng góp ý kiến về môn học và theo dõi quá trình tiếp nhận, xử lý.",
+    title: "Phản hồi môn học",
+    description: "Gửi ý kiến và theo dõi việc xử lý phản hồi.",
     icon: "↗",
+    href: null,
   },
   {
     number: "03",
-    title: "Cùng cải tiến chất lượng",
-    description: "Kết nối tiếng nói sinh viên với giảng viên và nhà trường.",
+    title: "Tài khoản",
+    description: "Xem thông tin, đổi mật khẩu và thiết lập xác thực hai bước.",
     icon: "◎",
+    href: "/tai-khoan",
   },
 ];
 
@@ -42,20 +44,11 @@ export default function HomePage() {
         </header>
         <section className="grid gap-12 py-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14 lg:py-24">
           <div>
-            <p className="mb-6 flex items-center gap-2 text-xs font-bold tracking-[0.15em] text-teal-800 uppercase">
-              <span className="h-px w-8 bg-teal-700" aria-hidden="true" />
-              Cổng khảo sát &amp; phản hồi môn học
-            </p>
             <h1 className="max-w-xl text-4xl leading-[1.15] font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-              Lắng nghe sinh viên.
-              <br />
-              <span className="text-teal-800">Cùng cải tiến</span>
-              <br className="hidden sm:block" /> từng môn học.
+              Khảo sát và phản hồi về môn học
             </h1>
             <p className="mt-6 max-w-lg text-base leading-8 text-slate-600 sm:text-lg">
-              Mỗi trải nghiệm học tập đều đáng được lắng nghe. Đăng nhập bằng
-              tài khoản được cấp để kết nối với hệ thống khảo sát và phản hồi
-              của bạn.
+              Đăng nhập để xem các khảo sát được giao và quản lý tài khoản.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
@@ -90,35 +83,12 @@ export default function HomePage() {
               className="absolute top-0 right-0 h-40 w-40 rounded-bl-[8rem] rounded-tr-[2rem] bg-teal-800/60"
             />
             <div className="relative">
-              <p className="text-xs font-bold tracking-[0.18em] text-teal-200 uppercase">
-                Tiếng nói của bạn
-              </p>
-              <div
-                aria-hidden="true"
-                className="mt-8 text-6xl leading-none text-teal-300"
-              >
-                “
-              </div>
-              <p className="mt-1 max-w-sm text-2xl leading-relaxed font-medium sm:text-3xl">
-                Một góp ý hôm nay.
-                <br />
-                Một trải nghiệm học tập tốt hơn ngày mai.
-              </p>
-              <div className="mt-10 flex items-center gap-3 border-t border-teal-700 pt-6">
-                <span
-                  aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-full bg-teal-800 text-lg text-teal-200"
-                >
-                  ✓
-                </span>
-                <p className="text-sm leading-6 text-teal-100">
-                  Tập trung vào trải nghiệm học tập
-                  <br />
-                  <span className="text-teal-300">
-                    Tôn trọng những đóng góp xây dựng
-                  </span>
-                </p>
-              </div>
+              <h2 className="text-2xl font-semibold">Làm khảo sát</h2>
+              <ol className="mt-6 list-decimal space-y-4 pl-5 text-sm leading-7 text-teal-50">
+                <li>Đăng nhập bằng tài khoản được cấp.</li>
+                <li>Mở Khảo sát của tôi để xem danh sách khảo sát.</li>
+                <li>Chọn khảo sát đang mở và hoàn thành trước hạn.</li>
+              </ol>
             </div>
           </div>
         </section>
@@ -127,19 +97,12 @@ export default function HomePage() {
           aria-labelledby="features-title"
           className="border-t border-slate-200 py-12 sm:py-16"
         >
-          <p className="text-xs font-bold tracking-[0.14em] text-teal-800 uppercase">
-            Hệ thống dành cho bạn
-          </p>
           <h2
             id="features-title"
-            className="mt-3 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
+            className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"
           >
-            Từ góp ý đến thay đổi tích cực
+            Chức năng hệ thống
           </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-            Bạn đã có thể đăng nhập và quản lý mật khẩu. Các khu vực khảo sát,
-            phản hồi và kết quả sẽ được mở khi sẵn sàng.
-          </p>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {features.map((feature) => (
               <article
@@ -163,16 +126,27 @@ export default function HomePage() {
                 <p className="mt-2 text-sm leading-7 text-slate-600">
                   {feature.description}
                 </p>
-                <p className="mt-5 w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                  Chưa mở
-                </p>
+                {feature.href ? (
+                  <Link
+                    href={feature.href}
+                    className={`mt-5 inline-flex rounded text-sm font-semibold text-teal-800 hover:underline ${focusRing}`}
+                  >
+                    Truy cập{" "}
+                    <span className="ml-2" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ) : (
+                  <p className="mt-5 w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                    Chưa mở
+                  </p>
+                )}
               </article>
             ))}
           </div>
         </section>
         <footer className="flex flex-wrap justify-between gap-3 border-t border-slate-200 py-7 text-xs leading-6 text-slate-500">
-          <p>Khảo sát &amp; phản hồi môn học</p>
-          <p>Tiếng nói sinh viên · Chất lượng học tập</p>
+          <p>Hệ thống khảo sát và phản hồi về môn học</p>
         </footer>
       </div>
     </main>

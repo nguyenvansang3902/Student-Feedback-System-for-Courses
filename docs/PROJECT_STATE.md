@@ -31,3 +31,4 @@
 - CI main/tài liệu cuối đối chiếu riêng sau push; chưa dùng CI nguồn để nhận SHA main khác đã qua.
 - Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh; không viết quy trình hiện tại ở trường.
 - Bước tiếp: giữ nghiệm thu Tuần 8, theo dõi FR-145; chỉ bắt đầu Tuần 9 khi người dùng yêu cầu.
+- Giao diện theo yêu cầu 30/10: hạn chế slogan, dùng tên chức năng/hướng dẫn ngắn; ô đăng nhập không có ví dụ placeholder. Xem CHINH_SUA_GIAO_DIEN_2026_10_30.md; check 646/646 và QA 8 bố cục qua, tiến độ không đổi.
