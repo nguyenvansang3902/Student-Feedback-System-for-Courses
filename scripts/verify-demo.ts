@@ -2,6 +2,7 @@ import "dotenv/config";
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync } from "node:fs";
 import { hash } from "bcryptjs";
+import { createHash } from "node:crypto";
 import { getDb } from "../src/lib/db";
 import {
   assertReadinessConfirmable,
@@ -42,6 +43,77 @@ const db = getDb(),
     reason: "Kiểm thử seed demo trong database riêng",
   };
 const results: string[] = [];
+async function week9Snapshot() {
+  const campaignIds = [
+    demoId("week9:campaign:current"),
+    demoId("week9:campaign:prior"),
+  ];
+  const campaigns = await db.surveyCampaign.findMany({
+    where: { id: { in: campaignIds } },
+    orderBy: { id: "asc" },
+    include: {
+      template: { include: { groups: { include: { questions: true } } } },
+      sections: {
+        orderBy: { sectionId: "asc" },
+        include: { result: true, section: { include: { teaching: true } } },
+      },
+    },
+  });
+  assert.equal(campaigns.length, 2);
+  const current = campaigns.find((campaign) => campaign.id === campaignIds[0])!;
+  assert.equal(current.status, "DA_CONG_BO");
+  assert.equal(current.sections.length, 3);
+  assert.equal(
+    new Set(
+      current.sections.flatMap((cohort) =>
+        cohort.section.teaching.map((assignment) => assignment.teacherId),
+      ),
+    ).size,
+    2,
+  );
+  assert.equal(
+    new Set(current.sections.map((cohort) => cohort.section.courseId)).size,
+    1,
+  );
+  assert(current.template.groups.some((group) => group.isAssessmentGroup));
+  assert.equal(
+    current.sections.filter((cohort) => cohort.result?.eligibleToPublish)
+      .length,
+    2,
+  );
+  assert.equal(
+    current.sections.filter(
+      (cohort) => cohort.result && !cohort.result.eligibleToPublish,
+    ).length,
+    1,
+  );
+  const responses = await db.surveyResponse.findMany({
+    where: { campaignId: { in: campaignIds } },
+    orderBy: { id: "asc" },
+    include: { answers: { orderBy: { id: "asc" } } },
+  });
+  assert.equal(responses.length, 18);
+  assert(responses.every((response) => response.answers.length === 3));
+  const tasks = await db.surveyTask.findMany({
+    where: { campaignId: { in: campaignIds } },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(tasks.length, 40);
+  assert.equal(tasks.filter((task) => task.status === "DONE").length, 18);
+  const identities = new Set(
+    tasks.flatMap((task) => [task.id, task.studentId]),
+  );
+  assert(
+    responses.every(
+      (response) =>
+        !identities.has(response.id) &&
+        response.answers.every((answer) => !identities.has(answer.id)),
+    ),
+  );
+  return createHash("sha256")
+    .update(JSON.stringify({ campaigns, tasks, responses }))
+    .digest("hex");
+}
 async function surveySnapshot() {
   const closedId = demoId("survey-data:campaign:closed"),
     openId = demoId("survey-data:campaign:open");
@@ -226,6 +298,7 @@ try {
   };
   const previousLocked = await db.surveyTemplate.findMany(oldLockedQuery);
   const medium = await run("medium");
+  const originalWeek9 = await week9Snapshot();
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
   const week7Campaigns = await db.surveyCampaign.findMany({
@@ -406,11 +479,17 @@ try {
   });
   assert.equal(legacyBefore.groups.flatMap((g) => g.questions).length, 3);
   assert.equal(
-    await db.surveyTemplate.count(),
+    await db.surveyTemplate.count({
+      where: { id: { not: demoId("week9:template") } },
+    }),
     2 +
       Number(
         previousLocked.some((template) => template.id === previousBuiltinId),
       ),
+  );
+  assert.equal(
+    await db.surveyTemplate.count({ where: { id: demoId("week9:template") } }),
+    1,
   );
   results.push(
     "TC-FR148-06/07: họ mẫu mới 3 nhóm/7 câu, đúng 1 nhóm Kiểm tra, đánh giá; giữ nguyên UUID/cây hai họ cũ và phiếu/kết quả",
@@ -550,6 +629,10 @@ try {
   assert.equal(await week7Snapshot(), originalWeek7);
   results.push(
     "Seed lại/tăng size giữ bundle W7 và mật khẩu/trạng thái đã đổi; không viết lại lịch sử hoặc dữ liệu khảo sát cũ",
+  );
+  assert.equal(await week9Snapshot(), originalWeek9);
+  results.push(
+    "E8 Tuần 9: cùng môn hai giảng viên, nhóm đánh giá, hai lớp đủ mẫu/một lớp thiếu, kỳ trước; 18 phiếu/40 nhiệm vụ, seed lại giữ nguyên hash",
   );
   Object.assign(process.env, { NODE_ENV: "production" });
   await assert.rejects(seedDemo(actor, "small"));

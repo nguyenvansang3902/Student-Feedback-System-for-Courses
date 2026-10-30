@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    actor DBCL as Cán bộ ĐBCL
+    participant UI as Trang kết quả
+    participant API as API kết quả
+    participant Service as Service nghiệp vụ
+    participant DB as MySQL
+    DBCL->>UI: Chọn Tổng hợp hoặc Công bố
+    UI->>API: POST expectedRevision + requestId + CSRF
+    API->>API: Xác thực, Origin, giới hạn body, CSRF
+    API->>Service: actor + campaignId + dữ liệu đã kiểm
+    Service->>Service: Policy trước truy cập DB
+    Service->>DB: BEGIN và khóa mutex chung
+    Service->>DB: Đọc lại phiên, grant và trạng thái đợt
+    alt RequestId đã được thực hiện đúng actor và hash
+        Service->>DB: COMMIT giao dịch đọc lại
+        Service-->>API: Trạng thái hiện tại, replayed = true
+    else Lệnh mới
+        Service->>Service: Kiểm trạng thái, revision, học kỳ chưa khóa
+        alt Tổng hợp đợt đã đóng
+            Service->>DB: Đọc mẫu, số đếm và giá trị cần tổng hợp
+            Service->>Service: Tính phân số, bỏ NA/trống, chụp ngưỡng/GV nội bộ
+            Service->>DB: Tạo AggregateResult các lớp, không nội dung phiếu
+        else Công bố đợt đã tổng hợp
+            Service->>DB: Kiểm đủ bản gộp và TEXT có nội dung còn chờ
+            Service->>Service: NonTEXT chờ mặc định không chặn
+        end
+        Service->>DB: CAS trạng thái/revision + lịch sử requestId + audit tối thiểu
+        alt Mọi bước thành công
+            Service->>DB: COMMIT
+            Service-->>API: Trạng thái mới và số lớp
+        else Lỗi hoặc xung đột
+            Service->>DB: ROLLBACK toàn bộ giao dịch
+            Service-->>API: Lỗi đã chuẩn hóa, không nội dung phiếu
+        end
+    end
+    API-->>UI: JSON no-store
+    UI->>API: Đọc lại trạng thái nếu mất phản hồi
+    Note over UI,API: Không tự retry POST khi chưa biết kết quả

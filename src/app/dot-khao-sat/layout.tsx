@@ -23,6 +23,8 @@ export default async function CampaignsLayout({
   if (!can(actor, "campaigns:read")) redirect("/tai-khoan");
   const links = [
     ["/dot-khao-sat", "Đợt khảo sát"],
+    ...(can(actor, "results:read") || can(actor, "results:assessment")
+      ? [["/ket-qua", "Kết quả khảo sát"]] : []),
     ...(can(actor, "templates:list") ? [["/mau-phieu", "Mẫu phiếu"]] : []),
     ...(can(actor, "catalog:list") ? [["/danh-muc", "Danh mục đào tạo"]] : []),
     ["/tai-khoan", "Tài khoản của tôi"],

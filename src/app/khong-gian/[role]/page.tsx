@@ -88,6 +88,11 @@ export default async function WorkspacePage({
               →
             </Link>
           )}
+          {(can(actor, "results:read") || can(actor, "results:assessment") || can(actor, "results:incomplete")) && (
+            <Link href="/ket-qua" className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>
+              Kết quả khảo sát →
+            </Link>
+          )}
           {can(actor, "sections:list") ? (
             <WorkspaceSections />
           ) : (

@@ -36,6 +36,13 @@ export type PolicyAction =
   | "student-surveys:list"
   | "student-surveys:read"
   | "student-surveys:submit"
+  | "results:read"
+  | "results:assessment"
+  | "results:aggregate"
+  | "results:publish"
+  | "results:moderate"
+  | "results:incomplete"
+  | "results:remind"
   | "campaign-settings:read"
   | "campaign-settings:write"
   | "audit:list"
@@ -123,6 +130,34 @@ export function can(
 ): boolean {
   if (!hasFullSession(actor)) return false;
   const grants = actorGrants(actor);
+  if (action === "results:assessment")
+    return grants.some((grant) => grant.role === "PHONG_KHAO_THI");
+  if (
+    ["results:aggregate", "results:publish", "results:moderate"].includes(
+      action,
+    )
+  )
+    return grants.some((grant) => grant.role === "CAN_BO_DBCL");
+  if (["results:read", "results:incomplete", "results:remind"].includes(action))
+    return grants.some((grant) => {
+      if (grant.role === "CAN_BO_DBCL") return true;
+      if (action === "results:read" && grant.role === "LANH_DAO") return true;
+      if (!resource)
+        return [
+          "TRUONG_BO_MON",
+          "TRUONG_KHOA",
+          ...(action === "results:read" ? ["GIANG_VIEN"] : []),
+        ].includes(grant.role);
+      if (grant.role === "TRUONG_BO_MON")
+        return grant.departmentId === resource.departmentId;
+      if (grant.role === "TRUONG_KHOA")
+        return grant.facultyId === resource.facultyId;
+      return (
+        action === "results:read" &&
+        grant.role === "GIANG_VIEN" &&
+        !!resource.teacherIds?.includes(actor.userId)
+      );
+    });
   if (adminActions.has(action))
     return actor.mfa && grants.some((grant) => grant.role === "ADMIN");
   if (
@@ -251,6 +286,30 @@ export function sectionScopeWhere(
       case "PHONG_DAO_TAO":
         return {};
     }
+  }
+  return OR.length ? { OR } : { id: { in: [] } };
+}
+
+/** Phạm vi kết quả độc lập danh mục; quyền Khảo thí không mở rộng quyền xem lớp. */
+export function resultSectionScopeWhere(
+  actor: AuthActor,
+  action:
+    "results:read" | "results:incomplete" | "results:remind" = "results:read",
+): Prisma.CourseSectionWhereInput {
+  if (!can(actor, action)) return { id: { in: [] } };
+  const OR: Prisma.CourseSectionWhereInput[] = [];
+  for (const grant of actorGrants(actor)) {
+    if (
+      grant.role === "CAN_BO_DBCL" ||
+      (action === "results:read" && grant.role === "LANH_DAO")
+    )
+      return {};
+    if (action === "results:read" && grant.role === "GIANG_VIEN")
+      OR.push({ teaching: { some: { teacherId: actor.userId } } });
+    if (grant.role === "TRUONG_BO_MON")
+      OR.push({ course: { departmentId: grant.departmentId! } });
+    if (grant.role === "TRUONG_KHOA")
+      OR.push({ course: { department: { facultyId: grant.facultyId! } } });
   }
   return OR.length ? { OR } : { id: { in: [] } };
 }

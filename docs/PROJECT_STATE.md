@@ -1,7 +1,7 @@
 # Trạng thái dự án
 
 - Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 8 — đã nghiệm thu FR-50–54 ngày 30/10/2026, theo yêu cầu bắt đầu 29/10 và tiếp tục của người dùng.
+- Tuần hiện tại: Tuần 9 — đang triển khai theo lệnh ngày 30/10/2026; Tuần 8 đã nghiệm thu FR-50–54.
 - Mốc kế hoạch giả định: 18–24/11; làm sớm theo lệnh, không ghi lùi ngày, nhóm đối chiếu lịch trường.
 - Nguồn ứng dụng: 6edad31fef16ee11f5ace82645107b0b7153742d, nhánh feat/week8-anonymous-surveys; CI 40925339620 qua check/smoke đúng SHA.
 
@@ -30,5 +30,5 @@
 - Chưa kiểm tải 1.500 request/WCAG/mọi thiết bị/log proxy; ẩn danh ở mức ứng dụng, không chống DBA/binlog/tự tiết lộ.
 - CI main/tài liệu cuối đối chiếu riêng sau push; chưa dùng CI nguồn để nhận SHA main khác đã qua.
 - Chỉ dữ liệu giả, không deploy công khai. Đóng góp/ngày yêu cầu/tên GVHD do sinh viên tự xác minh; không viết quy trình hiện tại ở trường.
-- Bước tiếp: giữ nghiệm thu Tuần 8, theo dõi FR-145; chỉ bắt đầu Tuần 9 khi người dùng yêu cầu.
+- Đang làm: FR-60–65/150, BR-13; tổng hợp/công bố/kiểm duyệt, quyền xem, so sánh và nhắc. Chưa nghiệm thu hoặc cộng điểm Tuần 9.
 - Giao diện theo yêu cầu 30/10: hạn chế slogan, dùng tên chức năng/hướng dẫn ngắn; ô đăng nhập không có ví dụ placeholder. Xem CHINH_SUA_GIAO_DIEN_2026_10_30.md; check 646/646 và QA 8 bố cục qua, tiến độ không đổi.

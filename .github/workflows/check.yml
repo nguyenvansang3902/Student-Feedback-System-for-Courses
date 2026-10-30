@@ -52,6 +52,8 @@ jobs:
         run: npm run test:week7 && npm run test:week7:settings
       - name: Kiểm tra nộp ẩn danh, 20 request đồng thời và rollback trên MySQL
         run: npm run test:week8
+      - name: Kiểm tra tổng hợp, kiểm duyệt, công bố và quyền xem kết quả
+        run: npm run test:week9
       - name: Kiểm tra seed và demo trong database mới riêng
         run: npm run test:demo
       - name: Chạy lint, typecheck và test

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1632"
+  height="1093"
+  viewBox="0 0 1632 1093"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">ERD tổng quan: Nền người dùng và danh mục</title>
+  <desc id="description">
+    10 model chính và 0 model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và
+    khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 9:
+    46 model thiết kế, 34 runtime, 12 model chỉ thiết kế. AggregateResult dùng
+    cho tổng hợp/công bố theo ngưỡng; 4 bảng phản hồi còn chỉ seed. Chi tiết
+    toàn bộ scalar nằm trong ERD.md.
+  </desc>
+  <style>
+    text {
+      font-family: "Segoe UI", Arial, sans-serif;
+      fill: #0f172a;
+    }
+    .heading {
+      font-size: 29px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 17px;
+      fill: #475569;
+    }
+    .model {
+      font-size: 22px;
+      font-weight: 700;
+      fill: #fff;
+    }
+    .meta {
+      font-size: 15px;
+      fill: #475569;
+    }
+    .field {
+      font-size: 15px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+    .foot {
+      font-size: 14px;
+      fill: #475569;
+    }
+  </style>
+  <rect width="1632" height="1093" fill="#f8fafc" />
+  <text x="27" y="48" class="heading">Nền người dùng và danh mục</text>
+  <text x="27" y="82" class="sub">
+    10 model chính · 0 model ngữ cảnh · PK / UK / FK lấy từ DMMF thật
+  </text>
+  <text x="27" y="113" class="sub">
+    SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ
+    scalar và liên kết ở docs/ERD.md.
+  </text>
+  <text x="27" y="143" class="sub">
+    Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối
+    Response/Answer.
+  </text>
+  <g aria-label="User">
+    <rect
+      x="27"
+      y="176"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="207" class="model">User</text>
+    <text x="45" y="248" class="meta">Đã migrate đến Tuần 4 · 9 scalar</text>
+    <text x="45" y="277" class="field">PK (id)</text>
+    <text x="45" y="300" class="field">UK1 (loginCode)</text>
+    <text x="45" y="323" class="field">UK2 (email)</text>
+  </g>
+  <g aria-label="Faculty">
+    <rect
+      x="561"
+      y="176"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="207" class="model">Faculty</text>
+    <text x="579" y="248" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
+    <text x="579" y="277" class="field">PK (id)</text>
+    <text x="579" y="300" class="field">UK1 (code)</text>
+  </g>
+  <g aria-label="Department">
+    <rect
+      x="1095"
+      y="176"
+      width="510"
+      height="161"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="207" class="model">Department</text>
+    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 5 scalar</text>
+    <text x="1113" y="277" class="field">PK (id)</text>
+    <text x="1113" y="300" class="field">UK1 (code)</text>
+    <text x="1113" y="323" class="field">FK (facultyId) → Faculty (id)</text>
+  </g>
+  <g aria-label="Semester">
+    <rect
+      x="27"
+      y="362"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="362" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="390" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="393" class="model">Semester</text>
+    <text x="45" y="434" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
+    <text x="45" y="463" class="field">PK (id)</text>
+    <text x="45" y="486" class="field">UK1 (code)</text>
+  </g>
+  <g aria-label="Course">
+    <rect
+      x="561"
+      y="362"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="362" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="390" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="393" class="model">Course</text>
+    <text x="579" y="434" class="meta">Đã migrate đến Tuần 4 · 6 scalar</text>
+    <text x="579" y="463" class="field">PK (id)</text>
+    <text x="579" y="486" class="field">UK1 (code)</text>
+    <text x="579" y="509" class="field">
+      FK (departmentId) → Department (id)
+    </text>
+  </g>
+  <g aria-label="CourseSection">
+    <rect
+      x="1095"
+      y="362"
+      width="510"
+      height="184"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="362" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="390" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="393" class="model">CourseSection</text>
+    <text x="1113" y="434" class="meta">Đã migrate đến Tuần 4 · 4 scalar</text>
+    <text x="1113" y="463" class="field">PK (id)</text>
+    <text x="1113" y="486" class="field">UK1 (semesterId, code)</text>
+    <text x="1113" y="509" class="field">FK (courseId) → Course (id)</text>
+    <text x="1113" y="532" class="field">FK (semesterId) → Semester (id)</text>
+  </g>
+  <g aria-label="TeachingAssignment">
+    <rect
+      x="27"
+      y="571"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="602" class="model">TeachingAssignment</text>
+    <text x="45" y="643" class="meta">Đã migrate đến Tuần 4 · 3 scalar</text>
+    <text x="45" y="672" class="field">PK (sectionId, teacherId)</text>
+    <text x="45" y="695" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="45" y="718" class="field">FK (teacherId) → User (id)</text>
+  </g>
+  <g aria-label="Enrollment">
+    <rect
+      x="561"
+      y="571"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="561" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="561" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="579" y="602" class="model">Enrollment</text>
+    <text x="579" y="643" class="meta">Đã migrate đến Tuần 4 · 5 scalar</text>
+    <text x="579" y="672" class="field">PK (id)</text>
+    <text x="579" y="695" class="field">UK1 (sectionId, studentId)</text>
+    <text x="579" y="718" class="field">
+      FK (sectionId) → CourseSection (id)
+    </text>
+    <text x="579" y="741" class="field">FK (studentId) → User (id)</text>
+  </g>
+  <g aria-label="RoleAssignment">
+    <rect
+      x="1095"
+      y="571"
+      width="510"
+      height="253"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="1095" y="571" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="1095" y="599" width="510" height="20" fill="#1e40af" />
+    <text x="1113" y="602" class="model">RoleAssignment</text>
+    <text x="1113" y="643" class="meta">Đã migrate đến Tuần 4 · 7 scalar</text>
+    <text x="1113" y="672" class="field">PK (id)</text>
+    <text x="1113" y="695" class="field">UK1 (userId, role, scopeKey)</text>
+    <text x="1113" y="718" class="field">FK (userId) → User (id)</text>
+    <text x="1113" y="741" class="field">FK (facultyId) → Faculty (id)</text>
+    <text x="1113" y="764" class="field">
+      FK (departmentId) → Department (id)
+    </text>
+    <text x="1113" y="787" class="field">
+      G1: 10 vai trò; phạm vi GLOBAL / FACULTY /
+    </text>
+    <text x="1113" y="810" class="field">DEPARTMENT.</text>
+  </g>
+  <g aria-label="ImportBatch">
+    <rect
+      x="27"
+      y="849"
+      width="510"
+      height="138"
+      rx="14"
+      fill="#ffffff"
+      stroke="#1e40af"
+      stroke-width="2"
+    />
+    <rect x="27" y="849" width="510" height="48" rx="14" fill="#1e40af" />
+    <rect x="27" y="877" width="510" height="20" fill="#1e40af" />
+    <text x="45" y="880" class="model">ImportBatch</text>
+    <text x="45" y="921" class="meta">
+      Thiết kế tương lai; chưa migration · 12 scalar
+    </text>
+    <text x="45" y="950" class="field">PK (id)</text>
+    <text x="45" y="973" class="field">FK (importedById) → User (id)</text>
+  </g>
+  <text x="27" y="1032" class="foot">
+    Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 34 runtime / 12
+    chỉ thiết kế · Tuần 9, cập nhật thực tế 30/10/2026
+  </text>
+  <text x="27" y="1057" class="foot">
+    SHA-256 DMMF:
+    bca4073a102d6c09bbee9b90882d08c750e6ea82ec7fafaeaacd9a153538eb20
+  </text>
+</svg>

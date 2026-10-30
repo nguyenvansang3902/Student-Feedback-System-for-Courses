@@ -3,6 +3,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { getDb } from "../src/lib/db";
 import { ensureDueCampaigns } from "../src/server/services/campaign-lifecycle";
 import { processCampaignMailOutbox } from "../src/server/services/campaign-notifications";
+import { remindDueSurveyStudents } from "../src/server/services/survey-reminders";
 
 const args = process.argv.slice(2);
 const once = args.includes("--once");
@@ -38,6 +39,7 @@ try {
   do {
     try {
       const lifecycle = await ensureDueCampaigns(actor, { limit: 100 });
+      const reminders = await remindDueSurveyStudents(actor, { limit: 100 });
       const mail = await processCampaignMailOutbox(actor, { limit: 50 });
       console.log(
         JSON.stringify({
@@ -46,6 +48,7 @@ try {
           opened: lifecycle.opened,
           closed: lifecycle.closed,
           blocked: lifecycle.blocked,
+          remindersQueued: reminders.queued,
           mailClaimed: mail.claimed,
           mailSent: mail.sent,
           mailFailed: mail.failed,

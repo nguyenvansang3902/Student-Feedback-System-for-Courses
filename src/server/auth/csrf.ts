@@ -6,7 +6,12 @@ import { requireCan } from "@/server/policies/can";
 import { AuthError, type AuthActor } from "./types";
 
 type CsrfPurpose =
-  "admin" | "catalog" | "templates" | "campaigns" | "student-surveys";
+  | "admin"
+  | "catalog"
+  | "templates"
+  | "campaigns"
+  | "student-surveys"
+  | "survey-results";
 function signature(payload: string, purpose: CsrfPurpose) {
   return createHmac("sha256", getAuthConfig().jwtSecret)
     .update(`sfs-${purpose}-csrf-v1:${payload}`)
@@ -56,6 +61,18 @@ export function assertStudentSurveysCsrf(
 ): void {
   requireCan(actor, "student-surveys:submit");
   assertCsrf(request, actor, "student-surveys");
+}
+
+export function issueSurveyResultsCsrf(actor: AuthActor): string {
+  requireCan(actor, "results:read");
+  return issueCsrf(actor, "survey-results");
+}
+export function assertSurveyResultsCsrf(
+  request: NextRequest,
+  actor: AuthActor,
+): void {
+  requireCan(actor, "results:read");
+  assertCsrf(request, actor, "survey-results");
 }
 
 function issueCsrf(actor: AuthActor, purpose: CsrfPurpose): string {

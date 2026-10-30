@@ -24,7 +24,7 @@ const runtimeNames = new Set(runtime.models.map((model) => model.name));
 const designOnlyNames = design.models
   .map((model) => model.name)
   .filter((name) => !runtimeNames.has(name));
-const assetDirectory = "tuan-08";
+const assetDirectory = "tuan-09";
 const expectedRuntimeNames = new Set([
   "User",
   "Faculty",
@@ -62,13 +62,13 @@ const expectedRuntimeNames = new Set([
   "EmailOutbox",
 ]);
 const seedOnlyNames = new Set([
-  "AggregateResult",
   "Feedback",
   "FeedbackRecipient",
   "FeedbackMessage",
   "FeedbackHistory",
 ]);
 const week8Names = new Set(["SurveyResponse", "SurveyAnswer"]);
+const week9Names = new Set(["AggregateResult"]);
 const week7Names = new Set([
   "SurveyCampaign",
   "CampaignSection",
@@ -163,15 +163,18 @@ if (
   design.models.length !== 46 ||
   runtime.models.length !== 34 ||
   designOnlyNames.length !== 12 ||
-  seedOnlyNames.size !== 5 ||
+  seedOnlyNames.size !== 4 ||
   week8Names.size !== 2 ||
-  [...seedOnlyNames, ...week8Names].some((name) => !runtimeNames.has(name)) ||
+  week9Names.size !== 1 ||
+  [...seedOnlyNames, ...week8Names, ...week9Names].some(
+    (name) => !runtimeNames.has(name),
+  ) ||
   [...expectedRuntimeNames].some((name) => !runtimeNames.has(name)) ||
   new Set(primaryNames).size !== 46 ||
   primaryNames.some((name) => !byName.has(name))
 ) {
   throw new Error(
-    "Phân nhóm ERD không khớp DMMF: cần 46 model thiết kế, 34 runtime; 5 bảng chỉ seed và 12 model chỉ thiết kế. Tuần 8 hiện thực nộp phiếu qua hai bảng Response/Answer sẵn có, không thêm migration. Mỗi model có đúng một nhóm chính.",
+    "Phân nhóm ERD không khớp DMMF: cần 46 model thiết kế, 34 runtime; 4 bảng phản hồi chỉ seed và 12 model chỉ thiết kế. Tuần 9 hiện thực AggregateResult sẵn có, không thêm migration. Mỗi model có đúng một nhóm chính.",
   );
 }
 if (
@@ -381,6 +384,12 @@ function overviewSvg(group) {
           "Tuần 8: nộp ẩn danh bằng UUID và DATE; không ghi cầu nối danh tính.",
         ),
       );
+    if (week9Names.has(model.name))
+      lines.push(
+        ...wrap(
+          "Tuần 9: tổng hợp đủ số liệu gốc, ngưỡng công bố và nhóm đánh giá gộp.",
+        ),
+      );
     return {
       model,
       context: !group.names.includes(model.name),
@@ -410,11 +419,13 @@ function overviewSvg(group) {
           ? "Tuần 5: chỉ seed dữ liệu demo"
           : templateNames.has(model.name)
             ? "Tuần 6 + G1: mẫu phiếu/nhóm đánh giá"
-            : week8Names.has(model.name)
-              ? "Tuần 8: nộp phiếu ẩn danh"
-              : week7Names.has(model.name)
-                ? "Tuần 7: đợt/xác nhận/thông báo đợt"
-                : "Đã migrate đến Tuần 4"
+            : week9Names.has(model.name)
+              ? "Tuần 9: tổng hợp/công bố theo ngưỡng"
+              : week8Names.has(model.name)
+                ? "Tuần 8: nộp phiếu ẩn danh"
+                : week7Names.has(model.name)
+                  ? "Tuần 7: đợt/xác nhận/thông báo đợt"
+                  : "Đã migrate đến Tuần 4"
         : "Thiết kế tương lai; chưa migration";
       const cardMeta = `${context ? "Ngữ cảnh lặp · " : ""}${migrationLabel} · ${scalarFields(model).length} scalar`;
       shapes.push(
@@ -424,7 +435,7 @@ function overviewSvg(group) {
     y += rowHeight + 25;
   }
   const height = y + 81;
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">ERD tổng quan: ${escapeXml(group.title)}</title><desc id="description">${group.names.length} model chính và ${contexts.length} model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 8: 46 model thiết kế, 34 runtime, 12 model chỉ thiết kế. Nhiệm vụ và nộp phiếu ẩn danh dùng Response/Answer sẵn có; 5 bảng kết quả/phản hồi còn chỉ seed. Chi tiết toàn bộ scalar nằm trong ERD.md.</desc><style>text{font-family:'Segoe UI',Arial,sans-serif;fill:#0f172a}.heading{font-size:29px;font-weight:700}.sub{font-size:17px;fill:#475569}.model{font-size:22px;font-weight:700;fill:#fff}.meta{font-size:15px;fill:#475569}.field{font-size:15px;font-family:Consolas,'Courier New',monospace}.foot{font-size:14px;fill:#475569}</style><rect width="${width}" height="${height}" fill="#f8fafc"/><text x="27" y="48" class="heading">${escapeXml(group.title)}</text><text x="27" y="82" class="sub">${group.names.length} model chính · ${contexts.length} model ngữ cảnh · PK / UK / FK lấy từ DMMF thật</text><text x="27" y="113" class="sub">SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ scalar và liên kết ở docs/ERD.md.</text><text x="27" y="143" class="sub">Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối Response/Answer.</text>${shapes.join("")}<text x="27" y="${y + 20}" class="foot">Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 34 runtime / 12 chỉ thiết kế · Tuần 8, cập nhật thực tế 29/10/2026</text><text x="27" y="${y + 45}" class="foot">SHA-256 DMMF: ${fingerprint}</text></svg>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">ERD tổng quan: ${escapeXml(group.title)}</title><desc id="description">${group.names.length} model chính và ${contexts.length} model ngữ cảnh. Thẻ liệt kê khóa chính, khóa duy nhất và khóa ngoại từ DMMF. SVG được sinh trực tiếp, không render Mermaid. Tuần 9: 46 model thiết kế, 34 runtime, 12 model chỉ thiết kế. AggregateResult dùng cho tổng hợp/công bố theo ngưỡng; 4 bảng phản hồi còn chỉ seed. Chi tiết toàn bộ scalar nằm trong ERD.md.</desc><style>text{font-family:'Segoe UI',Arial,sans-serif;fill:#0f172a}.heading{font-size:29px;font-weight:700}.sub{font-size:17px;fill:#475569}.model{font-size:22px;font-weight:700;fill:#fff}.meta{font-size:15px;fill:#475569}.field{font-size:15px;font-family:Consolas,'Courier New',monospace}.foot{font-size:14px;fill:#475569}</style><rect width="${width}" height="${height}" fill="#f8fafc"/><text x="27" y="48" class="heading">${escapeXml(group.title)}</text><text x="27" y="82" class="sub">${group.names.length} model chính · ${contexts.length} model ngữ cảnh · PK / UK / FK lấy từ DMMF thật</text><text x="27" y="113" class="sub">SVG tổng quan dạng thẻ quan hệ; không phải bản render Mermaid. Xem đầy đủ scalar và liên kết ở docs/ERD.md.</text><text x="27" y="143" class="sub">Xanh dương: miền chính · Xám: ngữ cảnh · Xanh lục: vùng ẩn danh chỉ nối Response/Answer.</text>${shapes.join("")}<text x="27" y="${y + 20}" class="foot">Sinh từ prisma/design.prisma qua DMMF · 46 model thiết kế / 34 runtime / 12 chỉ thiết kế · Tuần 9, cập nhật thực tế 30/10/2026</text><text x="27" y="${y + 45}" class="foot">SHA-256 DMMF: ${fingerprint}</text></svg>\n`;
 }
 
 function constraintTables(group) {
@@ -458,21 +469,21 @@ function constraintTables(group) {
 }
 
 const markdown = [
-  "# ERD toàn hệ thống — Tuần 8: nhiệm vụ và nộp khảo sát ẩn danh",
+  "# ERD toàn hệ thống — Tuần 9: tổng hợp, công bố và kiểm duyệt",
   "",
   "<!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->",
   "",
-  "Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 8 ngày **29/10/2026** theo yêu cầu bắt đầu tuần kế tiếp bằng lời tự nhiên. Phạm vi mã nguồn gồm luồng đợt/xác nhận/chốt nhiệm vụ của Tuần 7 và danh sách nhiệm vụ, form động, nháp trình duyệt, nộp một lần, xác nhận ẩn danh của Tuần 8. Chưa triển khai tổng hợp/công bố kết quả hoặc xử lý phản hồi. ERD thể hiện cấu trúc và phạm vi mã nguồn; bằng chứng nghiệm thu chức năng được kiểm riêng, không suy từ hình.",
+  "Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 9 ngày **30/10/2026** theo yêu cầu người dùng. Mã nguồn bổ sung tổng hợp/công bố theo ngưỡng, kiểm duyệt TEXT, so sánh, kết quả gộp Khảo thí và danh sách/nhắc chưa hoàn thành. Chưa hiện thực phản hồi liên tục, giải trình hoặc xuất báo cáo. ERD thể hiện cấu trúc và phạm vi mã nguồn; nghiệm thu chức năng và bằng chứng chạy thật được kiểm riêng, không suy từ hình.",
   "",
-  `Nguồn: DMMF thật được Prisma sinh từ \`prisma/design.prisma\` (**${design.models.length} model thiết kế**), đối chiếu \`prisma/schema.prisma\` runtime (**${runtime.models.length} model**, gồm 4 bảng mẫu, 7 bảng đợt/xác nhận/hàng chờ email, 2 bảng phiếu ẩn danh thuộc Tuần 8 và 5 bảng còn chỉ seed demo). **${designOnlyNames.length} model còn chỉ thiết kế**, chưa migrate. Tuần 8 dùng cấu trúc Response/Answer đã có, không thêm model hoặc migration. SHA-256 DMMF thiết kế: \`${fingerprint}\`.`,
+  `Nguồn: DMMF thật được Prisma sinh từ \`prisma/design.prisma\` (**${design.models.length} model thiết kế**), đối chiếu \`prisma/schema.prisma\` runtime (**${runtime.models.length} model**, gồm 4 bảng mẫu, 7 bảng đợt/xác nhận/hàng chờ email, 2 bảng phiếu ẩn danh, AggregateResult của Tuần 9 và 4 bảng phản hồi còn chỉ seed demo). **${designOnlyNames.length} model còn chỉ thiết kế**, chưa migrate. Tuần 9 dùng AggregateResult/SystemSetting/Notification/EmailOutbox sẵn có, không thêm model hoặc migration. SHA-256 DMMF thiết kế: \`${fingerprint}\`.`,
   "",
   "## Cách đọc và tái tạo",
   "",
   "- Tuần 2 có chín model nền; Tuần 3–4 thêm xác thực, MFA và cấu hình, tổng 16. Tuần 5 thêm 15 model seed demo theo quyền người dùng ngày 22/10/2026, tổng 31 runtime / 39 thiết kế. Tuần 6 hiện thực 4 bảng mẫu; G1 giữ 31 runtime, thêm 10 vai trò/cờ nhóm và thiết kế 46 model. Tuần 7 promote CampaignDataConfirmation, Notification và EmailOutbox vào runtime, thành **34 runtime / 46 thiết kế / 12 model chưa migrate**. Báo cáo/gallery các tuần trước giữ nguyên bằng chứng lịch sử.",
-  "- 4 bảng mẫu phiếu thuộc Tuần 6: SurveyTemplate, CriterionGroup, Question, QuestionOption. **7 bảng thuộc chức năng Tuần 7:** SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, CampaignDataConfirmation, Notification, EmailOutbox. **2 bảng phiếu thuộc chức năng Tuần 8:** SurveyResponse, SurveyAnswer. SurveyTask được Tuần 8 dùng cho quyền trên nhiệm vụ đã chốt và cập nhật PENDING → DONE cùng transaction chèn phiếu. **5 bảng còn chỉ seed:** AggregateResult, Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory. Có seed không thay nghiệm thu kết quả/phản hồi các tuần sau.",
-  "- SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè. CriterionGroup.isAssessmentGroup mặc định false do ĐBCL đặt ở form nhóm, được giữ khi nhân bản/tạo phiên bản; cây mẫu khóa cũ không tự đổi. Cờ này chưa mở trang kết quả gộp của Khảo thí (Tuần 9). Những thay đổi này không tạo liên kết từ SurveyResponse/SurveyAnswer sang danh tính.",
+  "- 4 bảng mẫu phiếu thuộc Tuần 6: SurveyTemplate, CriterionGroup, Question, QuestionOption. **7 bảng thuộc chức năng Tuần 7:** SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, CampaignDataConfirmation, Notification, EmailOutbox. **2 bảng phiếu thuộc chức năng Tuần 8:** SurveyResponse, SurveyAnswer. SurveyTask dùng cho quyền và cập nhật PENDING → DONE cùng transaction chèn phiếu. **AggregateResult thuộc chức năng Tuần 9:** số đếm, tổng/phân bố và ảnh chụp mẫu/ngưỡng xếp mức/giảng viên nội bộ trong JSON; không nội dung hoặc ID phiếu/đáp án/sinh viên. **4 bảng còn chỉ seed:** Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory; chưa có luồng phản hồi thực.",
+  "- SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè. CriterionGroup.isAssessmentGroup do ĐBCL đặt ở form nhóm, được giữ khi nhân bản/tạo phiên bản; cây mẫu khóa cũ không tự đổi. Tuần 9 chỉ chiếu nhóm có cờ trong kết quả gộp Khảo thí sau công bố/lưu trữ và đủ ngưỡng BR-57; không trả lớp/GV/TEXT. Không tạo liên kết từ SurveyResponse/SurveyAnswer sang danh tính.",
   "- SurveyCampaign.revision/updatedAt phục vụ CAS; openedAt/openedSnapshotHash/dataDriftDetected ghi thời điểm chốt thực tế và phát hiện lệch. CampaignDataConfirmation lưu hash, số lớp/cặp và revision của lần PĐT xác nhận/trả về; CampaignHistory thêm action/requestId/requestHash/campaignRevision cho truy vết và chống lặp, không sửa lịch sử cũ.",
-  "- Notification/EmailOutbox ở Tuần 7 chỉ phục vụ thông báo gia hạn/biến động dữ liệu; không nhận đã hoàn thành trung tâm thông báo, SLA hoặc nhắc khảo sát của Tuần 9/11. EmailOutbox có idempotencyKey và lease cho các tiến trình gửi đồng thời. Hai bảng này ở miền hệ thống, không nối tới vùng phiếu ẩn danh.",
+  "- Notification/EmailOutbox dùng cho thông báo đợt Tuần 7 và nhắc khảo sát Tuần 9; chưa nhận hoàn thành toàn bộ trung tâm thông báo/SLA Tuần 11. EmailOutbox có idempotencyKey/lease; nhắc thủ công/tự động dùng khóa chung theo ngày Việt Nam để không vượt một lần/ngày/SV/đợt. SurveyReminder vẫn chỉ thiết kế: Tuần 9 dùng hàng chờ hiện có, không tạo quan hệ tới vùng phiếu ẩn danh.",
   "- Tuần 8 xác minh owner/task, phiên mới, học kỳ chưa khóa, đợt DANG_MO trong khoảng đóng [startsAt, endsAt], mẫu khóa và giá trị đúng câu/option trước khi ghi. Cập nhật task có điều kiện phải ảnh hưởng đúng một hàng rồi mới chèn Response/Answer UUID; lỗi rollback cả ba phần. doneDate/submittedDate cùng ngày Asia/Ho_Chi_Minh, không có mốc giờ chính xác trong vùng phiếu. Nháp chỉ nằm ở trình duyệt; xác nhận không trả ID hoặc nội dung phiếu. Không thêm FK, audit/log/queue hoặc model ánh xạ nối danh tính với phiếu.",
   `- Model chỉ thiết kế cho các tuần sau: ${designOnlyNames.map((name) => `\`${name}\``).join(", ")}. Hồ sơ Thanh tra, bất thường, kiến nghị và các luồng tương lai chưa có migration/runtime workflow; ImportBatch P1 vẫn chưa được nghiệm thu.`,
   "- Bốn sơ đồ có đúng 46 model chính (10 + 17 + 10 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.",
@@ -563,5 +574,5 @@ if (outdated.length) {
   );
 }
 console.log(
-  `ERD ${check ? "khớp" : "đã xuất"}: ${design.models.length} model thiết kế / ${runtime.models.length} model runtime / ${designOnlyNames.length} model chỉ thiết kế; Tuần 8 hiện thực 2 bảng Response/Answer sẵn có, 5 bảng còn chỉ seed. 4 khối Mermaid, 4 SVG tổng quan sinh trực tiếp; vùng ẩn danh chỉ nối Response/Answer.`,
+  `ERD ${check ? "khớp" : "đã xuất"}: ${design.models.length} model thiết kế / ${runtime.models.length} model runtime / ${designOnlyNames.length} model chỉ thiết kế; Tuần 9 hiện thực AggregateResult sẵn có, 4 bảng phản hồi còn chỉ seed. 4 khối Mermaid, 4 SVG tổng quan sinh trực tiếp; vùng ẩn danh chỉ nối Response/Answer.`,
 );

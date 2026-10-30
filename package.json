@@ -51,7 +51,11 @@
     "test:week7:settings": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-week7-settings.ts",
     "pretest:week7:settings": "npm run db:generate",
     "test:week8": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-week8.ts",
-    "pretest:week8": "npm run db:generate"
+    "pretest:week8": "npm run db:generate",
+    "test:week9": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-week9.ts",
+    "pretest:week9": "npm run db:generate",
+    "db:seed:week9": "tsx scripts/seed-week9-demo.ts",
+    "predb:seed:week9": "npm run db:generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "7.10.1",

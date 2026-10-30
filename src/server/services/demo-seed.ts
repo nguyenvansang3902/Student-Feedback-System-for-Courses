@@ -9,6 +9,7 @@ import { lockAdminMutations } from "./access";
 import { seedDemoSurveyData } from "./demo-survey-seed";
 import { seedDefaultTemplate } from "./seed-template-default";
 import { seedWeek7ReadinessData } from "./week7-demo-seed";
+import { seedWeek9ResultsData } from "./week9-demo-seed";
 
 export const demoSizes = {
   small: {
@@ -405,6 +406,14 @@ export async function seedDemo(
         enrollments: enrollments.length,
         surveyData,
         readinessData,
+        resultsData: await seedWeek9ResultsData(actor, tx, {
+          id: demoId,
+          departmentId: departments[0].id,
+          teacherIds: teachers.map((teacher) => teacher.id),
+          studentIds: students.map((student) => student.id),
+          createdById: demoId("DBCL2026001"),
+          approvedById: demoId("LD2026001"),
+        }),
       };
     },
     { maxWait: 15000, timeout: 60000 },

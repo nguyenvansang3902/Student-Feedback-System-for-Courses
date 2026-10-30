@@ -1000,6 +1000,15 @@ export async function lockSemester(
       data: { lockedAt: new Date() },
     });
     if (changed.count !== 1) locked();
+    // Khóa sổ lưu trữ kết quả đã công bố trong cùng giao dịch, không mở lại khi mở khóa kỳ.
+    const published = await tx.surveyCampaign.findMany({ where: { semesterId: key, status: "DA_CONG_BO" }, select: { id: true, revision: true } });
+    for (const campaign of published) {
+      const archived = await tx.surveyCampaign.updateMany({ where: { id: campaign.id, status: "DA_CONG_BO", revision: campaign.revision },
+        data: { status: "LUU_TRU", revision: { increment: 1 } } });
+      if (archived.count !== 1) locked();
+      await tx.campaignHistory.create({ data: { campaignId: campaign.id, actorId: fresh.userId, fromStatus: "DA_CONG_BO", toStatus: "LUU_TRU",
+        action: "ARCHIVE", reason: "Học kỳ đã khóa sổ", campaignRevision: campaign.revision + 1 } });
+    }
     await tx.auditLog.create({
       data: {
         actorId: fresh.userId,

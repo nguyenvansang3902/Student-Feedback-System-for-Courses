@@ -1,4 +1,4 @@
-# Bảng truy vết yêu cầu — Tuần 8 sau Điều chỉnh số 01
+# Bảng truy vết yêu cầu — Tuần 9 sau Điều chỉnh số 01
 
 Chỉnh giao diện 30/10/2026 theo yêu cầu người dùng, liên quan FR-01/50/54: bỏ slogan thừa và ví dụ trong ô đăng nhập, dùng tiêu đề chức năng; không đổi chính sách hay luồng nộp. Check 646/646, QA 5 nhóm/8 bố cục qua. [Bằng chứng và ảnh mới](CHINH_SUA_GIAO_DIEN_2026_10_30.md); kiểm HTTP và CI smoke dùng tiêu đề mới, bằng chứng Tuần 8 cũ giữ nguyên.
 
@@ -289,10 +289,31 @@ Người dùng yêu cầu bắt đầu và tiếp tục đến khi hoàn tất T
 
 Unit liên quan: student-surveys, student-survey-input/body/client/clock/draft/privacy, campaign-lifecycle và schema-anonymity. Fullcheck 646/646 trong 39 tệp/schema/ERD/lint/TS và build 16.4.3 qua ngày 30/10; HTTP/MySQL test:week8 qua 16/16/cleaned=true, kết quả riêng .local/week8-http-result.json ngoài Git.27 tập main trước/sau khớp hash. UI 13 nhóm/34 PNG đã xem và [CI nguồn 6edad31](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40925339620) qua check/smoke đúng SHA. Chốt 117/219=53,4%, 41/84 FR tại [nghiệm thu Tuần 8](NGHIEM_THU_TUAN_08.md); không cộng lượt targeted/lượt lỗi vào số đạt. CI main/tài liệu cuối đối chiếu riêng.
 
+## 4.6. Truy vết hiện thực Tuần 9 — từ 30/10/2026
+
+Người dùng yêu cầu bắt đầu Tuần 9 và tiếp tục phần dang dở, giữ yêu cầu hạn chế slogan/câu chữ tự nhiên. Bảng này nối mã với kiểm cục bộ đã qua; **chưa chốt nghiệm thu/CI nguồn cuối**. Đối chiếu tổng kiểm/build/CI tại [nghiệm thu Tuần 9](NGHIEM_THU_TUAN_09.md). Không thay bằng chứng lịch sử ở các mục trên.
+
+| Yêu cầu / quy tắc | Hiện thực Tuần 9 | Kiểm hiện có và phần còn phải chốt |
+| --- | --- | --- |
+| FR-60; BR-11/12; TC-AGG-01 | survey-score.ts, survey-results-mutations.ts, AggregateResult.details version2 | Fullcheck 797/797 trong 50 tệp; HTTP 11/11 có TC-AGG-01 4,11/40%; unit phân số/NA/trống/allNA/thang gốc 1–4 và không đổi choice/BOOLEAN thành điểm |
+| FR-61; BR-07 | eligibleToPublish từ số phiếu và tỉ lệ chính xác; read DTO suppression | Unit đúng ngưỡng/tỷ lệ làm tròn; HTTP/UI lớp thiếu mẫu không có điểm/TEXT, đợt vẫn công bố được |
+| FR-62; BR-17/34 | aggregateSurveyResults/publishSurveyResults, mutex/freshactor/CAS/history/requestId | HTTP10POST tổng hợp1thành công/9x409; lỗi lớp cuối rollback DA_DONGrev1/0aggregate/history/audit,rồi retry; khóa kỳ lưu trữ và cấm ghi qua |
+| FR-63; BR-08/18/68 | can.ts::resultSectionScopeWhere, survey-results.ts, /ket-qua và class detail | Unit/HTTP/UI10vai trò, ownscope/IDOR404, fresh grant/session, KT+GV không nới quyền lớp; ADMIN không quyền ngầm |
+| FR-64; BR-11 | poolSurveyScores; so sánh bộ môn/khoa/kỳ trước | Unit 1 phiếu điểm 5 + 9 phiếu điểm 1 = 1,40/khác mẫu; HTTP gộp 4,64 và UI so sánh cùng mẫu qua; E8 kỳ trước. Cấu hình xếp mức khác nhau vẫn trả điểm nhưng không gán mức chung |
+| FR-65; BR-09 | survey-moderation.ts, survey-results-settings.ts; /kiem-duyet | Unit/schema/CAS/freshMFA, HTTP lý do/TEXT-only/idempotency/audit; UI duyệt3gópý thật/hếtqueue/côngbố; không User relation vào Answer |
+| FR-47; BR-13 | survey-reminders.ts, scheduler, Notification/EmailOutbox; /chua-hoan-thanh | HTTPscope/PENDING/count/audit kể cảtrangrỗng;2lớp/2vai trò cùngngày vẫn1nhắc/SV/đợt; UI lần2queued0; không ghép phiếu |
+| FR-150; BR-57; TC-KT-01 | projection ASSESSMENT trong survey-results.ts, teacherIds snapshot nội bộ, seed E8 mới | HTTP/UI ≥2GV/đủ mẫu, nhóm4,68; không lớp/GV/TEXT/phiếu/đápán; demo15/15,E8haiGVcùngmôn/18phiếu/40task/repeathash |
+| BR-03/30/34; 5.6(d) phần hiện có | CSRF kết quả riêng, body256KiB, DTO whitelist, no-store, normalizedError, Prisma log[] | Unit/HTTPCSRF/Origin/bytecap/sentinel/logscan qua; audit không nội dung/responseID; chưa có export CSV/Excel/PDF kết quả Tuần12 |
+| Tài liệu và sơ đồ | [công thức](CONG_THUC_TONG_HOP.md), [ADR010](decisions/ADR-010-tong-hop-cong-bo-va-kiem-duyet.md), [5 câu bảo vệ](GIAI_THICH/tuan-09.md), [sơ đồ](SO_DO_TUAN_09.md) | 3/3 Mermaid render và 3PNG mở xem, 0 nhãn vượt biên; báo cáo10mục, tóm tắt≤150từ; chưa thay kiểm app |
+
+Lượt HTTP cuối **12/12**, `cleaned=true` ở `.local/week9-http-result.json`; lưu cấu hình bằng TOTP thật qua, chặn mã dùng lại/CAS cũ, ba góp ý được gắn cờ và cấu hình thử đã khôi phục. Demo **15/15** trên database mới; **27 tập** dữ liệu main cũ khớp hash. [UI](QA_GIAO_DIEN_TUAN_09.md) có **14 nhóm/23 trạng thái/46 PNG đã xem**, không lỗi trong phép đo; harness UI không kiểm đăng nhập biểu mẫu/TOTP thật. Fullcheck **797/797 trong 50 tệp** và production build **Next 16.4.3** qua. Tài liệu/sơ đồ giữ 5 mục bảo vệ, AGENTS, 181 tệp lịch sử và 84 FR; CI đúng SHA còn chờ. [Bằng chứng máy đọc](assets/tuan-09/verification.json) không chứa SQL, mã hàng hoặc thông tin xác thực.
+
+Tiến độ chưa tick FR mới vẫn **117/219=53,4%, 41/84 FR**; kế hoạch Tuần 9 là **140/219**. Tám FR-47/60–65/150 có 21 điểm, chỉ cộng sau đủ cổng kiểm. FR-145 còn backlog, FR-160 chờ Tuần 13; nhắc khảo sát không tự hoàn thành FR-80–82 của các tuần sau.
+
 ## 5. Quy tắc cập nhật
 
 Khi hiện thực mỗi tuần, thay tên miền dự kiến bằng đường dẫn service/policy thật và tên test gắn mã, ghi command/commit/CI/ảnh thật; chỉ tick PROGRESS sau test và nghiệm thu. Tệp xuất/trạng thái chưa hoàn thành là luồng riêng, không ghép với phiếu. Các sơ đồ, wireframe, blueprint và checklist là thiết kế có thể review, không thay bằng chứng runtime.
 
 ### Chốt bằng chứng nguồn Tuần 7
 
-Nguồn 39d56485cb42281ed97eb482a317967dfabdce5b, [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA, gồm migration sạch Linux và hồi quy tuần trước. Check572/32file; build; HTTP19+13 trên nguồn saufixlease; seed14; UI11nhóm26viewport26PNG; sơ đồ5Mermaid/10PNG. Hash24tập main khớp,648link nội bộ/5mục bảo vệ/48tệp lịch sử/AGENTS/prompt bổ sung qua. Chấp nhận FR-40–46/100/142–144,103/219=47,0%; FR-145/160 chưa tick. Main/tài liệu cuối theo CI riêng.
+Nguồn 39d56485cb42281ed97eb482a317977dfabdce5b, [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA, gồm migration sạch Linux và hồi quy tuần trước. Check572/32file; build; HTTP19+13 trên nguồn saufixlease; seed14; UI11nhóm26viewport26PNG; sơ đồ5Mermaid/10PNG. Hash24tập main khớp,648link nội bộ/5mục bảo vệ/48tệp lịch sử/AGENTS/prompt bổ sung qua. Chấp nhận FR-40–46/100/142–144,103/219=47,0%; FR-145/160 chưa tick. Main/tài liệu cuối theo CI riêng.

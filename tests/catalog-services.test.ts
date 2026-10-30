@@ -40,6 +40,7 @@ const { db, sendUnlockMail } = vi.hoisted(() => {
       systemSetting: delegate(),
       auditLog: delegate(),
       surveyCampaign: delegate(),
+      campaignHistory: delegate(),
       $transaction: vi.fn(),
       $executeRaw: vi.fn(),
       $queryRaw: vi.fn(),
@@ -149,6 +150,9 @@ beforeEach(() => {
   db.$queryRaw.mockResolvedValue([]);
   db.systemSetting.findUnique.mockResolvedValue({ value: ["ADMIN"] });
   db.auditLog.create.mockResolvedValue({});
+  db.surveyCampaign.findMany.mockResolvedValue([]);
+  db.surveyCampaign.updateMany.mockResolvedValue({ count: 1 });
+  db.campaignHistory.create.mockResolvedValue({});
   sendUnlockMail.mockResolvedValue(undefined);
   for (const model of [
     db.faculty,
@@ -524,6 +528,41 @@ describe("FR-20/21/22, BR-17/30/34 — quyền danh mục và khóa sổ", () =>
     await expect(
       lockSemester(current, semester.id, { reason }),
     ).rejects.toMatchObject({ code: "SEMESTER_LOCKED" });
+  });
+  it("W9 BR-17: khóa kỳ chuyển đợt công bố sang lưu trữ bằng CAS và lịch sử cùng giao dịch", async () => {
+    const current = actor(),
+      campaignId = randomUUID();
+    db.userSession.findUnique.mockResolvedValue(session(current));
+    db.surveyCampaign.findMany.mockResolvedValue([
+      { id: campaignId, revision: 8 },
+    ]);
+    await lockSemester(current, semester.id, {
+      reason: "Đã hoàn tất đối soát học kỳ",
+    });
+    expect(db.surveyCampaign.findMany).toHaveBeenCalledWith({
+      where: { semesterId: semester.id, status: "DA_CONG_BO" },
+      select: { id: true, revision: true },
+    });
+    expect(db.surveyCampaign.updateMany).toHaveBeenCalledWith({
+      where: { id: campaignId, status: "DA_CONG_BO", revision: 8 },
+      data: { status: "LUU_TRU", revision: { increment: 1 } },
+    });
+    expect(db.campaignHistory.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        campaignId,
+        actorId: current.userId,
+        fromStatus: "DA_CONG_BO",
+        toStatus: "LUU_TRU",
+        action: "ARCHIVE",
+        campaignRevision: 9,
+      }),
+    });
+    db.surveyCampaign.updateMany.mockResolvedValue({ count: 0 });
+    await expect(
+      lockSemester(current, semester.id, {
+        reason: "Đã hoàn tất đối soát học kỳ",
+      }),
+    ).rejects.toMatchObject({ status: 409 });
   });
   it("TC-PDT-01: mở khóa cần lý do, mutex/fresh/CAS/audit trong transaction; email sau commit đến ĐBCL active GLOBAL", async () => {
     const current = actor(),

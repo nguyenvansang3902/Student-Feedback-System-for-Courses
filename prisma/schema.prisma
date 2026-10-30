@@ -1,4 +1,4 @@
-// Tuần 8: nhiệm vụ và nộp khảo sát ẩn danh; chưa tổng hợp hoặc công bố kết quả.
+// Tuần 9: tổng hợp/công bố/kiểm duyệt dùng model hiện có; chưa có luồng phản hồi liên tục.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"

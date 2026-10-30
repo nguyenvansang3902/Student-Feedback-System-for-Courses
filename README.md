@@ -2,7 +2,25 @@
 
 Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/09/2026**, khởi động thực tế **02/10/2026**. Tuần 3 thực hiện **21–22/10/2026**. Tuần 4 theo mốc giả định **21–27/10/2026**, bắt đầu thực tế **22/10/2026**; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-## Phạm vi hiện tại — Tuần 8: sinh viên làm khảo sát
+## Phạm vi hiện tại — Tuần 9: kết quả khảo sát
+
+Bắt đầu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã hiện thực và kiểm cục bộ, đang đối chiếu build/CI nguồn cuối, **chưa chốt nghiệm thu Tuần 9**; tiến độ đã nghiệm thu giữ117/219 cho đến khi đủ gate. Kiểm gần nhất797test/50tệp,HTTP11/11,seed15/15,UI14nhóm/46ảnh qua; [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md) ghi chi tiết và giới hạn. Xem [công thức](docs/CONG_THUC_TONG_HOP.md), [báo cáo](docs/bao-cao-tien-do/tuan-09.md). Không làm trước phản hồi/giải trình/xuất báo cáo. Giao diện ưu tiên tên chức năng/hướng dẫn ngắn, hạn chế slogan; đăng nhập không có ví dụ placeholder.
+
+### Xem và công bố kết quả
+
+Đăng nhập tài khoản phù hợp rồi mở [Kết quả khảo sát](http://localhost:3000/ket-qua). Mật khẩu demo ban đầu theo bảng bên dưới; seed không đặt lại mật khẩu bạn đã đổi.
+
+- **ĐBCL (`DBCL2026001`)**: chọn đợt đã đóng, tổng hợp; mở **Kiểm duyệt góp ý** và chọn hiện/ẩn kèm lý do. Chỉ công bố khi không còn TEXT có nội dung chờ duyệt. Mặc định chờ của câu không phải TEXT không chặn công bố.
+- **Lãnh đạo (`LD2026001`)**: đọc kết quả từ khi đã tổng hợp. **Giảng viên/TBM/TK**: đọc sau công bố/lưu trữ, đúng lớp hoặc phạm vi được giao. Lớp thiếu số phiếu hoặc tỉ lệ hiện “Chưa đủ mẫu để công bố”, không có điểm/tự luận.
+- **Khảo thí (`KT2026001`)**: chỉ nhóm đánh giá gộp theo môn/bộ môn/khoa sau công bố; cần ít nhất hai giảng viên đóng góp và đủ mẫu. Không có lớp, giảng viên hay góp ý tự luận. Thiếu điều kiện hiện “Chưa đủ dữ liệu gộp”.
+- **ĐBCL/TBM/TK**: từ đợt mở danh sách **Chưa hoàn thành** trong phạm vi. Mỗi lần đọc được ghi nhật ký; nhắc chỉ khi đợt còn mở/hạn, tối đa một lần/ngày/SV/đợt, dùng chung với scheduler.
+- **ADMIN đã MFA**: cấu hình xếp mức và từ khóa tại `/quan-tri/cau-hinh-ket-qua`, xác nhận mã TOTP mới khi lưu. Quyền cấu hình không cấp quyền đọc kết quả khảo sát.
+
+So sánh gộp trên số liệu gốc của toàn bộ phiếu, chỉ khi cùng phiên bản mẫu; không có dữ liệu phù hợp thì hiện thông báo, không tự chuyển thang hay ánh xạ phiên bản. Khi học kỳ khóa, các thao tác ghi bị chặn và kết quả đã công bố được lưu trữ, vẫn đọc theo quyền cũ. Dữ liệu cũ không bị reset để tạo tình huống mới. Các bước trên là hướng dẫn bản đang tích hợp; số kiểm thật và SHA cuối chỉ ghi tại nghiệm thu.
+
+Seed mới thêm hai đợt **Kết quả khảo sát môn học (giả lập Tuần 9)** và **Kết quả học kỳ trước (giả lập)**: cùng môn có hai GV, hai lớp đủ mẫu/một lớp thiếu, tổng18phiếu/40nhiệm vụ. Chạy `npm.cmd run db:seed` như thường lệ; với máy đã có seed cũ đầy đủ có thể chạy `npm.cmd run db:seed:week9` để chỉ bổ sung bundle mới. Các lệnh đều chỉ dữ liệu giả cục bộ và không viết lại mẫu/phiếu/kết quả cũ. Seed lặp giữ nguyên những thao tác đã làm; không dùng để đặt lại mật khẩu hoặc công bố lại đợt.
+
+## Mốc nghiệm thu Tuần 8: sinh viên làm khảo sát
 
 Tuần 8 thực hiện **29–30/10/2026** theo yêu cầu người dùng, đã nghiệm thu FR-50–54: danh sách nhiệm vụ, form động, nháp trình duyệt, nộp ẩn danh một lần và xác nhận. Check **646/646 trong 39 tệp**, build Next 16.4.3, HTTP/MySQL **16/16**, UI **13 nhóm/34 lượt bố cục/34 PNG đã xem** và bảo toàn 27 tập dữ liệu main đã qua. [CI nguồn 6edad31](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40925339620) đã qua check/smoke đúng SHA. Tiến độ **117/219=53,4%, 41/84 FR**; xem [nghiệm thu Tuần 8](docs/NGHIEM_THU_TUAN_08.md). Tổng hợp/công bố là Tuần 9, FR-145 ImportBatch/hoàn tác vẫn P1 có điều kiện chưa thực hiện. CI main/tài liệu cuối được đối chiếu riêng.
 
@@ -86,7 +104,7 @@ Chạy `db:seed` trước. Tài khoản demo ACTIVE có mật khẩu ban đầu 
 | TBM2026001 | tbm2026001@seed.demo.invalid | Trưởng bộ môn, phạm vi bộ môn minh họa 1 |
 | LD2026001 | ld2026001@seed.demo.invalid | Lãnh đạo, phạm vi toàn trường |
 | PDT2026001 | pdt2026001@seed.demo.invalid | Phòng Đào tạo; dữ liệu đào tạo/import và khóa, mở khóa kỳ |
-| KT2026001 | kt2026001@seed.demo.invalid | Phòng Khảo thí; đã có không gian, chức năng thi/kết quả gộp ở tuần sau |
+| KT2026001 | kt2026001@seed.demo.invalid | Phòng Khảo thí; kết quả gộp đang triển khai Tuần 9, hàng đợi phản hồi thi theo Tuần 10 |
 | TT2026001 | tt2026001@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ nhất, chưa có luồng hồ sơ |
 | TT2026002 | tt2026002@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ hai phục vụ kiểm quyền theo lộ trình |
 
@@ -204,6 +222,7 @@ npm.cmd run test:week6
 npm.cmd run test:week7
 npm.cmd run test:week7:settings
 npm.cmd run test:week8
+npm.cmd run test:week9
 npm.cmd run test:demo
 npm.cmd run check
 npm.cmd run build
@@ -224,6 +243,8 @@ npm.cmd run progress
 | `test:week7` | HTTP/MySQL cổng3006: duyệt, readiness, drift, chốt task,20 ensure đồng thời, lịch, gia hạn, tiến độ và scheduler/Mailpit; fixture riêng |
 | `test:week7:settings` | HTTP/MySQL cổng3007: ngưỡng/TOTP thật, ma trận10vai trò, CAS, mặc định và queue/retry/lease/Mailpit |
 | `test:week8` | HTTP/MySQL cổng3008/output `.next-week8`, DB thử có marker:10vai trò, task own/IDOR, năm loại,20POST đồng thời, duplicate, rollback chèn answer, DTO/log riêng tư; helper trigger chỉ giới hạn fixture |
+| `test:week9` | HTTP/MySQL cổng3009/output `.next-week9`, DB thử có marker: tổng hợp/công bố,11nhóm quyền/ngưỡng/TEXT/KT/nhắc/audit;10POST đồngthời và rollback dữ liệu lớp cuối, fixture sạch |
+| `db:seed:week9` | Chỉ thêm bundle E8 kết quả giả vào DB cục bộ đã có danh mục/tài khoản demo; không ghi lại lịch sử/mẫu/phiếu/kết quả cũ |
 | `scheduler` | Mở/đóng đợt và chuyển email đã xếp hàng; chạy liên tục hoặc --once |
 | `test:demo` | Tạo DB demo mới, kiểm seed/size/idempotent, dữ liệu khảo sát và phép tính thật; giữ DB sau kiểm |
 
@@ -253,6 +274,8 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 
 - Điều chỉnh số 01/G1: [prompt nguyên văn](docs/BO_SUNG_01_TAC_NHAN.md), [ma trận 10 vai trò](docs/MA_TRAN_QUYEN.md), [đặc tả hiện tại](docs/DAC_TA_NGHIEP_VU.md), [kế hoạch có việc bù](docs/KE_HOACH_15_TUAN.md). Các tài liệu nghiệm thu theo tuần dưới đây giữ bằng chứng lịch sử trước điều chỉnh.
 
+- Tuần 9 (đang tích hợp, chưa nghiệm thu): [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md), [công thức](docs/CONG_THUC_TONG_HOP.md), [báo cáo 10 mục](docs/bao-cao-tien-do/tuan-09.md), [5 câu bảo vệ](docs/GIAI_THICH/tuan-09.md), [ADR010](docs/decisions/ADR-010-tong-hop-cong-bo-va-kiem-duyet.md), [sơ đồ](docs/SO_DO_TUAN_09.md).
+
 - Tuần 8: [nghiệm thu](docs/NGHIEM_THU_TUAN_08.md), [báo cáo](docs/bao-cao-tien-do/tuan-08.md), [giải thích](docs/GIAI_THICH/tuan-08.md), [ADR-009](docs/decisions/ADR-009-nop-phieu-an-danh.md), [QA](docs/QA_GIAO_DIEN_TUAN_08.md), [sơ đồ](docs/SO_DO_TUAN_08.md).
 
 - Tuần 7: [nghiệm thu](docs/NGHIEM_THU_TUAN_07.md), [báo cáo](docs/bao-cao-tien-do/tuan-07.md), [giải thích](docs/GIAI_THICH/tuan-07.md), [ADR-008](docs/decisions/ADR-008-dot-khao-sat-va-chot-danh-sach.md), [QA](docs/QA_GIAO_DIEN_TUAN_07.md), [sơ đồ](docs/SO_DO_TUAN_07.md).
@@ -271,4 +294,4 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 - [ERD hiện tại](docs/ERD.md), [kiến trúc](docs/KIEN_TRUC.md), [thiết kế ẩn danh](docs/THIET_KE_AN_DANH.md), [gallery sơ đồ Tuần 2](docs/SO_DO_DA_RENDER.md).
 - [Báo cáo Tuần 1](docs/bao-cao-tien-do/tuan-01.md), [Tuần 2](docs/bao-cao-tien-do/tuan-02.md) giữ nguyên bằng chứng tại thời điểm thực hiện.
 
-AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Phạm vi hiện tại là Tuần8 theo yêu cầu tiếp tục trực tiếp; chưa bắt đầu Tuần9. Ngoại lệ seed cũ không cho phép làm trước workflow mới. Kiểm DTO/log của phiếu hiện có không thay kiểm export CSV/Excel/PDF kết quả ở Tuần12.
+AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Phạm vi hiện tại là Tuần 9 theo yêu cầu bắt đầu và tiếp tục trực tiếp; chỉ chốt khi đủ mã/test/nghiệm thu/tài liệu. Ngoại lệ seed cũ không cho phép làm trước workflow mới. Kiểm DTO/log của phiếu hiện có không thay kiểm export CSV/Excel/PDF kết quả ở Tuần 12.

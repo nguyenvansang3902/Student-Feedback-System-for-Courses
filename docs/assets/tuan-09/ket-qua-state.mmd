@@ -1,0 +1,30 @@
+stateDiagram-v2
+    direction TB
+    [*] --> DA_DONG: Luồng đợt Tuần 7 đóng khảo sát
+    DA_DONG --> DA_TONG_HOP: ĐBCL tổng hợp trong transaction
+    DA_TONG_HOP --> DA_CONG_BO: ĐBCL công bố sau kiểm TEXT
+    DA_CONG_BO --> LUU_TRU: PĐT khóa học kỳ
+    LUU_TRU --> [*]
+    note right of DA_DONG
+        Kiểm phiên và quyền mới
+        Học kỳ chưa khóa
+        expectedRevision + requestId
+        Lưu đủ số liệu gốc từng lớp
+    end note
+    note right of DA_TONG_HOP
+        ĐBCL / lãnh đạo đọc theo quyền
+        Kiểm duyệt TEXT có nội dung
+        Công bố cần đủ bản tổng hợp
+        Không còn TEXT chờ duyệt
+    end note
+    note right of DA_CONG_BO
+        GV / TBM / TK đúng phạm vi
+        Lớp đủ cả số phiếu và tỉ lệ
+        Khảo thí chỉ nhóm gộp đủ ngưỡng
+        ADMIN không có quyền ngầm
+    end note
+    note right of LUU_TRU
+        Giữ quyền đọc kết quả đã công bố
+        Không cho tổng hợp / duyệt / công bố
+        Mở khóa kỳ không tự hoàn nguyên
+    end note

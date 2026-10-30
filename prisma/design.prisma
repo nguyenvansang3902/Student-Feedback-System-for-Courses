@@ -1,5 +1,5 @@
 // THIẾT KẾ TOÀN HỆ THỐNG: xem docs/decisions/ADR-002-schema-theo-tuan.md.
-// Blueprint 46 model; runtime Tuần 8 ở schema.prisma, chưa tổng hợp/công bố kết quả.
+// Blueprint 46 model; runtime Tuần 9 ở schema.prisma, phản hồi/giải trình tương lai còn theo lộ trình.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/design-prisma"

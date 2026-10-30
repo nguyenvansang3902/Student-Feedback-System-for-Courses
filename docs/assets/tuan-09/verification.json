@@ -1,0 +1,267 @@
+{
+  "week": 9,
+  "recordedOn": "2026-10-30",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "local_checks_passed_ci_pending",
+  "source": {
+    "branch": "feat/week9-survey-results",
+    "base": "8af1dee2063187fe167f8ace99317ec9e0eb32e5",
+    "verifiedCommit": null
+  },
+  "quality": {
+    "check": {
+      "status": "passed",
+      "tests": 797,
+      "files": 50,
+      "includes": [
+        "Prisma runtime/design validation",
+        "Prisma generation",
+        "ERD consistency",
+        "ESLint",
+        "TypeScript",
+        "Vitest"
+      ]
+    },
+    "productionBuild": {
+      "status": "passed",
+      "nextVersion": "16.4.3"
+    }
+  },
+  "http": {
+    "status": "passed",
+    "groups": 12,
+    "cases": [
+      "BR-08/13/18/34: ma trận vai trò, metadata nhắc trước công bố; GV/trưởng đơn vị chưa nhận điểm, KT không có route lớp",
+      "BR-30/34: CSRF đúng miền/phiên, nguồn gửi và giới hạn body chặn trước thay đổi dữ liệu",
+      "BR-11/30: lỗi dữ liệu giả ở lớp tổng hợp cuối rollback toàn giao dịch, giữ DA_DONG/revision1/0 kết quả/0 history/0 audit; HTTP che chi tiết",
+      "TC-AGG-01/BR-07/11/12: tính tay4,11 và40% đúng biên;10 tổng hợp đồng thời1 thành công/9x409, replay không nhân bản; snapshot không cầu nối danh tính",
+      "BR-09/18: công bố bị chặn bởiTEXT chưa duyệt; lý do bắt buộc, CAS/idempotent quyết định; nonTEXT mặc định chờ không chặn công bố",
+      "BR-03/07/08/34/FR-64: GV chỉ lớp mình, TBM/TK đúng đơn vị, IDOR404; lớp thiếu mẫu ẩnđiểm/TEXT, so sánh gộp toànphiếu4,64",
+      "TC-KT-01/BR-57:≥2 GV snapshot cùngmôn; điểm nhóm4,68, không lớp/GV/TEXT; thiếu mẫuẩn; union KT+GV không nới quyền lớp",
+      "BR-13: chỉ trạng thái pending, scope riêng, mỗi lầnxem kểcảtrangrỗng cóaudit; nhắc2lớp/2vai trò vẫn1lần/ngày/SV/đợt",
+      "BR-17/51: chặn khóa khi đangmở; sauđóng khóa kỳ tựlưu trữ đợt côngbố, vẫnđọc; cấmghi vàmởkhóa khônglùi trạngthái",
+      "BR-34: thu hồi phiên hoặc vai trò có hiệu lực trên request tiếp theo, không tin JWT cũ",
+      "BR-09/11/32/34: ADMIN lưu cấu hình mức và từ khóa bằng TOTP thật; chặn CSRF thiếu/sai phiên, sai mã/replay; ADMIN thứ hai gặp CAS409, ba góp ý được gắn cờ, chỉ một audit cấu hình",
+      "BR-03/30: log/audit/notification không chứa nội dungphiếu hoặcresponseID, auditmoderation chỉscalaranswer; hashdữliệucũgiữnguyên"
+    ],
+    "concurrency": {
+      "requests": 10,
+      "succeeded": 1,
+      "rejected": 9,
+      "resultRows": 3
+    },
+    "rollback": {
+      "failedStatus": 409,
+      "status": "DA_DONG",
+      "revision": 1,
+      "resultRows": 0,
+      "historyRows": 0,
+      "auditRows": 0,
+      "retrySucceeded": true
+    },
+    "cleaned": true,
+    "updatedAt": "2026-10-30T15:17:45.454Z",
+    "additionalTotpGroup": "passed",
+    "configuration": {
+      "saved": true,
+      "replayRejected": true,
+      "staleRejected": true,
+      "keywordsFlagged": 3,
+      "restored": true
+    }
+  },
+  "demo": {
+    "status": "passed",
+    "groups": 15,
+    "updatedAt": "2026-10-30T11:02:09.354Z",
+    "week9Bundle": {
+      "campaigns": 2,
+      "sections": 4,
+      "responses": 18,
+      "tasks": 40,
+      "distinctTeachersCurrentCourse": 2,
+      "idempotent": true
+    }
+  },
+  "ui": {
+    "status": "passed",
+    "groups": 14,
+    "states": 23,
+    "layouts": 46,
+    "pngs": 46,
+    "widths": [
+      1440,
+      390
+    ],
+    "javascriptErrors": 0,
+    "horizontalOverflows": 0,
+    "missingInputLabels": 0,
+    "allImagesReviewed": true,
+    "finalFrameRefresh": "pending"
+  },
+  "preservation": {
+    "status": "passed",
+    "tables": 27,
+    "oldRowsUnchanged": true,
+    "checks": [
+      {
+        "table": "User",
+        "rows": 1573,
+        "sha256": "dfc734ca7e129fcca080efd21a2b9e63b964dc626b8c49f544b3d66b076c90c5"
+      },
+      {
+        "table": "RoleAssignment",
+        "rows": 1573,
+        "sha256": "03b54f001f53b23ff5904089d8ca4941080f9ce8a18d4b5b05ea9040d6930598"
+      },
+      {
+        "table": "Faculty",
+        "rows": 3,
+        "sha256": "0b305125e06770aad61b7c07b24337adb0709ccf5d85b641011d94e4853f54f7"
+      },
+      {
+        "table": "Department",
+        "rows": 8,
+        "sha256": "db1d836dbe18b3f8e8af7a9a14cb09ece2962ca9d6365994097f5c10f5c3ca19"
+      },
+      {
+        "table": "Semester",
+        "rows": 3,
+        "sha256": "48a6525882bb22e90814be51a1b9bb4a1f6f79c538294989443144b01c3f263a"
+      },
+      {
+        "table": "Course",
+        "rows": 41,
+        "sha256": "66fa6bb4452e35843ebde485ead3c117117c0469b13f5e657a3020f82f01f385"
+      },
+      {
+        "table": "CourseSection",
+        "rows": 128,
+        "sha256": "63230c9e594c2482faadca0079b589e7ad1f68b0be5e4e4b93a685d370941efc"
+      },
+      {
+        "table": "TeachingAssignment",
+        "rows": 129,
+        "sha256": "bdcdda2e90163f58b20aa0fbff70f7674d999672d67dc3370d8e64345f40c0b8"
+      },
+      {
+        "table": "Enrollment",
+        "rows": 4527,
+        "sha256": "179d74206e8f4d1935bd1f26736e2f473b5fb5aa3d00e96659bf54f823a1f3dc"
+      },
+      {
+        "table": "SurveyTemplate",
+        "rows": 3,
+        "sha256": "2624c0b5971186a3ce14d2959855564fd83cea029e33141729fb403ac07b6a85"
+      },
+      {
+        "table": "CriterionGroup",
+        "rows": 6,
+        "sha256": "3f8c5d59748057d7a2dde2b27a762d4b8a72bb8f31d515af76013757db980925"
+      },
+      {
+        "table": "Question",
+        "rows": 16,
+        "sha256": "845360935e59cbd54783a3a8d23baf3c971e6faa8fe8c721c98a59be75540c22"
+      },
+      {
+        "table": "QuestionOption",
+        "rows": 12,
+        "sha256": "fe0f22b6697cbd3193de936db3d8e89a09d99a04776692d0e17023010e277fc1"
+      },
+      {
+        "table": "SurveyCampaign",
+        "rows": 4,
+        "sha256": "157f41567c574e0a714e52a0a620add97a5d8620331261d967f93b5aec3eee39"
+      },
+      {
+        "table": "CampaignSection",
+        "rows": 8,
+        "sha256": "a1b42e8ea9c6feacae210378d8903dbb8c6165c9f28c9e512402f876332d79fe"
+      },
+      {
+        "table": "CampaignHistory",
+        "rows": 11,
+        "sha256": "c4ee143a884aff848c9bc1e5a4556b8400ff8b37516026c3457e2466e1bb121e"
+      },
+      {
+        "table": "SurveyTask",
+        "rows": 228,
+        "sha256": "ec0bd7d39446d1b84f4b212303cb252cfc1fc94cee4eca9db97011783961eec6"
+      },
+      {
+        "table": "SurveyResponse",
+        "rows": 78,
+        "sha256": "6923c3493a78be34fb026d9a78e999bd576aa8f480211ee1e1820173bde19087"
+      },
+      {
+        "table": "SurveyAnswer",
+        "rows": 234,
+        "sha256": "278ab55b6d4b929fdf746d4880a497731d5a9dc7b3c64f10ee4b6a21e2569f5e"
+      },
+      {
+        "table": "AggregateResult",
+        "rows": 3,
+        "sha256": "f1c3590c6b9b79b390038f237f20bb286e2ae3cbe6862a706a16c894c1c93db3"
+      },
+      {
+        "table": "Feedback",
+        "rows": 6,
+        "sha256": "af32ffc5048c9a1d92bf4f41d3f4862775d77dcc8ad0f6397169e5dda55f6179"
+      },
+      {
+        "table": "FeedbackRecipient",
+        "rows": 6,
+        "sha256": "47da1f8ad74a71368b1c1db4dc0f11a8ff140b2123ac1044dd75125b3c4e9a16"
+      },
+      {
+        "table": "FeedbackMessage",
+        "rows": 2,
+        "sha256": "3716954e2cd2f32eb9ef2bde3a9d07061de80e7ed278915d105da9e33f665010"
+      },
+      {
+        "table": "FeedbackHistory",
+        "rows": 17,
+        "sha256": "218009c2ef19079a064509707ab3bb0a512970d86ff91b2f3f87d70f0f5026a1"
+      },
+      {
+        "table": "CampaignDataConfirmation",
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "table": "Notification",
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "table": "EmailOutbox",
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "design": {
+    "runtimeModels": 34,
+    "designModels": 46,
+    "designOnlyModels": 12,
+    "newMigrations": 0,
+    "businessDiagrams": 3,
+    "erdMermaid": 4,
+    "erdCards": 4,
+    "viewedPngs": 11,
+    "outOfBoundsLabels": 0
+  },
+  "ci": {
+    "status": "pending",
+    "run": null,
+    "commit": null
+  },
+  "limitations": [
+    "Application-level anonymity; no claim against DBA, binlog, infrastructure logs or self-identifying text.",
+    "No load certification for 1500 simultaneous requests or universal device/WCAG certification.",
+    "Result CSV/Excel/PDF exports belong to Week 12 and are not accepted here.",
+    "FR-145 remains conditional P1 backlog; FR-160 full matrix remains Week 13.",
+    "Only fake local data; no public deployment."
+  ]
+}

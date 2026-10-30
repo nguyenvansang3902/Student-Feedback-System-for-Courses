@@ -45,17 +45,17 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("CAN_BO_DBCL"))
     return {
       title: "Không gian đảm bảo chất lượng",
-      sections: ["Tổng hợp và công bố kết quả", "Theo dõi cải tiến"],
+      sections: ["Theo dõi cải tiến"],
     };
   if (roles.includes("LANH_DAO"))
     return {
       title: "Không gian lãnh đạo",
-      sections: ["Kết quả toàn trường", "Theo dõi cải tiến"],
+      sections: ["Theo dõi cải tiến"],
     };
   if (roles.includes("TRUONG_KHOA") || roles.includes("TRUONG_BO_MON"))
     return {
       title: "Không gian quản lý đơn vị",
-      sections: ["Kết quả của đơn vị", "Phản hồi môn học", "Kế hoạch cải tiến"],
+      sections: ["Phản hồi môn học", "Kế hoạch cải tiến"],
     };
   if (roles.includes("GIANG_VIEN"))
     return {
@@ -63,7 +63,6 @@ function workspace(roles: readonly string[]) {
       sections: [
         "Lớp học phần phụ trách",
         "Phản hồi môn học",
-        "Kết quả khảo sát",
       ],
     };
   return {
@@ -225,6 +224,11 @@ export default async function AccountPage() {
                     className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
                   >
                     Mẫu phiếu khảo sát <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {(can(actor, "results:read") || can(actor, "results:assessment") || can(actor, "results:incomplete")) && (
+                  <Link href="/ket-qua" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>
+                    Kết quả khảo sát <span aria-hidden="true">↗</span>
                   </Link>
                 )}
                 {can(actor, "catalog:list") && (

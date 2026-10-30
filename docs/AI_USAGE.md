@@ -175,3 +175,23 @@ Lượt HTTP đầu dừng sau 14 nhóm vì user ứng dụng không được t�
 QA phát hiện thông báo nháp hỏng bị mất khi StrictMode chạy lại effect. Đã dùng cache chỉ chứa thông báo và xóa cả bản nháp trong bộ nhớ khi DONE/đăng xuất/tín hiệu giữa tab; cache không giữ câu trả lời. Harness còn sửa polling tab nền và chờ repaint sau lỗi ảnh lặp mảng; chạy lại toàn bộ, chỉ dùng 34 ảnh cuối đã xem. Check/build đã chạy lại trên nguồn cuối, không tính các lượt lỗi là nghiệm thu.
 
 Chốt FR-50–54: 117/219=53,4%, 41/84 FR; [nghiệm thu Tuần 8](NGHIEM_THU_TUAN_08.md) liên kết nguồn 6edad31/CI 40925339620 và ảnh thật. Web 3000/scheduler đã mở lại, MySQL/Mailpit healthy. CI main/tài liệu cuối đối chiếu riêng. Không reset dữ liệu hoặc làm trước tổng hợp/công bố. FR-145 vẫn backlog, FR-160 chưa đầy đủ; không gán đóng góp/giờ làm cho sinh viên.
+
+## Bắt đầu Tuần 9 — 30/10/2026
+
+Người dùng yêu cầu làm Tuần 9 sau khi Tuần 8 hoàn tất và tiếp tục phần dang dở. AI hỗ trợ tổng hợp, ngưỡng/công bố, trang kết quả, so sánh, kiểm duyệt, nhắc sinh viên và Khảo thí FR-150. Giữ yêu cầu câu chữ tự nhiên, hạn chế slogan, ô đăng nhập không có ví dụ. Chưa cộng tiến độ khi chưa chạy đủ kiểm tra. Agent chia phần tính điểm/chuyển trạng thái, đọc theo phạm vi và UI/API; người điều phối tích hợp, kiểm dữ liệu và cập nhật bằng chứng. Không gán phần AI cho đóng góp sinh viên.
+
+## Kiểm cục bộ Tuần 9 — 30/10/2026
+
+| Phần AI hỗ trợ | Hiện thực và bằng chứng đã xác minh |
+| --- | --- |
+| Tính và gộp điểm | `survey-score.ts`, thống kê gốc, phân số và ngưỡng chính xác; TC-AGG-01 cho 4,11 và 40%. Chỉ Likert tính điểm; NA/trống không thành 0. Cùng mẫu nhưng khác cấu hình xếp mức vẫn so sánh điểm, không gán một mức chung tùy ý |
+| Tổng hợp, công bố và kiểm duyệt | Kiểm phiên/quyền mới, mutex, CAS/requestId/lịch sử; TEXT-only có lý do, cờ từ khóa và audit cán bộ không nội dung/người nộp. Không tạo quan hệ danh tính vào Response/Answer |
+| Quyền xem và nhắc | Trang kết quả theo phạm vi, lớp thiếu mẫu bị ẩn; Khảo thí chỉ nhóm đánh giá gộp đủ mẫu và ít nhất hai GV. Danh sách PENDING có audit; nhắc tay/tự động dùng chung khóa ngày Việt Nam và cursor để không bỏ đói đợt sau |
+| Kiểm nguồn ứng dụng | Full `npm run check` qua **797/797 trong 50 tệp**, gồm schema/ERD/lint/TypeScript; production build **Next 16.4.3** qua. Lượt targeted 69 test là tập con, không cộng thêm vào tổng |
+| HTTP/MySQL | **12/12 nhóm**, fixture dọn; 10 POST tổng hợp chỉ 1 thành công/9 bị 409. Dữ liệu sai ở lớp cuối cho DA_DONG/revision1/0 kết quả/lịch sử/audit, sửa fixture rồi retry thành công. TOTP thật lưu cấu hình thành công, chặn replay/CAS cũ; từ khóa gắn cờ ba góp ý, cấu hình thử được khôi phục |
+| Seed và giao diện | Demo MySQL **15/15 nhóm**; E8 riêng 2 đợt/4 lớp/18 phiếu/40 nhiệm vụ, hai GV cùng môn, lớp đủ/thiếu mẫu và kỳ trước. UI **14 nhóm/23 trạng thái/46 PNG** đã xem, không lỗi trong phép đo; bốn ảnh được chụp lại để khớp nguồn cuối |
+| Bảo toàn và tài liệu | 27 tập dữ liệu main cũ khớp hash sau thêm E8; không reset, không viết lại mẫu/phiếu/kết quả cũ. ADR010, công thức, 5 câu bảo vệ, báo cáo 10 mục; 3 sơ đồ nghiệp vụ và 4 Mermaid ERD/4 thẻ, 11 PNG đã xem |
+
+Lượt seed đầu gặp phép đếm tổng mẫu cũ không tính mẫu Week9 mới. Đã giữ phép đếm họ lịch sử, kiểm riêng mẫu mới và chạy lại toàn suite trên database demo riêng; không sửa dữ liệu để ép kiểm qua. Lượt check đầu quét output `.next-week9`; thêm thư mục sinh này và `.local` vào cấu hình bỏ qua ESLint, rồi chạy lại check/build đầy đủ. Không nhận lượt lỗi là bằng chứng qua.
+
+Nguồn đang ở nhánh `feat/week9-survey-results`, nền `8af1dee2063187fe167f8ace99317ec9e0eb32e5`. Chưa dùng kết quả cục bộ để nhận CI của SHA chưa xác minh; chưa tick tám FR mới. Các cổng chờ và số liệu đã khử thông tin nhạy cảm nằm trong [nghiệm thu](NGHIEM_THU_TUAN_09.md) và [bằng chứng máy đọc](assets/tuan-09/verification.json). Tiến độ đã chốt vẫn 117/219, 41/84 FR; FR-145 còn backlog và FR-160 đầy đủ chờ Tuần 13. AI hỗ trợ kỹ thuật, sinh viên tự xác minh đóng góp và lịch/GVHD.

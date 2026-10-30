@@ -1,0 +1,22 @@
+flowchart TB
+    Actor["Phiên FULL còn hiệu lực"] --> Fresh["Service đọc lại grant / MFA / phạm vi"]
+    Fresh --> DBCL["ĐBCL"]
+    Fresh --> LD["Lãnh đạo"]
+    Fresh --> Scoped["GV / TBM / TK"]
+    Fresh --> KT["Khảo thí"]
+    Fresh --> Deny["ADMIN / PĐT / SV / Thanh tra<br/>không có quyền kết quả từ vai trò đó"]
+    DBCL --> Mutate["Tổng hợp / công bố / kiểm duyệt<br/>học kỳ chưa khóa, đúng trạng thái"]
+    DBCL --> Aggregated["Đọc từ DA_TONG_HOP"]
+    LD --> Aggregated
+    Scoped --> Published["Đọc sau công bố hoặc lưu trữ<br/>chỉ lớp / đơn vị được giao"]
+    Aggregated --> Threshold["Mỗi lớp: đủ số phiếu VÀ tỉ lệ"]
+    Published --> Threshold
+    Threshold -->|Đủ| Class["Điểm / phân bố lớp<br/>TEXT đã duyệt, trộn thứ tự<br/>không ID phiếu / đáp án / ngày nộp"]
+    Threshold -->|Thiếu| Hidden["Chưa đủ mẫu để công bố<br/>không điểm / TEXT của lớp"]
+    DBCL --> Pending["Danh sách PENDING riêng + audit mỗi lần xem"]
+    Scoped -->|Chỉ TBM / TK| Pending
+    Pending --> Remind["Nhắc tối đa 1 lần / ngày / SV / đợt<br/>không đọc câu trả lời"]
+    KT --> Assessment["Sau công bố / lưu trữ<br/>chỉ nhóm isAssessmentGroup<br/>gộp môn / bộ môn / khoa"]
+    Assessment --> Gate["Ít nhất 2 GV đóng góp<br/>và đủ mẫu"]
+    Gate -->|Đủ| Safe["DTO gộp<br/>không lớp / GV / TEXT / phiếu / đáp án"]
+    Gate -->|Thiếu| NotEnough["Chưa đủ dữ liệu gộp"]
