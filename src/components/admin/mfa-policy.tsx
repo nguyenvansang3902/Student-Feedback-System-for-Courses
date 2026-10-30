@@ -13,8 +13,8 @@ export function MfaPolicy() {
         Chính sách xác thực hai bước
       </h1>
       <p className="mt-3 text-sm leading-7 text-slate-500">
-        Quản trị viên luôn phải xác thực hai bước. Bạn có thể bắt buộc thêm các
-        vai trò khác.
+        Quản trị viên luôn phải xác thực hai bước. Có thể bật yêu cầu này cho
+        các vai trò khác.
       </p>
       <Notice message={resource.error} error />
       {resource.loading && (
@@ -97,7 +97,7 @@ function PolicyForm({ initial }: { initial: string[] }) {
       </fieldset>
       <Field
         id="policy-step-up"
-        label="Mã TOTP hiện tại của bạn"
+        label="Mã TOTP hiện tại"
         hint="Nếu mã vừa được sử dụng, đợi chu kỳ mã mới trước khi lưu."
       >
         <input

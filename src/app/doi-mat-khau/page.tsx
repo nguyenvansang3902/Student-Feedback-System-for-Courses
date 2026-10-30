@@ -18,7 +18,7 @@ export default async function ChangePasswordPage() {
       title="Đổi mật khẩu"
       description={
         actor.mustChangePassword
-          ? "Bạn đang sử dụng mật khẩu tạm. Hãy tạo mật khẩu riêng trước khi tiếp tục sử dụng tài khoản."
+          ? "Tài khoản đang sử dụng mật khẩu tạm. Hãy tạo mật khẩu riêng trước khi tiếp tục sử dụng tài khoản."
           : "Cập nhật mật khẩu để bảo vệ tài khoản. Các phiên đăng nhập hiện có sẽ kết thúc sau khi đổi thành công."
       }
     >

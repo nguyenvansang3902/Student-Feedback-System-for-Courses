@@ -201,3 +201,19 @@ Lượt seed đầu gặp phép đếm tổng mẫu cũ không tính mẫu Week9
 Theo góp ý trực tiếp của người dùng, đổi “mã định danh” thành “mã số sinh viên” trong hướng dẫn dưới Thông tin đăng nhập, nhãn ô nhập và lỗi bỏ trống của auth-form.tsx. Giữ ô nhập không có ví dụ. Đây là sửa câu chữ, không thêm FR hoặc tăng điểm. Chạy lại npm run check trên bản sửa: 797/797 test trong 50 tệp, schema/ERD/lint/TypeScript qua. Kiểm giao diện riêng ở tài liệu CHINH_SUA_DANG_NHAP_2026_10_30.md; không thay 46 ảnh nghiệm thu Tuần9 cũ.
 
 Trước lượt sửa câu chữ này, CI main41082112228 đã thành công check/smoke đúng SHA43da7f8017a16759f9883af49cfff29b44eabfcb; CI nguồn5eb5a84 cũng đã qua. Không dùng kết quả đó để nhận commit câu chữ mới đã qua CI.
+
+## Bỏ chữ gợi ý trong toàn bộ ô nhập — 30/10/2026
+
+Người dùng mở rộng yêu cầu: bỏ mọi đoạn màu xám bên trong ô nhập, gồm kích hoạt tài khoản. AI rà soát độc lập toàn bộ src và xác nhận bốn thuộc tính placeholder: email dùng chung ở các trang xác thực, tìm mã/tên trong bộ chọn đợt, ví dụ tên đợt và tìm tên đợt. Đã xóa cả bốn cùng lớp CSS placeholder của AuthField; không còn placeholder, aria-placeholder hoặc data-placeholder trong src ngoài mã sinh. Giữ nhãn và hướng dẫn ngoài ô, giá trị thật/lựa chọn dropdown và điều khiển ngày của trình duyệt. Không thêm thư viện, đổi nghiệp vụ hoặc cộng FR.
+
+npm run check sau sửa qua797/797 trong50tệp, schema/ERD/lint/TypeScript qua. Kiểm giao diện thực tế được ghi riêng ở BO_GOI_Y_TRONG_O_NHAP_2026_10_30.md; ảnh lịch sử giữ nguyên.
+
+QA cuối đã qua10/10 bố cục của năm trang ở1440/390, không placeholder/thiếu nhãn/tràn ngang/lỗiJS hoặcReact; đã xem bốn PNG mới. Chỉ đăng nhập tài khoản giả, không gửi email hoặc ghi đợt khảo sát. Đây là kiểm các trang đại diện cho toàn bộ bốn chỗ khai báo placeholder đã xóa, không thêm kiểm thử mô phỏng lại câu chữ.
+
+## Thống nhất danh xưng sinh viên — 30/10/2026
+
+Người dùng yêu cầu bỏ cách xưng hô “bạn” trong nội dung giao diện, ví dụ tiêu đề kích hoạt phải là “Bắt đầu với tài khoản của sinh viên”. AI và agent đã sửa nội dung xác thực, tài khoản, khảo sát, trang quản lý, thông báo và email. Nội dung hướng tới sinh viên dùng “sinh viên”; câu quản trị/phân quyền dùng diễn đạt trung tính, không gán sai vai trò. Năm câu trong nguồn mẫu mặc định cho lần tạo mới được cập nhật; không chạy seed hoặc sửa mẫu đã khóa, câu trả lời hay dữ liệu người dùng đã lưu.
+
+Rà toàn bộ src ngoài mã sinh không còn từ Bạn/bạn hoặc placeholder. Check cuối trên cả hai thay đổi câu chữ và bỏ gợi ý qua797/797 trong50tệp, schema/ERD/lint/TypeScript qua. Không viết test mới chỉ để so khớp câu chữ, không đổi mã lỗi, phân quyền hoặc nghiệp vụ. QA và ảnh mới ghi ở XUNG_HO_SINH_VIEN_2026_10_30.md; giữ nguyên ảnh các lượt trước.
+
+QA xưng hô cuối qua18/18 bố cục của tám trang/chín trạng thái ở1440/390: tiêu đề kích hoạt đúng yêu cầu, không cách gọi cũ/placeholder/thiếu nhãn/tràn ngang/lỗiJS hoặcReact trong phạm vi kiểm. Đã xem bốn PNG mới. Chỉ đăng nhập hai tài khoản giả sinh viên và ĐBCL, không gửi email hoặc nộp/ghi khảo sát. Lượt harness đầu dùng query token thay vì fragment nên timeout; đã sửa harness đúng giao diện nhận token và chạy lại toàn bộ, chỉ tính lượt cuối qua.

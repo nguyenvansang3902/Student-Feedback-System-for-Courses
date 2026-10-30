@@ -27,8 +27,8 @@ export function StudentSurveyConfirmation({
         Đã nộp khảo sát
       </h1>
       <p className="mt-4 text-sm leading-7 text-slate-600">
-        Khảo sát đã được ghi nhận. Bạn không thể sửa, xóa hoặc nộp lại phiếu
-        này.
+        Khảo sát đã được ghi nhận. Sinh viên không thể sửa, xóa hoặc nộp lại
+        phiếu này.
       </p>
       <dl className="mt-6 space-y-4 rounded-xl bg-slate-50 p-5 text-sm">
         <div>
@@ -49,8 +49,8 @@ export function StudentSurveyConfirmation({
         </div>
       </dl>
       <p className="mt-5 text-sm leading-7 text-slate-600">
-        Trang này xác nhận bạn đã nộp khảo sát và không hiển thị lại câu trả
-        lời.
+        Trang này xác nhận sinh viên đã nộp khảo sát và không hiển thị lại câu
+        trả lời.
       </p>
       <Link href="/khao-sat" className={`mt-7 inline-flex ${buttonStyle}`}>
         Về khảo sát của tôi →

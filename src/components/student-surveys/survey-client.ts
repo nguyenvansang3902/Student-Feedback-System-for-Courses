@@ -17,7 +17,7 @@ export class SurveyRequestError extends Error {
 export const surveyMessageOf = (error: unknown) =>
   error instanceof Error && !(error instanceof TypeError)
     ? error.message
-    : "Chưa kết nối được với máy chủ. Bản nháp của bạn vẫn được giữ trên thiết bị này.";
+    : "Chưa kết nối được với máy chủ. Bản nháp của sinh viên vẫn được giữ trên thiết bị này.";
 async function csrf(): Promise<string> {
   if (cachedCsrf && cachedCsrf.expiresAt > Date.now()) return cachedCsrf.token;
   if (!csrfRequest)

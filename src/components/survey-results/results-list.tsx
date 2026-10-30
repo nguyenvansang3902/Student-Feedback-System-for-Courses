@@ -116,7 +116,7 @@ export function ResultsList() {
           </div>
           {!resource.data.items.length && (
             <p className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600">
-              Chưa có đợt khảo sát phù hợp trong phạm vi của bạn.
+              Chưa có đợt khảo sát phù hợp trong phạm vi được giao.
             </p>
           )}
           <Pager page={page} total={resource.data.total} change={setPage} />

@@ -38,7 +38,7 @@ export function authorizeAuthAction(
   if (action === "logout") return;
   if (!actor) {
     throw new AuthError(
-      "Bạn cần đăng nhập để tiếp tục.",
+      "Cần đăng nhập để tiếp tục.",
       401,
       "UNAUTHENTICATED",
     );
@@ -52,7 +52,7 @@ export function authorizeAuthAction(
     return;
   if (actor.mustChangePassword) {
     throw new AuthError(
-      "Bạn cần đổi mật khẩu tạm trước khi tiếp tục.",
+      "Cần đổi mật khẩu tạm trước khi tiếp tục.",
       403,
       "PASSWORD_CHANGE_REQUIRED",
     );
@@ -66,14 +66,14 @@ export function authorizeAuthAction(
   if (action === "mfa-verify" && purpose === "MFA_VERIFY") return;
   if (purpose !== "FULL") {
     throw new AuthError(
-      "Bạn cần hoàn tất xác thực hai bước trước khi tiếp tục.",
+      "Cần hoàn tất xác thực hai bước trước khi tiếp tục.",
       403,
       "MFA_REQUIRED",
     );
   }
   if (action === "admin" && !actor.roles.includes("ADMIN")) {
     throw new AuthError(
-      "Bạn không có quyền thực hiện thao tác này.",
+      "Không có quyền thực hiện thao tác này.",
       403,
       "FORBIDDEN",
     );
@@ -86,7 +86,7 @@ export function authorizeAuthAction(
     !actor.mfa
   ) {
     throw new AuthError(
-      "Bạn cần xác thực hai bước để tiếp tục.",
+      "Cần xác thực hai bước để tiếp tục.",
       403,
       "MFA_REQUIRED",
     );
@@ -94,7 +94,7 @@ export function authorizeAuthAction(
   if (action === "admin" || action === "step-up") return;
   if (action === "workspace" && actor.roles.length > 0) return;
   throw new AuthError(
-    "Bạn không có quyền thực hiện thao tác này.",
+    "Không có quyền thực hiện thao tác này.",
     403,
     "FORBIDDEN",
   );

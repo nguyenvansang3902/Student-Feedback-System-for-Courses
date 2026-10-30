@@ -33,5 +33,5 @@
 - Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.
 - Chỉ dữ liệu giả, không deploy công khai; đóng góp/ngày yêu cầu/GVHD do sinh viên xác minh, không viết quy trình hiện tại ở trường.
 - CI main Tuần9: 43da7f8017a16759f9883af49cfff29b44eabfcb/run41082112228 qua check/smoke; không suy kết quả này cho commit sửa câu chữ sau đó.
-- Luôn hạn chế slogan, dùng câu chữ tự nhiên/ngắn; đăng nhập dùng “mã số sinh viên”, không có ví dụ placeholder. Giữ yêu cầu này ở các tuần tiếp theo.
+- Luôn hạn chế slogan, dùng câu chữ tự nhiên/ngắn và danh xưng “sinh viên”, không gọi “bạn”; đăng nhập dùng “mã số sinh viên”. Mọi ô nhập/tìm kiếm/tự luận không có placeholder; giữ nhãn/hướng dẫn bên ngoài. Áp dụng cả các tuần sau.
 - Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.

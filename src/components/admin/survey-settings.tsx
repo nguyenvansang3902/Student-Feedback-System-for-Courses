@@ -180,7 +180,7 @@ function SettingsForm({
       </p>
       <Field
         id="survey-settings-step-up"
-        label="Mã TOTP hiện tại của bạn"
+        label="Mã TOTP hiện tại"
         hint="Nếu mã vừa được dùng, đợi chu kỳ mới trước khi lưu."
       >
         <input

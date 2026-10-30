@@ -151,7 +151,7 @@ export function ImportPanel() {
       </h1>
       <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
         Tải mẫu, điền dữ liệu, rồi chạy thử để kiểm tra từng dòng. Chỉ khi tệp
-        hoàn toàn hợp lệ, bạn mới có thể xác nhận ghi toàn bộ dữ liệu.
+        hoàn toàn hợp lệ mới có thể xác nhận ghi toàn bộ dữ liệu.
       </p>
       <ol
         className="mt-7 grid gap-3 sm:grid-cols-3"
@@ -315,7 +315,7 @@ export function ImportPanel() {
               />
             </div>
           ) : (
-            <Notice message="Tệp hợp lệ ở thời điểm chạy thử. Chưa có dữ liệu nào được ghi. Hệ thống sẽ kiểm tra lại khi bạn xác nhận." />
+            <Notice message="Tệp hợp lệ ở thời điểm chạy thử. Chưa có dữ liệu nào được ghi. Hệ thống sẽ kiểm tra lại khi xác nhận." />
           )}
           {preview.sample.length > 0 && (
             <div className="mt-6">
@@ -369,8 +369,7 @@ export function ImportPanel() {
                 {preview.expiresAt
                   ? `Kết quả chạy thử có hiệu lực đến ${new Intl.DateTimeFormat("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit" }).format(new Date(preview.expiresAt))}. `
                   : ""}
-                Nếu dữ liệu nền thay đổi hoặc xác nhận hết hạn, bạn cần chạy thử
-                lại.
+                Cần chạy thử lại nếu dữ liệu nền thay đổi hoặc xác nhận hết hạn.
               </p>
               <label className="flex items-start gap-3 text-sm leading-7 text-slate-700">
                 <input

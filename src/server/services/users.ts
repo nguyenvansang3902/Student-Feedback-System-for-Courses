@@ -136,7 +136,7 @@ export async function replaceUserRoles(actor: AuthActor, id: string, input: { ro
   requireCan(actor, "users:roles");
   const userId = parseInput(objectId, id);
   const { roles: grants } = parseInput(z.object({ roles: grantsInput }).strict(), input);
-  if (userId === actor.userId) throw new AuthError("Hãy nhờ quản trị viên khác thay đổi vai trò của bạn.", 409, "SELF_MUTATION");
+  if (userId === actor.userId) throw new AuthError("Cần quản trị viên khác thay đổi vai trò của tài khoản đang đăng nhập.", 409, "SELF_MUTATION");
   return getDb().$transaction(async (tx) => {
     await lockAdminMutations(tx);
     const fresh = await assertFreshActor(tx, actor);

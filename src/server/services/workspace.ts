@@ -44,7 +44,7 @@ export async function getWorkspaceSection(actor: AuthActor, id: string) {
     const section = await tx.courseSection.findFirst({
       where: { AND: [{ id: sectionId }, sectionScopeWhere(fresh)] }, select: sectionSelect,
     });
-    if (!section) throw new AuthError("Không tìm thấy lớp học phần trong phạm vi của bạn.", 404, "NOT_FOUND");
+    if (!section) throw new AuthError("Không tìm thấy lớp học phần trong phạm vi được giao.", 404, "NOT_FOUND");
     return sectionDto(section);
   });
 }

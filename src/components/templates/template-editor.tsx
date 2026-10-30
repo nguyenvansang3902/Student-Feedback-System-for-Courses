@@ -251,7 +251,7 @@ export function TemplateEditor({ initial }: { initial?: TemplateDetail }) {
         { ...input, ...(item ? { expectedRevision: item.revision } : {}) },
       );
       accept(data.item);
-      setNotice("Đã lưu mẫu phiếu. Bạn có thể xem trước bản đã lưu.");
+      setNotice("Đã lưu mẫu phiếu. Có thể xem trước nội dung đã lưu.");
       if (!item) router.replace(`/mau-phieu/${data.item.id}`);
     } catch (error) {
       captureError(error);
@@ -345,7 +345,7 @@ export function TemplateEditor({ initial }: { initial?: TemplateDetail }) {
         <div className="my-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm leading-7 text-amber-950">
           <p>
             Bản đang soạn đã thay đổi hoặc bị khóa ở phiên khác. Nội dung chưa
-            lưu vẫn được giữ trên trang này; bạn có thể sao chép để đối chiếu
+            lưu vẫn được giữ trên trang này; có thể sao chép để đối chiếu
             trước khi tải lại.
           </p>
           <button

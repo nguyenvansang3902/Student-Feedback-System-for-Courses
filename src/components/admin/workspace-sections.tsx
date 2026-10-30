@@ -54,7 +54,7 @@ export function WorkspaceSections() {
           </div>
           {!resource.data.items.length && (
             <p className="mt-5 rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-500">
-              Chưa có lớp học phần trong phạm vi của bạn.
+              Chưa có lớp học phần trong phạm vi được giao.
             </p>
           )}
           <Pager page={page} total={resource.data.total} change={setPage} />

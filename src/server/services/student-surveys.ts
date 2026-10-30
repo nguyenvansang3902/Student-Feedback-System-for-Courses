@@ -45,7 +45,7 @@ function notFound(): never {
   throw new AuthError("Không tìm thấy nhiệm vụ khảo sát.", 404, "STUDENT_SURVEY_NOT_FOUND");
 }
 function completed(): never {
-  throw new AuthError("Bạn đã hoàn thành khảo sát này. Phiếu đã nộp không thể sửa hoặc nộp lại.", 409, "STUDENT_SURVEY_COMPLETED");
+  throw new AuthError("Sinh viên đã hoàn thành khảo sát này. Phiếu đã nộp không thể sửa hoặc nộp lại.", 409, "STUDENT_SURVEY_COMPLETED");
 }
 function normalizedError(error: unknown): never {
   if (error instanceof AuthError) throw error;

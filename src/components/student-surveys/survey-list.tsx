@@ -45,8 +45,8 @@ export function StudentSurveyList({ userId }: { userId: string }) {
         Khảo sát của tôi
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-        Các khảo sát dành cho lớp học phần của bạn. Mỗi khảo sát chỉ được nộp
-        một lần.
+        Các khảo sát dành cho lớp học phần của sinh viên. Mỗi khảo sát chỉ được
+        nộp một lần.
       </p>
       <form
         onSubmit={filter}
@@ -81,7 +81,7 @@ export function StudentSurveyList({ userId }: { userId: string }) {
       )}
       {resource.loading && (
         <p role="status" className="py-10 text-sm text-slate-500">
-          Đang tải khảo sát của bạn…
+          Đang tải khảo sát của sinh viên…
         </p>
       )}
       {resource.data && (
@@ -129,7 +129,7 @@ export function StudentSurveyList({ userId }: { userId: string }) {
                     {item.status === "DONE"
                       ? `Ngày hoàn thành: ${surveyDate(item.doneDate)}`
                       : item.canSubmit
-                        ? "Bạn có thể làm và lưu nháp trên thiết bị này."
+                        ? "Sinh viên có thể làm và lưu nháp trên thiết bị này."
                         : "Hiện chưa thể nộp phiếu cho nhiệm vụ này."}
                   </p>
                   <Link
@@ -152,8 +152,8 @@ export function StudentSurveyList({ userId }: { userId: string }) {
                 Chưa có khảo sát phù hợp
               </h2>
               <p className="mt-2 text-sm leading-7 text-slate-500">
-                Bạn có thể đổi bộ lọc hoặc quay lại khi lớp học phần được mở
-                khảo sát.
+                Sinh viên có thể đổi bộ lọc hoặc quay lại khi lớp học phần được
+                mở khảo sát.
               </p>
             </div>
           )}

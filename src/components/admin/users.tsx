@@ -389,7 +389,7 @@ function UserEditorForm({
         />
         <Field
           id="stepUpCode"
-          label="Mã TOTP hiện tại của bạn"
+          label="Mã TOTP hiện tại"
           hint="Thay đổi vai trò yêu cầu xác thực lại. Nếu mã vừa được dùng, đợi mã mới."
         >
           <input
@@ -406,8 +406,8 @@ function UserEditorForm({
         </Field>
         {user?.id === currentUserId && (
           <p className="text-sm leading-7 text-slate-500">
-            Hãy nhờ một quản trị viên khác cập nhật vai trò hoặc phạm vi của
-            bạn.
+            Cần quản trị viên khác cập nhật vai trò hoặc phạm vi của tài khoản
+            đang đăng nhập.
           </p>
         )}
         <button
@@ -503,7 +503,7 @@ function UserEditorForm({
                 className={inputStyle}
               />
             </Field>
-            <Field id="resetStepUpCode" label="Mã TOTP hiện tại của bạn">
+            <Field id="resetStepUpCode" label="Mã TOTP hiện tại">
               <input
                 id="resetStepUpCode"
                 name="resetStepUpCode"

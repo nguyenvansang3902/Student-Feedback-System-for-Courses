@@ -47,10 +47,12 @@ const questionLabels = {
   TEXT: "Tự luận",
 };
 const draftMessages = {
-  empty: "Bản nháp được lưu tự động trên trình duyệt này khi bạn trả lời.",
+  empty:
+    "Bản nháp được lưu tự động trên trình duyệt này khi sinh viên trả lời.",
   restored: "Đã khôi phục bản nháp của nhiệm vụ và phiên bản mẫu này.",
   expired: "Bản nháp cũ đã hết hạn và được xóa khỏi trình duyệt.",
-  invalid: "Bản nháp cũ không hợp lệ và đã được xóa. Bạn có thể trả lời lại.",
+  invalid:
+    "Bản nháp cũ không hợp lệ và đã được xóa. Sinh viên có thể trả lời lại.",
   unavailable:
     "Trình duyệt không cho lưu nháp. Hãy giữ trang này mở đến khi nộp thành công.",
 };
@@ -417,7 +419,7 @@ export function StudentSurveyForm({
           setDraft({
             ready: false,
             answers: {},
-            message: "Bạn đã đăng xuất ở tab khác.",
+            message: "Sinh viên đã đăng xuất ở tab khác.",
           });
           window.location.replace("/dang-nhap");
           return;
@@ -573,8 +575,8 @@ export function StudentSurveyForm({
         }
         setError(
           submitError instanceof SurveyRequestError
-            ? `${submitError.message}${result.item.canSubmit ? " Nhiệm vụ vẫn chưa hoàn thành; bạn có thể kiểm tra rồi tự nộp lại." : ""}`
-            : "Chưa nhận được xác nhận nộp. Nhiệm vụ vẫn chưa hoàn thành; bản nháp được giữ để bạn kiểm tra rồi tự nộp lại.",
+            ? `${submitError.message}${result.item.canSubmit ? " Nhiệm vụ vẫn chưa hoàn thành; sinh viên có thể kiểm tra rồi tự nộp lại." : ""}`
+            : "Chưa nhận được xác nhận nộp. Nhiệm vụ vẫn chưa hoàn thành; bản nháp được giữ để sinh viên kiểm tra rồi tự nộp lại.",
         );
       } catch {
         setNeedsStatusCheck(true);
@@ -617,7 +619,7 @@ export function StudentSurveyForm({
       }
       setError(
         result.item.canSubmit
-          ? "Nhiệm vụ chưa hoàn thành. Bạn có thể kiểm tra câu trả lời rồi nộp."
+          ? "Nhiệm vụ chưa hoàn thành. Sinh viên có thể kiểm tra câu trả lời rồi nộp."
           : availabilityLabels[result.item.availability],
       );
     } catch (statusError) {
@@ -664,8 +666,9 @@ export function StudentSurveyForm({
         </dl>
         <p className="mt-5 text-sm leading-7 text-slate-600">
           Phiếu trả lời được lưu riêng với trạng thái nhiệm vụ; dữ liệu ứng dụng
-          không gắn phiếu với tài khoản của bạn. Nội dung tự luận có thể tự tiết
-          lộ danh tính, vì vậy bạn nên tránh ghi tên hoặc mã sinh viên.
+          không gắn phiếu với tài khoản của sinh viên. Nội dung tự luận có thể
+          tự tiết lộ danh tính, vì vậy sinh viên nên tránh ghi tên hoặc mã sinh
+          viên.
         </p>
       </header>
       {!item.canSubmit || !template ? (
@@ -675,7 +678,7 @@ export function StudentSurveyForm({
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
             {item.availability === "NOT_OPEN"
-              ? "Bạn có thể quay lại trong thời gian đợt khảo sát nhận phiếu."
+              ? "Sinh viên có thể quay lại trong thời gian đợt khảo sát nhận phiếu."
               : "Nhiệm vụ hiện không nhận phiếu. Trạng thái và thời gian được máy chủ kiểm tra lại khi nộp."}
           </p>
           <Notice
@@ -772,8 +775,8 @@ export function StudentSurveyForm({
                 Kiểm tra trước khi nộp
               </h2>
               <p className="mt-2 text-sm leading-7 text-slate-600">
-                Mỗi nhiệm vụ chỉ nộp một lần. Sau khi gửi thành công, bạn không
-                thể đọc lại, sửa hoặc xóa nội dung phiếu.
+                Mỗi nhiệm vụ chỉ nộp một lần. Sau khi gửi thành công, sinh viên
+                không thể đọc lại, sửa hoặc xóa nội dung phiếu.
               </p>
               <Notice message={error} error />
               <div className="mt-5 flex flex-wrap gap-3">

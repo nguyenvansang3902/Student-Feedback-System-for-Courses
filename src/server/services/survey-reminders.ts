@@ -155,7 +155,7 @@ async function queue(
     key: `survey-reminder:${campaign.id}:${day}`,
     campaignId: campaign.id,
     title: "Nhắc hoàn thành khảo sát",
-    body: `Bạn còn khảo sát chưa hoàn thành trong đợt “${campaign.title}”. Vui lòng mở mục Khảo sát để xem thời hạn.`,
+    body: `Sinh viên còn khảo sát chưa hoàn thành trong đợt “${campaign.title}”. Vui lòng mở mục Khảo sát để xem thời hạn.`,
     userIds: students.map((s) => s.studentId),
   });
   return { campaignId: campaign.id, day, queued };

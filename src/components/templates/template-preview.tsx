@@ -60,8 +60,8 @@ export function TemplatePreview({ template }: { template: TemplateDetail }) {
           {template.name}
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Đây là bản xem trước từ nội dung đã lưu. Bạn có thể thử trả lời để
-          kiểm tra cách hiển thị. Các lựa chọn chỉ tồn tại trên trang hiện tại;
+          Đây là bản xem trước từ nội dung đã lưu. Thử trả lời để kiểm tra cách
+          hiển thị. Các lựa chọn chỉ tồn tại trên trang hiện tại;
           khi rời hoặc tải lại trang, chúng sẽ được bỏ.
         </p>
         <p className="mt-3 text-sm font-semibold text-teal-900">

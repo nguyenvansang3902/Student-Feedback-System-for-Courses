@@ -115,7 +115,7 @@ export function IncompletePanel({ campaignId }: { campaignId: string }) {
           </div>
           {!resource.data.items.length && (
             <p className="mt-5 rounded-xl border border-dashed border-slate-300 bg-white p-7 text-sm text-slate-600">
-              Không có sinh viên chưa hoàn thành trong phạm vi của bạn.
+              Không có sinh viên chưa hoàn thành trong phạm vi được giao.
             </p>
           )}
           <Pager page={page} total={resource.data.total} change={setPage} />

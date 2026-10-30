@@ -101,7 +101,6 @@ function OptionPicker({
           setSearch(event.target.value);
           setPage(1);
         }}
-        placeholder="Tìm theo mã hoặc tên"
       />
       {resource.loading && (
         <p role="status" className="mt-2 text-xs text-slate-500">
@@ -317,7 +316,6 @@ export function CampaignForm({
                 defaultValue={initial?.title ?? ""}
                 required
                 maxLength={200}
-                placeholder="Ví dụ: Khảo sát học kỳ 1 năm học 2026–2027"
               />
             </Field>
           </div>

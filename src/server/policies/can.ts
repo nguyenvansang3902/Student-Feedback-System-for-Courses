@@ -253,7 +253,7 @@ export function requireCan(
 ): asserts actor is AuthActor {
   if (!can(actor, action, resource))
     throw new AuthError(
-      "Bạn không có quyền thực hiện thao tác này.",
+      "Không có quyền thực hiện thao tác này.",
       actor ? 403 : 401,
       "FORBIDDEN",
     );

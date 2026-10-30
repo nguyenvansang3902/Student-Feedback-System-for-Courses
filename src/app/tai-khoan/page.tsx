@@ -122,7 +122,7 @@ export default async function AccountPage() {
                 Xin chào, {actor.displayName}.
               </h1>
               <p className="mt-3 text-sm leading-7 text-slate-600">
-                Bạn đã đăng nhập. Thông tin và bảo mật tài khoản của bạn ở bên
+                Thông tin tài khoản và các thiết lập bảo mật được hiển thị bên
                 dưới.
               </p>
             </div>
@@ -264,8 +264,8 @@ export default async function AccountPage() {
                     Chức năng chưa mở
                   </h2>
                   <p className="mt-2 text-sm leading-7 text-slate-500">
-                    Các chức năng dưới đây chưa mở. Bạn có thể quay lại khi hệ
-                    thống cập nhật.
+                    Các chức năng dưới đây chưa mở. Vui lòng quay lại sau khi
+                    hệ thống cập nhật.
                   </p>
                   <div className="mt-4 grid gap-4 sm:grid-cols-3">
                     {view.sections.map((name, index) => (

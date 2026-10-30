@@ -67,7 +67,7 @@ async function resultsActor(request: NextRequest) {
     )
   )
     throw new AuthError(
-      "Bạn không có quyền thực hiện thao tác này.",
+      "Không có quyền thực hiện thao tác này.",
       403,
       "FORBIDDEN",
     );

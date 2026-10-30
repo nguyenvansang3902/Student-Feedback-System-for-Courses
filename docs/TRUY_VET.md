@@ -321,3 +321,11 @@ Nguồn 39d56485cb42281ed97eb482a317977dfabdce5b, [CI 40858131706](https://githu
 ### Chốt CI main Tuần 9 và thuật ngữ đăng nhập — 30/10/2026
 
 [CI main41082112228](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41082112228) đã qua check/smoke đúng SHA43da7f8017a16759f9883af49cfff29b44eabfcb. Sau đó người dùng yêu cầu cách gọi “mã số sinh viên” ở đăng nhập; auth-form.tsx thống nhất hướng dẫn, nhãn và lỗi bỏ trống, giữ input không có ví dụ. Check bản sửa qua797/797 trong50tệp; thay câu chữ không đổi nghiệp vụ hoặc cộng FR. Bằng chứng ảnh mới xem CHINH_SUA_DANG_NHAP_2026_10_30.md; giữ ảnh nghiệm thu Tuần9 làm lịch sử.
+
+### Bỏ chữ gợi ý trong ô nhập — 30/10/2026
+
+Theo yêu cầu áp dụng toàn hệ thống, auth-form.tsx bỏ ví dụ email dùng chung (kích hoạt/quên mật khẩu); campaign-form.tsx bỏ ví dụ tên đợt và gợi ý tìm mã/tên; campaign-list.tsx bỏ gợi ý tìm tên đợt. Rà soát src không còn placeholder; nhãn, hướng dẫn ngoài ô và lựa chọn có nghĩa được giữ. Check797/797 trong50tệp qua; đây là chỉnh giao diện, không đổi FR-01/40/41 hoặc tăng điểm. Bằng chứng xem BO_GOI_Y_TRONG_O_NHAP_2026_10_30.md.
+
+### Danh xưng trong giao diện — 30/10/2026
+
+Theo yêu cầu mới, kích hoạt dùng “Bắt đầu với tài khoản của sinh viên”; auth-form, tài khoản, các trang khảo sát, trang quản lý và thông báo/email bỏ từ xưng hô Bạn/bạn. Các câu hướng tới sinh viên dùng danh xưng sinh viên; thông báo quản trị được viết trung tính. Nguồn mẫu mặc định áp dụng cho lần tạo mới, không ghi lại dữ liệu/mẫu khóa. Không đổi nghiệp vụ hoặc mã lỗi. Check797/797 qua; bằng chứng XUNG_HO_SINH_VIEN_2026_10_30.md, tiến độ giữ138/219.

@@ -26,7 +26,7 @@ export const defaultTemplateInput: TemplateInput = {
           scaleMax: 5,
         },
         {
-          label: "Hoạt động học tập hỗ trợ bạn hiểu bài",
+          label: "Hoạt động học tập hỗ trợ sinh viên hiểu bài",
           type: "LIKERT",
           position: 2,
           weight: 2,
@@ -36,7 +36,7 @@ export const defaultTemplateInput: TemplateInput = {
           scaleMax: 4,
         },
         {
-          label: "Hình thức học tập hỗ trợ bạn tốt nhất",
+          label: "Hình thức học tập hỗ trợ sinh viên tốt nhất",
           type: "SINGLE_CHOICE",
           position: 3,
           required: true,
@@ -48,7 +48,7 @@ export const defaultTemplateInput: TemplateInput = {
           ],
         },
         {
-          label: "Những tài liệu bạn đã sử dụng",
+          label: "Những tài liệu sinh viên đã sử dụng",
           type: "MULTIPLE_CHOICE",
           position: 4,
           required: false,
@@ -68,14 +68,14 @@ export const defaultTemplateInput: TemplateInput = {
       isAssessmentGroup: false,
       questions: [
         {
-          label: "Bạn có được thông báo rõ tiêu chí đánh giá không?",
+          label: "Sinh viên có được thông báo rõ tiêu chí đánh giá không?",
           type: "BOOLEAN",
           position: 1,
           required: true,
           allowNA: true,
         },
         {
-          label: "Đề xuất của bạn để cải thiện môn học",
+          label: "Đề xuất của sinh viên để cải thiện môn học",
           type: "TEXT",
           position: 2,
           required: false,

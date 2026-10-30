@@ -76,7 +76,6 @@ export function CampaignList({ canCreate }: { canCreate: boolean }) {
             type="search"
             className={inputStyle}
             maxLength={100}
-            placeholder="Nhập tên đợt khảo sát"
           />
         </div>
         <div className="min-w-0 flex-1 basis-52">
@@ -177,7 +176,7 @@ export function CampaignList({ canCreate }: { canCreate: boolean }) {
                 Thử đổi bộ lọc
                 {canCreate
                   ? " hoặc tạo bản nháp mới."
-                  : ". Các đợt cần bạn xử lý sẽ xuất hiện tại đây."}
+                  : ". Các đợt cần xử lý sẽ xuất hiện tại đây."}
               </p>
             </div>
           )}

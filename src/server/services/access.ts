@@ -41,7 +41,7 @@ export async function assertFreshActor(tx: Prisma.TransactionClient, actor: Auth
   const mfaRequired = roles.some((role) => requiredRoles.includes(role));
   const mfa = !!session.mfaVerifiedAt;
   if (mfaRequired && !mfa)
-    throw new AuthError("Bạn cần hoàn tất xác thực hai bước.", 403, "MFA_REQUIRED");
+    throw new AuthError("Cần hoàn tất xác thực hai bước.", 403, "MFA_REQUIRED");
   return {
     ...actor, roles, assignments, mfa, mfaRequired, purpose: "FULL",
     mustChangePassword: false,

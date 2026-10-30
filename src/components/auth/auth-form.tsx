@@ -48,7 +48,7 @@ function Field({
           aria-describedby={
             [hintId, errorId].filter(Boolean).join(" ") || undefined
           }
-          className={`w-full rounded-xl border bg-white px-3.5 py-3 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/15 disabled:bg-slate-50 disabled:text-slate-500 ${password ? "pr-20" : ""} ${error ? "border-red-500" : "border-slate-300"}`}
+          className={`w-full rounded-xl border bg-white px-3.5 py-3 text-base text-slate-900 outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-700/15 disabled:bg-slate-50 disabled:text-slate-500 ${password ? "pr-20" : ""} ${error ? "border-red-500" : "border-slate-300"}`}
         />
         {password && (
           <button
@@ -145,8 +145,9 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       body.identifier = get("identifier").trim();
       body.password = get("password");
       if (!body.identifier)
-        nextErrors.identifier = "Nhập mã số sinh viên hoặc email của bạn.";
-      if (!body.password) nextErrors.password = "Nhập mật khẩu của bạn.";
+        nextErrors.identifier =
+          "Nhập mã số sinh viên hoặc email của sinh viên.";
+      if (!body.password) nextErrors.password = "Nhập mật khẩu của sinh viên.";
       else if (new TextEncoder().encode(body.password).length > 72)
         nextErrors.password =
           "Mật khẩu vượt quá giới hạn 72 byte. Ký tự có dấu có thể chiếm nhiều byte.";
@@ -216,10 +217,10 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       setComplete(true);
       setMessage(
         emailRequest
-          ? "Nếu email phù hợp với một tài khoản đủ điều kiện, liên kết hướng dẫn sẽ được gửi. Bạn hãy kiểm tra hộp thư và thư rác."
+          ? "Nếu email phù hợp với một tài khoản đủ điều kiện, liên kết hướng dẫn sẽ được gửi. Sinh viên vui lòng kiểm tra hộp thư và thư rác."
           : mode === "activate"
-            ? "Tài khoản đã được kích hoạt. Bạn có thể đăng nhập bằng mật khẩu vừa tạo."
-            : "Mật khẩu đã được cập nhật. Bạn hãy đăng nhập lại bằng mật khẩu mới.",
+            ? "Tài khoản đã được kích hoạt. Sinh viên có thể đăng nhập bằng mật khẩu vừa tạo."
+            : "Mật khẩu đã được cập nhật. Sinh viên có thể đăng nhập lại bằng mật khẩu mới.",
       );
       requestAnimationFrame(() => messageRef.current?.focus());
     } catch {
@@ -246,8 +247,8 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
         {mode === "login"
           ? "Nhập mã số sinh viên hoặc email và mật khẩu."
           : emailRequest
-            ? "Nhập email được gắn với tài khoản của bạn."
-            : "Dùng mật khẩu riêng cho tài khoản của bạn và tránh mật khẩu phổ biến."}
+            ? "Nhập email được gắn với tài khoản của sinh viên."
+            : "Dùng mật khẩu riêng cho tài khoản của sinh viên và tránh mật khẩu phổ biến."}
       </p>
       {restoring && (
         <p role="status" className="mt-5 text-sm text-slate-500">
@@ -306,7 +307,6 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
               required
               disabled={busy}
               error={errors.email}
-              placeholder="ban@example.edu.vn"
             />
           )}
           {mode === "change" && (
@@ -433,11 +433,11 @@ export function TokenForm({ purpose }: { purpose: "activate" | "reset" }) {
   return (
     <div>
       <h2 className="text-lg font-bold text-slate-900">
-        Bạn cần một liên kết đặt lại mật khẩu
+        Liên kết đặt lại mật khẩu
       </h2>
       <p className="mt-3 text-sm leading-7 text-slate-600">
-        Hãy mở liên kết nhận qua email. Nếu liên kết bị thiếu hoặc hết hạn, bạn
-        có thể yêu cầu gửi lại.
+        Hãy mở liên kết nhận qua email. Nếu liên kết bị thiếu hoặc hết hạn, sinh
+        viên có thể yêu cầu gửi lại.
       </p>
       <Link
         href="/quen-mat-khau"

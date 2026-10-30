@@ -327,7 +327,7 @@ export async function resetUserMfa(
   requireCan(actor, "mfa:reset");
   if (targetUserId === actor.userId)
     throw new AuthError(
-      "Cần quản trị viên khác đặt lại 2FA cho bạn, hoặc dùng script máy chủ.",
+      "Cần quản trị viên khác đặt lại 2FA, hoặc dùng script máy chủ.",
       403,
       "FORBIDDEN",
     );

@@ -109,7 +109,7 @@ export function MfaForm({
     <div>
       <h2 className="text-lg font-bold text-slate-900">
         {codes.length
-          ? "Lưu mã khôi phục của bạn"
+          ? "Lưu mã khôi phục"
           : mode === "setup"
             ? "Kết nối ứng dụng xác thực"
             : "Xác minh bước thứ hai"}
@@ -130,9 +130,8 @@ export function MfaForm({
       {codes.length > 0 ? (
         <div className="mt-5 space-y-5">
           <p className="text-sm leading-7 text-slate-600">
-            10 mã dưới đây chỉ xuất hiện lần này. Mỗi mã dùng một lần khi bạn
-            không sử dụng được ứng dụng xác thực. Lưu ở nơi riêng tư và không
-            chia sẻ.
+            10 mã dưới đây chỉ xuất hiện lần này. Mỗi mã dùng một lần khi không
+            sử dụng được ứng dụng xác thực. Lưu ở nơi riêng tư và không chia sẻ.
           </p>
           <ul
             aria-label="Mười mã khôi phục"

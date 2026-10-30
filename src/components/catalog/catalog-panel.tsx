@@ -488,7 +488,7 @@ export function CatalogPanel({
       <Notice message={message} />
       {!writable && (
         <p className="mt-4 text-sm text-slate-600">
-          Bạn đang xem danh mục ở chế độ chỉ đọc.
+          Danh mục đang ở chế độ chỉ đọc.
         </p>
       )}
       {writable && form && (
@@ -611,8 +611,8 @@ export function CatalogPanel({
           </div>
           {!resource.data.items.length && (
             <p className="mt-5 rounded-xl border border-slate-200 bg-white p-6 text-sm leading-7 text-slate-500">
-              Chưa có bản ghi phù hợp. Bạn có thể thêm mới hoặc điều chỉnh từ
-              khóa tìm kiếm.
+              Chưa có bản ghi phù hợp. Có thể thêm mới hoặc điều chỉnh từ khóa
+              tìm kiếm.
             </p>
           )}
           <Pager page={page} total={resource.data.total} change={setPage} />
