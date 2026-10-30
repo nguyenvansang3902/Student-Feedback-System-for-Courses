@@ -145,7 +145,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       body.identifier = get("identifier").trim();
       body.password = get("password");
       if (!body.identifier)
-        nextErrors.identifier = "Nhập mã định danh hoặc email của bạn.";
+        nextErrors.identifier = "Nhập mã số sinh viên hoặc email của bạn.";
       if (!body.password) nextErrors.password = "Nhập mật khẩu của bạn.";
       else if (new TextEncoder().encode(body.password).length > 72)
         nextErrors.password =
@@ -244,7 +244,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       </h2>
       <p className="mt-2 text-sm leading-6 text-slate-500">
         {mode === "login"
-          ? "Nhập mã định danh hoặc email và mật khẩu."
+          ? "Nhập mã số sinh viên hoặc email và mật khẩu."
           : emailRequest
             ? "Nhập email được gắn với tài khoản của bạn."
             : "Dùng mật khẩu riêng cho tài khoản của bạn và tránh mật khẩu phổ biến."}
@@ -276,7 +276,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
             <>
               <Field
                 name="identifier"
-                label="Mã định danh hoặc email"
+                label="Mã số sinh viên hoặc email"
                 autoComplete="username"
                 autoCapitalize="none"
                 spellCheck={false}

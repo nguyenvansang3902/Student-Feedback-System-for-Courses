@@ -1,6 +1,8 @@
 # Tiến độ yêu cầu chức năng
 
-Chỉnh câu chữ giao diện ngày 30/10/2026 theo yêu cầu người dùng: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Không thêm FR hoặc điểm; giữ 117/219, 41/84 FR.
+**Hiện tại sau Tuần9: 138/219=63,0%, 49/84 FR**. Sửa câu chữ đăng nhập không cộng điểm.
+
+Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 
 Nguồn: Mục7 đặc tả và [Điều chỉnh số01](BO_SUNG_01_TAC_NHAN.md). P0=3, P1=2, P2=1; chỉ tick khi có mã, test qua, nghiệm thu và tài liệu. Mẫu số gồm cả FR chưa xếp tuần.
 
@@ -179,3 +181,5 @@ FR-50–54 đã qua check 646/646 trong 39 tệp, build Next 16.4.3, HTTP/MySQL 
 ## Nghiệm thu Tuần 9 — 30/10/2026
 
 Chốt FR-47/60–65/150 trên nguồn `5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f`, [CI41079971520](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520) check/smoke đúng SHA thành công. Fullcheck 797/797 trong 50 tệp, build Next16.4.3, HTTP/MySQL 12/12 (TOTP thật/rollback/concurrency), seed 15/15 và UI14 nhóm/23 trạng thái/46 PNG cuối đã xem qua. Fixture sạch, cấu hình thử khôi phục, 27 tập dữ liệu main cũ giữ hash. Thêm 21 điểm: **138/219=63,0%, 49/84 FR**; kế hoạch 140/219, còn chênh hai điểm FR-145 P1 có điều kiện. M5=22/22, M7=16/18, M14=6/13; FR-66, FR-80–82 và FR-160 chưa tick. Xem [nghiệm thu](NGHIEM_THU_TUAN_09.md), [báo cáo](bao-cao-tien-do/tuan-09.md) và [QA](QA_GIAO_DIEN_TUAN_09.md). CI main/tài liệu cuối đối chiếu riêng; chưa bắt đầu Tuần10.
+
+Góp ý câu chữ đăng nhập cùng ngày: dùng “mã số sinh viên” ở hướng dẫn/nhãn/lỗi bỏ trống, giữ input không có ví dụ. Không thêm FR hoặc thay tỷ lệ; vẫn138/219,49/84FR. CI main Tuần9 đã qua trên43da7f8/run41082112228; kết quả commit sửa câu chữ theo dõi riêng.

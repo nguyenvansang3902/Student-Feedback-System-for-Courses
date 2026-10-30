@@ -62,3 +62,7 @@ Nghiệm thu tám FR trong phạm vi Tuần 9 thêm **21 điểm** so với mố
 Ẩn danh ở mức ứng dụng, không chống mọi suy luận bởi DBA/binlog/timing/log hạ tầng hoặc tự luận tự tiết lộ. Không nhận đạt tải 1.500 request, WCAG hay mọi thiết bị từ unit hiện tại. Chỉ dữ liệu giả; không deploy công khai. Đóng góp cá nhân, lịch trường và ngày/tên GVHD yêu cầu do sinh viên xác minh.
 
 Tài liệu liên quan: [báo cáo](bao-cao-tien-do/tuan-09.md), [giải thích](GIAI_THICH/tuan-09.md), [ADR010](decisions/ADR-010-tong-hop-cong-bo-va-kiem-duyet.md), [sơ đồ](SO_DO_TUAN_09.md). Tuần 10 chỉ bắt đầu khi người dùng yêu cầu; nghiệm thu này không nhận hoàn thành phản hồi liên tục, giải trình hoặc báo cáo tương lai.
+
+## Đối chiếu main sau chốt nguồn
+
+[CI main41082112228](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41082112228) đã hoàn thành check/smoke thành công trên SHA43da7f8017a16759f9883af49cfff29b44eabfcb. Lượt sửa thuật ngữ đăng nhập theo góp ý sau đó được ghi riêng trong [chỉnh câu chữ đăng nhập](CHINH_SUA_DANG_NHAP_2026_10_30.md), không cộng FR hoặc dùng CI của SHA cũ cho commit mới.

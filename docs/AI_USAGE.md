@@ -195,3 +195,9 @@ Người dùng yêu cầu làm Tuần 9 sau khi Tuần 8 hoàn tất và tiếp 
 Lượt seed đầu gặp phép đếm tổng mẫu cũ không tính mẫu Week9 mới. Đã giữ phép đếm họ lịch sử, kiểm riêng mẫu mới và chạy lại toàn suite trên database demo riêng; không sửa dữ liệu để ép kiểm qua. Lượt check đầu quét output `.next-week9`; thêm thư mục sinh này và `.local` vào cấu hình bỏ qua ESLint, rồi chạy lại check/build đầy đủ. Không nhận lượt lỗi là bằng chứng qua.
 
 **Chốt nghiệm thu tám FR-47/60–65/150 ngày 30/10/2026.** Nguồn `5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f` ở nhánh `feat/week9-survey-results` có [CI 41079971520](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520) check/smoke thành công đúng SHA. CI main/tài liệu cuối đối chiếu riêng. Kết quả tại [nghiệm thu](NGHIEM_THU_TUAN_09.md) và [bằng chứng máy đọc](assets/tuan-09/verification.json); tiến độ đạt **138/219=63,0%, 49/84 FR**. FR-145 còn backlog, FR-160 đầy đủ chờ Tuần 13. Web 3000, MySQL/Mailpit và scheduler đã mở lại; hash 27 tập nền kiểm lại sau đăng nhập/đọc demo vẫn khớp. Lượt gửi scheduler đầu có 38 thông báo cục bộ, không lỗi. AI hỗ trợ kỹ thuật, sinh viên tự xác minh đóng góp và lịch/GVHD; không gán các phần AI thành công việc cá nhân của thành viên.
+
+## Góp ý thuật ngữ đăng nhập — 30/10/2026
+
+Theo góp ý trực tiếp của người dùng, đổi “mã định danh” thành “mã số sinh viên” trong hướng dẫn dưới Thông tin đăng nhập, nhãn ô nhập và lỗi bỏ trống của auth-form.tsx. Giữ ô nhập không có ví dụ. Đây là sửa câu chữ, không thêm FR hoặc tăng điểm. Chạy lại npm run check trên bản sửa: 797/797 test trong 50 tệp, schema/ERD/lint/TypeScript qua. Kiểm giao diện riêng ở tài liệu CHINH_SUA_DANG_NHAP_2026_10_30.md; không thay 46 ảnh nghiệm thu Tuần9 cũ.
+
+Trước lượt sửa câu chữ này, CI main41082112228 đã thành công check/smoke đúng SHA43da7f8017a16759f9883af49cfff29b44eabfcb; CI nguồn5eb5a84 cũng đã qua. Không dùng kết quả đó để nhận commit câu chữ mới đã qua CI.

@@ -317,3 +317,7 @@ Khi hiện thực mỗi tuần, thay tên miền dự kiến bằng đường d�
 ### Chốt bằng chứng nguồn Tuần 7
 
 Nguồn 39d56485cb42281ed97eb482a317977dfabdce5b, [CI 40858131706](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/40858131706) đã qua check/smoke đúng SHA, gồm migration sạch Linux và hồi quy tuần trước. Check572/32file; build; HTTP19+13 trên nguồn saufixlease; seed14; UI11nhóm26viewport26PNG; sơ đồ5Mermaid/10PNG. Hash24tập main khớp,648link nội bộ/5mục bảo vệ/48tệp lịch sử/AGENTS/prompt bổ sung qua. Chấp nhận FR-40–46/100/142–144,103/219=47,0%; FR-145/160 chưa tick. Main/tài liệu cuối theo CI riêng.
+
+### Chốt CI main Tuần 9 và thuật ngữ đăng nhập — 30/10/2026
+
+[CI main41082112228](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41082112228) đã qua check/smoke đúng SHA43da7f8017a16759f9883af49cfff29b44eabfcb. Sau đó người dùng yêu cầu cách gọi “mã số sinh viên” ở đăng nhập; auth-form.tsx thống nhất hướng dẫn, nhãn và lỗi bỏ trống, giữ input không có ví dụ. Check bản sửa qua797/797 trong50tệp; thay câu chữ không đổi nghiệp vụ hoặc cộng FR. Bằng chứng ảnh mới xem CHINH_SUA_DANG_NHAP_2026_10_30.md; giữ ảnh nghiệm thu Tuần9 làm lịch sử.

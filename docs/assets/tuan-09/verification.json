@@ -263,7 +263,16 @@
       "smoke": "success"
     },
     "scope": "application_source",
-    "mainDocumentationCI": "pending_separate_commit"
+    "mainDocumentationCI": {
+      "status": "success",
+      "run": "41082112228",
+      "commit": "43da7f8017a16759f9883af49cfff29b44eabfcb",
+      "jobs": {
+        "check": "success",
+        "smoke": "success"
+      },
+      "scope": "week9_main_before_login_copy"
+    }
   },
   "limitations": [
     "Ẩn danh ở mức ứng dụng; không tuyên bố chống DBA, binlog, log hạ tầng hoặc tự luận tự tiết lộ danh tính.",
@@ -296,7 +305,7 @@
   "progress": {
     "acceptedWeight": 138,
     "totalWeight": 219,
-    "percent": 63.0,
+    "percent": 63,
     "acceptedRequirements": 49,
     "totalRequirements": 84,
     "plannedWeightWeek9": 140,

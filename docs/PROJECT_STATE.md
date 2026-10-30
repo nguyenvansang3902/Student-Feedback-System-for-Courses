@@ -32,6 +32,6 @@
 - Chưa làm phản hồi liên tục/giải trình/dashboard/xuất file; 5.6(d) xuất CSV/Excel/PDF phải kiểm khi Tuần12 hiện thực.
 - Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.
 - Chỉ dữ liệu giả, không deploy công khai; đóng góp/ngày yêu cầu/GVHD do sinh viên xác minh, không viết quy trình hiện tại ở trường.
-- CI main/tài liệu cuối đối chiếu riêng sau push; không dùng CI nguồn để nhận SHA main khác đã qua.
-- Luôn hạn chế slogan, dùng câu chữ tự nhiên/ngắn; ô đăng nhập không có ví dụ placeholder. Giữ yêu cầu này ở các tuần tiếp theo.
+- CI main Tuần9: 43da7f8017a16759f9883af49cfff29b44eabfcb/run41082112228 qua check/smoke; không suy kết quả này cho commit sửa câu chữ sau đó.
+- Luôn hạn chế slogan, dùng câu chữ tự nhiên/ngắn; đăng nhập dùng “mã số sinh viên”, không có ví dụ placeholder. Giữ yêu cầu này ở các tuần tiếp theo.
 - Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.
