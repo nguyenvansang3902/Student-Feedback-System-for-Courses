@@ -27,7 +27,7 @@
 
 - Web chính http://localhost:3000/ket-qua và scheduler đã mở lại; MySQL/Mailpit healthy, health/đăng nhập200.
 - Xem kết quả: DEMO-GV00001 hoặc KT2026001/DBCL2026001, mật khẩu Demo2026!HocTap; chọn đợt giả Tuần9 theo README.
-- HMR lặp sau build/khôi phục tệp kiểu đã được xử lý bằng giữ cache trong .local và khởi động lại dev; không sửa nghiệp vụ/xóa dữ liệu.
+- Lỗi tải lại31/10: dev dùng --webpack; check797/797 qua, IAB giữ nội dung thử hơn156giây và đăng nhập/đăng xuất demo qua. Dừng dev trước check/generate/build; xem SUA_TAI_LAI_TRANG_2026_10_31.md.
 - FR-145 ImportBatch/hoàn tác P1 có điều kiện còn backlog, chưa tự cắt; FR-160 đầy đủ chờ Tuần13.
 - Chưa làm phản hồi liên tục/giải trình/dashboard/xuất file; 5.6(d) xuất CSV/Excel/PDF phải kiểm khi Tuần12 hiện thực.
 - Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.

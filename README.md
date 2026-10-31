@@ -134,6 +134,12 @@ Bundle W7 bổ sung riêng **1 môn, 2 học kỳ, 8 lớp, 26 đăng ký, 1 sin
 
 Đổi size trong `.env`, hoặc `$env:DEMO_SIZE='small'` trước lệnh demo. `npm.cmd run demo -- --prepare` chỉ chuẩn bị dữ liệu, không mở server. `db:seed` bổ sung vào DB đang cấu hình, không giảm/xóa dữ liệu khi đổi xuống size nhỏ, không cân lại đăng ký đã có hay danh sách khảo sát đã chốt; từ chối nếu học kỳ demo đã khóa. Dữ liệu đợt đang mở giữ mốc đã tạo khi seed lại, nên chạy demo mới khi cần mốc thời gian mới.
 
+## Mở web để sử dụng hoặc kiểm tra giao diện
+
+Sau khi MySQL/Mailpit đã chạy, mở terminal tại thư mục dự án và chạy `npm.cmd run dev`, rồi truy cập [localhost:3000](http://localhost:3000). Dự án dùng tùy chọn Webpack có sẵn của Next.js cho phiên chạy cục bộ, sau khi gặp vòng lặp Fast Refresh với Turbopack trên máy hiện tại. Giữ terminal đó mở; dừng bằng Ctrl+C trước khi chạy lại. Tài khoản và dữ liệu hiện tại được giữ nguyên; lệnh không chạy seed hoặc migration.
+
+Chỉ chạy một máy chủ trên cổng3000. Dừng dev trước khi chạy generate/check/build hoặc đổi tệp kiểu sinh tự động, rồi mở lại web sau kiểm tra. Dev vẫn tự cập nhật khi sửa mã; để yên mã nguồn khi kiểm độ ổn định của giao diện. Bản production (`npm.cmd run build` rồi `npm.cmd run start`) yêu cầu HTTPS theo cấu hình bảo mật, không dùng thay trực tiếp cho localhost HTTP. [Bằng chứng xử lý lỗi tải lại liên tục](docs/SUA_TAI_LAI_TRANG_2026_10_31.md).
+
 ## Tạo ADMIN và dùng giao diện quản trị
 
 Mọi vai trò dùng cùng [trang đăng nhập](http://localhost:3000/dang-nhap), với nhãn **Mã tài khoản hoặc email**. Sau đăng nhập, menu và chức năng dựa trên quyền thực tế. Trang tài khoản chỉ ghi **Mã số sinh viên** khi tài khoản chỉ có vai trò sinh viên, **Mã giảng viên** khi chỉ có vai trò giảng viên; các vai trò còn lại và tài khoản nhiều vai trò dùng **Mã tài khoản**. Không cần chọn vai trò trước đăng nhập.

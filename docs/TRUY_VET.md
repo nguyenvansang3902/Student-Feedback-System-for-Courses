@@ -340,3 +340,15 @@ Theo yêu cầu mới, kích hoạt dùng “Bắt đầu với tài khoản c�
 | Kiểm hồi quy | Check797/797 trong50tệp qua; UI10vai trò+1caseđa vai trò,44/44 bố cục ở1440/390,8ảnh đã xem. Không Bạn/placeholder/thiếu nhãn/tràn ngang/lỗiJS hoặcReact trong phép đo. Email đặt lại cục bộ trung tính, token dùng qua service chính thức và phiên thử đăng xuất |
 
 [Báo cáo và ảnh mới](NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md). Chỉnh ngữ cảnh không cộng FR/điểm, không thay bộ test quyền đầy đủ chờ Tuần13. Không ghi mật khẩu/QR/secret vào Git hoặc ảnh. Yêu cầu mới thay cách gọi sinh viên trên các trang công khai dùng chung; bằng chứng trước được giữ đúng thời điểm.
+
+### Trang đăng nhập tự tải lại —31/10/2026
+
+| Phần liên quan | Ghi nhận và điều chỉnh |
+| --- | --- |
+| FR-01; phiên xem giao diện | Quan sát trực tiếp Fast Refresh/HMR lặp trên /dang-nhap. Luồng khách me401→refresh401 kết thúc, không tự điều hướng lặp. Không sửa quyền hoặc nới điều kiện xác thực |
+| Công cụ chạy cục bộ | npm run dev dùng next dev --webpack, bộ biên dịch tích hợp của cùng Next.js thay Turbopack, không thêm thư viện. Dừng dev trước check/generate/build để tránh tác động vào output đang được theo dõi |
+| Guard cấu hình giữ nguyên | Thử production preview trên localhostHTTP trả500 vì getAuthConfig bắt buộc HTTPS trong production. Đã bỏ hướng preview, không nới guard hoặc sửa đặc tả được bảo vệ |
+| Bảo toàn và giới hạn | Dừng đúng tiến trình dev, giữ cache cũ trong .local; database/tài khoản/TOTP giữ nguyên. Chưa xác định tệp gây invalidation; theo dõi12giây không thấy thay đổi source |
+| Kiểm lại webpack | Check797/797 trong50tệp; IAB1265×720 giữ chuỗi thử hơn156giây, form nhập được và console không có vòng HMR lặp mới. Đăng nhập/đăng xuất demo qua; đã xem hai JPEG. Không nhận đã kiểm mọi trình duyệt/thiết bị |
+
+[Hồ sơ sửa lỗi](SUA_TAI_LAI_TRANG_2026_10_31.md). Sửa cách chạy không cộng FR/điểm hoặc mở Tuần10; bằng chứng nghiệm thu và CI trước giữ đúng thời điểm/SHA.
