@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function ActivationPage() {
   return (
     <AuthShell
-      title="Bắt đầu với tài khoản của sinh viên"
-      description="Mở liên kết kích hoạt trong email để tạo mật khẩu lần đầu. Nếu chưa nhận được liên kết, sinh viên có thể yêu cầu gửi lại."
+      title="Kích hoạt tài khoản"
+      description="Mở liên kết kích hoạt trong email để tạo mật khẩu lần đầu. Nếu chưa nhận được liên kết, có thể yêu cầu gửi lại."
     >
       <TokenForm purpose="activate" />
     </AuthShell>

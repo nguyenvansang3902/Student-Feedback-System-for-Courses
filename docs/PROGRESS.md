@@ -187,3 +187,5 @@ Góp ý câu chữ đăng nhập cùng ngày: dùng “mã số sinh viên” �
 Góp ý tiếp ngày30/10: bỏ toàn bộ chữ gợi ý nằm trong ô nhập/tìm kiếm/tự luận ở các trang đang có và giữ quy ước cho các tuần sau; nhãn/hướng dẫn ngoài ô giữ nguyên. Không thêm FR hoặc thay điểm138/219; kiểm mã không còn placeholder và check797/797 qua.
 
 Góp ý tiếp về danh xưng cùng ngày: nội dung hướng tới sinh viên dùng “sinh viên”, bỏ Bạn/bạn khỏi câu chữ hệ thống; áp dụng tiếp ở các tuần sau. Sửa câu chữ không thêm FR hoặc điểm; vẫn138/219=63,0%,49/84FR.
+
+Điều chỉnh ngữ cảnh và cấp ADMIN riêng, hoàn tất 31/10/2026: trang chủ/đăng nhập/kích hoạt/khôi phục/email dùng chung trung tính; nhãn mã ở tài khoản theo vai trò thực tế, kể cả đa vai trò. Đã cấp ADMIN cục bộ bằng CLI, kiểm đăng nhập và buộc tự đăng ký TOTP lần đầu. Check797/797 trong50tệp; QA44/44 bố cục của10vai trò+đa vai trò,8PNG đã xem; ADMIN QA được vô hiệu hóa/thu hồi quyền và giữ audit. Xem [bằng chứng](NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md). Yêu cầu mới thay quy ước “mã số sinh viên” ở trang dùng chung; không đổi nghiệp vụ, cộng điểm hoặc bắt đầu Tuần10. Vẫn138/219=63,0%,49/84FR.

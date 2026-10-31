@@ -10,6 +10,14 @@ export const roleLabels: Record<string, string> = {
   PHONG_KHAO_THI: "Phòng Khảo thí",
   THANH_TRA: "Phòng Thanh tra",
 };
+
+/** Tên trường cho tài khoản đã xác thực; nhiều vai trò dùng tên trung tính. */
+export function accountCodeLabel(roles: readonly string[]): string {
+  const unique = new Set(roles);
+  if (unique.size === 1 && unique.has("SINH_VIEN")) return "Mã số sinh viên";
+  if (unique.size === 1 && unique.has("GIANG_VIEN")) return "Mã giảng viên";
+  return "Mã tài khoản";
+}
 export function authDestination(user: {
   purpose?: string;
   mustChangePassword?: boolean;

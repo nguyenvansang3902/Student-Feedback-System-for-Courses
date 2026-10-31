@@ -229,7 +229,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     else await activateAccount(null, data, client);
     const response = authJson({
       ok: true,
-      message: "Đã hoàn tất. Sinh viên có thể đăng nhập bằng mật khẩu mới.",
+      message: "Đã hoàn tất. Vui lòng đăng nhập bằng mật khẩu mới.",
     });
     clearSessionCookies(response);
     return response;

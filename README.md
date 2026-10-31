@@ -4,7 +4,7 @@ Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/0
 
 ## Phạm vi hiện tại — Tuần 9: kết quả khảo sát
 
-Bắt đầu và nghiệm thu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã qua **797 kiểm thử/50 tệp**, build Next16.4.3, HTTP/MySQL **12/12**, seed **15/15**, UI **14 nhóm/46 ảnh cuối đã xem** và [CI nguồn 5eb5a84](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520). Tiến độ **138/219=63,0%, 49/84 FR**; CI main/tài liệu cuối đối chiếu riêng. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md), [công thức](docs/CONG_THUC_TONG_HOP.md) và [báo cáo](docs/bao-cao-tien-do/tuan-09.md) để biết bằng chứng và giới hạn. Phản hồi liên tục, giải trình và xuất báo cáo làm theo các tuần sau. Giao diện dùng tên chức năng và hướng dẫn ngắn, hạn chế slogan; nội dung hướng tới sinh viên dùng danh xưng “sinh viên”; các ô nhập và tìm kiếm không có chữ gợi ý bên trong. Nhãn và hướng dẫn đặt bên ngoài ô.
+Bắt đầu và nghiệm thu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã qua **797 kiểm thử/50 tệp**, build Next16.4.3, HTTP/MySQL **12/12**, seed **15/15**, UI **14 nhóm/46 ảnh cuối đã xem** và [CI nguồn 5eb5a84](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520). Tiến độ **138/219=63,0%, 49/84 FR**; CI main/tài liệu cuối đối chiếu riêng. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md), [công thức](docs/CONG_THUC_TONG_HOP.md) và [báo cáo](docs/bao-cao-tien-do/tuan-09.md) để biết bằng chứng và giới hạn. Phản hồi liên tục, giải trình và xuất báo cáo làm theo các tuần sau. Giao diện dùng tên chức năng và hướng dẫn ngắn, hạn chế slogan, không gọi người dùng là “bạn”. Trang dùng chung viết trung tính; trang dành riêng cho sinh viên dùng danh xưng “sinh viên”. Các ô nhập và tìm kiếm không có chữ gợi ý bên trong; nhãn và hướng dẫn đặt bên ngoài ô.
 
 ### Xem và công bố kết quả
 
@@ -136,7 +136,11 @@ Bundle W7 bổ sung riêng **1 môn, 2 học kỳ, 8 lớp, 26 đăng ký, 1 sin
 
 ## Tạo ADMIN và dùng giao diện quản trị
 
-Từ thư mục dự án, chạy:
+Mọi vai trò dùng cùng [trang đăng nhập](http://localhost:3000/dang-nhap), với nhãn **Mã tài khoản hoặc email**. Sau đăng nhập, menu và chức năng dựa trên quyền thực tế. Trang tài khoản chỉ ghi **Mã số sinh viên** khi tài khoản chỉ có vai trò sinh viên, **Mã giảng viên** khi chỉ có vai trò giảng viên; các vai trò còn lại và tài khoản nhiều vai trò dùng **Mã tài khoản**. Không cần chọn vai trò trước đăng nhập.
+
+Đã cấp một ADMIN riêng cho chủ dự án trên database cục bộ, kiểm đăng nhập và giữ bước đăng ký TOTP lần đầu. Thông tin đăng nhập bàn giao riêng trong cuộc trao đổi, không lưu trong GitHub. Đây là tài khoản trên máy hiện tại; tải mã nguồn về máy khác không tự sao chép tài khoản/database. [Bằng chứng kiểm ngữ cảnh và cấp ADMIN](docs/NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md).
+
+Để tạo ADMIN riêng trên máy khác, từ thư mục dự án chạy:
 
 ```powershell
 npm.cmd run admin:create

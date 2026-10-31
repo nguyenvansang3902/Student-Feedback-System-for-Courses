@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
   return (
     <AuthShell
       title="Quên mật khẩu?"
-      description="Sinh viên có thể tạo mật khẩu mới qua liên kết gửi đến email của tài khoản."
+      description="Tạo mật khẩu mới qua liên kết được gửi đến email của tài khoản."
     >
       <AuthForm mode="forgot" />
     </AuthShell>

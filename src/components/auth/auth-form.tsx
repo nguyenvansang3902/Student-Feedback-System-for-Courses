@@ -145,9 +145,8 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       body.identifier = get("identifier").trim();
       body.password = get("password");
       if (!body.identifier)
-        nextErrors.identifier =
-          "Nhập mã số sinh viên hoặc email của sinh viên.";
-      if (!body.password) nextErrors.password = "Nhập mật khẩu của sinh viên.";
+        nextErrors.identifier = "Nhập mã tài khoản hoặc email.";
+      if (!body.password) nextErrors.password = "Nhập mật khẩu.";
       else if (new TextEncoder().encode(body.password).length > 72)
         nextErrors.password =
           "Mật khẩu vượt quá giới hạn 72 byte. Ký tự có dấu có thể chiếm nhiều byte.";
@@ -217,10 +216,10 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       setComplete(true);
       setMessage(
         emailRequest
-          ? "Nếu email phù hợp với một tài khoản đủ điều kiện, liên kết hướng dẫn sẽ được gửi. Sinh viên vui lòng kiểm tra hộp thư và thư rác."
+          ? "Nếu email phù hợp với một tài khoản đủ điều kiện, liên kết hướng dẫn sẽ được gửi. Vui lòng kiểm tra hộp thư và thư rác."
           : mode === "activate"
-            ? "Tài khoản đã được kích hoạt. Sinh viên có thể đăng nhập bằng mật khẩu vừa tạo."
-            : "Mật khẩu đã được cập nhật. Sinh viên có thể đăng nhập lại bằng mật khẩu mới.",
+            ? "Tài khoản đã được kích hoạt. Vui lòng đăng nhập bằng mật khẩu vừa tạo."
+            : "Mật khẩu đã được cập nhật. Vui lòng đăng nhập lại bằng mật khẩu mới.",
       );
       requestAnimationFrame(() => messageRef.current?.focus());
     } catch {
@@ -245,10 +244,10 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       </h2>
       <p className="mt-2 text-sm leading-6 text-slate-500">
         {mode === "login"
-          ? "Nhập mã số sinh viên hoặc email và mật khẩu."
+          ? "Nhập mã tài khoản hoặc email và mật khẩu."
           : emailRequest
-            ? "Nhập email được gắn với tài khoản của sinh viên."
-            : "Dùng mật khẩu riêng cho tài khoản của sinh viên và tránh mật khẩu phổ biến."}
+            ? "Nhập email được gắn với tài khoản."
+            : "Dùng mật khẩu riêng cho tài khoản và tránh mật khẩu phổ biến."}
       </p>
       {restoring && (
         <p role="status" className="mt-5 text-sm text-slate-500">
@@ -277,7 +276,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
             <>
               <Field
                 name="identifier"
-                label="Mã số sinh viên hoặc email"
+                label="Mã tài khoản hoặc email"
                 autoComplete="username"
                 autoCapitalize="none"
                 spellCheck={false}

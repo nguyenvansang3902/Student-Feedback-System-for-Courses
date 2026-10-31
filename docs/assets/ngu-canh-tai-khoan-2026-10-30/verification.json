@@ -1,0 +1,418 @@
+{
+  "status": "passed",
+  "at": "2026-10-30T16:42:34.004Z",
+  "actorRoles": 10,
+  "multiRoleCases": 1,
+  "layouts": [
+    {
+      "name": "trang-chu",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "trang-chu",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dang-nhap-chung",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dang-nhap-chung",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "kich-hoat-chung",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "kich-hoat-chung",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "quen-mat-khau",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "quen-mat-khau",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dat-lai-mat-khau",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dat-lai-mat-khau",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dang-nhap-trong",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "dang-nhap-trong",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-sinh_vien",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-sinh_vien",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-sinh_vien",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-giang_vien",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-giang_vien",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-giang_vien",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-truong_bo_mon",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-truong_bo_mon",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-truong_bo_mon",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-truong_khoa",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-truong_khoa",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-truong_khoa",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-can_bo_dbcl",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-can_bo_dbcl",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-can_bo_dbcl",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-lanh_dao",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-lanh_dao",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-lanh_dao",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-phong_dao_tao",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-phong_dao_tao",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-phong_dao_tao",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-phong_khao_thi",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-phong_khao_thi",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-phong_khao_thi",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-thanh_tra",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-thanh_tra",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "khong-gian-thanh_tra",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-admin",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-admin",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "quan-tri",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-nhieu-vai-tro",
+      "width": 1440,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    },
+    {
+      "name": "tai-khoan-nhieu-vai-tro",
+      "width": 390,
+      "oldAddress": false,
+      "wrongSharedAddress": false,
+      "placeholderCount": 0,
+      "unlabeled": 0,
+      "overflow": false
+    }
+  ],
+  "images": [
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/dang-nhap-chung-1440.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/dang-nhap-chung-390.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/kich-hoat-chung-1440.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/kich-hoat-chung-390.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/tai-khoan-sinh_vien-1440.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/tai-khoan-sinh_vien-390.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/tai-khoan-admin-1440.png",
+    "docs/assets/ngu-canh-tai-khoan-2026-10-30/tai-khoan-admin-390.png"
+  ],
+  "errors": [],
+  "businessPosts": 0,
+  "adminFixtureDeactivated": true,
+  "ownerMfaNotConfiguredByQa": true
+}

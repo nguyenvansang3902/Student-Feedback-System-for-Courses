@@ -41,7 +41,10 @@ export default async function AdminLayout({
                 ["/quan-tri/nhat-ky", "Nhật ký kiểm toán"],
                 ["/quan-tri/chinh-sach-mfa", "Chính sách hai bước"],
                 ["/quan-tri/cau-hinh-khao-sat", "Ngưỡng khảo sát"],
-                ["/quan-tri/cau-hinh-ket-qua", "Kết quả và kiểm duyệt"],
+                [
+                  "/quan-tri/cau-hinh-ket-qua",
+                  "Cấu hình kết quả và kiểm duyệt",
+                ],
                 ["/tai-khoan", "Tài khoản của tôi"],
               ].map(([href, label]) => (
                 <Link

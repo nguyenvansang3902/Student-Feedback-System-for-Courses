@@ -1,5 +1,7 @@
 # Xưng hô trên giao diện — 30/10/2026
 
+**Cập nhật 31/10/2026:** theo yêu cầu tiếp theo, trang dùng chung cho mọi vai trò dùng câu trung tính; tiêu đề kích hoạt hiện là “Kích hoạt tài khoản”. Danh xưng sinh viên chỉ áp dụng ở ngữ cảnh dành cho sinh viên. Xem [quy ước hiện tại và bằng chứng mới](NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md). Nội dung và ảnh bên dưới giữ làm lịch sử của lượt chỉnh trước.
+
 Theo góp ý người dùng, nội dung dành cho sinh viên dùng danh xưng “sinh viên”, không dùng “bạn”. Trang kích hoạt có tiêu đề **“Bắt đầu với tài khoản của sinh viên”**. Các màn hình quản lý dùng câu trung tính hoặc đúng vai trò; không gọi cán bộ là sinh viên.
 
 Đã rà hướng dẫn, nhãn, thông báo và lỗi cố định trong mã. Các ô nhập vẫn để trống, không có chữ gợi ý bên trong. Đây là chỉnh câu chữ, không thêm FR hoặc tăng tiến độ. Không chạy seed để sửa lại mẫu đã khóa, câu trả lời hoặc nội dung do người dùng đã lưu.

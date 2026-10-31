@@ -329,3 +329,14 @@ Theo yêu cầu áp dụng toàn hệ thống, auth-form.tsx bỏ ví dụ email
 ### Danh xưng trong giao diện — 30/10/2026
 
 Theo yêu cầu mới, kích hoạt dùng “Bắt đầu với tài khoản của sinh viên”; auth-form, tài khoản, các trang khảo sát, trang quản lý và thông báo/email bỏ từ xưng hô Bạn/bạn. Các câu hướng tới sinh viên dùng danh xưng sinh viên; thông báo quản trị được viết trung tính. Nguồn mẫu mặc định áp dụng cho lần tạo mới, không ghi lại dữ liệu/mẫu khóa. Không đổi nghiệp vụ hoặc mã lỗi. Check797/797 qua; bằng chứng XUNG_HO_SINH_VIEN_2026_10_30.md, tiến độ giữ138/219.
+
+### Ngữ cảnh dùng chung và ADMIN riêng — hoàn tất 31/10/2026
+
+| Yêu cầu liên quan | Điều chỉnh và bằng chứng |
+| --- | --- |
+| FR-01/04/05 | Giữ một trang đăng nhập mã/email; auth-form, kích hoạt, khôi phục, API và email dùng câu trung tính. Trang chủ đưa về chức năng tài khoản. Không thay đầu vào hay quyền đăng nhập |
+| FR-01/10 | accountCodeLabel theo tập vai trò đã xác thực: sinh viên đơn vai trò=Mã số sinh viên, giảng viên đơn vai trò=Mã giảng viên, cán bộ/ADMIN/đa vai trò=Mã tài khoản. Danh sách chức năng vẫn theo policy hiện có |
+| FR-07; BR-32/34 | ADMIN riêng tạo bằng admin:create, ACTIVE/GLOBAL; HTTP đăng nhập200/MFA_SETUP, chưa TOTP bị chuyển khỏi quản trị. TOTP của chủ tài khoản chưa được cấu hình hộ. ADMIN giả QA xác nhận TOTP thật, xem quản trị và thử đa vai trò rồi vô hiệu hóa/thu hồi quyền, giữ AuditLog |
+| Kiểm hồi quy | Check797/797 trong50tệp qua; UI10vai trò+1caseđa vai trò,44/44 bố cục ở1440/390,8ảnh đã xem. Không Bạn/placeholder/thiếu nhãn/tràn ngang/lỗiJS hoặcReact trong phép đo. Email đặt lại cục bộ trung tính, token dùng qua service chính thức và phiên thử đăng xuất |
+
+[Báo cáo và ảnh mới](NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md). Chỉnh ngữ cảnh không cộng FR/điểm, không thay bộ test quyền đầy đủ chờ Tuần13. Không ghi mật khẩu/QR/secret vào Git hoặc ảnh. Yêu cầu mới thay cách gọi sinh viên trên các trang công khai dùng chung; bằng chứng trước được giữ đúng thời điểm.

@@ -6,14 +6,14 @@ const features = [
     number: "01",
     title: "Khảo sát môn học",
     description:
-      "Xem và hoàn thành các khảo sát của lớp học phần trong thời hạn.",
+      "Quản lý mẫu phiếu, đợt khảo sát hoặc hoàn thành khảo sát theo vai trò được cấp.",
     icon: "▤",
-    href: "/khao-sat",
+    href: "/tai-khoan",
   },
   {
     number: "02",
     title: "Phản hồi môn học",
-    description: "Gửi ý kiến và theo dõi việc xử lý phản hồi.",
+    description: "Gửi, tiếp nhận và theo dõi việc xử lý phản hồi.",
     icon: "↗",
     href: null,
   },
@@ -48,7 +48,7 @@ export default function HomePage() {
               Khảo sát và phản hồi về môn học
             </h1>
             <p className="mt-6 max-w-lg text-base leading-8 text-slate-600 sm:text-lg">
-              Đăng nhập để xem các khảo sát được giao và quản lý tài khoản.
+              Đăng nhập để truy cập các chức năng theo vai trò được cấp.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
@@ -83,11 +83,11 @@ export default function HomePage() {
               className="absolute top-0 right-0 h-40 w-40 rounded-bl-[8rem] rounded-tr-[2rem] bg-teal-800/60"
             />
             <div className="relative">
-              <h2 className="text-2xl font-semibold">Làm khảo sát</h2>
+              <h2 className="text-2xl font-semibold">Sử dụng hệ thống</h2>
               <ol className="mt-6 list-decimal space-y-4 pl-5 text-sm leading-7 text-teal-50">
                 <li>Đăng nhập bằng tài khoản được cấp.</li>
-                <li>Mở Khảo sát của tôi để xem danh sách khảo sát.</li>
-                <li>Chọn khảo sát đang mở và hoàn thành trước hạn.</li>
+                <li>Hoàn tất xác thực hai bước nếu tài khoản yêu cầu.</li>
+                <li>Chọn chức năng được cấp trong menu tài khoản.</li>
               </ol>
             </div>
           </div>

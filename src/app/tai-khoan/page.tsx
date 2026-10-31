@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { Brand, focusRing } from "@/components/auth/auth-shell";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { getPageActor } from "@/server/auth/http";
-import { authDestination } from "@/components/auth/destination";
+import {
+  authDestination,
+  accountCodeLabel,
+} from "@/components/auth/destination";
 import { authorizeAuthAction } from "@/server/policies/auth";
 import { can } from "@/server/policies/can";
 
@@ -60,10 +63,7 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("GIANG_VIEN"))
     return {
       title: "Không gian giảng viên",
-      sections: [
-        "Lớp học phần phụ trách",
-        "Phản hồi môn học",
-      ],
+      sections: ["Lớp học phần phụ trách", "Phản hồi môn học"],
     };
   return {
     title: "Không gian sinh viên",
@@ -149,7 +149,7 @@ export default async function AccountPage() {
                 </div>
                 <div>
                   <dt className="text-xs font-medium text-slate-500">
-                    Mã định danh
+                    {accountCodeLabel(actor.roles)}
                   </dt>
                   <dd className="mt-2 break-words text-sm font-semibold text-slate-900">
                     {actor.loginCode}
@@ -226,8 +226,13 @@ export default async function AccountPage() {
                     Mẫu phiếu khảo sát <span aria-hidden="true">↗</span>
                   </Link>
                 )}
-                {(can(actor, "results:read") || can(actor, "results:assessment") || can(actor, "results:incomplete")) && (
-                  <Link href="/ket-qua" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>
+                {(can(actor, "results:read") ||
+                  can(actor, "results:assessment") ||
+                  can(actor, "results:incomplete")) && (
+                  <Link
+                    href="/ket-qua"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
                     Kết quả khảo sát <span aria-hidden="true">↗</span>
                   </Link>
                 )}
@@ -264,8 +269,8 @@ export default async function AccountPage() {
                     Chức năng chưa mở
                   </h2>
                   <p className="mt-2 text-sm leading-7 text-slate-500">
-                    Các chức năng dưới đây chưa mở. Vui lòng quay lại sau khi
-                    hệ thống cập nhật.
+                    Các chức năng dưới đây chưa mở. Vui lòng quay lại sau khi hệ
+                    thống cập nhật.
                   </p>
                   <div className="mt-4 grid gap-4 sm:grid-cols-3">
                     {view.sections.map((name, index) => (

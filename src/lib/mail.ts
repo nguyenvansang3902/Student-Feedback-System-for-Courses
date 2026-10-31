@@ -76,17 +76,17 @@ export async function sendAccountTokenMail(input: AccountMail): Promise<void> {
       from: config.smtpFrom,
       to: input.to,
       subject: isActivation
-        ? "Kích hoạt tài khoản khảo sát và phản hồi sinh viên"
-        : "Đặt lại mật khẩu hệ thống khảo sát và phản hồi sinh viên",
+        ? "Kích hoạt tài khoản hệ thống khảo sát và phản hồi môn học"
+        : "Đặt lại mật khẩu hệ thống khảo sát và phản hồi môn học",
       text: [
         isActivation
-          ? "Sinh viên nhận được liên kết để kích hoạt tài khoản."
-          : "Có yêu cầu đặt lại mật khẩu cho tài khoản của sinh viên.",
+          ? "Đã nhận yêu cầu kích hoạt tài khoản."
+          : "Đã nhận yêu cầu đặt lại mật khẩu cho tài khoản.",
         "",
         link.toString(),
         "",
         `Liên kết chỉ dùng một lần và hết hạn sau ${ttlMinutes} phút.`,
-        "Nếu sinh viên không yêu cầu, hãy bỏ qua thư này. Không chuyển liên kết cho người khác.",
+        "Nếu không thực hiện yêu cầu này, hãy bỏ qua thư. Không chuyển liên kết cho người khác.",
       ].join("\n"),
       disableFileAccess: true,
       disableUrlAccess: true,

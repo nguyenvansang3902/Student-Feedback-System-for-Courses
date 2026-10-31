@@ -342,7 +342,7 @@ function UserEditorForm({
           </dl>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field id="loginCode" label="Mã định danh">
+            <Field id="loginCode" label="Mã tài khoản">
               <input
                 id="loginCode"
                 name="loginCode"
