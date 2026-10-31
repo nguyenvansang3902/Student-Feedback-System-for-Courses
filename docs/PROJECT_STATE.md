@@ -33,8 +33,8 @@
 - Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.
 - Chỉ dữ liệu giả, không deploy công khai; đóng góp/ngày yêu cầu/GVHD do sinh viên xác minh, không viết quy trình hiện tại ở trường.
 - CI main Tuần9: 43da7f8017a16759f9883af49cfff29b44eabfcb/run41082112228 qua check/smoke; không suy kết quả này cho commit sửa câu chữ sau đó.
-- Câu chữ các tuần sau: trang chủ/xác thực/email dùng chung trung tính, đăng nhập dùng “Mã tài khoản hoặc email”; không gọi “bạn”, hạn chế slogan và không placeholder.
-- Sau xác thực: chỉ SINH_VIEN dùng “Mã số sinh viên”, chỉ GIANG_VIEN dùng “Mã giảng viên”; cán bộ/ADMIN/đa vai trò dùng “Mã tài khoản”. Giữ danh xưng sinh viên ở màn hình riêng cho sinh viên.
+- Câu chữ các tuần sau: trang chủ/xác thực/email dùng chung trung tính, đăng nhập dùng “Tài khoản hoặc email”; không gọi “bạn”, hạn chế slogan và không placeholder.
+- Sau xác thực: chỉ SINH_VIEN dùng “Mã số sinh viên”, chỉ GIANG_VIEN dùng “Mã giảng viên”; cán bộ/ADMIN/đa vai trò dùng “Tài khoản”. Giữ danh xưng sinh viên ở màn hình riêng cho sinh viên.
 - Đã tạo ADMIN riêng cục bộ bằng CLI, kiểm đăng nhập/MFA_SETUP và chặn quản trị trước TOTP; mật khẩu bàn giao riêng, chủ tài khoản tự đăng ký TOTP lần đầu.
-- QA ngữ cảnh 30–31/10: 10 vai trò +đa vai trò,44/44 bố cục/8PNG đã xem; ADMIN thử đã vô hiệu hóa/thu hồi quyền, giữ audit. Xem NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md.
+- QR31/10: thiết lập60giây tự cấp lại/đếmngược, phiên5phút, TOTP30giây giữ nguyên; check816/816, HTTP29/29, UI5lần cấp cách60,25giây rồi dừng khi hếtphiên. Xem QR_60_GIAY_2026_10_31.md; QA ngữ cảnh cũ giữ lịch sử.
 - Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.

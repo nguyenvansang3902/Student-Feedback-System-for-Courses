@@ -352,3 +352,13 @@ Theo yêu cầu mới, kích hoạt dùng “Bắt đầu với tài khoản c�
 | Kiểm lại webpack | Check797/797 trong50tệp; IAB1265×720 giữ chuỗi thử hơn156giây, form nhập được và console không có vòng HMR lặp mới. Đăng nhập/đăng xuất demo qua; đã xem hai JPEG. Không nhận đã kiểm mọi trình duyệt/thiết bị |
 
 [Hồ sơ sửa lỗi](SUA_TAI_LAI_TRANG_2026_10_31.md). Sửa cách chạy không cộng FR/điểm hoặc mở Tuần10; bằng chứng nghiệm thu và CI trước giữ đúng thời điểm/SHA.
+
+### QR60giây và nhãn tài khoản —31/10/2026
+
+| Yêu cầu | Hiện thực và kiểm thực tế |
+| --- | --- |
+| FR-07; BR-32 | mfa.ts: pendingTTL60giây, metadata server/phiên, khóa User/Credential, reusekhônggia hạn; mã403/MFA_SETUP_EXPIRED khôngtăngsaiOTP. Unit19mfa-service; HTTP29nhóm gồm1nhómQRmới, concurrencythật chỉ1rotation/audit và TOTP30giây xác nhậnFULL |
+| FR-07, trải nghiệm thiết lập | mfa-form/mfa-setup-clock: QR/sessioncountdown, tự cập nhật, RTT/backgroundcatchup, clear/hideexpired, dừng/abort/lỗimạngthửtay. Clock12test và QA5lầncấp khoảng60,25giây, hếtphiênẩnQR; không đọc/đổiMFAchủdựán |
+| FR-01/10, góp ý nhãn | “Tài khoản hoặc email” ở login/helper/lỗi; “Tài khoản” ở thông tin chung/adminusers. Giữ MSSV/Mãgiảngviên theo vai trò; khôngplaceholder/đổi quyền |
+
+Check816/816 trong51tệp; [bằng chứng và giới hạn](QR_60_GIAY_2026_10_31.md). Không sửa phần đặc tả8.4 được bảo vệ, không cộng FR hoặc mở Tuần10.

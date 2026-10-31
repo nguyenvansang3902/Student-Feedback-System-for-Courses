@@ -16,7 +16,7 @@ export function accountCodeLabel(roles: readonly string[]): string {
   const unique = new Set(roles);
   if (unique.size === 1 && unique.has("SINH_VIEN")) return "Mã số sinh viên";
   if (unique.size === 1 && unique.has("GIANG_VIEN")) return "Mã giảng viên";
-  return "Mã tài khoản";
+  return "Tài khoản";
 }
 export function authDestination(user: {
   purpose?: string;

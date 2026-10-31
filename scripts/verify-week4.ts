@@ -120,6 +120,9 @@ type Payload = {
   csrfToken?: string;
   secret?: string;
   qrDataUrl?: string;
+  expiresAt?: string;
+  serverNow?: string;
+  sessionExpiresAt?: string;
   recoveryCodes?: string[];
   requiredRoles?: string[];
   total?: number;
@@ -251,17 +254,39 @@ async function freshCode(secret: string, userId: string): Promise<string> {
   sensitive.add(code);
   return code;
 }
-async function enroll(user: Fixture, identity: Session) {
-  const setup = await request("/api/auth/mfa-setup", identity, {});
-  expectStatus(setup, 200, "Bắt đầu MFA");
+function setupMetadata(result: Result) {
+  expectStatus(result, 200, "Bắt đầu MFA");
+  const { secret, qrDataUrl, expiresAt, serverNow, sessionExpiresAt } =
+    result.data;
+  if (secret) sensitive.add(secret);
+  if (qrDataUrl) sensitive.add(qrDataUrl);
   ensure(
-    setup.data.secret &&
-      setup.data.qrDataUrl?.startsWith("data:image/png;base64,"),
+    secret && qrDataUrl?.startsWith("data:image/png;base64,"),
     "Setup không trả secret/QR hợp lệ.",
   );
-  const secret = setup.data.secret;
-  sensitive.add(secret);
-  sensitive.add(setup.data.qrDataUrl!);
+  ensure(
+    expiresAt && serverNow && sessionExpiresAt,
+    "Setup thiếu hạn QR, giờ máy chủ hoặc hạn phiên tạm.",
+  );
+  const expiry = Date.parse(expiresAt);
+  const now = Date.parse(serverNow);
+  const sessionExpiry = Date.parse(sessionExpiresAt);
+  ensure(
+    Number.isFinite(expiry) &&
+      Number.isFinite(now) &&
+      Number.isFinite(sessionExpiry) &&
+      expiry > now &&
+      expiry - now <= 60000 &&
+      expiry <= sessionExpiry,
+    "Hạn QR phải còn hiệu lực, tối đa60giây và không vượt hạn phiên tạm.",
+  );
+  return { secret, qrDataUrl, expiresAt, serverNow, sessionExpiresAt };
+}
+async function enroll(user: Fixture, identity: Session) {
+  const setup = setupMetadata(
+    await request("/api/auth/mfa-setup", identity, {}),
+  );
+  const secret = setup.secret;
   const stored = await db.totpCredential.findUnique({
     where: { userId: user.id },
   });
@@ -271,7 +296,8 @@ async function enroll(user: Fixture, identity: Session) {
       !stored.encryptedSecret.includes(secret) &&
       !stored.enabledAt &&
       stored.pendingExpiresAt &&
-      stored.pendingExpiresAt.getTime() - Date.now() <= 300000,
+      stored.pendingExpiresAt.toISOString() === setup.expiresAt &&
+      stored.pendingExpiresAt.getTime() - Date.now() <= 60000,
     "Secret chưa được mã hóa hoặc setup bật trước xác nhận.",
   );
   const code = await freshCode(secret, user.id);
@@ -560,7 +586,122 @@ try {
     "Phiên tạm hết hạn",
   );
   pass("Phiên MFA tạm hết hạn bị từ chối thật trong MySQL");
+
+  begin("Hạn QR60giây, tái sử dụng và đổi QR hết hạn không gia hạn phiên tạm");
+  ensure(
+    ids.includes(admin1.id) && admin1.loginCode.startsWith(`W4-${prefix}-`),
+    "Chỉ được điều chỉnh thời hạn của fixture UUID trong DB test riêng.",
+  );
+  const clippedExpiry = new Date(Date.now() + 45000);
+  const clipped = await db.userSession.updateMany({
+    where: {
+      id: sid(expired.jar),
+      userId: admin1.id,
+      purpose: "MFA_SETUP",
+      revokedAt: null,
+    },
+    data: { expiresAt: clippedExpiry },
+  });
+  ensure(
+    clipped.count === 1,
+    "Không tìm thấy phiên setup của fixture cần rút hạn.",
+  );
+  const initialSetup = setupMetadata(
+    await request("/api/auth/mfa-setup", expired.jar, {}),
+  );
+  ensure(
+    initialSetup.expiresAt === clippedExpiry.toISOString() &&
+      initialSetup.sessionExpiresAt === clippedExpiry.toISOString(),
+    "QR phải bị cắt đúng hạn phiên khi phiên còn dưới60giây.",
+  );
+  const repeatedSetup = setupMetadata(
+    await request("/api/auth/mfa-setup", adminJar1, {}),
+  );
+  ensure(
+    repeatedSetup.secret === initialSetup.secret &&
+      repeatedSetup.qrDataUrl === initialSetup.qrDataUrl &&
+      repeatedSetup.expiresAt === initialSetup.expiresAt &&
+      repeatedSetup.sessionExpiresAt === pendingRow.expiresAt.toISOString(),
+    "Gọi setup lại phải giữ QR/hạn cũ, không gia hạn dù phiên khác còn lâu hơn.",
+  );
+  const mfaFailureKeys = [
+    rateKey("mfa-account", admin1.id),
+    rateKey("mfa-ip", admin1.ip),
+  ];
+  const failureCounters = () =>
+    db.rateLimitBucket.findMany({
+      where: { keyHash: { in: mfaFailureKeys } },
+      orderBy: { keyHash: "asc" },
+    });
+  const beforeExpiredFailure = JSON.stringify(await failureCounters());
+  const expiredCredential = await db.totpCredential.updateMany({
+    where: {
+      userId: admin1.id,
+      enabledAt: null,
+      pendingExpiresAt: new Date(initialSetup.expiresAt),
+    },
+    data: { pendingExpiresAt: new Date(Date.now() - 1000) },
+  });
+  ensure(
+    expiredCredential.count === 1,
+    "Không tìm thấy QR đang chờ của fixture.",
+  );
+  const oldSetupCode = await generate({
+    secret: initialSetup.secret,
+    digits: 6,
+    period: 30,
+    epoch: Math.floor(Date.now() / 1000),
+  });
+  sensitive.add(oldSetupCode);
+  const expiredConfirmation = await request(
+    "/api/auth/mfa-confirm",
+    adminJar1,
+    {
+      code: oldSetupCode,
+    },
+  );
+  expectStatus(expiredConfirmation, 403, "Xác nhận QR đã hết hạn");
+  ensure(
+    expiredConfirmation.data.code === "MFA_SETUP_EXPIRED" &&
+      JSON.stringify(await failureCounters()) === beforeExpiredFailure,
+    "QR hết hạn phải có lỗi riêng và không cộng số lần nhập saiOTP.",
+  );
+  const setupAudits = () =>
+    db.auditLog.count({
+      where: { action: "MFA_SETUP_STARTED", objectId: admin1.id },
+    });
+  const previousSetupCount = await setupAudits();
+  const concurrentSetups = await Promise.all([
+    request("/api/auth/mfa-setup", clone(adminJar1), {}),
+    request("/api/auth/mfa-setup", clone(adminJar1), {}),
+  ]);
+  const [rotatedSetup, concurrentSetup] = concurrentSetups.map(setupMetadata);
+  ensure(
+    rotatedSetup.secret !== initialSetup.secret &&
+      rotatedSetup.qrDataUrl !== initialSetup.qrDataUrl &&
+      rotatedSetup.secret === concurrentSetup.secret &&
+      rotatedSetup.qrDataUrl === concurrentSetup.qrDataUrl &&
+      rotatedSetup.expiresAt === concurrentSetup.expiresAt &&
+      rotatedSetup.sessionExpiresAt === pendingRow.expiresAt.toISOString() &&
+      (await setupAudits()) === previousSetupCount + 1,
+    "Setup đồng thời sau hết hạn phải đổi một lần, cùng QR/hạn mới và giữ hạn phiên.",
+  );
+  const rotatedStored = await db.totpCredential.findUniqueOrThrow({
+    where: { userId: admin1.id },
+  });
+  ensure(
+    !rotatedStored.enabledAt &&
+      rotatedStored.pendingExpiresAt?.toISOString() === rotatedSetup.expiresAt,
+    "QR mới chưa được bật trước xác nhận và hạn DB phải khớpDTO.",
+  );
+  pass(
+    "QR tối đa60giây/cắt theo phiên, gọi lại không gia hạn, hết hạn403 riêng và đổi đồng thời đúng một lần",
+  );
   const enrolled1 = await enroll(admin1, adminJar1);
+  ensure(
+    enrolled1.secret === rotatedSetup.secret,
+    "Xác nhậnOTP30giây phải dùng đúng secret vừa đổi, không đổi thêm QR hợp lệ.",
+  );
   pass("QR/secret mã hóa; xác nhận mới bật MFA, 10 mã lưu hash và cấp FULL");
   const enrolled2 = await enroll(admin2, adminJar2);
   pass("Quản trị viên thứ hai đăng ký TOTP và mã khôi phục riêng");
@@ -853,7 +994,18 @@ try {
   pass("Cấu hình không cho tắt MFA bắt buộc ADMIN");
   expectStatus(
     await request("/api/admin/mfa-policy", adminJar1, {
-      requiredRoles: ["SINH_VIEN", "GIANG_VIEN", "TRUONG_BO_MON", "TRUONG_KHOA", "CAN_BO_DBCL", "LANH_DAO", "ADMIN", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "THANH_TRA"],
+      requiredRoles: [
+        "SINH_VIEN",
+        "GIANG_VIEN",
+        "TRUONG_BO_MON",
+        "TRUONG_KHOA",
+        "CAN_BO_DBCL",
+        "LANH_DAO",
+        "ADMIN",
+        "PHONG_DAO_TAO",
+        "PHONG_KHAO_THI",
+        "THANH_TRA",
+      ],
       stepUpCode: await freshCode(enrolled1.secret, admin1.id),
     }),
     200,

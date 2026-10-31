@@ -142,7 +142,7 @@ Chỉ chạy một máy chủ trên cổng3000. Dừng dev trước khi chạy g
 
 ## Tạo ADMIN và dùng giao diện quản trị
 
-Mọi vai trò dùng cùng [trang đăng nhập](http://localhost:3000/dang-nhap), với nhãn **Mã tài khoản hoặc email**. Sau đăng nhập, menu và chức năng dựa trên quyền thực tế. Trang tài khoản chỉ ghi **Mã số sinh viên** khi tài khoản chỉ có vai trò sinh viên, **Mã giảng viên** khi chỉ có vai trò giảng viên; các vai trò còn lại và tài khoản nhiều vai trò dùng **Mã tài khoản**. Không cần chọn vai trò trước đăng nhập.
+Mọi vai trò dùng cùng [trang đăng nhập](http://localhost:3000/dang-nhap), với nhãn **Tài khoản hoặc email**. Sau đăng nhập, menu và chức năng dựa trên quyền thực tế. Trang tài khoản chỉ ghi **Mã số sinh viên** khi tài khoản chỉ có vai trò sinh viên, **Mã giảng viên** khi chỉ có vai trò giảng viên; các vai trò còn lại và tài khoản nhiều vai trò dùng **Tài khoản**. Không cần chọn vai trò trước đăng nhập.
 
 Đã cấp một ADMIN riêng cho chủ dự án trên database cục bộ, kiểm đăng nhập và giữ bước đăng ký TOTP lần đầu. Thông tin đăng nhập bàn giao riêng trong cuộc trao đổi, không lưu trong GitHub. Đây là tài khoản trên máy hiện tại; tải mã nguồn về máy khác không tự sao chép tài khoản/database. [Bằng chứng kiểm ngữ cảnh và cấp ADMIN](docs/NGU_CANH_TAI_KHOAN_VA_ADMIN_2026_10_31.md).
 
@@ -160,6 +160,8 @@ Nhập mã ADMIN, lý do, email, tên và mật khẩu riêng theo lời nhắc;
 4. Vào [quản trị](http://localhost:3000/quan-tri): tài khoản, nhật ký, chính sách MFA; mở [Danh mục](http://localhost:3000/danh-muc) để quản lý khoa/bộ môn. Tạo tài khoản mới sẽ ở trạng thái chờ kích hoạt; dùng email/Mailpit theo luồng Tuần 3. ADMIN không ghi dữ liệu đào tạo/import và không xem kết quả khảo sát, nội dung phản hồi hay hồ sơ Thanh tra chỉ nhờ quyền quản trị.
 
 Đổi quyền, tạo tài khoản, sửa chính sách MFA hoặc đặt lại 2FA yêu cầu một mã TOTP mới. Mã vừa dùng bị chặn dùng lại, nên có thể cần chờ chu kỳ 30 giây tiếp theo. Mã khôi phục chỉ dùng để đăng nhập, không thay xác nhận thao tác nhạy cảm. ADMIN luôn bắt buộc MFA; có thể bật bắt buộc cho các vai trò khác.
+
+Theo yêu cầu ngày31/10, **QR đang chờ thiết lập có hạn tối đa60giây**, có đếm ngược và tự cấp QR mới ngay trên trang. Khi QR đổi, quét lại QR mới trong ứng dụng trước khi nhập mã xác thực; mã gắn với QR cũ không còn dùng được. Trang cũng đếm ngược phiên thiết lập5phút: hết phiên thì ẩn QR, dừng cấp lại và hiện liên kết đăng nhập. Chu kỳ mã sáu chữ số vẫn30giây theo đặc tả; tài khoản đã bật2FA giữ nguyên khóa/mã khôi phục, không cần quét lại. [Bằng chứng QR60giây và cập nhật nhãn tài khoản](docs/QR_60_GIAY_2026_10_31.md).
 
 Không tự khóa hoặc tự đổi vai trò của ADMIN hiện tại. ADMIN khác thực hiện thay đổi; service còn bảo vệ ADMIN ACTIVE cuối cùng. Mất thiết bị/mã khôi phục: ADMIN khác đặt lại 2FA trên web, hoặc người vận hành có quyền máy chủ chạy:
 

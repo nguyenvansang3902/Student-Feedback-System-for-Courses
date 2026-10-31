@@ -37,6 +37,14 @@ function notReady(): AuthError {
     "MFA_SESSION_REQUIRED",
   );
 }
+function setupExpired(): AuthError {
+  return new AuthError(
+    "Mã QR thiết lập đã hết hạn. Vui lòng quét mã QR mới để tiếp tục.",
+    403,
+    "MFA_SETUP_EXPIRED",
+  );
+}
+const SETUP_QR_TTL_MS = 60_000;
 async function lockUser(
   tx: Prisma.TransactionClient,
   userId: string,
@@ -70,33 +78,70 @@ export async function getMfaStatus(
 export async function startMfaSetup(
   actor: AuthActor,
   context: AuthContext,
-): Promise<{ secret: string; qrDataUrl: string }> {
+): Promise<{
+  secret: string;
+  qrDataUrl: string;
+  expiresAt: string;
+  serverNow: string;
+  sessionExpiresAt: string;
+}> {
   authorizeAuthAction(actor, "mfa-setup");
   const keys = mfaRateKeys(actor.userId, context.ip);
   await checkMfaRate(keys);
-  const secret = await getDb().$transaction(async (tx) => {
+  const setup = await getDb().$transaction(async (tx) => {
     await assertLoginAllowed(tx, keys);
     await lockUser(tx, actor.userId);
     const fresh = await requireFreshActor(actor, tx);
     authorizeAuthAction(fresh, "mfa-setup");
+    const session = await tx.userSession.findUnique({
+      where: { id: fresh.sessionId },
+      select: { expiresAt: true },
+    });
+    const now = new Date();
+    if (!session || session.expiresAt <= now) throw notReady();
+    const maximumExpiry = new Date(
+      Math.min(now.getTime() + SETUP_QR_TTL_MS, session.expiresAt.getTime()),
+    );
     await lockCredential(tx, actor.userId);
     const current = await tx.totpCredential.findUnique({
       where: { userId: actor.userId },
     });
     if (current?.enabledAt) throw notReady();
-    if (current?.pendingExpiresAt && current.pendingExpiresAt > new Date()) {
-      return decryptMfaSecret(
-        current.encryptedSecret,
-        actor.userId,
-        current.keyVersion,
+    if (current?.pendingExpiresAt && current.pendingExpiresAt > now) {
+      // Reuse không gia hạn. Chỉ rút ngắn thiết lập cũ nếu còn quá60giây.
+      const expiresAt = new Date(
+        Math.min(current.pendingExpiresAt.getTime(), maximumExpiry.getTime()),
       );
+      if (expiresAt.getTime() < current.pendingExpiresAt.getTime()) {
+        await tx.totpCredential.update({
+          where: { userId: actor.userId },
+          data: { pendingExpiresAt: expiresAt },
+        });
+        await tx.auditLog.create({
+          data: {
+            actorId: actor.userId,
+            action: "MFA_SETUP_EXPIRY_CAPPED",
+            objectType: "TotpCredential",
+            objectId: actor.userId,
+          },
+        });
+      }
+      return {
+        secret: decryptMfaSecret(
+          current.encryptedSecret,
+          actor.userId,
+          current.keyVersion,
+        ),
+        expiresAt,
+        sessionExpiresAt: session.expiresAt,
+      };
     }
     const value = newMfaSecret();
     const data = {
       encryptedSecret: encryptMfaSecret(value, actor.userId),
       keyVersion: getMfaKeyVersion(),
       enabledAt: null,
-      pendingExpiresAt: new Date(Date.now() + 300000),
+      pendingExpiresAt: maximumExpiry,
       lastUsedStep: null,
       failedAttempts: 0,
       lockedUntil: null,
@@ -114,15 +159,22 @@ export async function startMfaSetup(
         objectId: actor.userId,
       },
     });
-    return value;
+    return {
+      secret: value,
+      expiresAt: maximumExpiry,
+      sessionExpiresAt: session.expiresAt,
+    };
   });
   return {
-    secret,
-    qrDataUrl: await QRCode.toDataURL(mfaUri(secret, actor.loginCode), {
+    secret: setup.secret,
+    qrDataUrl: await QRCode.toDataURL(mfaUri(setup.secret, actor.loginCode), {
       width: 256,
       margin: 2,
       errorCorrectionLevel: "M",
     }),
+    expiresAt: setup.expiresAt.toISOString(),
+    serverNow: new Date().toISOString(),
+    sessionExpiresAt: setup.sessionExpiresAt.toISOString(),
   };
 }
 
@@ -134,15 +186,13 @@ async function consumeTotp(
 ): Promise<boolean> {
   await lockCredential(tx, userId);
   const credential = await tx.totpCredential.findUnique({ where: { userId } });
-  if (
-    !credential ||
-    (pending
-      ? !!credential.enabledAt ||
-        !credential.pendingExpiresAt ||
-        credential.pendingExpiresAt <= new Date()
-      : !credential.enabledAt)
-  )
+  if (!credential || (pending ? !!credential.enabledAt : !credential.enabledAt))
     throw notReady();
+  if (
+    pending &&
+    (!credential.pendingExpiresAt || credential.pendingExpiresAt <= new Date())
+  )
+    throw setupExpired();
   const step = await matchTotpStep(
     decryptMfaSecret(credential.encryptedSecret, userId, credential.keyVersion),
     code,
