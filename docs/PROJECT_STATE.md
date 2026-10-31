@@ -19,7 +19,7 @@
 - TOTP thật lưu cấu hình, chặn replay/CAS cũ, gắn cờ ba góp ý; cấu hình và ratebucket thử khôi phục nguyên vẹn.
 - UI 14 nhóm/23 trạng thái/46PNG desktop/mobile đã xem; bốn ảnh cuối chụp lại mainE8 qua, không lỗi trong phép đo.
 - Demo MySQL 15/15; E8 riêng hai đợt/bốn lớp/18 phiếu/40 nhiệm vụ, hai GV cùng môn, đủ/thiếu mẫu và kỳ trước; seed lặp giữ hash.
-- Không migration mới: 34 runtime/46 design/12 model chỉ thiết kế; 27 tập main cũ khớp hash sau seed và UI đọc, không reset DB/volume.
+- Nghiệm thu Tuần9 không migration mới: 34 runtime/46 design/12 model chỉ thiết kế; 27 tập main cũ khớp hash sau seed và UI đọc, không reset DB/volume.
 - Công thức, ADR010, năm câu bảo vệ, báo cáo 10 mục, ba sơ đồ nghiệp vụ/ERD/ảnh/README/truy vết/nhật ký AI đã cập nhật.
 - Tiến độ 138/219=63,0%, 49/84FR; M5=22/22, M7=16/18, M14=6/13. Kế hoạch 140/219, chênh hai điểm FR-145.
 
@@ -35,6 +35,6 @@
 - CI main Tuần9: 43da7f8017a16759f9883af49cfff29b44eabfcb/run41082112228 qua check/smoke; không suy kết quả này cho commit sửa câu chữ sau đó.
 - Câu chữ các tuần sau: trang chủ/xác thực/email dùng chung trung tính, đăng nhập dùng “Tài khoản hoặc email”; không gọi “bạn”, hạn chế slogan và không placeholder.
 - Sau xác thực: chỉ SINH_VIEN dùng “Mã số sinh viên”, chỉ GIANG_VIEN dùng “Mã giảng viên”; cán bộ/ADMIN/đa vai trò dùng “Tài khoản”. Giữ danh xưng sinh viên ở màn hình riêng cho sinh viên.
-- Đã tạo ADMIN riêng cục bộ bằng CLI, kiểm đăng nhập/MFA_SETUP và chặn quản trị trước TOTP; mật khẩu bàn giao riêng, chủ tài khoản tự đăng ký TOTP lần đầu.
-- QR31/10: thiết lập60giây tự cấp lại/đếmngược, phiên5phút, TOTP30giây giữ nguyên; check816/816, HTTP29/29, UI5lần cấp cách60,25giây rồi dừng khi hếtphiên. Xem QR_60_GIAY_2026_10_31.md; QA ngữ cảnh cũ giữ lịch sử.
+- Lịch sử QR31/10: thiết lập60giây tự cấp lại/đếmngược, phiên5phút, khi đó TOTP30giây giữ nguyên; check816/816, HTTP29/29, UI5lần cấp cách60,25giây. Xem QR_60_GIAY_2026_10_31.md.
+- Theo lệnh31/10, tiếp tục01/11: TOTP mới60giây; tài khoản cũ30 tự xác nhận QR60 rồi mới chuyển, ADMIN chính chưa đổi. Migration thêm6cột/hash34bảng cũ khớp; check850/850(53tệp), build, HTTP12/12, UI30→QR60→hủy giữ30 qua; CI đối chiếu SHA mới. Xem TOTP_60_GIAY_2026_10_31.md.
 - Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.

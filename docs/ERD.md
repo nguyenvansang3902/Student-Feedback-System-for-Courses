@@ -4,7 +4,7 @@
 
 Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 9 ngày **30/10/2026** theo yêu cầu người dùng. Mã nguồn bổ sung tổng hợp/công bố theo ngưỡng, kiểm duyệt TEXT, so sánh, kết quả gộp Khảo thí và danh sách/nhắc chưa hoàn thành. Chưa hiện thực phản hồi liên tục, giải trình hoặc xuất báo cáo. ERD thể hiện cấu trúc và phạm vi mã nguồn; nghiệm thu chức năng và bằng chứng chạy thật được kiểm riêng, không suy từ hình.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**46 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**34 model**, gồm 4 bảng mẫu, 7 bảng đợt/xác nhận/hàng chờ email, 2 bảng phiếu ẩn danh, AggregateResult của Tuần 9 và 4 bảng phản hồi còn chỉ seed demo). **12 model còn chỉ thiết kế**, chưa migrate. Tuần 9 dùng AggregateResult/SystemSetting/Notification/EmailOutbox sẵn có, không thêm model hoặc migration. SHA-256 DMMF thiết kế: `bca4073a102d6c09bbee9b90882d08c750e6ea82ec7fafaeaacd9a153538eb20`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**46 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**34 model**, gồm 4 bảng mẫu, 7 bảng đợt/xác nhận/hàng chờ email, 2 bảng phiếu ẩn danh, AggregateResult của Tuần 9 và 4 bảng phản hồi còn chỉ seed demo). **12 model còn chỉ thiết kế**, chưa migrate. Tuần 9 dùng AggregateResult/SystemSetting/Notification/EmailOutbox sẵn có, không thêm model hoặc migration. SHA-256 DMMF thiết kế: `18060a29d8227b687f9c207f1ceea241578912bd6a43cac2c5e0e37e3f572edb`.
 
 ## Cách đọc và tái tạo
 
@@ -825,11 +825,17 @@ erDiagram
     String userId PK, FK "NOT NULL; Char(36)"
     String encryptedSecret "NOT NULL; Text"
     String keyVersion "NOT NULL; VarChar(32)"
+    Int periodSeconds "NOT NULL; default 30"
     DateTime enabledAt "NULL; DateTime(3)"
     DateTime pendingExpiresAt "NULL; DateTime(3)"
     BigInt lastUsedStep "NULL"
     Int failedAttempts "NOT NULL; default 0"
     DateTime lockedUntil "NULL; DateTime(3)"
+    String changeEncryptedSecret "NULL; Text"
+    String changeKeyVersion "NULL; VarChar(32)"
+    DateTime changeExpiresAt "NULL; DateTime(3)"
+    String changeSessionId "NULL; Char(36)"
+    DateTime changeStartedAt "NULL; DateTime(3)"
   }
   %% TotpRecoveryCode: model chính
   TotpRecoveryCode {

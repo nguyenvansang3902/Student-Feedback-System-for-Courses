@@ -123,6 +123,7 @@ type Payload = {
   expiresAt?: string;
   serverNow?: string;
   sessionExpiresAt?: string;
+  periodSeconds?: number;
   recoveryCodes?: string[];
   requiredRoles?: string[];
   total?: number;
@@ -241,29 +242,56 @@ async function csrf(identity: Session): Promise<string> {
 }
 const lastStep = new Map<string, number>();
 async function freshCode(secret: string, userId: string): Promise<string> {
-  const now = Math.floor(Date.now() / 1000);
-  const current = Math.floor(now / 30);
-  const previous = lastStep.get(userId);
-  if (previous !== undefined && current <= previous) {
+  const credential = await db.totpCredential.findUniqueOrThrow({
+    where: { userId },
+    select: { periodSeconds: true, lastUsedStep: true },
+  });
+  const period = credential.periodSeconds;
+  ensure(period === 30 || period === 60, "Chu kỳ TOTP fixture không hợp lệ.");
+  let current = Math.floor(Date.now() / 1000 / period);
+  const previous = Math.max(
+    lastStep.get(userId) ?? -1,
+    credential.lastUsedStep === null ? -1 : Number(credential.lastUsedStep),
+  );
+  // Không lấy bước trước khi chỉ còn dưới5giây để tránh đổi bước trong lúc HTTP đang gửi.
+  const earliest =
+    current - (Date.now() % (period * 1000) < period * 1000 - 5000 ? 1 : 0);
+  const step = Math.max(earliest, previous + 1);
+  while (step > current + 1) {
     console.log("Đang chờ chu kỳ TOTP tiếp theo để kiểm step-up thật.");
-    await delay((previous + 1) * 30000 - Date.now() + 150);
+    await delay(
+      Math.min(60_000, (step - 1) * period * 1000 - Date.now() + 150),
+    );
+    current = Math.floor(Date.now() / 1000 / period);
   }
-  const epoch = Math.floor(Date.now() / 1000);
-  lastStep.set(userId, Math.floor(epoch / 30));
-  const code = await generate({ secret, digits: 6, period: 30, epoch });
+  // Chọn bước chưa dùng sớm nhất trong cửa sổ ±1 đã có; không chỉnh counter DB.
+  lastStep.set(userId, step);
+  const code = await generate({
+    secret,
+    digits: 6,
+    period,
+    epoch: step * period,
+  });
   sensitive.add(code);
   return code;
 }
 function setupMetadata(result: Result) {
   expectStatus(result, 200, "Bắt đầu MFA");
-  const { secret, qrDataUrl, expiresAt, serverNow, sessionExpiresAt } =
-    result.data;
+  const {
+    secret,
+    qrDataUrl,
+    expiresAt,
+    serverNow,
+    sessionExpiresAt,
+    periodSeconds,
+  } = result.data;
   if (secret) sensitive.add(secret);
   if (qrDataUrl) sensitive.add(qrDataUrl);
   ensure(
     secret && qrDataUrl?.startsWith("data:image/png;base64,"),
     "Setup không trả secret/QR hợp lệ.",
   );
+  ensure(periodSeconds === 60, "Thiết lập mới phải trả chu kỳ TOTP60giây.");
   ensure(
     expiresAt && serverNow && sessionExpiresAt,
     "Setup thiếu hạn QR, giờ máy chủ hoặc hạn phiên tạm.",
@@ -280,7 +308,14 @@ function setupMetadata(result: Result) {
       expiry <= sessionExpiry,
     "Hạn QR phải còn hiệu lực, tối đa60giây và không vượt hạn phiên tạm.",
   );
-  return { secret, qrDataUrl, expiresAt, serverNow, sessionExpiresAt };
+  return {
+    secret,
+    qrDataUrl,
+    expiresAt,
+    serverNow,
+    sessionExpiresAt,
+    periodSeconds,
+  };
 }
 async function enroll(user: Fixture, identity: Session) {
   const setup = setupMetadata(
@@ -295,6 +330,7 @@ async function enroll(user: Fixture, identity: Session) {
       stored.encryptedSecret !== secret &&
       !stored.encryptedSecret.includes(secret) &&
       !stored.enabledAt &&
+      stored.periodSeconds === setup.periodSeconds &&
       stored.pendingExpiresAt &&
       stored.pendingExpiresAt.toISOString() === setup.expiresAt &&
       stored.pendingExpiresAt.getTime() - Date.now() <= 60000,
@@ -481,6 +517,7 @@ try {
     [
       "node_modules/next/dist/bin/next",
       "dev",
+      "--webpack",
       "--hostname",
       "127.0.0.1",
       "--port",
@@ -649,7 +686,7 @@ try {
   const oldSetupCode = await generate({
     secret: initialSetup.secret,
     digits: 6,
-    period: 30,
+    period: initialSetup.periodSeconds,
     epoch: Math.floor(Date.now() / 1000),
   });
   sensitive.add(oldSetupCode);
@@ -700,7 +737,7 @@ try {
   const enrolled1 = await enroll(admin1, adminJar1);
   ensure(
     enrolled1.secret === rotatedSetup.secret,
-    "Xác nhậnOTP30giây phải dùng đúng secret vừa đổi, không đổi thêm QR hợp lệ.",
+    "Xác nhậnOTP60giây phải dùng đúng secret vừa đổi, không đổi thêm QR hợp lệ.",
   );
   pass("QR/secret mã hóa; xác nhận mới bật MFA, 10 mã lưu hash và cấp FULL");
   const enrolled2 = await enroll(admin2, adminJar2);
@@ -728,9 +765,9 @@ try {
   );
   const staleCode = await generate({
     secret: enrolled1.secret,
-    epoch: Math.floor(Date.now() / 1000) - 90,
+    epoch: Math.floor(Date.now() / 1000) - 180,
     digits: 6,
-    period: 30,
+    period: 60,
   });
   sensitive.add(staleCode);
   expectStatus(

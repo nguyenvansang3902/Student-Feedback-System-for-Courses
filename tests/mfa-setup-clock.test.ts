@@ -111,4 +111,23 @@ describe("FR-07/BR-32 — thời hạn QR thiết lập 60 giây", () => {
     expect(formatMfaSessionTime(9)).toBe("0:09");
     expect(formatMfaSessionTime(0)).toBe("0:00");
   });
+
+  it("chu kỳ mã xác minh độc lập với thời hạn QR và giữ cấu hình cũ 30 giây", () => {
+    const legacy = readMfaSetupTicket(response(), serverNow, serverNow);
+    const current = readMfaSetupTicket(
+      { ...response(), periodSeconds: 60 },
+      serverNow,
+      serverNow,
+    );
+    expect(legacy.periodSeconds).toBe(30);
+    expect(current.periodSeconds).toBe(60);
+    expect(legacy.qrDeadline).toBe(current.qrDeadline);
+    expect(() =>
+      readMfaSetupTicket(
+        { ...response(), periodSeconds: 45 },
+        serverNow,
+        serverNow,
+      ),
+    ).toThrow();
+  });
 });

@@ -104,6 +104,7 @@ function credential(identity: AuthActor, pending = false) {
     userId: identity.userId,
     encryptedSecret: encryptMfaSecret(secret, identity.userId),
     keyVersion: "v1",
+    periodSeconds: 30,
     enabledAt: pending ? null : new Date(),
     pendingExpiresAt: pending ? new Date(Date.now() + 60000) : null,
     lastUsedStep: null,
@@ -160,6 +161,8 @@ describe("BR-32 / FR-07 — service MFA có policy và CAS", () => {
     const saved = db.totpCredential.upsert.mock.calls[0][0].create;
     expect(saved.encryptedSecret).not.toContain(result.secret);
     expect(saved.enabledAt).toBeNull();
+    expect(saved.periodSeconds).toBe(60);
+    expect(result.periodSeconds).toBe(60);
     expect(saved.pendingExpiresAt.getTime() - Date.now()).toBe(60000);
     expect(result.expiresAt).toBe("2026-10-31T06:01:00.000Z");
     expect(result.serverNow).toBe("2026-10-31T06:00:00.000Z");
@@ -176,6 +179,7 @@ describe("BR-32 / FR-07 — service MFA có policy và CAS", () => {
     vi.setSystemTime(new Date("2026-10-31T06:00:59.999Z"));
     const result = await startMfaSetup(identity, context);
     expect(result.secret).toBe(secret);
+    expect(result.periodSeconds).toBe(30);
     expect(result.expiresAt).toBe(row.pendingExpiresAt!.toISOString());
     expect(db.totpCredential.upsert).not.toHaveBeenCalled();
     expect(db.totpCredential.update).not.toHaveBeenCalled();
@@ -420,6 +424,8 @@ describe("BR-32 / FR-07 — service MFA có policy và CAS", () => {
       required: true,
       enabled: true,
       purpose: "FULL",
+      periodSeconds: 30,
+      defaultPeriodSeconds: 60,
     });
     db.userSession.findUnique.mockResolvedValue({
       id: identity.sessionId,
@@ -450,6 +456,23 @@ describe("BR-32 / FR-07 — service MFA có policy và CAS", () => {
       ),
     ).rejects.toMatchObject({ code: "FORBIDDEN" });
     expect(db.totpCredential.updateMany).not.toHaveBeenCalled();
+  });
+  it("thiết lập60 mới xác nhận bằng mã60 và lưu bước replay theo mộtphút", async () => {
+    const identity = actor("MFA_SETUP");
+    useActor(identity);
+    const { secret, row } = credential(identity, true);
+    row.periodSeconds = 60;
+    const code = await generate({ secret, digits: 6, period: 60 });
+    const result = await confirmMfaSetup(identity, { code }, context);
+    expect(result.tokens.actor.mfa).toBe(true);
+    expect(db.totpCredential.updateMany).toHaveBeenCalledWith({
+      where: { userId: identity.userId, lastUsedStep: null },
+      data: {
+        lastUsedStep: BigInt(Math.floor(Date.now() / 60000)),
+        failedAttempts: 0,
+        lockedUntil: null,
+      },
+    });
   });
   it("BR-34: reset 2FA từ chối gán ADMIN sai phạm vi trước truy cập dữ liệu", async () => {
     const identity: AuthActor = {

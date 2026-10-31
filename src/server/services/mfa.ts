@@ -19,6 +19,7 @@ import {
   getMfaKeyVersion,
   hashRecoveryCode,
   matchTotpStep,
+  mfaPeriod,
   mfaUri,
   newMfaSecret,
   newRecoveryCodes,
@@ -45,33 +46,41 @@ function setupExpired(): AuthError {
   );
 }
 const SETUP_QR_TTL_MS = 60_000;
-async function lockUser(
+export async function lockUser(
   tx: Prisma.TransactionClient,
   userId: string,
 ): Promise<void> {
   await tx.$queryRaw`SELECT id FROM User WHERE id = ${userId} FOR UPDATE`;
 }
-async function lockCredential(
+export async function lockCredential(
   tx: Prisma.TransactionClient,
   userId: string,
 ): Promise<void> {
   await tx.$queryRaw`SELECT userId FROM TotpCredential WHERE userId = ${userId} FOR UPDATE`;
 }
 
-export async function getMfaStatus(
-  actor: AuthActor,
-): Promise<{ required: boolean; enabled: boolean; purpose: string }> {
+export async function getMfaStatus(actor: AuthActor): Promise<{
+  required: boolean;
+  enabled: boolean;
+  purpose: string;
+  periodSeconds: number | null;
+  defaultPeriodSeconds: number;
+}> {
   authorizeAuthAction(actor, "mfa-status");
   const fresh = await requireFreshActor(actor);
   authorizeAuthAction(fresh, "mfa-status");
   const credential = await getDb().totpCredential.findUnique({
     where: { userId: actor.userId },
-    select: { enabledAt: true },
+    select: { enabledAt: true, periodSeconds: true },
   });
   return {
     required: !!fresh.mfaRequired,
     enabled: !!credential?.enabledAt,
     purpose: fresh.purpose ?? "FULL",
+    periodSeconds: credential?.enabledAt
+      ? mfaPeriod(credential.periodSeconds)
+      : null,
+    defaultPeriodSeconds: 60,
   };
 }
 
@@ -84,6 +93,7 @@ export async function startMfaSetup(
   expiresAt: string;
   serverNow: string;
   sessionExpiresAt: string;
+  periodSeconds: number;
 }> {
   authorizeAuthAction(actor, "mfa-setup");
   const keys = mfaRateKeys(actor.userId, context.ip);
@@ -134,17 +144,24 @@ export async function startMfaSetup(
         ),
         expiresAt,
         sessionExpiresAt: session.expiresAt,
+        periodSeconds: mfaPeriod(current.periodSeconds),
       };
     }
     const value = newMfaSecret();
     const data = {
       encryptedSecret: encryptMfaSecret(value, actor.userId),
       keyVersion: getMfaKeyVersion(),
+      periodSeconds: 60,
       enabledAt: null,
       pendingExpiresAt: maximumExpiry,
       lastUsedStep: null,
       failedAttempts: 0,
       lockedUntil: null,
+      changeEncryptedSecret: null,
+      changeKeyVersion: null,
+      changeExpiresAt: null,
+      changeSessionId: null,
+      changeStartedAt: null,
     };
     await tx.totpCredential.upsert({
       where: { userId: actor.userId },
@@ -163,22 +180,27 @@ export async function startMfaSetup(
       secret: value,
       expiresAt: maximumExpiry,
       sessionExpiresAt: session.expiresAt,
+      periodSeconds: 60,
     };
   });
   return {
     secret: setup.secret,
-    qrDataUrl: await QRCode.toDataURL(mfaUri(setup.secret, actor.loginCode), {
-      width: 256,
-      margin: 2,
-      errorCorrectionLevel: "M",
-    }),
+    qrDataUrl: await QRCode.toDataURL(
+      mfaUri(setup.secret, actor.loginCode, setup.periodSeconds),
+      {
+        width: 256,
+        margin: 2,
+        errorCorrectionLevel: "M",
+      },
+    ),
     expiresAt: setup.expiresAt.toISOString(),
     serverNow: new Date().toISOString(),
     sessionExpiresAt: setup.sessionExpiresAt.toISOString(),
+    periodSeconds: setup.periodSeconds,
   };
 }
 
-async function consumeTotp(
+export async function consumeTotp(
   tx: Prisma.TransactionClient,
   userId: string,
   code: string,
@@ -197,6 +219,8 @@ async function consumeTotp(
     decryptMfaSecret(credential.encryptedSecret, userId, credential.keyVersion),
     code,
     credential.lastUsedStep,
+    undefined,
+    mfaPeriod(credential.periodSeconds),
   );
   if (step === null) return false;
   const changed = await tx.totpCredential.updateMany({
@@ -412,11 +436,17 @@ export async function resetUserMfa(
           targetUserId,
         ),
         keyVersion: getMfaKeyVersion(),
+        periodSeconds: 60,
         enabledAt: null,
         pendingExpiresAt: null,
         lastUsedStep: null,
         failedAttempts: 0,
         lockedUntil: null,
+        changeEncryptedSecret: null,
+        changeKeyVersion: null,
+        changeExpiresAt: null,
+        changeSessionId: null,
+        changeStartedAt: null,
       },
     });
     await tx.totpRecoveryCode.updateMany({

@@ -12,6 +12,7 @@ type AuthAction =
   | "mfa-setup"
   | "mfa-confirm"
   | "mfa-verify"
+  | "mfa-period-change"
   | "step-up"
   | "admin";
 
@@ -37,11 +38,7 @@ export function authorizeAuthAction(
   // Service kiểm hash/ownership trước khi thu hồi, tuyệt đối không dùng ID từ client.
   if (action === "logout") return;
   if (!actor) {
-    throw new AuthError(
-      "Cần đăng nhập để tiếp tục.",
-      401,
-      "UNAUTHENTICATED",
-    );
+    throw new AuthError("Cần đăng nhập để tiếp tục.", 401, "UNAUTHENTICATED");
   }
   const purpose =
     actor.purpose ?? (actor.mustChangePassword ? "PASSWORD_CHANGE" : "FULL");
@@ -81,6 +78,7 @@ export function authorizeAuthAction(
   if (
     (action === "admin" ||
       action === "step-up" ||
+      action === "mfa-period-change" ||
       actor.mfaRequired ||
       actor.roles.includes("ADMIN")) &&
     !actor.mfa
@@ -91,7 +89,12 @@ export function authorizeAuthAction(
       "MFA_REQUIRED",
     );
   }
-  if (action === "admin" || action === "step-up") return;
+  if (
+    action === "admin" ||
+    action === "step-up" ||
+    action === "mfa-period-change"
+  )
+    return;
   if (action === "workspace" && actor.roles.length > 0) return;
   throw new AuthError(
     "Không có quyền thực hiện thao tác này.",

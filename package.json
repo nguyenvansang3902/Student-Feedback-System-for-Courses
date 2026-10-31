@@ -38,6 +38,8 @@
     "preadmin:reset-2fa": "npm run db:generate",
     "test:week4": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-admin-console.ts && tsx scripts/verify-week4.ts",
     "pretest:week4": "npm run db:generate",
+    "test:totp60": "node scripts/prepare-totp60-test.mjs && tsx scripts/verify-totp60.ts",
+    "pretest:totp60": "npm run db:generate",
     "test:week5": "node scripts/prepare-week4-test.mjs && tsx scripts/verify-week5.ts",
     "pretest:week5": "npm run db:generate",
     "test:demo": "node scripts/test-demo.mjs",

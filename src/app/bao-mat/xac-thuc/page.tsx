@@ -4,6 +4,7 @@ import { MfaForm } from "@/components/auth/mfa-form";
 import { authDestination } from "@/components/auth/destination";
 import { getPageActor } from "@/server/auth/http";
 import { authorizeAuthAction } from "@/server/policies/auth";
+import { getMfaStatus } from "@/server/services/mfa";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Xác thực hai bước",
@@ -14,6 +15,7 @@ export default async function MfaVerifyPage() {
   if (!actor) redirect("/dang-nhap");
   if (actor.purpose !== "MFA_VERIFY") redirect(authDestination(actor));
   authorizeAuthAction(actor, "mfa-verify");
+  const status = await getMfaStatus(actor);
   return (
     <AuthShell
       title="Xác thực hai bước"
@@ -21,6 +23,7 @@ export default async function MfaVerifyPage() {
     >
       <MfaForm
         mode="verify"
+        periodSeconds={status.periodSeconds === 60 ? 60 : 30}
         destination={actor.roles.includes("ADMIN") ? "/quan-tri" : "/tai-khoan"}
       />
     </AuthShell>

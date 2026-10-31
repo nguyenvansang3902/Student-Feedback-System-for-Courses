@@ -11,6 +11,7 @@ import {
 import { authRequest, restoreSession } from "./auth-client";
 import { authDestination } from "./destination";
 import { focusRing } from "./auth-shell";
+import { useClientReady } from "./use-client-ready";
 
 type Mode =
   "login" | "forgot" | "request-activation" | "reset" | "activate" | "change";
@@ -53,6 +54,7 @@ function Field({
         {password && (
           <button
             type="button"
+            disabled={input.disabled}
             onClick={() => setVisible(!visible)}
             aria-label={
               visible
@@ -98,6 +100,7 @@ const endpoints: Record<Mode, string> = {
 };
 
 export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
+  const clientReady = useClientReady();
   const [busy, setBusy] = useState(false);
   const [restoring, setRestoring] = useState(mode === "login");
   const [errors, setErrors] = useState<Errors>({});
@@ -135,7 +138,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (submitting.current || restoring) return;
+    if (!clientReady || submitting.current || restoring) return;
     const form = event.currentTarget;
     const values = new FormData(form);
     const get = (name: string) => String(values.get(name) ?? "");
@@ -266,10 +269,11 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
       )}
       {!complete && (
         <form
+          method="post"
           onSubmit={submit}
           onChange={clearFieldError}
           noValidate
-          aria-busy={busy || restoring}
+          aria-busy={!clientReady || busy || restoring}
           className="mt-6 space-y-5"
         >
           {mode === "login" && (
@@ -281,7 +285,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
                 autoCapitalize="none"
                 spellCheck={false}
                 required
-                disabled={busy || restoring}
+                disabled={!clientReady || busy || restoring}
                 error={errors.identifier}
               />
               <Field
@@ -290,7 +294,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
                 type="password"
                 autoComplete="current-password"
                 required
-                disabled={busy || restoring}
+                disabled={!clientReady || busy || restoring}
                 error={errors.password}
               />
             </>
@@ -304,7 +308,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
               autoCapitalize="none"
               spellCheck={false}
               required
-              disabled={busy}
+              disabled={!clientReady || busy}
               error={errors.email}
             />
           )}
@@ -315,7 +319,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
               type="password"
               autoComplete="current-password"
               required
-              disabled={busy}
+              disabled={!clientReady || busy}
               error={errors.currentPassword}
             />
           )}
@@ -328,7 +332,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
                 autoComplete="new-password"
                 required
                 minLength={10}
-                disabled={busy}
+                disabled={!clientReady || busy}
                 error={errors.newPassword}
                 hint="Ít nhất 10 ký tự, tối đa 72 byte. Ký tự có dấu có thể chiếm nhiều byte."
               />
@@ -338,7 +342,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
                 type="password"
                 autoComplete="new-password"
                 required
-                disabled={busy}
+                disabled={!clientReady || busy}
                 error={errors.confirmation}
               />
             </>
@@ -355,7 +359,7 @@ export function AuthForm({ mode, token }: { mode: Mode; token?: string }) {
           )}
           <button
             type="submit"
-            disabled={busy || restoring}
+            disabled={!clientReady || busy || restoring}
             className={`w-full rounded-xl bg-teal-800 px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-900 disabled:cursor-wait disabled:bg-slate-300 disabled:text-slate-700 ${focusRing}`}
           >
             {busy ? "Đang xử lý…" : buttonLabels[mode]}

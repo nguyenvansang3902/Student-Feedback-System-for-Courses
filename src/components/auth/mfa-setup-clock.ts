@@ -4,6 +4,7 @@ export type MfaSetupTicket = {
   qrDeadline: number;
   qrRenewAt: number;
   sessionDeadline: number;
+  periodSeconds: 30 | 60;
 };
 
 export class MfaSetupClockError extends Error {
@@ -32,11 +33,13 @@ export function readMfaSetupTicket(
   const serverNow = Date.parse(String(source.serverNow ?? ""));
   const expiresAt = Date.parse(String(source.expiresAt ?? ""));
   const sessionExpiresAt = Date.parse(String(source.sessionExpiresAt ?? ""));
+  const periodSeconds = source.periodSeconds ?? 30;
   if (
     typeof source.secret !== "string" ||
     !source.secret ||
     typeof source.qrDataUrl !== "string" ||
     !source.qrDataUrl.startsWith("data:image/png;base64,") ||
+    (periodSeconds !== 30 && periodSeconds !== 60) ||
     !Number.isFinite(serverNow) ||
     !Number.isFinite(expiresAt) ||
     !Number.isFinite(sessionExpiresAt) ||
@@ -70,6 +73,7 @@ export function readMfaSetupTicket(
     // Chờ qua hạn máy chủ trước khi xin QR mới; nếu xin sớm, server sẽ trả lại cùng khóa.
     qrRenewAt: receivedAt + expiresAt - serverNow,
     sessionDeadline,
+    periodSeconds,
   };
 }
 

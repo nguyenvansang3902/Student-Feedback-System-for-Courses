@@ -119,7 +119,7 @@
     <rect x="1095" y="176" width="510" height="48" rx="14" fill="#1e40af" />
     <rect x="1095" y="204" width="510" height="20" fill="#1e40af" />
     <text x="1113" y="207" class="model">TotpCredential</text>
-    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 8 scalar</text>
+    <text x="1113" y="248" class="meta">Đã migrate đến Tuần 4 · 14 scalar</text>
     <text x="1113" y="277" class="field">PK (userId)</text>
     <text x="1113" y="300" class="field">FK (userId) → User (id)</text>
   </g>
@@ -272,6 +272,6 @@
   </text>
   <text x="27" y="1080" class="foot">
     SHA-256 DMMF:
-    bca4073a102d6c09bbee9b90882d08c750e6ea82ec7fafaeaacd9a153538eb20
+    18060a29d8227b687f9c207f1ceea241578912bd6a43cac2c5e0e37e3f572edb
   </text>
 </svg>

@@ -56,6 +56,8 @@ jobs:
         run: npm run test:week9
       - name: Kiểm tra seed và demo trong database mới riêng
         run: npm run test:demo
+      - name: Kiểm tra chuyển TOTP từ 30 sang 60 giây trên database thử riêng
+        run: npm run test:totp60
       - name: Chạy lint, typecheck và test
         run: npm run check
       - name: Build ứng dụng

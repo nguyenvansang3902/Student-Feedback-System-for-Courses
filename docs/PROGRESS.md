@@ -1,6 +1,6 @@
 # Tiến độ yêu cầu chức năng
 
-**Hiện tại sau Tuần9: 138/219=63,0%, 49/84 FR**. Sửa câu chữ đăng nhập không cộng điểm.
+**Hiện tại sau Tuần9: 138/219=63,0%, 49/84 FR**. Sửa câu chữ và điều chỉnh chu kỳ TOTP trong FR-07 không cộng điểm.
 
 Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 
@@ -193,3 +193,7 @@ Góp ý tiếp về danh xưng cùng ngày: nội dung hướng tới sinh viên
 Sửa phiên xem web tự tải lại —31/10/2026: đã đổi script dev sang next dev --webpack, giữ cache cũ trong .local. Check797/797 trong50tệp; IAB1265×720 giữ chuỗi thử hơn156giây, hết vòng HMR lặp trong phép đo; đăng nhập/đăng xuất demo qua và hai JPEG đã xem. Lần thử production preview bị guardHTTPS chặn đã bỏ, không nới guard hoặc reset database/TOTP. Chưa xác định tệp invalidation gốc; [hồ sơ sửa lỗi](SUA_TAI_LAI_TRANG_2026_10_31.md) ghi giới hạn kiểm. Đây là sửa vận hành, không thêm FR/điểm; vẫn138/219=63,0%,49/84FR và chưa bắt đầu Tuần10.
 
 QR60giây và nhãn tài khoản —31/10/2026: QR chờ xác nhận có hạn60giây, tự cấp lại tại chỗ và đếm ngược cả phiên5phút. TOTP30giây/tài khoản đã bậtMFA giữ nguyên; hết phiên thì dừng cấp và hiện thông báo. Check816/816 trong51tệp; HTTP/MySQL29/29 và CLI5/5 qua trên DB thử riêng; UI quan sát5lần cấp theo khoảng60,25giây, sau hếtphiên không cònQR. Theo góp ý tiếp, đổi nhãn chung thành “Tài khoản”, “Tài khoản hoặc email”; giữ MSSV/Mã giảng viên. [Bằng chứng](QR_60_GIAY_2026_10_31.md). Không thêm FR/điểm hoặc mở Tuần10: vẫn138/219,49/84FR.
+
+Mã xác minh 6 chữ số 60 giây — 31/10/2026: theo lệnh mới, đăng ký mới dùng TOTP60; credential 30 giây cũ tiếp tục dùng cho đến khi chủ tài khoản nhập mã cũ mới, quét QR60 và xác nhận thành công. Chỉ chu kỳ 30 giây ở mục8.4 được điều chỉnh theo yêu cầu này; giữ bản đặc tả gốc và ghi [hồ sơ thay đổi](TOTP_60_GIAY_2026_10_31.md) riêng. Check **841/841 trong52tệp**, HTTP/MySQL **12/12** và dọn bí mật fixture qua; migration thêm6cột, hash34bảng dữ liệu cũ giữ nguyên. ADMIN chính chưa được chuyển hộ hoặc đổi khóa, vẫn dùng30 cho đến bước xác nhận cá nhân. UI/CI bản mới đang được kiểm, không suy từ kết quả cũ. Không thêm FR hoặc bắt đầu Tuần10; tiến độ giữ **138/219=63,0%,49/84FR**.
+
+Tiếp tục01/11: check cuối **850/850 trong53tệp**, build qua; UI tài khoản giả kiểm đăng nhập30, đường chuyển, QR/hướng dẫn60, hủy giữ30 và ảnh đã xem. Bổ sung9kiểm SSR, khóa biểu mẫu trước khi phía máy khách sẵn sàng và POST dự phòng sau khi phát hiện gửi mã giả qua GET lúc bấm quá sớm. HTTP TOTP60 có database/marker riêng, không ghi lịch sử fixture vào database thửTuần4. Kết quả CI theo SHA bản cập nhật; chủ tài khoản tự quét/xác nhận QR mới, tiến độ không đổi.

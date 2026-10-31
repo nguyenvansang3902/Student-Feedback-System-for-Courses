@@ -71,14 +71,20 @@ export function decryptMfaSecret(
 export function newMfaSecret(): string {
   return generateSecret({ length: 20 });
 }
-export function mfaUri(secret: string, loginCode: string): string {
+export function mfaPeriod(period: number): 30 | 60 {
+  if (period !== 30 && period !== 60)
+    throw new Error("Chu kỳ mã xác thực không hợp lệ.");
+  return period;
+}
+
+export function mfaUri(secret: string, loginCode: string, period = 60): string {
   return generateURI({
     secret,
     issuer: "Student Feedback System",
     label: loginCode,
     algorithm: "sha1",
     digits: 6,
-    period: 30,
+    period: mfaPeriod(period),
   });
 }
 
@@ -88,17 +94,19 @@ export async function matchTotpStep(
   code: string,
   lastUsedStep: bigint | null,
   epoch = Math.floor(Date.now() / 1000),
+  period = 30,
 ): Promise<bigint | null> {
+  mfaPeriod(period);
   if (!/^\d{6}$/.test(code)) return null;
-  const currentStep = Math.floor(epoch / 30);
+  const currentStep = Math.floor(epoch / period);
   const result = await verify({
     secret,
     token: code,
     algorithm: "sha1",
     digits: 6,
-    period: 30,
+    period,
     epoch,
-    epochTolerance: 30,
+    epochTolerance: period,
   });
   if (
     !result.valid ||

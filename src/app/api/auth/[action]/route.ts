@@ -30,6 +30,11 @@ import {
   verifyMfa,
   getMfaStatus,
 } from "@/server/services/mfa";
+import {
+  startMfaPeriodChange,
+  confirmMfaPeriodChange,
+  cancelMfaPeriodChange,
+} from "@/server/services/mfa-period-change";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -57,6 +62,9 @@ const supported = new Set([
   "mfa-setup",
   "mfa-confirm",
   "mfa-verify",
+  "mfa-period-setup",
+  "mfa-period-confirm",
+  "mfa-period-cancel",
 ]);
 
 function failure(error: unknown) {
@@ -190,6 +198,42 @@ export async function POST(request: NextRequest, context: RouteContext) {
       if (action === "mfa-setup") {
         z.object({}).strict().parse(input);
         return authJson({ ok: true, ...(await startMfaSetup(actor, client)) });
+      }
+      if (action === "mfa-period-setup") {
+        const data = z
+          .object({
+            code: z
+              .string()
+              .trim()
+              .regex(/^\d{6}$/)
+              .optional(),
+          })
+          .strict()
+          .parse(input);
+        return authJson({
+          ok: true,
+          ...(await startMfaPeriodChange(actor, data, client)),
+        });
+      }
+      if (action === "mfa-period-confirm") {
+        const data = z
+          .object({
+            code: z
+              .string()
+              .trim()
+              .regex(/^\d{6}$/),
+          })
+          .strict()
+          .parse(input);
+        return authJson({
+          ok: true,
+          ...(await confirmMfaPeriodChange(actor, data, client)),
+        });
+      }
+      if (action === "mfa-period-cancel") {
+        z.object({}).strict().parse(input);
+        await cancelMfaPeriodChange(actor, client);
+        return authJson({ ok: true });
       }
       const data = z
         .object({ code: z.string().trim().min(1).max(128) })

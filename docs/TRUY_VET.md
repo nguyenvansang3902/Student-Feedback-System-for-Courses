@@ -362,3 +362,17 @@ Theo yêu cầu mới, kích hoạt dùng “Bắt đầu với tài khoản c�
 | FR-01/10, góp ý nhãn | “Tài khoản hoặc email” ở login/helper/lỗi; “Tài khoản” ở thông tin chung/adminusers. Giữ MSSV/Mãgiảngviên theo vai trò; khôngplaceholder/đổi quyền |
 
 Check816/816 trong51tệp; [bằng chứng và giới hạn](QR_60_GIAY_2026_10_31.md). Không sửa phần đặc tả8.4 được bảo vệ, không cộng FR hoặc mở Tuần10.
+
+### Mã xác minh 6 chữ số 60 giây — 31/10/2026
+
+| Yêu cầu | Hiện thực và bằng chứng |
+| --- | --- |
+| FR-07; BR-32, chỉ đạo mới | Đăng ký mới dùng60giây; giữ nguyên đặc tả gốc và ghi ngoại lệ chu kỳ30giây ở [hồ sơ TOTP60](TOTP_60_GIAY_2026_10_31.md). Giữ6chữsố/±1chu kỳ/chặn replay/rate/ADMIN bắt buộcMFA |
+| Credential cũ và migration | `periodSeconds` mặc định30, năm trường chờ chuyển đổi; migration `20261031090000_totp_period_60` chỉ thêm6cột. Runtime34/design46 giữ nguyên; hash34bảng dữ liệu cũ khớp trên cột cũ, ADMIN chính giữ30/chưa đổi khóa |
+| Chuyển đổi đã xác minh | `mfa-period-change.ts`, policy/route và `/bao-mat/chu-ky`: FULL+mfa, mã cũ mới bắt buộc, QR60 gắn phiên/luồng5phút; xác nhận60 thành công mới promote/counter/revoke phiên khác, giữ recovery; hủy/sai/hết hạn giữ cấu hình cũ |
+| Đăng nhập và thao tác nhạy cảm | `mfa.ts`/`mfa-crypto.ts` dùng chu kỳ riêng cho setup/verify/step-up. Reset qua web/CLI xóa cả dữ liệu chờ chuyển đổi; không tự reset chủ tài khoản |
+| Kiểm thực tế | Check841/841 trong52tệp; `test:totp60` HTTP/MySQL12/12, cleanedtrue, phiên/Origin/ID/replay/race/expiry/hủy/step-up/recovery và audit/log qua. Lượt lỗi TypeScript trước đã sửa và không tính là qua; UI/CI bản mới đang kiểm |
+
+Đây là điều chỉnh trong FR-07 đã có, không thêm FR/điểm hoặc mở Tuần10. Việc hiện thực và migration không có nghĩa tài khoản chủ dự án đã60giây: chủ tài khoản còn phải tự quét/xác nhận mã mới. Kết quả CI phải đối chiếu đúng SHA mới, không dùng runcũ.
+
+Tiếp tục01/11: fullcheck850/850(53tệp), build qua. `use-client-ready` và9kiểm SSR chặn nhập/gửi trước hydration, biểu mẫu xác thực dùng POST dự phòng; lỗi MFA gửi GET kèm mã giả đã được tái hiện rồi sửa. UI thật đã kiểm login30→Tài khoản/link→mã cũ→QR60/hướng dẫn60→hủy về30; ảnh form trống đã xem. HTTP12nhóm dùng database TOTP60 riêng, giữ User/AuditLog sau dọn bí mật và không ảnh hưởng database thửTuần4. Không tự cấu hình 2FA cho chủ tài khoản.

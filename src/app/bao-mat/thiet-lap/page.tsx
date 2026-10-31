@@ -21,6 +21,7 @@ export default async function MfaSetupPage() {
     >
       <MfaForm
         mode="setup"
+        periodSeconds={60}
         destination={actor.roles.includes("ADMIN") ? "/quan-tri" : "/tai-khoan"}
       />
     </AuthShell>

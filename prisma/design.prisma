@@ -339,16 +339,22 @@ model AuthToken {
 }
 
 model TotpCredential {
-  userId           String             @id @db.Char(36)
-  encryptedSecret  String             @db.Text
-  keyVersion       String             @db.VarChar(32)
-  enabledAt        DateTime?          @db.DateTime(3)
-  pendingExpiresAt DateTime?          @db.DateTime(3)
-  lastUsedStep     BigInt?
-  failedAttempts   Int                @default(0)
-  lockedUntil      DateTime?          @db.DateTime(3)
-  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  recoveryCodes    TotpRecoveryCode[]
+  userId                String             @id @db.Char(36)
+  encryptedSecret       String             @db.Text
+  keyVersion            String             @db.VarChar(32)
+  periodSeconds         Int                @default(30)
+  enabledAt             DateTime?          @db.DateTime(3)
+  pendingExpiresAt      DateTime?          @db.DateTime(3)
+  lastUsedStep          BigInt?
+  failedAttempts        Int                @default(0)
+  lockedUntil           DateTime?          @db.DateTime(3)
+  changeEncryptedSecret String?            @db.Text
+  changeKeyVersion      String?            @db.VarChar(32)
+  changeExpiresAt       DateTime?          @db.DateTime(3)
+  changeSessionId       String?            @db.Char(36)
+  changeStartedAt       DateTime?          @db.DateTime(3)
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  recoveryCodes         TotpRecoveryCode[]
 }
 
 model TotpRecoveryCode {

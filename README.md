@@ -155,13 +155,15 @@ npm.cmd run admin:create
 Nhập mã ADMIN, lý do, email, tên và mật khẩu riêng theo lời nhắc; mật khẩu không hiển thị và không truyền qua tham số dòng lệnh. Script ghi audit với danh tính máy chủ. Không có ADMIN seed hoặc API công khai tạo quản trị ban đầu.
 
 1. Đăng nhập ADMIN tại [trang đăng nhập](http://localhost:3000/dang-nhap).
-2. Quét QR hoặc nhập khóa thủ công vào Google Authenticator/Authy, nhập mã sáu chữ số đầu tiên để bật TOTP.
+2. Quét QR bằng ứng dụng Mật Khẩu trên iPhone hoặc ứng dụng TOTP hỗ trợ chu kỳ 60 giây, rồi nhập mã sáu chữ số để bật TOTP. Ưu tiên quét QR để lấy đủ thông số; nhập khóa thủ công phải chọn đúng chu kỳ.
 3. Lưu riêng mười mã khôi phục đang hiển thị; chỉ xuất hiện một lần. Không đưa QR/khóa/mã khôi phục vào GitHub, ảnh báo cáo hoặc localStorage.
 4. Vào [quản trị](http://localhost:3000/quan-tri): tài khoản, nhật ký, chính sách MFA; mở [Danh mục](http://localhost:3000/danh-muc) để quản lý khoa/bộ môn. Tạo tài khoản mới sẽ ở trạng thái chờ kích hoạt; dùng email/Mailpit theo luồng Tuần 3. ADMIN không ghi dữ liệu đào tạo/import và không xem kết quả khảo sát, nội dung phản hồi hay hồ sơ Thanh tra chỉ nhờ quyền quản trị.
 
-Đổi quyền, tạo tài khoản, sửa chính sách MFA hoặc đặt lại 2FA yêu cầu một mã TOTP mới. Mã vừa dùng bị chặn dùng lại, nên có thể cần chờ chu kỳ 30 giây tiếp theo. Mã khôi phục chỉ dùng để đăng nhập, không thay xác nhận thao tác nhạy cảm. ADMIN luôn bắt buộc MFA; có thể bật bắt buộc cho các vai trò khác.
+Đổi quyền, tạo tài khoản, sửa chính sách MFA hoặc đặt lại 2FA yêu cầu một mã TOTP mới. Mã vừa dùng bị chặn dùng lại, nên có thể cần chờ chu kỳ tiếp theo (60 giây với thiết lập mới, 30 giây với tài khoản cũ chưa chuyển). Mã khôi phục chỉ dùng để đăng nhập, không thay xác nhận thao tác nhạy cảm. ADMIN luôn bắt buộc MFA; có thể bật bắt buộc cho các vai trò khác.
 
-Theo yêu cầu ngày31/10, **QR đang chờ thiết lập có hạn tối đa60giây**, có đếm ngược và tự cấp QR mới ngay trên trang. Khi QR đổi, quét lại QR mới trong ứng dụng trước khi nhập mã xác thực; mã gắn với QR cũ không còn dùng được. Trang cũng đếm ngược phiên thiết lập5phút: hết phiên thì ẩn QR, dừng cấp lại và hiện liên kết đăng nhập. Chu kỳ mã sáu chữ số vẫn30giây theo đặc tả; tài khoản đã bật2FA giữ nguyên khóa/mã khôi phục, không cần quét lại. [Bằng chứng QR60giây và cập nhật nhãn tài khoản](docs/QR_60_GIAY_2026_10_31.md).
+Theo yêu cầu ngày31/10, **QR đang chờ thiết lập có hạn tối đa60giây**, có đếm ngược và tự cấp QR mới ngay trên trang. Khi QR đổi, quét lại QR mới trong ứng dụng trước khi nhập mã xác thực; mã gắn với QR cũ không còn dùng được. Trang cũng đếm ngược phiên thiết lập5phút: hết phiên thì ẩn QR, dừng cấp lại và hiện liên kết đăng nhập. [Bằng chứng thay đổi QR ban đầu](docs/QR_60_GIAY_2026_10_31.md).
+
+Theo yêu cầu tiếp theo, **mã xác minh sáu chữ số của thiết lập mới đổi mỗi60giây**. Tài khoản đã bật2FA vẫn dùng30giây đến khi tự chuyển tại [Tài khoản](http://localhost:3000/tai-khoan) → **Chuyển mã xác minh sang60giây**. Nhập mã30giây mới chưa dùng, thêm QR vào một mục mới trong ứng dụng Mật Khẩu (giữ mục cũ), rồi nhập mã từ mục60giây để xác nhận. Chỉ khi xác nhận thành công website mới đổi cấu hình và thu hồi các phiên khác; mã khôi phục giữ nguyên. Không tự đổi cấu hình đã lưu trên iPhone. [Thiết kế, kiểm thử và cách chuyển](docs/TOTP_60_GIAY_2026_10_31.md).
 
 Không tự khóa hoặc tự đổi vai trò của ADMIN hiện tại. ADMIN khác thực hiện thay đổi; service còn bảo vệ ADMIN ACTIVE cuối cùng. Mất thiết bị/mã khôi phục: ADMIN khác đặt lại 2FA trên web, hoặc người vận hành có quyền máy chủ chạy:
 
@@ -254,6 +256,7 @@ npm.cmd run progress
 | `test:week6` | HTTP/MySQL cổng 3005/output `.next-week6`, dùng DB thử có marker; ma trận mười vai trò của G1, cờ nhóm, phiên bản/khóa/CAS/preview không ghi |
 | `test:week7` | HTTP/MySQL cổng3006: duyệt, readiness, drift, chốt task,20 ensure đồng thời, lịch, gia hạn, tiến độ và scheduler/Mailpit; fixture riêng |
 | `test:week7:settings` | HTTP/MySQL cổng3007: ngưỡng/TOTP thật, ma trận10vai trò, CAS, mặc định và queue/retry/lease/Mailpit |
+| `test:totp60` | HTTP/MySQL chuyển30→60, đăng nhập/step-up/replay/khôi phục, QR/hạnphiên và cạnh tranh; database có marker riêng, khác main/shadow/database thửTuần4, giữUser/AuditLog đã vô hiệu hóa |
 | `test:week8` | HTTP/MySQL cổng3008/output `.next-week8`, DB thử có marker:10vai trò, task own/IDOR, năm loại,20POST đồng thời, duplicate, rollback chèn answer, DTO/log riêng tư; helper trigger chỉ giới hạn fixture |
 | `test:week9` | HTTP/MySQL cổng3009/output `.next-week9`, DB thử có marker: tổng hợp/công bố,11nhóm quyền/ngưỡng/TEXT/KT/nhắc/audit;10POST đồngthời và rollback dữ liệu lớp cuối, fixture sạch |
 | `db:seed:week9` | Chỉ thêm bundle E8 kết quả giả vào DB cục bộ đã có danh mục/tài khoản demo; không ghi lại lịch sử/mẫu/phiếu/kết quả cũ |

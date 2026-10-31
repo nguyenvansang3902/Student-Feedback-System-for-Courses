@@ -10,6 +10,7 @@ import {
 } from "@/components/auth/destination";
 import { authorizeAuthAction } from "@/server/policies/auth";
 import { can } from "@/server/policies/can";
+import { getMfaStatus } from "@/server/services/mfa";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -77,6 +78,7 @@ export default async function AccountPage() {
   if (actor.mustChangePassword || (actor.purpose && actor.purpose !== "FULL"))
     redirect(authDestination(actor));
   authorizeAuthAction(actor, "workspace");
+  const mfaStatus = await getMfaStatus(actor);
   const view = workspace(actor.roles);
   return (
     <main className="min-h-screen bg-[#f7faf9]">
@@ -183,15 +185,29 @@ export default async function AccountPage() {
                     Bảo mật tài khoản
                   </h3>
                   <p className="mt-1 text-xs leading-6 text-slate-500">
-                    Không chia sẻ mật khẩu cho người khác.
+                    {mfaStatus.enabled
+                      ? `Xác thực hai bước: mã 6 chữ số đổi mỗi ${mfaStatus.periodSeconds === 60 ? 60 : 30} giây.`
+                      : "Không chia sẻ mật khẩu cho người khác."}
                   </p>
                 </div>
-                <Link
-                  href="/doi-mat-khau"
-                  className={`rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 ${focusRing}`}
-                >
-                  Đổi mật khẩu <span aria-hidden="true">↗</span>
-                </Link>
+                <div className="flex flex-wrap gap-3">
+                  {mfaStatus.enabled &&
+                    mfaStatus.periodSeconds === 30 &&
+                    actor.mfa && (
+                      <Link
+                        href="/bao-mat/chu-ky"
+                        className={`rounded-xl bg-teal-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                      >
+                        Chuyển mã xác minh sang 60 giây
+                      </Link>
+                    )}
+                  <Link
+                    href="/doi-mat-khau"
+                    className={`rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 ${focusRing}`}
+                  >
+                    Đổi mật khẩu <span aria-hidden="true">↗</span>
+                  </Link>
+                </div>
               </div>
             </section>
             <section aria-labelledby="spaces-title" className="mt-8">

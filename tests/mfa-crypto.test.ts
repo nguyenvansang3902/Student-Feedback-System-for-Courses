@@ -6,6 +6,7 @@ import {
   encryptMfaSecret,
   hashRecoveryCode,
   matchTotpStep,
+  mfaPeriod,
   mfaUri,
   newMfaSecret,
   newRecoveryCodes,
@@ -44,7 +45,12 @@ describe("BR-32 / FR-07 — AES-256-GCM và bí mật MFA", () => {
     expect(uri.protocol).toBe("otpauth:");
     // URI có thể bỏ các tham số mặc định theo chuẩn otpauth.
     expect(uri.searchParams.get("digits") ?? "6").toBe("6");
-    expect(uri.searchParams.get("period") ?? "30").toBe("30");
+    expect(uri.searchParams.get("period")).toBe("60");
+    expect(
+      new URL(mfaUri(newMfaSecret(), "LEGACY", 30)).searchParams.get(
+        "period",
+      ) ?? "30",
+    ).toBe("30");
     expect(uri.searchParams.get("algorithm") ?? "SHA1").toBe("SHA1");
   });
   it("RFC6238 SHA1 tại epoch59 (8 số94287082) nhận đúng6số287082", async () => {
@@ -105,6 +111,49 @@ describe("BR-32 / FR-07 — AES-256-GCM và bí mật MFA", () => {
       );
     }
     expect(normalizeRecoveryCode("123456")).toBeNull();
+  });
+  it("chu kỳ60: mã giữ nguyên trong một phút và đúng ±1bước, không nhận lại mã đã dùng", async () => {
+    const secret = newMfaSecret();
+    const epoch = 1234567920;
+    const step = Math.floor(epoch / 60);
+    const current = await generate({ secret, epoch, period: 60, digits: 6 });
+    expect(
+      await generate({ secret, epoch: epoch + 59, period: 60, digits: 6 }),
+    ).toBe(current);
+    for (const delta of [-1, 0, 1]) {
+      const code = await generate({
+        secret,
+        epoch: (step + delta) * 60,
+        period: 60,
+        digits: 6,
+      });
+      expect(await matchTotpStep(secret, code, null, epoch, 60)).toBe(
+        BigInt(step + delta),
+      );
+      expect(
+        await matchTotpStep(secret, code, BigInt(step + delta), epoch, 60),
+      ).toBeNull();
+    }
+    for (const delta of [-2, 2]) {
+      const code = await generate({
+        secret,
+        epoch: (step + delta) * 60,
+        period: 60,
+        digits: 6,
+      });
+      expect(await matchTotpStep(secret, code, null, epoch, 60)).toBeNull();
+    }
+    expect(await matchTotpStep(secret, "12345", null, epoch, 60)).toBeNull();
+    expect(await matchTotpStep(secret, "1234567", null, epoch, 60)).toBeNull();
+  });
+  it("chu kỳ lạ không tự rơi về30 hoặc60", async () => {
+    expect(mfaPeriod(30)).toBe(30);
+    expect(mfaPeriod(60)).toBe(60);
+    expect(() => mfaPeriod(45)).toThrow();
+    expect(() => mfaUri(newMfaSecret(), "BAD", 45)).toThrow();
+    await expect(
+      matchTotpStep(newMfaSecret(), "123456", null, 59, 45),
+    ).rejects.toThrow();
   });
 });
 

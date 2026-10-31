@@ -10,6 +10,7 @@ import {
 import { authDestination } from "./destination";
 import { focusRing } from "./auth-shell";
 import { LogoutButton } from "./logout-button";
+import { useClientReady } from "./use-client-ready";
 import {
   formatMfaSessionTime,
   mfaSetupClock,
@@ -65,10 +66,15 @@ async function requestMfa(
 export function MfaForm({
   mode,
   destination = "/tai-khoan",
+  periodSeconds = mode === "verify" ? 30 : 60,
 }: {
-  mode: "setup" | "verify";
+  mode: "setup" | "verify" | "period-change";
   destination?: string;
+  periodSeconds?: 30 | 60;
 }) {
+  const clientReady = useClientReady();
+  const changingPeriod = mode === "period-change";
+  const hasSetup = mode !== "verify";
   const [setup, setSetup] = useState<MfaSetupTicket | null>(null);
   const [now, setNow] = useState(0);
   const [started, setStarted] = useState(false);
@@ -80,6 +86,8 @@ export function MfaForm({
   const [recovery, setRecovery] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [periodChanged, setPeriodChanged] = useState(false);
+  const [needsLogin, setNeedsLogin] = useState(false);
   const pending = useRef(false);
   const pendingAction = useRef("");
   const alertRef = useRef<HTMLDivElement>(null);
@@ -96,6 +104,7 @@ export function MfaForm({
     !clock.qrExpired &&
     !clock.sessionExpired &&
     !sessionExpired;
+  const currentPeriod = setup?.periodSeconds ?? periodSeconds;
 
   useEffect(() => {
     mounted.current = true;
@@ -111,71 +120,109 @@ export function MfaForm({
     setSetup(null);
     setSessionExpired(true);
     setSetupNotice("");
-    setError("Phiên thiết lập đã hết hạn. Đăng nhập lại để tiếp tục.");
+    setError(
+      changingPeriod
+        ? "Thời gian chuyển đổi đã hết. Về Tài khoản để kiểm tra chu kỳ đang dùng, hoặc nhập mã hiện tại để bắt đầu lại."
+        : "Phiên thiết lập đã hết hạn. Đăng nhập lại để tiếp tục.",
+    );
     if (codeRef.current) codeRef.current.value = "";
-  }, []);
+  }, [changingPeriod]);
 
-  const requestSetup = useCallback(async () => {
-    if (pending.current || stopped.current || !mounted.current) return;
-    const previous = currentSetup.current;
-    if (previous && mfaSetupClock(previous).sessionExpired) {
-      expireSession();
-      return;
-    }
-    if (previous && !mfaSetupClock(previous).renewDue) return;
-    const renewing = !!previous;
-    pending.current = true;
-    pendingAction.current = "mfa-setup";
-    renewalBlocked.current = false;
-    setCanRetrySetup(false);
-    setStarted(true);
-    setBusy(true);
-    setError("");
-    if (codeRef.current) codeRef.current.value = "";
-    const controller = new AbortController();
-    activeRequest.current = controller;
-    const timeout = setTimeout(() => controller.abort(), 20_000);
-    const requestedAt = Date.now();
-    try {
-      const result = await requestMfa("mfa-setup", {}, controller.signal);
-      if (!mounted.current || stopped.current) return;
-      const ticket = readMfaSetupTicket(result, requestedAt);
-      currentSetup.current = ticket;
-      setSetup(ticket);
-      setNow(Date.now());
-      setSetupNotice(
-        renewing
-          ? "QR đã đổi. Quét lại QR mới trong ứng dụng trước khi nhập mã xác thực."
-          : "QR tự cấp lại sau 60 giây. Khi QR đổi, cần quét lại trong ứng dụng.",
-      );
-    } catch (caught) {
-      if (!mounted.current || stopped.current) return;
-      renewalBlocked.current = true;
-      setCanRetrySetup(true);
+  const requestSetup = useCallback(
+    async (oldCode?: string) => {
       if (
-        (caught instanceof MfaRequestError && caught.status === 401) ||
-        (caught instanceof MfaSetupClockError &&
-          caught.code === "MFA_SESSION_EXPIRED")
-      ) {
+        !clientReady ||
+        pending.current ||
+        stopped.current ||
+        !mounted.current
+      )
+        return;
+      const previous = currentSetup.current;
+      if (changingPeriod && !previous && !oldCode) return;
+      if (previous && mfaSetupClock(previous).sessionExpired) {
         expireSession();
-      } else {
-        setError(
-          caught instanceof Error && caught.name !== "AbortError"
-            ? caught.message
-            : "Chưa tải được QR mới. Kiểm tra kết nối rồi bấm thử lại.",
-        );
+        return;
       }
-    } finally {
-      clearTimeout(timeout);
-      pending.current = false;
-      pendingAction.current = "";
-      activeRequest.current = null;
-      if (mounted.current) setBusy(false);
-    }
-  }, [expireSession]);
+      if (previous && !mfaSetupClock(previous).renewDue) return;
+      const renewing = !!previous;
+      pending.current = true;
+      pendingAction.current = changingPeriod ? "mfa-period-setup" : "mfa-setup";
+      renewalBlocked.current = false;
+      setCanRetrySetup(false);
+      setStarted(true);
+      setBusy(true);
+      setError("");
+      if (codeRef.current) codeRef.current.value = "";
+      const controller = new AbortController();
+      activeRequest.current = controller;
+      const timeout = setTimeout(() => controller.abort(), 20_000);
+      const requestedAt = Date.now();
+      try {
+        const result = await requestMfa(
+          changingPeriod ? "mfa-period-setup" : "mfa-setup",
+          oldCode ? { code: oldCode } : {},
+          controller.signal,
+        );
+        if (!mounted.current || stopped.current) return;
+        const ticket = readMfaSetupTicket(result, requestedAt);
+        currentSetup.current = ticket;
+        setSetup(ticket);
+        setNow(Date.now());
+        setSetupNotice(
+          renewing
+            ? "QR đã đổi. Quét lại QR mới trong ứng dụng trước khi nhập mã xác thực."
+            : "QR tự cấp lại sau 60 giây. Khi QR đổi, cần quét lại trong ứng dụng.",
+        );
+      } catch (caught) {
+        if (!mounted.current || stopped.current) return;
+        renewalBlocked.current = true;
+        setCanRetrySetup(true);
+        if (
+          changingPeriod &&
+          caught instanceof MfaRequestError &&
+          caught.code === "MFA_PERIOD_ALREADY_60"
+        ) {
+          stopped.current = true;
+          currentSetup.current = null;
+          setSetup(null);
+          setError("");
+          setPeriodChanged(true);
+          return;
+        }
+        if (caught instanceof MfaRequestError && caught.status === 401)
+          setNeedsLogin(true);
+        if (
+          (caught instanceof MfaRequestError &&
+            (caught.status === 401 ||
+              [
+                "MFA_PERIOD_CHANGE_EXPIRED",
+                "MFA_PERIOD_CHANGE_SESSION",
+                "MFA_PERIOD_CODE_REQUIRED",
+              ].includes(caught.code))) ||
+          (caught instanceof MfaSetupClockError &&
+            caught.code === "MFA_SESSION_EXPIRED")
+        ) {
+          expireSession();
+        } else {
+          setError(
+            caught instanceof Error && caught.name !== "AbortError"
+              ? caught.message
+              : "Chưa tải được QR mới. Kiểm tra kết nối rồi bấm thử lại.",
+          );
+        }
+      } finally {
+        clearTimeout(timeout);
+        pending.current = false;
+        pendingAction.current = "";
+        activeRequest.current = null;
+        if (mounted.current) setBusy(false);
+      }
+    },
+    [clientReady, changingPeriod, expireSession],
+  );
 
   useEffect(() => {
-    if (mode !== "setup") return;
+    if (!hasSetup) return;
     const tick = () => {
       const ticket = currentSetup.current;
       if (!mounted.current || stopped.current || !ticket) return;
@@ -184,7 +231,10 @@ export function MfaForm({
       const remaining = mfaSetupClock(ticket, time);
       if (remaining.qrExpired && codeRef.current) codeRef.current.value = "";
       // Để phản hồi xác nhận đang gửi hoàn tất, tránh làm mất mã khôi phục nếu server vừa bật MFA.
-      if (remaining.sessionExpired && pendingAction.current !== "mfa-confirm") {
+      if (
+        remaining.sessionExpired &&
+        !["mfa-confirm", "mfa-period-confirm"].includes(pendingAction.current)
+      ) {
         expireSession();
       } else if (
         remaining.renewDue &&
@@ -203,13 +253,14 @@ export function MfaForm({
       clearInterval(timer);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [mode, expireSession, requestSetup]);
+  }, [hasSetup, expireSession, requestSetup]);
 
   async function send(
-    action: "mfa-confirm" | "mfa-verify",
+    action: "mfa-confirm" | "mfa-verify" | "mfa-period-confirm",
     body: Record<string, string>,
   ) {
-    if (pending.current || stopped.current || !mounted.current) return;
+    if (!clientReady || pending.current || stopped.current || !mounted.current)
+      return;
     pending.current = true;
     pendingAction.current = action;
     setBusy(true);
@@ -219,7 +270,17 @@ export function MfaForm({
     try {
       const result = await requestMfa(action, body, controller.signal);
       if (!mounted.current) return;
-      if (action === "mfa-confirm") {
+      if (action === "mfa-period-confirm") {
+        if (result.periodSeconds !== 60)
+          throw new Error(
+            "Chưa nhận được xác nhận chu kỳ 60 giây. Hãy kiểm tra lại tài khoản.",
+          );
+        stopped.current = true;
+        currentSetup.current = null;
+        setSetup(null);
+        setError("");
+        setPeriodChanged(true);
+      } else if (action === "mfa-confirm") {
         if (
           !Array.isArray(result.recoveryCodes) ||
           result.recoveryCodes.length !== 10 ||
@@ -245,15 +306,32 @@ export function MfaForm({
     } catch (caught) {
       if (!mounted.current) return;
       if (
-        mode === "setup" &&
+        changingPeriod &&
         caught instanceof MfaRequestError &&
-        caught.status === 401
+        caught.code === "MFA_PERIOD_ALREADY_60"
+      ) {
+        stopped.current = true;
+        currentSetup.current = null;
+        setSetup(null);
+        setError("");
+        setPeriodChanged(true);
+        return;
+      }
+      if (caught instanceof MfaRequestError && caught.status === 401)
+        setNeedsLogin(true);
+      if (
+        hasSetup &&
+        caught instanceof MfaRequestError &&
+        (caught.status === 401 ||
+          ["MFA_PERIOD_CHANGE_EXPIRED", "MFA_PERIOD_CHANGE_SESSION"].includes(
+            caught.code,
+          ))
       ) {
         expireSession();
         return;
       }
       if (
-        mode === "setup" &&
+        hasSetup &&
         caught instanceof MfaRequestError &&
         caught.code === "MFA_SETUP_EXPIRED"
       ) {
@@ -286,11 +364,12 @@ export function MfaForm({
   }
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!clientReady) return;
     const form = event.currentTarget;
     const input = form.elements.namedItem("code") as HTMLInputElement;
     const code = input.value.trim();
     if (
-      mode === "setup" &&
+      hasSetup &&
       (!currentSetup.current ||
         mfaSetupClock(currentSetup.current).qrExpired ||
         sessionExpired)
@@ -308,17 +387,28 @@ export function MfaForm({
       input.focus();
       return;
     }
-    void send(mode === "setup" ? "mfa-confirm" : "mfa-verify", { code });
+    void send(
+      changingPeriod
+        ? "mfa-period-confirm"
+        : mode === "setup"
+          ? "mfa-confirm"
+          : "mfa-verify",
+      { code },
+    );
     input.value = "";
   }
   return (
     <div>
       <h2 className="text-lg font-bold text-slate-900">
-        {codes.length
-          ? "Lưu mã khôi phục"
-          : mode === "setup"
-            ? "Kết nối ứng dụng xác thực"
-            : "Xác minh bước thứ hai"}
+        {periodChanged
+          ? "Đã chuyển sang chu kỳ 60 giây"
+          : changingPeriod
+            ? "Chuyển mã xác minh sang 60 giây"
+            : codes.length
+              ? "Lưu mã khôi phục"
+              : mode === "setup"
+                ? "Kết nối ứng dụng xác thực"
+                : "Xác minh bước thứ hai"}
       </h2>
       {error && (
         <div
@@ -328,12 +418,83 @@ export function MfaForm({
           className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-7 text-red-800"
         >
           {error}{" "}
-          <a href="/dang-nhap" className="underline">
-            Đăng nhập lại
-          </a>
+          {(!changingPeriod || needsLogin) && (
+            <a href="/dang-nhap" className="underline">
+              Đăng nhập lại
+            </a>
+          )}
         </div>
       )}
-      {codes.length > 0 ? (
+      {periodChanged ? (
+        <div className="mt-5 space-y-5">
+          <p className="text-sm leading-7 text-slate-600">
+            Từ lần đăng nhập tiếp theo, dùng mục mới có chu kỳ 60 giây trong ứng
+            dụng xác thực. Có thể xóa mục 30 giây cũ. Các mã khôi phục hiện có
+            vẫn dùng được.
+          </p>
+          <a href="/tai-khoan" className={`${primary} inline-block`}>
+            Về tài khoản
+          </a>
+        </div>
+      ) : changingPeriod && !setup ? (
+        <form
+          method="post"
+          className="mt-5 space-y-5"
+          aria-busy={!clientReady || busy}
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!clientReady || pending.current) return;
+            const input = event.currentTarget.elements.namedItem(
+              "old-code",
+            ) as HTMLInputElement;
+            const code = input.value.trim();
+            if (!/^\d{6}$/.test(code)) {
+              setError("Nhập đủ 6 chữ số từ mục 30 giây hiện tại.");
+              input.focus();
+              return;
+            }
+            stopped.current = false;
+            setSessionExpired(false);
+            currentSetup.current = null;
+            void requestSetup(code);
+            input.value = "";
+          }}
+        >
+          <p className="text-sm leading-7 text-slate-600">
+            Xác nhận bằng mã hiện tại trước khi tạo QR mới. Nếu mã vừa dùng để
+            đăng nhập, đợi mã mới xuất hiện.
+          </p>
+          <label
+            htmlFor="old-mfa-code"
+            className="block text-sm font-semibold text-slate-800"
+          >
+            Mã xác thực 30 giây hiện tại
+          </label>
+          <input
+            id="old-mfa-code"
+            name="old-code"
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            disabled={!clientReady || busy}
+            aria-invalid={error ? true : undefined}
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 font-mono text-lg outline-none focus:ring-2 focus:ring-teal-700"
+          />
+          <button
+            className={`${primary} w-full`}
+            disabled={!clientReady || busy || needsLogin}
+          >
+            {busy ? "Đang xác nhận…" : "Tạo QR cho chu kỳ 60 giây"}
+          </button>
+          <a
+            href="/tai-khoan"
+            className={`inline-block rounded text-sm font-semibold text-teal-800 underline ${focusRing}`}
+          >
+            Về tài khoản
+          </a>
+        </form>
+      ) : codes.length > 0 ? (
         <div className="mt-5 space-y-5">
           <p className="text-sm leading-7 text-slate-600">
             10 mã dưới đây chỉ xuất hiện lần này. Mỗi mã dùng một lần khi không
@@ -356,6 +517,7 @@ export function MfaForm({
             <input
               type="checkbox"
               checked={saved}
+              disabled={!clientReady}
               onChange={(event) => setSaved(event.target.checked)}
               className="mt-1 size-4 accent-teal-800"
             />
@@ -363,7 +525,7 @@ export function MfaForm({
           </label>
           <button
             className={primary}
-            disabled={!saved}
+            disabled={!clientReady || !saved}
             onClick={() => {
               setCodes([]);
               window.location.replace(destination);
@@ -375,14 +537,16 @@ export function MfaForm({
       ) : (
         <>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            {mode === "setup"
-              ? "Dùng Google Authenticator, Authy hoặc ứng dụng TOTP tương thích. Không chia sẻ mã QR hay khóa thiết lập."
-              : "Mở ứng dụng xác thực, lấy mã gồm 6 chữ số. Mã đổi mỗi 30 giây và chỉ được dùng một lần."}
+            {changingPeriod
+              ? "Thêm mục mới trong ứng dụng Mật Khẩu và giữ mục 30 giây đến khi xác nhận thành công. Quét QR mới vào mục có tên riêng để tránh ghi đè cấu hình đang dùng."
+              : mode === "setup"
+                ? `Quét QR bằng ứng dụng Mật Khẩu trên iPhone hoặc ứng dụng TOTP hỗ trợ chu kỳ ${currentPeriod} giây. Không chia sẻ QR hay khóa thiết lập.`
+                : `Mở ứng dụng xác thực, lấy mã gồm 6 chữ số. Mã đổi mỗi ${currentPeriod} giây và chỉ được dùng một lần.`}
           </p>
-          {mode === "setup" && !setup && !sessionExpired && (
+          {hasSetup && !setup && !sessionExpired && (
             <button
               className={`${primary} mt-6`}
-              disabled={busy}
+              disabled={!clientReady || busy}
               onClick={() => void requestSetup()}
             >
               {busy
@@ -425,6 +589,12 @@ export function MfaForm({
                   <p className="mt-2 break-all rounded bg-slate-50 p-3 font-mono text-sm text-slate-900">
                     {setup.secret}
                   </p>
+                  <p className="mt-3 text-xs leading-6 text-slate-600">
+                    Ưu tiên quét QR để nhập đúng cấu hình. Nếu nhập khóa thủ
+                    công, chọn mã theo thời gian, 6 chữ số, SHA-1 và chu kỳ{" "}
+                    {currentPeriod} giây. Ứng dụng không cho chọn chu kỳ này cần
+                    được thay bằng ứng dụng tương thích.
+                  </p>
                 </>
               ) : (
                 <div
@@ -445,6 +615,7 @@ export function MfaForm({
               {!usableSetup && !busy && canRetrySetup && (
                 <button
                   type="button"
+                  disabled={!clientReady}
                   className={`${primary} mt-4`}
                   onClick={() => void requestSetup()}
                 >
@@ -454,12 +625,21 @@ export function MfaForm({
             </div>
           )}
           {(mode === "verify" || setup) && (
-            <form onSubmit={submit} className="mt-6 space-y-5" aria-busy={busy}>
+            <form
+              method="post"
+              onSubmit={submit}
+              className="mt-6 space-y-5"
+              aria-busy={!clientReady || busy}
+            >
               <label
                 className="block text-sm font-semibold text-slate-800"
                 htmlFor="mfa-code"
               >
-                {recovery ? "Mã khôi phục chưa dùng" : "Mã xác thực 6 chữ số"}
+                {recovery
+                  ? "Mã khôi phục chưa dùng"
+                  : changingPeriod
+                    ? "Mã xác thực từ mục 60 giây mới"
+                    : "Mã xác thực 6 chữ số"}
               </label>
               <input
                 id="mfa-code"
@@ -469,26 +649,30 @@ export function MfaForm({
                 autoComplete={recovery ? "off" : "one-time-code"}
                 maxLength={recovery ? 64 : 6}
                 ref={codeRef}
-                disabled={busy || (mode === "setup" && !usableSetup)}
+                disabled={!clientReady || busy || (hasSetup && !usableSetup)}
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 font-mono text-lg outline-none focus:ring-2 focus:ring-teal-700"
                 aria-invalid={error ? true : undefined}
               />
               <p className="text-xs leading-6 text-slate-500">
-                Nếu mã vừa được dùng, đợi mã mới ở chu kỳ 30 giây tiếp theo. Sai
-                nhiều lần sẽ bị khóa tạm.
+                Nếu mã vừa được dùng, đợi mã mới ở chu kỳ {currentPeriod} giây
+                tiếp theo. Sai nhiều lần sẽ bị khóa tạm.
               </p>
               <button
                 className={`${primary} w-full`}
-                disabled={busy || (mode === "setup" && !usableSetup)}
+                disabled={!clientReady || busy || (hasSetup && !usableSetup)}
               >
-                {busy ? "Đang xác thực…" : "Xác nhận"}
+                {busy
+                  ? "Đang xác thực…"
+                  : changingPeriod
+                    ? "Xác nhận chuyển sang 60 giây"
+                    : "Xác nhận"}
               </button>
             </form>
           )}
           {mode === "verify" && (
             <button
               type="button"
-              disabled={busy}
+              disabled={!clientReady || busy}
               onClick={() => {
                 setRecovery(!recovery);
                 setError("");
@@ -498,6 +682,42 @@ export function MfaForm({
               {recovery
                 ? "Dùng mã từ ứng dụng xác thực"
                 : "Tôi cần dùng mã khôi phục"}
+            </button>
+          )}
+          {changingPeriod && (
+            <button
+              type="button"
+              disabled={!clientReady || busy}
+              className={`mt-5 rounded text-sm font-semibold text-teal-800 underline ${focusRing}`}
+              onClick={async () => {
+                if (pending.current) return;
+                pending.current = true;
+                setBusy(true);
+                const controller = new AbortController();
+                activeRequest.current = controller;
+                const timeout = setTimeout(() => controller.abort(), 20_000);
+                try {
+                  await requestMfa("mfa-period-cancel", {}, controller.signal);
+                  stopped.current = true;
+                  currentSetup.current = null;
+                  setSetup(null);
+                  window.location.replace("/tai-khoan");
+                } catch (caught) {
+                  if (mounted.current)
+                    setError(
+                      caught instanceof Error
+                        ? caught.message
+                        : "Chưa hủy được chuyển đổi. Hãy thử lại.",
+                    );
+                } finally {
+                  clearTimeout(timeout);
+                  pending.current = false;
+                  activeRequest.current = null;
+                  if (mounted.current) setBusy(false);
+                }
+              }}
+            >
+              Hủy chuyển đổi, giữ cấu hình 30 giây
             </button>
           )}
         </>
