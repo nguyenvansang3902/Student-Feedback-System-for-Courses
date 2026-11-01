@@ -28,6 +28,7 @@ export default async function StudentSurveysLayout({
         >
           {[
             ["/khao-sat", "Khảo sát của tôi"],
+            ["/phan-hoi", "Phản hồi của tôi"],
             ["/tai-khoan", "Tài khoản của tôi"],
           ].map(([href, label]) => (
             <Link

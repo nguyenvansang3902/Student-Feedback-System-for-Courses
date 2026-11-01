@@ -11,7 +11,8 @@ type CsrfPurpose =
   | "templates"
   | "campaigns"
   | "student-surveys"
-  | "survey-results";
+  | "survey-results"
+  | "feedback";
 function signature(payload: string, purpose: CsrfPurpose) {
   return createHmac("sha256", getAuthConfig().jwtSecret)
     .update(`sfs-${purpose}-csrf-v1:${payload}`)
@@ -73,6 +74,19 @@ export function assertSurveyResultsCsrf(
 ): void {
   requireCan(actor, "results:read");
   assertCsrf(request, actor, "survey-results");
+}
+
+/** Phản hồi và hồ sơ tiếp nhận dùng miền chữ ký riêng, không nhận token khảo sát. */
+export function issueFeedbackCsrf(actor: AuthActor): string {
+  requireCan(actor, "feedback:access");
+  return issueCsrf(actor, "feedback");
+}
+export function assertFeedbackCsrf(
+  request: NextRequest,
+  actor: AuthActor,
+): void {
+  requireCan(actor, "feedback:access");
+  assertCsrf(request, actor, "feedback");
 }
 
 function issueCsrf(actor: AuthActor, purpose: CsrfPurpose): string {

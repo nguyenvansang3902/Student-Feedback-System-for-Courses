@@ -154,8 +154,8 @@ describe("BR-03 — Mục 5.6(a), DMMF của thiết kế đầy đủ", () => {
   });
 });
 
-describe("W5 — tính nhất quán schema và phạm vi migration được người dùng cho phép", () => {
-  it("schema gồm 16 bảng nền/xác thực và 15 bảng cho seed khảo sát/phản hồi", () => {
+describe("W10 — tính nhất quán schema và phạm vi migration được người dùng cho phép", () => {
+  it("schema gồm37model runtime đến phản hồi, tệp và hồ sơ tiếp nhận Tuần10", () => {
     expect(
       foundation.datamodel.models.map((model) => model.name).sort(),
     ).toEqual(
@@ -191,6 +191,9 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
         "FeedbackRecipient",
         "FeedbackMessage",
         "FeedbackHistory",
+        "Attachment",
+        "InspectionCase",
+        "InspectionCaseEvent",
         "CampaignDataConfirmation",
         "Notification",
         "EmailOutbox",
@@ -198,14 +201,14 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
     );
   });
 
-  it("trường, quan hệ và khóa của 31 model runtime không lệch thiết kế đầy đủ", () => {
+  it("trường, quan hệ và khóa của37model runtime không lệch thiết kế đầy đủ", () => {
     for (const model of foundation.datamodel.models) {
-      const expected = model.fields.filter((field) => field.kind !== "object");
+      const futureFields = model.name === "InspectionCase" ? ["anomalyFlagId","campaignId"] : [];
+      const expected = model.fields.filter((field) => field.kind !== "object").sort((a,b)=>a.name.localeCompare(b.name));
       const actual = getModel(model.name).fields.filter(
-        (field) =>
-          field.kind !== "object" &&
-          !(model.name === "Feedback" && field.name === "identityLevel"),
-      );
+        (field) => field.kind !== "object" && !futureFields.includes(field.name),
+      ).sort((a,b)=>a.name.localeCompare(b.name));
+      for(const name of futureFields)expect(model.fields.some(field=>field.name===name)).toBe(false);
       expect(actual, model.name).toEqual(expected);
       for (const field of model.fields.filter(
         (candidate) => candidate.kind === "object",
@@ -229,7 +232,7 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
     expect(anonymityIssues(foundation.datamodel.models)).toEqual([]);
   });
 
-  it("Điều chỉnh 01: đúng 10 role, cờ nhóm mặc định false; mô hình tương lai chưa migrate", () => {
+  it("Điều chỉnh01/Tuần10:10role, cờ nhóm false, identityLevelẩn danh và chín model tương lai chưa migrate", () => {
     const roles = [
       "SINH_VIEN",
       "GIANG_VIEN",
@@ -257,18 +260,17 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
       getModel("Feedback").fields.find((item) => item.name === "identityLevel"),
     ).toMatchObject({
       type: "FeedbackIdentityLevel",
-      default: "AN_DANH_HOAN_TOAN",
+      isRequired: false,
+      hasDefaultValue: false,
     });
     expect(
       foundation.datamodel.models
         .find((item) => item.name === "Feedback")
         ?.fields.some((item) => item.name === "identityLevel"),
-    ).toBe(false);
+    ).toBe(true);
     expect(models).toHaveLength(46);
     for (const name of [
-      "InspectionCase",
       "InspectionCaseNote",
-      "InspectionCaseEvent",
       "SurveyAnomalyFlag",
       "ExamReviewRecommendation",
       "ImportBatch",
@@ -282,6 +284,9 @@ describe("W5 — tính nhất quán schema và phạm vi migration được ngư
       "CampaignDataConfirmation",
       "Notification",
       "EmailOutbox",
+      "Attachment",
+      "InspectionCase",
+      "InspectionCaseEvent",
     ])
       expect(
         foundation.datamodel.models.some((model) => model.name === name),

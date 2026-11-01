@@ -10,6 +10,7 @@ import { seedDemoSurveyData } from "./demo-survey-seed";
 import { seedDefaultTemplate } from "./seed-template-default";
 import { seedWeek7ReadinessData } from "./week7-demo-seed";
 import { seedWeek9ResultsData } from "./week9-demo-seed";
+import { seedWeek10FeedbackData } from "./week10-demo-seed";
 
 export const demoSizes = {
   small: {
@@ -413,6 +414,18 @@ export async function seedDemo(
           studentIds: students.map((student) => student.id),
           createdById: demoId("DBCL2026001"),
           approvedById: demoId("LD2026001"),
+        }),
+        feedbackData: await seedWeek10FeedbackData(actor, tx, {
+          id: demoId,
+          semesterId: semester.id,
+          courseId: courses[0].id,
+          teacherId: teachers[0].id,
+          studentIds: students.map((student) => student.id),
+          qualityId: demoId("DBCL2026001"),
+          headId: demoId("TBM2026001"),
+          trainingId: demoId("PDT2026001"),
+          examId: demoId("KT2026001"),
+          inspectorId: demoId("TT2026001"),
         }),
       };
     },

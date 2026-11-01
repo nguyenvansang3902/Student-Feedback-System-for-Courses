@@ -41,8 +41,8 @@ enum ScopeType {
 
 model User {
   dataConfirmations           CampaignDataConfirmation[]
-  inspectionAssigned          InspectionCase[]           @relation("InspectionAssignee")
-  inspectionCreated           InspectionCase[]           @relation("InspectionCreator")
+  assignedInspectionCases     InspectionCase[]           @relation("InspectionAssignee")
+  createdInspectionCases      InspectionCase[]           @relation("InspectionCreator")
   inspectionNotes             InspectionCaseNote[]
   inspectionEvents            InspectionCaseEvent[]
   reviewedAnomalies           SurveyAnomalyFlag[]
@@ -290,6 +290,7 @@ enum FeedbackEvent {
   MO_LAI
   LEO_THANG
   KIEM_DUYET
+  TRAO_DOI
 }
 
 enum DeliveryStatus {
@@ -613,7 +614,10 @@ model ImprovementHistory {
 
 // Phản hồi giữ người gửi để đối thoại; service phải ẩn danh tính khi chiếu dữ liệu.
 model Feedback {
-  identityLevel    FeedbackIdentityLevel @default(AN_DANH_HOAN_TOAN)
+  revision         Int                 @default(1)
+  requestId        String?             @db.Char(36)
+  requestHash      String?             @db.Char(64)
+  identityLevel    FeedbackIdentityLevel?
   inspectionCase   InspectionCase?
   id               String                @id @default(uuid()) @db.Char(36)
   sectionId        String                @db.Char(36)
@@ -646,6 +650,7 @@ model Feedback {
   escalations      SlaEscalation[]
   rating           FeedbackRating?
 
+  @@unique([authorId, requestId])
   @@index([authorId, createdAt])
   @@index([assigneeId, status, replyDueAt])
   @@index([sectionId])
@@ -653,6 +658,9 @@ model Feedback {
 }
 
 model FeedbackRecipient {
+  isActive Boolean @default(true)
+  isPrimary Boolean @default(true)
+  accessRole Role?
   feedbackId String   @db.Char(36)
   userId     String   @db.Char(36)
   feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
@@ -663,6 +671,7 @@ model FeedbackRecipient {
 }
 
 model FeedbackMessage {
+  requestId String? @db.Char(36)
   id               String   @id @default(uuid()) @db.Char(36)
   feedbackId       String   @db.Char(36)
   authorId         String   @db.Char(36)
@@ -675,9 +684,12 @@ model FeedbackMessage {
 
   @@index([feedbackId, createdAt])
   @@index([authorId])
+  @@unique([feedbackId, requestId])
 }
 
 model FeedbackHistory {
+  requestId String? @db.Char(36)
+  requestHash String? @db.Char(64)
   id             String         @id @default(uuid()) @db.Char(36)
   feedbackId     String         @db.Char(36)
   actorId        String?        @db.Char(36)
@@ -693,6 +705,7 @@ model FeedbackHistory {
 
   @@index([feedbackId, occurredAt])
   @@index([actorId])
+  @@unique([feedbackId, requestId])
 }
 
 model FeedbackRating {
@@ -880,6 +893,7 @@ model CampaignDataConfirmation {
 }
 
 model InspectionCase {
+  revision       Int                   @default(1)
   id             String                @id @default(uuid()) @db.Char(36)
   feedbackId     String?               @unique @db.Char(36)
   anomalyFlagId  String?               @unique @db.Char(36)
@@ -926,6 +940,9 @@ model InspectionCaseNote {
 
 // Lịch sử chỉ thêm. Enforcement service/test triển khai ở Tuần11.
 model InspectionCaseEvent {
+  event          String            @default("CREATED") @db.VarChar(32)
+  requestId      String?           @db.Char(36)
+  requestHash    String?           @db.Char(64)
   id             String            @id @default(uuid()) @db.Char(36)
   caseId         String            @db.Char(36)
   actorId        String            @db.Char(36)
@@ -937,6 +954,7 @@ model InspectionCaseEvent {
   actor          User              @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 
   @@index([caseId, occurredAt])
+  @@unique([caseId, requestId])
 }
 
 model SurveyAnomalyFlag {

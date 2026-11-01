@@ -13,6 +13,8 @@ import {
   demoId,
   type DemoSize,
 } from "../src/server/services/demo-seed";
+import { feedbackCategories } from "../src/server/services/feedback-types";
+import { WEEK10_DEMO_MARKER } from "../src/server/services/week10-demo-seed";
 
 const marker = JSON.parse(readFileSync(".local/demo/latest.json", "utf8"));
 const main = new URL(process.env.DATABASE_URL!),
@@ -43,6 +45,163 @@ const db = getDb(),
     reason: "Kiểm thử seed demo trong database riêng",
   };
 const results: string[] = [];
+async function week10Snapshot() {
+  const feedbackIds = Array.from({ length: 9 }, (_, index) =>
+    demoId(`week10:feedback:${index}`),
+  );
+  const sectionIds = Array.from({ length: 8 }, (_, index) =>
+    demoId(`week10:section:${index}`),
+  );
+  const sections = await db.courseSection.findMany({
+    where: { id: { in: sectionIds } },
+    orderBy: { code: "asc" },
+    include: {
+      teaching: { orderBy: { teacherId: "asc" } },
+      enrollments: { orderBy: { studentId: "asc" } },
+    },
+  });
+  assert.equal(sections.length, 8);
+  assert.deepEqual(
+    sections.map((section) => section.code),
+    Array.from(
+      { length: 8 },
+      (_, index) => `W10-LHP${String(index + 1).padStart(2, "0")}`,
+    ),
+  );
+  for (const section of sections) {
+    assert.equal(section.semesterId, demoId("semester:2026-1"));
+    assert.equal(section.courseId, demoId("course:0"));
+    assert.deepEqual(
+      section.teaching.map((assignment) => [
+        assignment.teacherId,
+        assignment.isLead,
+      ]),
+      [[demoId("GV:0"), true]],
+    );
+    assert.deepEqual(
+      section.enrollments.map((enrollment) => enrollment.studentId).sort(),
+      [demoId("SV:0"), demoId("SV:1")].sort(),
+    );
+  }
+  const feedback = await db.feedback.findMany({
+    where: { id: { in: feedbackIds } },
+    orderBy: { id: "asc" },
+    include: {
+      recipients: { orderBy: { userId: "asc" } },
+      history: { orderBy: [{ occurredAt: "asc" }, { id: "asc" }] },
+      messages: { orderBy: { id: "asc" } },
+      attachments: { orderBy: { id: "asc" } },
+      inspectionCase: {
+        include: {
+          events: { orderBy: [{ occurredAt: "asc" }, { id: "asc" }] },
+        },
+      },
+    },
+  });
+  assert.equal(feedback.length, 9);
+  assert.deepEqual(
+    [...new Set(feedback.map((item) => item.category))].sort(),
+    [...feedbackCategories].sort(),
+  );
+  const counts = [demoId("SV:0"), demoId("SV:1")].map(
+    (studentId) =>
+      feedback.filter((item) => item.authorId === studentId).length,
+  );
+  assert.deepEqual(counts, [4, 5]);
+  const expectedRoles = new Map([
+    ["GIANG_DAY", "GIANG_VIEN"],
+    ["TAI_LIEU", "GIANG_VIEN"],
+    ["NOI_DUNG_DE_CUONG", "TRUONG_BO_MON"],
+    ["KIEM_TRA_DANH_GIA", "GIANG_VIEN"],
+    ["THI_KET_THUC_HOC_PHAN", "PHONG_KHAO_THI"],
+    ["TO_CHUC_LOP_HOC", "PHONG_DAO_TAO"],
+    ["KHIEU_NAI_NGHIEM_TRONG", "THANH_TRA"],
+    ["KHAC", "CAN_BO_DBCL"],
+  ]);
+  for (const item of feedback) {
+    assert(sectionIds.includes(item.sectionId));
+    assert.equal(item.status, "MOI");
+    assert.equal(item.assigneeId, null);
+    assert.equal(item.revision, 1);
+    assert.equal(item.isAnonymous, true);
+    assert.equal(item.history.length, 1);
+    assert.equal(item.history[0].event, "GUI");
+    assert.equal(item.history[0].actorId, item.authorId);
+    assert.equal(item.history[0].toAssigneeId, null);
+    assert.equal(
+      item.history[0].occurredAt.getTime(),
+      item.createdAt.getTime(),
+    );
+    assert.equal(item.messages.length, 0);
+    assert.equal(item.attachments.length, 0);
+    assert(item.recipients.every((recipient) => recipient.isActive));
+    assert.equal(
+      item.recipients.filter((recipient) => recipient.isPrimary).length,
+      1,
+    );
+    assert.equal(
+      item.recipients.find((recipient) => recipient.isPrimary)!.accessRole,
+      expectedRoles.get(item.category),
+    );
+    if (item.category === "KIEM_TRA_DANH_GIA") {
+      assert(
+        item.recipients.some(
+          (recipient) =>
+            recipient.userId === demoId("TBM2026001") &&
+            recipient.accessRole === "TRUONG_BO_MON" &&
+            !recipient.isPrimary,
+        ),
+      );
+    }
+    if (item.category === "KHIEU_NAI_NGHIEM_TRONG") {
+      assert.equal(item.severity, "KHIEU_NAI");
+      assert(item.inspectionCase);
+      assert.equal(item.inspectionCase.status, "TIEP_NHAN");
+      assert.equal(item.inspectionCase.source, "PHAN_HOI_NGHIEM_TRONG");
+      assert.equal(item.inspectionCase.assigneeId, null);
+      assert.equal(item.inspectionCase.conclusion, null);
+      assert.equal(item.inspectionCase.acceptedAt, null);
+      assert.equal(item.inspectionCase.closedAt, null);
+      assert.equal(item.inspectionCase.createdById, item.authorId);
+      assert.equal(item.inspectionCase.events.length, 1);
+      assert.equal(item.inspectionCase.events[0].event, "CREATED");
+      assert.equal(item.inspectionCase.events[0].fromStatus, null);
+      assert.equal(item.inspectionCase.events[0].toStatus, "TIEP_NHAN");
+      assert.equal(item.recipients[0].userId, demoId("TT2026001"));
+    } else {
+      assert.equal(item.identityLevel, null);
+      assert.equal(item.inspectionCase, null);
+    }
+  }
+  const serious = feedback.filter(
+    (item) => item.category === "KHIEU_NAI_NGHIEM_TRONG",
+  );
+  assert.equal(serious.length, 2);
+  assert.deepEqual(serious.map((item) => item.identityLevel).sort(), [
+    "AN_DANH_HOAN_TOAN",
+    "CHO_THANH_TRA_BIET",
+  ]);
+  assert.equal(
+    serious.find((item) => item.authorId === demoId("SV:0"))?.identityLevel,
+    "AN_DANH_HOAN_TOAN",
+  );
+  assert.equal(
+    serious.find((item) => item.authorId === demoId("SV:1"))?.identityLevel,
+    "CHO_THANH_TRA_BIET",
+  );
+  const setting = await db.systemSetting.findUniqueOrThrow({
+    where: { key: WEEK10_DEMO_MARKER },
+  });
+  assert.deepEqual(setting.value, {
+    version: 1,
+    feedback: 9,
+    cases: 2,
+    sections: 8,
+  });
+  return createHash("sha256")
+    .update(JSON.stringify({ sections, feedback, setting }))
+    .digest("hex");
+}
 async function week9Snapshot() {
   const campaignIds = [
     demoId("week9:campaign:current"),
@@ -214,10 +373,11 @@ async function surveySnapshot() {
         ].map((s) => demoId(`survey-data:feedback:${s}`)),
       },
     },
+    orderBy: { id: "asc" },
     include: {
-      history: { orderBy: { occurredAt: "asc" } },
-      messages: true,
-      recipients: true,
+      history: { orderBy: [{ occurredAt: "asc" }, { id: "asc" }] },
+      messages: { orderBy: { id: "asc" } },
+      recipients: { orderBy: { userId: "asc" } },
     },
   });
   assert.equal(feedback.length, 6);
@@ -241,6 +401,7 @@ async function surveySnapshot() {
     answers: responses.flatMap((r) => r.answers.map((a) => a.id)).sort(),
     taskIds: tasks.map((t) => t.id),
     aggregates,
+    legacyFeedback: feedback,
   });
 }
 const run = async (size: DemoSize) => {
@@ -250,12 +411,20 @@ const run = async (size: DemoSize) => {
     db.department.count({ where: { code: { startsWith: "DEMO-BM" } } }),
     db.course.count({ where: { code: { startsWith: "DEMO-MH" } } }),
     db.courseSection.count({
-      where: { semesterId: demoId("semester:2026-1") },
+      where: {
+        semesterId: demoId("semester:2026-1"),
+        code: { startsWith: "DEMO-LHP" },
+      },
     }),
     db.user.count({ where: { loginCode: { startsWith: "DEMO-GV" } } }),
     db.user.count({ where: { loginCode: { startsWith: "DEMO-SV" } } }),
     db.enrollment.count({
-      where: { section: { semesterId: demoId("semester:2026-1") } },
+      where: {
+        section: {
+          semesterId: demoId("semester:2026-1"),
+          code: { startsWith: "DEMO-LHP" },
+        },
+      },
     }),
   ]);
   return rows;
@@ -299,8 +468,12 @@ try {
   const previousLocked = await db.surveyTemplate.findMany(oldLockedQuery);
   const medium = await run("medium");
   const originalWeek9 = await week9Snapshot();
+  const originalWeek10 = await week10Snapshot();
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
+  results.push(
+    "Tuần10: bundle riêng8lớp/9phản hồi đủ8loại, hai sinh viên4/5phản hồi và2hồ sơ TIEP_NHAN vớihai mức danh tính; định tuyến/đồnggửi/lịch sử ban đầu đúng",
+  );
   const week7Campaigns = await db.surveyCampaign.findMany({
     where: {
       id: {
@@ -421,7 +594,7 @@ try {
     newOperators.every((user) => user.status === "ACTIVE" && user.passwordHash),
   );
   results.push(
-    "G1: seed bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra chưa có workflow hồ sơ",
+    "G1: bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra hỗ trợ xem/phân công hồ sơ tiếp nhận Tuần10, chưa xác minh/kết luận Tuần11",
   );
   const frozenSurvey = await surveySnapshot();
   results.push(
@@ -633,6 +806,10 @@ try {
   assert.equal(await week9Snapshot(), originalWeek9);
   results.push(
     "E8 Tuần 9: cùng môn hai giảng viên, nhóm đánh giá, hai lớp đủ mẫu/một lớp thiếu, kỳ trước; 18 phiếu/40 nhiệm vụ, seed lại giữ nguyên hash",
+  );
+  assert.equal(await week10Snapshot(), originalWeek10);
+  results.push(
+    "Tuần10: seedlặp/medium→small→large giữ nguyên hash9phản hồi,8lớp/ghi danh,recipient/history vàhai case/event; sáu phản hồi lịch sử được đối chiếu riêng theoUUID, không gộp với bundle mới",
   );
   Object.assign(process.env, { NODE_ENV: "production" });
   await assert.rejects(seedDemo(actor, "small"));

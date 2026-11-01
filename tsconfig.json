@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -19,7 +23,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [
@@ -43,7 +49,9 @@
     ".next-week8/types/**/*.ts",
     ".next-week8/dev/types/**/*.ts",
     ".next-week9/types/**/*.ts",
-    ".next-week9/dev/types/**/*.ts"
+    ".next-week9/dev/types/**/*.ts",
+    ".next-week10/types/**/*.ts",
+    ".next-week10/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -54,6 +62,7 @@
     ".next-week7",
     ".next-week7-settings",
     ".next-week8",
-    ".next-week9"
+    ".next-week9",
+    ".next-week10"
   ]
 }

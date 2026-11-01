@@ -15,7 +15,7 @@ const features = [
     title: "Phản hồi môn học",
     description: "Gửi, tiếp nhận và theo dõi việc xử lý phản hồi.",
     icon: "↗",
-    href: null,
+    href: "/phan-hoi",
   },
   {
     number: "03",

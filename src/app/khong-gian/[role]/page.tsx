@@ -88,15 +88,49 @@ export default async function WorkspacePage({
               →
             </Link>
           )}
-          {(can(actor, "results:read") || can(actor, "results:assessment") || can(actor, "results:incomplete")) && (
-            <Link href="/ket-qua" className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>
+          {(can(actor, "results:read") ||
+            can(actor, "results:assessment") ||
+            can(actor, "results:incomplete")) && (
+            <Link
+              href="/ket-qua"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
               Kết quả khảo sát →
+            </Link>
+          )}
+          {can(actor, "feedback:list") && (
+            <Link
+              href="/phan-hoi"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
+              {can(actor, "feedback:create")
+                ? "Gửi và theo dõi phản hồi"
+                : "Hàng đợi phản hồi"}{" "}
+              →
+            </Link>
+          )}
+          {can(actor, "inspection:list") && (
+            <Link
+              href="/thanh-tra"
+              className={`mt-6 mr-3 inline-flex rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+            >
+              Hồ sơ Thanh tra →
+            </Link>
+          )}
+          {can(actor, "feedback-settings:read") && (
+            <Link
+              href="/phan-hoi/cau-hinh"
+              className={`mt-6 mr-3 inline-flex rounded-xl border border-teal-200 bg-white px-5 py-3 text-sm font-semibold text-teal-900 hover:bg-teal-50 ${focusRing}`}
+            >
+              Cấu hình phản hồi →
             </Link>
           )}
           {can(actor, "sections:list") ? (
             <WorkspaceSections />
           ) : (
-            role !== "SINH_VIEN" && (
+            role !== "SINH_VIEN" &&
+            !can(actor, "feedback:list") &&
+            !can(actor, "inspection:list") && (
               <p className="mt-7 text-sm leading-7 text-slate-600">
                 Tài khoản đã có vai trò này. Chức năng xử lý hồ sơ chưa mở.
               </p>

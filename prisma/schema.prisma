@@ -124,6 +124,43 @@ enum FeedbackEvent {
   MO_LAI
   LEO_THANG
   KIEM_DUYET
+  TRAO_DOI
+}
+
+enum FeedbackIdentityLevel {
+  AN_DANH_HOAN_TOAN
+  CHO_THANH_TRA_BIET
+}
+
+enum InspectionSource {
+  PHAN_HOI_NGHIEM_TRONG
+  CHUYEN_PHAN_HOI
+  BAT_THUONG_KHAO_SAT
+}
+
+enum InspectionViolation {
+  VI_PHAM_QUY_CHE_GIANG_DAY
+  GAY_AP_LUC_KHI_KHAO_SAT
+  HANH_VI_KHONG_PHU_HOP
+  VI_PHAM_QUY_CHE_THI_KIEM_TRA
+  KHAC_NGHIEM_TRONG
+}
+
+enum InspectionStatus {
+  TIEP_NHAN
+  XAC_MINH
+  KET_LUAN
+  THONG_BAO
+  DONG
+  TU_CHOI
+  CHUYEN_LAI
+}
+
+enum InspectionConclusion {
+  CO_CAN_CU
+  KHONG_CAN_CU
+  KHONG_DU_THONG_TIN
+  CHUYEN_DON_VI_KHAC
 }
 
 enum SessionPurpose {
@@ -161,6 +198,9 @@ model User {
   feedbackRecipients FeedbackRecipient[]
   feedbackMessages   FeedbackMessage[]
   feedbackHistory    FeedbackHistory[]
+  assignedInspectionCases InspectionCase[] @relation("InspectionAssignee")
+  createdInspectionCases InspectionCase[] @relation("InspectionCreator")
+  inspectionEvents InspectionCaseEvent[]
   settings           SystemSetting[]
   audit              AuditLog[]
 
@@ -216,6 +256,7 @@ model Course {
 }
 
 model CourseSection {
+  inspectionCases InspectionCase[]
   id          String               @id @default(uuid()) @db.Char(36)
   code        String               @db.VarChar(32)
   courseId    String               @db.Char(36)
@@ -535,6 +576,10 @@ model AggregateResult {
 }
 
 model Feedback {
+  revision         Int                 @default(1)
+  requestId        String?             @db.Char(36)
+  requestHash      String?             @db.Char(64)
+  identityLevel    FeedbackIdentityLevel?
   id               String              @id @default(uuid()) @db.Char(36)
   sectionId        String              @db.Char(36)
   authorId         String              @db.Char(36)
@@ -562,7 +607,10 @@ model Feedback {
   recipients       FeedbackRecipient[]
   messages         FeedbackMessage[]
   history          FeedbackHistory[]
+  attachments      Attachment[]
+  inspectionCase   InspectionCase?
 
+  @@unique([authorId, requestId])
   @@index([authorId, createdAt])
   @@index([assigneeId, status, replyDueAt])
   @@index([sectionId])
@@ -570,6 +618,9 @@ model Feedback {
 }
 
 model FeedbackRecipient {
+  isActive Boolean @default(true)
+  isPrimary Boolean @default(true)
+  accessRole Role?
   feedbackId String   @db.Char(36)
   userId     String   @db.Char(36)
   feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
@@ -580,6 +631,7 @@ model FeedbackRecipient {
 }
 
 model FeedbackMessage {
+  requestId String? @db.Char(36)
   id               String   @id @default(uuid()) @db.Char(36)
   feedbackId       String   @db.Char(36)
   authorId         String   @db.Char(36)
@@ -592,9 +644,12 @@ model FeedbackMessage {
 
   @@index([feedbackId, createdAt])
   @@index([authorId])
+  @@unique([feedbackId, requestId])
 }
 
 model FeedbackHistory {
+  requestId String? @db.Char(36)
+  requestHash String? @db.Char(64)
   id             String         @id @default(uuid()) @db.Char(36)
   feedbackId     String         @db.Char(36)
   actorId        String?        @db.Char(36)
@@ -610,6 +665,67 @@ model FeedbackHistory {
 
   @@index([feedbackId, occurredAt])
   @@index([actorId])
+  @@unique([feedbackId, requestId])
+}
+
+model Attachment {
+  id           String   @id @default(uuid()) @db.Char(36)
+  feedbackId   String   @db.Char(36)
+  storageKey   String   @unique @db.VarChar(160)
+  originalName String   @db.VarChar(255)
+  mimeType     String   @db.VarChar(100)
+  byteSize     Int
+  sha256       String   @db.Char(64)
+  createdAt    DateTime @default(now()) @db.DateTime(3)
+  feedback     Feedback @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([feedbackId])
+}
+
+model InspectionCase {
+  id             String                @id @default(uuid()) @db.Char(36)
+  feedbackId     String?               @unique @db.Char(36)
+  sectionId      String                @db.Char(36)
+  source         InspectionSource
+  violation      InspectionViolation?
+  status         InspectionStatus      @default(TIEP_NHAN)
+  conclusion     InspectionConclusion?
+  reason         String?               @db.Text
+  studentSummary String?               @db.Text
+  assigneeId     String?               @db.Char(36)
+  createdById    String?               @db.Char(36)
+  createdAt      DateTime              @default(now()) @db.DateTime(3)
+  acceptDueAt    DateTime              @db.DateTime(3)
+  completeDueAt  DateTime              @db.DateTime(3)
+  acceptedAt     DateTime?             @db.DateTime(3)
+  closedAt       DateTime?             @db.DateTime(3)
+  revision       Int                   @default(1)
+  feedback       Feedback?             @relation(fields: [feedbackId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  section        CourseSection         @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  assignee       User?                 @relation("InspectionAssignee", fields: [assigneeId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  createdBy      User?                 @relation("InspectionCreator", fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  events         InspectionCaseEvent[]
+
+  @@index([assigneeId, status, completeDueAt])
+  @@index([sectionId])
+}
+
+model InspectionCaseEvent {
+  id             String            @id @default(uuid()) @db.Char(36)
+  caseId         String            @db.Char(36)
+  actorId        String            @db.Char(36)
+  fromStatus     InspectionStatus?
+  toStatus       InspectionStatus
+  reason         String?           @db.Text
+  event          String            @default("CREATED") @db.VarChar(32)
+  requestId      String?           @db.Char(36)
+  requestHash    String?           @db.Char(64)
+  occurredAt     DateTime          @default(now()) @db.DateTime(3)
+  inspectionCase InspectionCase    @relation(fields: [caseId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor          User              @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([caseId, occurredAt])
+  @@unique([caseId, requestId])
 }
 
 model SystemSetting {

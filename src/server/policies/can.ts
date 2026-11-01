@@ -10,6 +10,17 @@ export interface RoleGrant {
 }
 
 export type PolicyAction =
+  | "feedback:access"
+  | "feedback:list"
+  | "feedback:read"
+  | "feedback:create"
+  | "feedback:attach"
+  | "feedback:process"
+  | "feedback-settings:read"
+  | "feedback-settings:write"
+  | "inspection:list"
+  | "inspection:read"
+  | "inspection:assign"
   | "workspace:view"
   | "sections:list"
   | "sections:read"
@@ -130,6 +141,40 @@ export function can(
 ): boolean {
   if (!hasFullSession(actor)) return false;
   const grants = actorGrants(actor);
+  if (
+    action.startsWith("feedback:") ||
+    action.startsWith("inspection:") ||
+    action.startsWith("feedback-settings:")
+  ) {
+    if (actor.roles.includes("ADMIN")) return false;
+    if (action.startsWith("inspection:")) {
+      if (actor.roles.includes("CAN_BO_DBCL")) return false;
+      return grants.some(
+        (grant) =>
+          grant.role === "THANH_TRA" ||
+          (action !== "inspection:assign" && grant.role === "LANH_DAO"),
+      );
+    }
+    if (action.startsWith("feedback-settings:"))
+      return grants.some((grant) => grant.role === "CAN_BO_DBCL");
+    if (action === "feedback:access") return grants.length > 0;
+    if (action === "feedback:create" || action === "feedback:attach")
+      return grants.some((grant) => grant.role === "SINH_VIEN");
+    const handlers = [
+      "GIANG_VIEN",
+      "TRUONG_BO_MON",
+      "TRUONG_KHOA",
+      "CAN_BO_DBCL",
+      "PHONG_DAO_TAO",
+      "PHONG_KHAO_THI",
+      "THANH_TRA",
+    ];
+    return grants.some(
+      (grant) =>
+        handlers.includes(grant.role) ||
+        (action !== "feedback:process" && grant.role === "SINH_VIEN"),
+    );
+  }
   if (action === "results:assessment")
     return grants.some((grant) => grant.role === "PHONG_KHAO_THI");
   if (

@@ -39,12 +39,12 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("PHONG_KHAO_THI"))
     return {
       title: "Không gian Phòng Khảo thí",
-      sections: ["Xử lý phản ánh khảo thí được chuyển đến"],
+      sections: [],
     };
   if (roles.includes("THANH_TRA"))
     return {
       title: "Không gian Thanh tra",
-      sections: ["Hồ sơ thanh tra được giao"],
+      sections: [],
     };
   if (roles.includes("CAN_BO_DBCL"))
     return {
@@ -59,16 +59,16 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("TRUONG_KHOA") || roles.includes("TRUONG_BO_MON"))
     return {
       title: "Không gian quản lý đơn vị",
-      sections: ["Phản hồi môn học", "Kế hoạch cải tiến"],
+      sections: ["Kế hoạch cải tiến"],
     };
   if (roles.includes("GIANG_VIEN"))
     return {
       title: "Không gian giảng viên",
-      sections: ["Lớp học phần phụ trách", "Phản hồi môn học"],
+      sections: ["Giải trình kết quả khảo sát"],
     };
   return {
     title: "Không gian sinh viên",
-    sections: ["Phản hồi của tôi", "Kết quả đã công bố"],
+    sections: [],
   };
 }
 
@@ -218,6 +218,25 @@ export default async function AccountPage() {
                 Chức năng của tài khoản
               </h2>
               <div className="mt-4 flex flex-wrap gap-3">
+                {can(actor, "feedback:list") && (
+                  <Link
+                    href="/phan-hoi"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    {can(actor, "feedback:create")
+                      ? "Phản hồi của tôi"
+                      : "Hàng đợi phản hồi"}{" "}
+                    <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {can(actor, "inspection:list") && (
+                  <Link
+                    href="/thanh-tra"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Hồ sơ Thanh tra <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 {can(actor, "student-surveys:list") && (
                   <Link
                     href="/khao-sat"

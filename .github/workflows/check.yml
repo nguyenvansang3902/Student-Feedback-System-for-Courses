@@ -54,6 +54,8 @@ jobs:
         run: npm run test:week8
       - name: Kiểm tra tổng hợp, kiểm duyệt, công bố và quyền xem kết quả
         run: npm run test:week9
+      - name: Kiểm tra phản hồi, tệp riêng tư và tiếp nhận Thanh tra
+        run: npm run test:week10
       - name: Kiểm tra seed và demo trong database mới riêng
         run: npm run test:demo
       - name: Kiểm tra chuyển TOTP từ 30 sang 60 giây trên database thử riêng

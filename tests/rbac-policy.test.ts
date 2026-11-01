@@ -75,7 +75,7 @@ describe("FR-11/BR-34 — ma trận vai trò/phạm vi tập trung", () => {
     expect(can(current, "sections:read", other)).toBe(
       ["CAN_BO_DBCL", "LANH_DAO", "PHONG_DAO_TAO"].includes(role),
     );
-    expect(can(current, "feedback:read")).toBe(false);
+    expect(can(current, "feedback:read")).toBe(!["ADMIN","LANH_DAO"].includes(role));
     expect(can(current, "unknown")).toBe(false);
   });
   it("TBM không mở bộ môn khác cùng khoa; TK mở bộ môn khác trong khoa mình", () => {
