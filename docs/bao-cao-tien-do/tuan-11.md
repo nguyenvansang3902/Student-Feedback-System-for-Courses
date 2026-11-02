@@ -6,7 +6,7 @@
 
 **Mốc kế hoạch giả định:** 09–15/12/2026, tính tuần bảy ngày từ 30/09. **Thực hiện:** 02–03/11/2026 theo yêu cầu trực tiếp của người dùng; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-**Trạng thái:** Tuần 11 đã đạt nghiệm thu kỹ thuật cục bộ: kiểm tổng, build và các bộ kiểm MySQL đã qua sau sửa cuối. QA trình duyệt có các giới hạn ghi bên dưới; CI nguồn bàn giao đang được đối chiếu, chưa nhận là đã qua. Đây là nháp kỹ thuật có AI hỗ trợ; nhóm cần thử lại và thuyết minh bằng lời của mình.
+**Trạng thái:** Tuần 11 đã đạt nghiệm thu kỹ thuật cục bộ: kiểm tổng, build và các bộ kiểm MySQL đã qua sau sửa cuối. QA trình duyệt có các giới hạn ghi bên dưới; CI nguồn d60c350 đã qua check/smoke, xem liên kết bên dưới. Đây là nháp kỹ thuật có AI hỗ trợ; nhóm cần thử lại và thuyết minh bằng lời của mình.
 
 ## 1. Mục tiêu của tuần
 
@@ -112,3 +112,5 @@ Nhóm hoàn thành phần phản hồi nâng cao, giải trình, kiến nghị, 
 Tuần 11 bổ sung phần còn lại FR-154, FR-156, SLA/leo thang cho Phòng Đào tạo, Khảo thí và Thanh tra; đồng thời thực hiện FR-152 và FR-157 theo Điều chỉnh số 01, không tự cắt các mục P1 này. Seed XAC_MINH chỉ được thêm khi quy trình tương ứng đã triển khai. Các giới hạn đã nêu của Thanh tra, Khảo thí và ẩn danh vẫn giữ nguyên.
 
 Người dùng gửi prompt nâng cấp UI riêng rồi yêu cầu hoãn; trạng thái giữ nguyên **“UI: chưa bắt đầu, chờ nghiệm thu tuần 11”**. Không chạy UI-0, không tạo nhánh/tag nâng cấp UI và không tính các trang chức năng Tuần 11 thành giai đoạn thiết kế lại. FR-145 vẫn tồn đọng từ Tuần 7, không được ghi lại như đã hoàn tất. Không viết quy trình hiện tại ở trường hoặc bịa đóng góp thành viên.
+
+Chốt nguồn bàn giao: d60c3508c034ad3de4915a6fd03d65a3e2aa982f, [CI41513829941](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41513829941) check/smoke qua, Linux1141/1141 trong76tệp; buildNext16.4.3 qua. 7013f2f chỉ bổ sung tài liệu giải thích. Các giới hạn QA ở trên vẫn được giữ.

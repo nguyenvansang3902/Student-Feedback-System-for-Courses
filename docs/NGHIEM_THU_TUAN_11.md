@@ -26,7 +26,7 @@ Ghi và kiểm quyền ở service, đọc lại phiên/quyền/phạm vi trong 
 - Bundle giả Tuần 11 thêm một lớp điểm thấp với năm phiếu ẩn danh, một giải trình bắt buộc, một hồ sơ đang xác minh. Seed chỉ bổ sung, không viết lại dữ liệu các tuần cũ.
 - [QA giao diện](QA_GIAO_DIEN_TUAN_11.md): ba vai trò, tám ảnh đã xem, desktop/mobile; ghi rõ thao tác chưa thử tay khi kết nối bị gián đoạn.
 
-Bản dựng cuối và CI theo SHA sẽ ghi ở [verification.json](assets/tuan-11/verification.json) sau khi chạy xong; không dùng CI Tuần 10 thay cho mã mới.
+Nguồn nghiệp vụ `d60c3508c034ad3de4915a6fd03d65a3e2aa982f` có [CI41513829941](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41513829941) qua check/smoke; Linux1141/1141,76tệp. Bản dựng cuối Next16.4.3 qua. Commit7013f2f kế tiếp chỉ bổ sung tài liệu giải thích. Xem [verification.json](assets/tuan-11/verification.json); không dùng CI Tuần10 thay mã mới.
 
 ## Giới hạn và tài liệu
 
