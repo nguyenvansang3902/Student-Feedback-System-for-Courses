@@ -88,6 +88,8 @@ let settingsBefore: Awaited<ReturnType<typeof db.systemSetting.findUnique>> =
 let concurrent:
   { requests: number; succeeded: number; conflicts: number } | undefined;
 const settingsKey = "FEEDBACK_SETTINGS";
+let workflowBefore: Awaited<ReturnType<typeof db.systemSetting.findUnique>> =
+  null;
 function save() {
   writeFileSync(
     ".local/week10-http-result.json",
@@ -278,6 +280,15 @@ try {
   assert.equal(server.uuid, marker.serverUuid);
   assert.equal(server.database, marker.database);
   verified = true;
+  workflowBefore = await db.systemSetting.findUnique({
+    where: { key: "WORKFLOW_SETTINGS" },
+  });
+  // W10 kiểm nhiều luồng cùng sinh viên; nhóm quota cuối và bộ W11 kiểm giới hạn mặc định.
+  await db.systemSetting.upsert({
+    where: { key: "WORKFLOW_SETTINGS" },
+    create: { key: "WORKFLOW_SETTINGS", value: { dailyFeedbackLimit: 100 } },
+    update: { value: { dailyFeedbackLimit: 100 } },
+  });
   settingsBefore = await db.systemSetting.findUnique({
     where: { key: settingsKey },
   });
@@ -1127,7 +1138,7 @@ try {
         leader,
       )
     ).status,
-    403,
+    404,
   );
   const beforeAudit = await db.auditLog.count({
     where: { actorId: inspector.id },
@@ -1160,6 +1171,10 @@ try {
     403,
   );
   pass("BR-34: thu hồi vai trò có hiệu lực ngay trên access token cũ");
+  await db.systemSetting.update({
+    where: { key: "WORKFLOW_SETTINGS" },
+    data: { value: { dailyFeedbackLimit: 5 } },
+  });
   const quotaResults = await Promise.all(
     Array.from({ length: 6 }, (_, index) =>
       request("/api/feedback", seriousStudent, {
@@ -1242,6 +1257,21 @@ try {
       });
       await db.$transaction(
         async (tx) => {
+          await tx.emailOutbox.deleteMany({
+            where: { notification: { userId: { in: users } } },
+          });
+          await tx.notification.deleteMany({
+            where: { userId: { in: users } },
+          });
+          await tx.inspectionCaseNote.deleteMany({
+            where: { inspectionCase: { feedbackId: { in: ids } } },
+          });
+          await tx.feedbackRating.deleteMany({
+            where: { feedbackId: { in: ids } },
+          });
+          await tx.slaEscalation.deleteMany({
+            where: { feedbackId: { in: ids } },
+          });
           await tx.attachment.deleteMany({
             where: { feedbackId: { in: ids } },
           });
@@ -1289,6 +1319,28 @@ try {
             });
           } else
             await tx.systemSetting.deleteMany({ where: { key: settingsKey } });
+          if (workflowBefore)
+            await tx.systemSetting.upsert({
+              where: { key: "WORKFLOW_SETTINGS" },
+              create: {
+                ...workflowBefore,
+                value:
+                  workflowBefore.value === null
+                    ? Prisma.JsonNull
+                    : (workflowBefore.value as Prisma.InputJsonValue),
+              },
+              update: {
+                ...workflowBefore,
+                value:
+                  workflowBefore.value === null
+                    ? Prisma.JsonNull
+                    : (workflowBefore.value as Prisma.InputJsonValue),
+              },
+            });
+          else
+            await tx.systemSetting.deleteMany({
+              where: { key: "WORKFLOW_SETTINGS" },
+            });
           await tx.roleAssignment.deleteMany({
             where: { userId: { in: users } },
           });

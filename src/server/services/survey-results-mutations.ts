@@ -1,3 +1,4 @@
+import { ensureRequiredImprovements } from "./improvements";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import type { Prisma } from "../../generated/prisma/client";
@@ -329,6 +330,7 @@ async function mutateResults(
           },
         },
       });
+      if (target === "DA_CONG_BO") await ensureRequiredImprovements(tx, key);
       return {
         campaignId: key,
         status: target,

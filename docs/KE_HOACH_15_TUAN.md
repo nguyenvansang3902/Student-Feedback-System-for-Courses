@@ -87,6 +87,10 @@ Mỗi tuần: **Làm** (phạm vi), **Không làm** (tránh chạy trước), **
 * Nghiệm thu: chỉnh đồng hồ/dữ liệu để phản hồi quá hạn thì tự leo thang; lớp điểm thấp sinh yêu cầu giải trình; trưởng bộ môn xác nhận được.
 * Tài liệu: bảng SLA, nháp chương hiện thực.
 
+### Làm việc giao diện
+
+UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Prompt nâng cấp được lưu tại [UI_NANG_CAP_PROMPT.md](UI_NANG_CAP_PROMPT.md), dành cho sau khi hoàn thành 15 tuần theo chỉ đạo mới nhất. Không chạy UI-0, không hỏi năm câu hoặc áp dụng luật UI cho lệnh BẮT ĐẦU TUẦN n. Các giai đoạn chỉ kích hoạt bằng BẮT ĐẦU GIAI ĐOẠN UI-n; ước lượng số phiên sẽ lập khi được kích hoạt, chưa coi là lịch cam kết. Tiếp tục Tuần 11 theo prompt chính và điều chỉnh số 01.
+
 **Tuần 12. Báo cáo, dashboard, xuất file.**
 
 * Điều chỉnh số01: dashboard PĐT, thống kê Khảo thí/Thanh tra (FR-147/151/159); cảnh báo bất thường FR-158/BR-65, seed cảnh báo đúng lúc hiện thực. Mở rộng UC-GOLD với xác nhận dữ liệu, phản hồi thi và hồ sơ Thanh tra. Mọi thống kê/tệp xuất áp dụng BR-67.

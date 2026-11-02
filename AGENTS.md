@@ -40,3 +40,12 @@ dev · build · start · lint · typecheck · test · test:e2e · check · db:mi
 - Vai trò: SINH_VIEN, GIANG_VIEN, TRUONG_BO_MON, TRUONG_KHOA, CAN_BO_DBCL, LANH_DAO, ADMIN, PHONG_DAO_TAO, PHONG_KHAO_THI, THANH_TRA.
 - Điều chỉnh số01 và phạm vi việc bù G1: [docs/BO_SUNG_01_TAC_NHAN.md](docs/BO_SUNG_01_TAC_NHAN.md); chưa làm Tuần7 khi chưa có lệnh BẮT ĐẦU TUẦN 7.
 - ADMIN không xem dữ liệu nghiệp vụ nhạy cảm/hồ sơ Thanh tra.
+
+## Giai đoạn nâng cấp giao diện
+
+- Trạng thái UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Prompt được giữ nguyên tại [docs/UI_NANG_CAP_PROMPT.md](docs/UI_NANG_CAP_PROMPT.md) để dùng sau khi hoàn thành 15 tuần và có lệnh riêng.
+- Các luật, ngoại lệ và quy trình trong mục này và prompt UI **chỉ áp dụng khi người dùng gõ BẮT ĐẦU GIAI ĐOẠN UI-n**. Lệnh BẮT ĐẦU TUẦN n tiếp tục nghiệp vụ theo prompt chính và điều chỉnh số 01; không tự kích hoạt UI-0 hoặc hỏi năm câu UI.
+- Khi được kích hoạt: chỉ sửa hiển thị trong phạm vi giai đoạn; giữ nghiệp vụ, quyền, xác thực, ẩn danh, schema, định danh form/test và các ngưỡng bảo vệ. Chỉ dùng các ngoại lệ E1/E2/E3 đúng giới hạn và quyền đã cấp.
+- Giữ nhận diện teal, dùng token/thành phần chung, minh họa tự vẽ và một bộ icon; trang chủ vai trò, AppShell và luồng sinh viên tuân theo giai đoạn được duyệt. WCAG 2.2 AA, riêng viền ô nhập tối thiểu 3:1; không suy công bố khi thiếu mẫu.
+- Không tải tài nguyên bên thứ ba lúc chạy, không nới CSP, không thêm thư viện ngoài danh sách cho phép nếu chưa hỏi; giữ bản quyền và microcopy tự nhiên theo các yêu cầu người dùng đã chốt.
+- Đo thật, giữ ảnh trước/sau, test và báo cáo trung thực; không bịa số liệu, SUS, lời chứng thực; không hoạt ảnh phô trương hoặc sửa dữ liệu thật/bí mật/cấu hình triển khai. Không gộp giai đoạn, chỉ tiếp tục sau lệnh nghiệm thu; phạm vi P0 của tuần luôn được ưu tiên.

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
-import type { InspectionCaseDetail } from "@/server/services/feedback-types";
+import type { InspectionWorkflowDetail } from "@/server/services/inspection-workflow-types";
+import { InspectionWorkflowPanel } from "./inspection-workflow-panel";
 import {
   buttonStyle,
   Field,
@@ -27,7 +28,7 @@ const conclusionLabels: Record<string, string> = {
 };
 export function InspectionDetailPanel({ id }: { id: string }) {
   const ready = useClientReady();
-  const resource = useFeedbackResource<{ item: InspectionCaseDetail }>(
+  const resource = useFeedbackResource<{ item: InspectionWorkflowDetail }>(
     `/api/inspection-cases/${id}`,
   );
   const [busy, setBusy] = useState(false),
@@ -86,7 +87,7 @@ export function InspectionDetailPanel({ id }: { id: string }) {
               <h1 className="text-3xl font-bold text-slate-950">
                 {item.level === "summary"
                   ? "Tóm tắt hồ sơ Thanh tra"
-                  : "Hồ sơ tiếp nhận"}
+                  : "Hồ sơ Thanh tra"}
               </h1>
               <p className="mt-3 text-sm leading-7 text-slate-600">
                 {item.violation
@@ -132,6 +133,30 @@ export function InspectionDetailPanel({ id }: { id: string }) {
                 không thay thế quy trình thanh tra hoặc kỷ luật chính thức của
                 trường.
               </div>
+              {item.conclusion && (
+                <div className="mb-6">
+                  <Panel title="Kết luận đã lưu">
+                    <dl className="space-y-4 text-sm leading-7">
+                      <div>
+                        <dt className="text-xs text-slate-500">Kết luận</dt>
+                        <dd className="font-semibold text-slate-900">
+                          {conclusionLabels[item.conclusion] ?? item.conclusion}
+                        </dd>
+                      </div>
+                      {item.conclusionReason && (
+                        <div>
+                          <dt className="text-xs text-slate-500">
+                            Lý do kết luận
+                          </dt>
+                          <dd className="mt-1 whitespace-pre-wrap break-words text-slate-700">
+                            {item.conclusionReason}
+                          </dd>
+                        </div>
+                      )}
+                    </dl>
+                  </Panel>
+                </div>
+              )}
               {item.canAssign && (
                 <div className="mb-6">
                   <Panel title="Giao xử lý">
@@ -206,6 +231,7 @@ export function InspectionDetailPanel({ id }: { id: string }) {
                   inspection
                 />
               )}
+              <InspectionWorkflowPanel item={item} reload={resource.reload} />
               <div className="mt-6">
                 <Panel title="Lịch sử hồ sơ">
                   <ol className="space-y-4">

@@ -102,6 +102,13 @@ function feedback(serious = false) {
     isLocked: false,
     isHidden: false,
     createdAt: now,
+    acceptDueAt: new Date(now.getTime() + 172800000),
+    replyDueAt: new Date(now.getTime() + 604800000),
+    escalationLevel: 0,
+    reopenCount: 0,
+    answeredAt: null,
+    closedAt: null,
+    rating: null,
     identityLevel: serious ? "AN_DANH_HOAN_TOAN" : null,
     section: {
       id: sectionId,

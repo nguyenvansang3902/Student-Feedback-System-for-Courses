@@ -6,7 +6,7 @@ import {
   feedbackActor,
   noFeedbackQuery,
 } from "@/server/feedback-http";
-import { assignInspectionCase } from "@/server/services/feedback";
+import { assignInspectionCase } from "@/server/services/inspection-workflow";
 import { inspectionAssignmentSchema } from "@/server/services/feedback-types";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";

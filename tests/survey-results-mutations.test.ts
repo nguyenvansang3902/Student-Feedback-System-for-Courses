@@ -94,6 +94,9 @@ let campaign: {
   templateId: string;
   minResponses: number;
   minRate: number;
+  warningScore: number;
+  explanationDays: number;
+  history: { occurredAt: Date }[];
 };
 let aggregates: Record<string, unknown>[];
 let history: Record<string, unknown> | null;
@@ -111,6 +114,9 @@ beforeEach(() => {
     templateId: ids[4],
     minResponses: 5,
     minRate: 0.3,
+    warningScore: 3,
+    explanationDays: 14,
+    history: [],
   };
   aggregates = [];
   history = null;
@@ -134,6 +140,8 @@ beforeEach(() => {
   );
   db.campaignHistory.create.mockImplementation(async ({ data }) => {
     history = data;
+    if (data.toStatus === "DA_CONG_BO")
+      campaign.history.push({ occurredAt: new Date() });
     return data;
   });
   db.campaignSection.findMany.mockResolvedValue([
@@ -196,7 +204,15 @@ beforeEach(() => {
     aggregates.push(data);
     return data;
   });
-  db.aggregateResult.findMany.mockImplementation(async () => aggregates);
+  db.aggregateResult.findMany.mockImplementation(async ({ where } = {}) =>
+    where?.overallScore
+      ? aggregates.filter(
+          (row) =>
+            row.eligibleToPublish &&
+            Number(row.overallScore) < Number(where.overallScore.lt),
+        )
+      : aggregates,
+  );
   db.question.findMany.mockResolvedValue([{ id: "TEXT" }]);
   db.auditLog.create.mockResolvedValue({});
 });

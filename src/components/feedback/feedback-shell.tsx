@@ -40,6 +40,13 @@ export async function FeedbackShell({
     ...(can(actor, "feedback-settings:read")
       ? [["/phan-hoi/cau-hinh", "Cấu hình phản hồi"]]
       : []),
+    ...(can(actor, "improvements:list")
+      ? [["/giai-trinh", "Giải trình cải tiến"]]
+      : []),
+    ...(can(actor, "exam-recommendations:list")
+      ? [["/kien-nghi", "Kiến nghị rà soát"]]
+      : []),
+    ["/thong-bao", "Thông báo"],
     ["/tai-khoan", "Tài khoản của tôi"],
   ];
   return (

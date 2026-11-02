@@ -1,15 +1,17 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import type { InspectionCaseList } from "@/server/services/feedback-types";
+import type { InspectionWorkflowList } from "@/server/services/inspection-workflow-types";
+import { inspectionStatuses } from "@/server/inspection-contract";
 import { Notice, Pager, secondaryStyle, vietnamTime } from "../admin/ui";
 import { useFeedbackResource } from "./feedback-client";
-import { FeedbackStatus, violationLabels } from "./labels";
+import { FeedbackStatus, statusLabels, violationLabels } from "./labels";
 
 export function InspectionListPanel() {
   const [page, setPage] = useState(1);
-  const resource = useFeedbackResource<InspectionCaseList>(
-    `/api/inspection-cases?page=${page}&pageSize=20`,
+  const [status, setStatus] = useState("");
+  const resource = useFeedbackResource<InspectionWorkflowList>(
+    `/api/inspection-cases?page=${page}&pageSize=20${status ? `&status=${status}` : ""}`,
   );
   return (
     <>
@@ -26,6 +28,28 @@ export function InspectionListPanel() {
       <p className="mt-3 text-sm leading-7 text-slate-600">
         Hồ sơ tiếp nhận khiếu nại nghiêm trọng về môn học.
       </p>
+      <label
+        className="mt-4 block text-sm font-semibold"
+        htmlFor="inspection-status-filter"
+      >
+        Lọc trạng thái
+      </label>
+      <select
+        id="inspection-status-filter"
+        value={status}
+        className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm"
+        onChange={(event) => {
+          setStatus(event.target.value);
+          setPage(1);
+        }}
+      >
+        <option value="">Tất cả trạng thái</option>
+        {inspectionStatuses.map((value) => (
+          <option key={value} value={value}>
+            {statusLabels[value] ?? value}
+          </option>
+        ))}
+      </select>
       <Notice error message={resource.error} />
       {resource.loading && (
         <p role="status" className="py-8 text-sm text-slate-500">
@@ -45,7 +69,7 @@ export function InspectionListPanel() {
                     <p className="text-xs font-semibold text-slate-500">
                       {item.level === "summary"
                         ? "Thông tin tóm tắt"
-                        : "Hồ sơ tiếp nhận"}
+                        : "Hồ sơ Thanh tra"}
                     </p>
                     <h2 className="mt-2 break-words text-lg font-bold text-slate-950">
                       <Link
@@ -61,6 +85,11 @@ export function InspectionListPanel() {
                     </h2>
                   </div>
                   <FeedbackStatus status={item.status} />
+                  {item.isOverdue && (
+                    <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-800">
+                      Quá hạn
+                    </span>
+                  )}
                 </div>
                 <p className="mt-3 text-xs leading-6 text-slate-500">
                   {vietnamTime(item.createdAt)}

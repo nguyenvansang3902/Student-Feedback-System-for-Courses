@@ -16,7 +16,7 @@ import {
   feedbackTransitionTarget,
   initialFeedbackRoles,
   isInspectionOfficer,
-  roleMatchesFeedbackSection,
+  roleMatchesActiveFeedbackSection,
   type FeedbackSectionContext,
 } from "../policies/feedback";
 import {
@@ -25,6 +25,14 @@ import {
   objectId,
   parseInput,
 } from "./access";
+import { readWorkflowSettings } from "./workflow-settings";
+import { enqueueDomainNotice } from "./domain-notifications";
+import {
+  addBusinessDays,
+  feedbackOverdue,
+  ratingAllowed,
+  reopenAllowed,
+} from "./feedback-deadlines";
 import { readFeedbackSettings } from "./feedback-settings";
 import { safeAttachmentName } from "../feedback/attachment-files";
 import {
@@ -61,6 +69,7 @@ const feedbackInclude = {
   section: { include: sectionInclude },
   author: { select: { displayName: true, loginCode: true, email: true } },
   assignee: { select: { id: true, displayName: true } },
+  rating: true,
   recipients: true,
   inspectionCase: true,
   messages: {
@@ -129,25 +138,26 @@ function sectionDto(section: SectionRow): FeedbackSection {
     semesterLocked: !!section.semester.lockedAt,
   };
 }
-function serious(row: Pick<FeedbackRow, "category">): boolean {
-  return row.category === "KHIEU_NAI_NGHIEM_TRONG";
+function serious(
+  row: Pick<FeedbackRow, "category"> & {
+    inspectionCase?: { status: string } | null;
+  },
+): boolean {
+  return (
+    row.category === "KHIEU_NAI_NGHIEM_TRONG" ||
+    !!(row.inspectionCase && row.inspectionCase.status !== "CHUYEN_LAI")
+  );
 }
 function contextGrant(
   grant: RoleGrant,
   actor: AuthActor,
   section: SectionRow,
 ): boolean {
-  if (
-    (grant.role === "TRUONG_BO_MON" || grant.role === "TRUONG_KHOA") &&
-    (!section.course.department.isActive ||
-      !section.course.department.faculty.isActive)
-  )
-    return false;
-  return roleMatchesFeedbackSection(
-    grant,
-    actor.userId,
-    sectionContext(section),
-  );
+  return roleMatchesActiveFeedbackSection(grant, actor.userId, {
+    ...sectionContext(section),
+    departmentActive: section.course.department.isActive,
+    facultyActive: section.course.department.faculty.isActive,
+  });
 }
 function normalRecipient(
   actor: AuthActor,
@@ -222,7 +232,7 @@ export async function requireFeedbackResource(
     actor: fresh,
     feedback: row,
     isAuthor,
-    inspectionId: row.inspectionCase?.id ?? null,
+    inspectionId: serious(row) ? (row.inspectionCase?.id ?? null) : null,
     canSeeIdentity:
       isAuthor ||
       (serious(row)
@@ -294,14 +304,12 @@ async function feedbackWindow(tx: Prisma.TransactionClient): Promise<string[]> {
   return ids;
 }
 function candidateActor(user: { id: string; roles: RoleGrant[] }): AuthActor {
-  const assignments = user.roles
-    .filter(isValidGrant)
-    .map((grant) => ({
-      role: grant.role,
-      scopeType: grant.scopeType,
-      facultyId: grant.facultyId ?? null,
-      departmentId: grant.departmentId ?? null,
-    }));
+  const assignments = user.roles.filter(isValidGrant).map((grant) => ({
+    role: grant.role,
+    scopeType: grant.scopeType,
+    facultyId: grant.facultyId ?? null,
+    departmentId: grant.departmentId ?? null,
+  }));
   return {
     userId: user.id,
     loginCode: "",
@@ -476,6 +484,10 @@ function listItem(access: FeedbackAccess): FeedbackListItem {
     severity: row.severity,
     title: row.title,
     status: row.status,
+    isOverdue: feedbackOverdue(row),
+    acceptDueAt: row.acceptDueAt.toISOString(),
+    replyDueAt: row.replyDueAt.toISOString(),
+    escalationLevel: row.escalationLevel,
     revision: row.revision,
     isAnonymous: serious(row)
       ? row.identityLevel !== "CHO_THANH_TRA_BIET"
@@ -486,16 +498,17 @@ function listItem(access: FeedbackAccess): FeedbackListItem {
       : "Sinh viên ẩn danh",
     assignee: row.assignee,
     createdAt: row.createdAt.toISOString(),
-    inspectionId: row.inspectionCase?.id ?? null,
+    inspectionId: serious(row) ? (row.inspectionCase?.id ?? null) : null,
   };
 }
-async function detailDto(
+export async function detailDto(
   tx: Prisma.TransactionClient,
   access: FeedbackAccess,
 ): Promise<FeedbackDetail> {
   await auditCaseRead(tx, access);
   const row = access.feedback;
   const actions = allowedActions(access);
+  const settings = await readWorkflowSettings(tx);
   const label = (id: string | null, name?: string) =>
     id === row.authorId
       ? access.canSeeIdentity
@@ -504,6 +517,34 @@ async function detailDto(
       : (name ?? "Hệ thống");
   return {
     ...listItem(access),
+    rating: row.rating
+      ? { score: row.rating.score, comment: row.rating.comment }
+      : null,
+    canRate:
+      access.isAuthor &&
+      !serious(row) &&
+      !row.section.semester.lockedAt &&
+      !row.rating &&
+      ratingAllowed(row, settings.satisfactionDays),
+    canReopen:
+      access.isAuthor &&
+      !serious(row) &&
+      !row.section.semester.lockedAt &&
+      reopenAllowed(row, settings.reopenDays),
+    canTransferToInspection:
+      !serious(row) &&
+      actions.includes("forward") &&
+      actorGrants(access.actor).some(
+        (g) =>
+          [
+            "TRUONG_BO_MON",
+            "TRUONG_KHOA",
+            "CAN_BO_DBCL",
+            "PHONG_DAO_TAO",
+            "PHONG_KHAO_THI",
+          ].includes(g.role) && contextGrant(g, access.actor, row.section),
+      ),
+    duplicateWarning: false,
     body: row.isHidden ? "Nội dung đã được ẩn." : row.body,
     identityLevel: row.identityLevel,
     author: access.canSeeIdentity ? row.author : null,
@@ -579,6 +620,10 @@ function queueWhere(actor: AuthActor): Prisma.FeedbackWhereInput {
         },
       },
       category: { not: "KHIEU_NAI_NGHIEM_TRONG" as const },
+      OR: [
+        { inspectionCase: { is: null } },
+        { inspectionCase: { is: { status: "CHUYEN_LAI" as const } } },
+      ],
     };
     if (grant.role === "GIANG_VIEN")
       OR.push({
@@ -595,12 +640,15 @@ function queueWhere(actor: AuthActor): Prisma.FeedbackWhereInput {
         ...recipient,
         section: { course: { department: { facultyId: grant.facultyId! } } },
       });
-    if (["CAN_BO_DBCL", "PHONG_DAO_TAO", "PHONG_KHAO_THI"].includes(grant.role))
+    if (
+      ["CAN_BO_DBCL", "PHONG_DAO_TAO", "PHONG_KHAO_THI", "LANH_DAO"].includes(
+        grant.role,
+      )
+    )
       OR.push(recipient);
     if (grant.role === "THANH_TRA" && can(actor, "inspection:read"))
       OR.push({
-        category: "KHIEU_NAI_NGHIEM_TRONG",
-        inspectionCase: { isNot: null },
+        inspectionCase: { is: { status: { not: "CHUYEN_LAI" } } },
         section: inspectionScope(actor),
       });
   }
@@ -686,7 +734,7 @@ export async function listFeedback(
           feedback: row,
           isAuthor,
           canSeeIdentity,
-          inspectionId: row.inspectionCase?.id ?? null,
+          inspectionId: serious(row) ? (row.inspectionCase?.id ?? null) : null,
         });
       });
       if (data.view === "queue" && rows.some(serious))
@@ -712,15 +760,6 @@ export async function getFeedback(
   });
 }
 
-function addBusinessDays(from: Date, count: number): Date {
-  const result = new Date(from);
-  while (count > 0) {
-    result.setTime(result.getTime() + 86400000);
-    if (![0, 6].includes(new Date(result.getTime() + 7 * 3600000).getUTCDay()))
-      count--;
-  }
-  return result;
-}
 export async function createFeedback(
   actor: AuthActor,
   input: unknown,
@@ -776,24 +815,35 @@ export async function createFeedback(
       );
     if (section.semester.lockedAt) locked();
     const isSerious = data.category === "KHIEU_NAI_NGHIEM_TRONG";
-    if (isSerious) {
-      const day = new Date(
-        `${new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10)}T00:00:00+07:00`,
+    const workflow = await readWorkflowSettings(tx);
+    const day = new Date(
+      new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10) +
+        "T00:00:00+07:00",
+    );
+    if (
+      (await tx.feedback.count({
+        where: {
+          authorId: fresh.userId,
+          createdAt: { gte: day, lt: new Date(day.getTime() + 86400000) },
+        },
+      })) >= workflow.dailyFeedbackLimit
+    )
+      throw new AuthError(
+        "Đã đạt giới hạn gửi phản hồi trong ngày. Vui lòng thử lại vào ngày tiếp theo.",
+        429,
+        "FEEDBACK_DAILY_LIMIT",
       );
-      if (
-        (await tx.feedback.count({
-          where: {
-            authorId: fresh.userId,
-            createdAt: { gte: day, lt: new Date(day.getTime() + 86400000) },
-          },
-        })) >= 5
-      )
-        throw new AuthError(
-          "Đã đạt giới hạn gửi phản hồi trong ngày. Vui lòng thử lại vào ngày tiếp theo.",
-          429,
-          "FEEDBACK_DAILY_LIMIT",
-        );
-    }
+    const duplicate = await tx.feedback.findFirst({
+      where: {
+        authorId: fresh.userId,
+        sectionId: section.id,
+        body: data.body,
+        createdAt: {
+          gte: new Date(Date.now() - workflow.duplicateHours * 3600000),
+        },
+      },
+      select: { id: true },
+    });
     const recipients = await recipientsFor(
       tx,
       section,
@@ -826,16 +876,29 @@ export async function createFeedback(
         revision: 1,
         requestId: data.requestId,
         requestHash: hash,
-        acceptDueAt: addBusinessDays(now, isSerious ? 3 : 2),
+        acceptDueAt: addBusinessDays(
+          now,
+          isSerious
+            ? workflow.inspectionAcceptDays
+            : ["THI_KET_THUC_HOC_PHAN", "TO_CHUC_LOP_HOC"].includes(
+                  data.category,
+                )
+              ? workflow.officeAcceptDays
+              : workflow.normalAcceptDays,
+        ),
         replyDueAt: addBusinessDays(
           now,
           isSerious
-            ? 30
+            ? workflow.inspectionCompleteDays
             : ["THI_KET_THUC_HOC_PHAN", "TO_CHUC_LOP_HOC"].includes(
                   data.category,
                 ) || data.severity === "KHIEU_NAI"
-              ? 5
-              : 7,
+              ? ["THI_KET_THUC_HOC_PHAN", "TO_CHUC_LOP_HOC"].includes(
+                  data.category,
+                )
+                ? workflow.officeReplyDays
+                : workflow.complaintReplyDays
+              : workflow.normalReplyDays,
         ),
         recipients: {
           create: recipients.map((recipient) => ({
@@ -863,8 +926,8 @@ export async function createFeedback(
           violation: data.violation!,
           status: "TIEP_NHAN",
           createdById: fresh.userId,
-          acceptDueAt: addBusinessDays(now, 3),
-          completeDueAt: addBusinessDays(now, 30),
+          acceptDueAt: addBusinessDays(now, workflow.inspectionAcceptDays),
+          completeDueAt: addBusinessDays(now, workflow.inspectionCompleteDays),
           events: {
             create: {
               actorId: fresh.userId,
@@ -888,7 +951,18 @@ export async function createFeedback(
         },
       },
     });
-    return detailDto(tx, await requireFeedbackResource(tx, fresh, id));
+    await enqueueDomainNotice(tx, {
+      key: "feedback-created:" + id,
+      targetType: "Feedback",
+      targetId: id,
+      title: "Phản hồi mới",
+      body: "Có phản hồi mới cần tiếp nhận. Đăng nhập để xem trong phạm vi được phép.",
+      userIds: recipients.map((x) => x.id),
+    });
+    return {
+      ...(await detailDto(tx, await requireFeedbackResource(tx, fresh, id))),
+      duplicateWarning: !!duplicate,
+    };
   });
 }
 async function mutationAlreadyDone(
@@ -974,6 +1048,16 @@ export async function addFeedbackMessage(
         objectType: "Feedback",
         objectId: feedbackId,
       },
+    });
+    await enqueueDomainNotice(tx, {
+      key: "feedback-message:" + data.requestId,
+      targetType: "Feedback",
+      targetId: feedbackId,
+      title: "Trao đổi phản hồi",
+      body: "Phản hồi có trao đổi mới. Đăng nhập để xem.",
+      userIds: access.isAuthor
+        ? row.recipients.filter((x) => x.isActive).map((x) => x.userId)
+        : [row.authorId],
     });
     return detailDto(tx, await requireFeedbackResource(tx, fresh, feedbackId));
   });
@@ -1101,7 +1185,10 @@ export async function transitionFeedback(
         status,
         assigneeId,
         revision: { increment: 1 },
-        ...(data.action === "answer" ? { answeredAt: new Date() } : {}),
+        ...(data.action === "accept" ? { acceptedAt: new Date() } : {}),
+        ...(data.action === "answer"
+          ? { answeredAt: new Date(), isOverdue: false }
+          : {}),
         ...(data.action === "close" ? { closedAt: new Date() } : {}),
       },
     });
@@ -1149,6 +1236,19 @@ export async function transitionFeedback(
           revision: data.revision + 1,
         },
       },
+    });
+    await enqueueDomainNotice(tx, {
+      key: "feedback-transition:" + data.requestId,
+      targetType: "Feedback",
+      targetId: feedbackId,
+      title: "Cập nhật phản hồi",
+      body: "Trạng thái phản hồi đã được cập nhật. Đăng nhập để xem.",
+      userIds: [
+        row.authorId,
+        ...(data.action === "forward"
+          ? [assigneeId!]
+          : row.recipients.filter((x) => x.isActive).map((x) => x.userId)),
+      ].filter((x) => x !== fresh.userId),
     });
     if (data.action === "forward")
       return {

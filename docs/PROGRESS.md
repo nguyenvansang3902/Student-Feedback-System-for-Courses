@@ -1,6 +1,6 @@
 # Tiến độ yêu cầu chức năng
 
-**Hiện tại sau nghiệm thu chức năng Tuần10: 165/219=75,3%, 58/84 FR**. Chốt khởi động/tài liệu và CI commit giao cuối được ghi tại NGHIEM_THU_TUAN_10.md; sửa câu chữ/TOTP không cộng điểm.
+**Hiện tại sau nghiệm thu chức năng Tuần11: 188/219=85,8%, 68/84 FR**. Chốt khởi động/tài liệu và CI commit giao cuối được ghi tại NGHIEM_THU_TUAN_10.md; sửa câu chữ/TOTP không cộng điểm.
 
 Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 
@@ -74,7 +74,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-63 [P0] trang kết quả theo vai trò và phạm vi (Tuần 9)
 - [x] FR-64 [P1] so sánh với bộ môn/khoa/kỳ trước (Tuần 9)
 - [x] FR-65 [P1] kiểm duyệt góp ý tự luận (Tuần 9)
-- [ ] FR-66 [P1] giải trình và xác nhận (Tuần 11)
+- [x] FR-66 [P1] giải trình và xác nhận (Tuần 11)
 
 ## M8 Phản hồi
 
@@ -82,15 +82,15 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-71 [P0] định tuyến và hàng đợi xử lý (Tuần 10)
 - [x] FR-72 [P0] trạng thái và lịch sử (Tuần 10)
 - [x] FR-73 [P0] trao đổi qua lại (Tuần 10)
-- [ ] FR-74 [P1] SLA, quá hạn, leo thang (Tuần 11)
-- [ ] FR-75 [P1] đánh giá hài lòng và mở lại (Tuần 11)
+- [x] FR-74 [P1] SLA, quá hạn, leo thang (Tuần 11)
+- [x] FR-75 [P1] đánh giá hài lòng và mở lại (Tuần 11)
 - [x] FR-76 [P0] chuyển tiếp/từ chối có lý do (Tuần 10)
 
 ## M9 Thông báo
 
-- [ ] FR-80 [P0] thông báo trong ứng dụng (Tuần 11)
-- [ ] FR-81 [P1] email (Mailpit khi phát triển, SMTP khi triển khai) (Tuần 11)
-- [ ] FR-82 [P1] nhắc hạn (Tuần 11)
+- [x] FR-80 [P0] thông báo trong ứng dụng (Tuần 11)
+- [x] FR-81 [P1] email (Mailpit khi phát triển, SMTP khi triển khai) (Tuần 11)
+- [x] FR-82 [P1] nhắc hạn (Tuần 11)
 
 ## M10 Báo cáo
 
@@ -130,15 +130,15 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
 - [x] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
 - [ ] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
-- [ ] FR-152 [P1] kiến nghị rà soát của Khảo thí và phản hồi trưởng bộ môn (Tuần 11)
+- [x] FR-152 [P1] kiến nghị rà soát của Khảo thí và phản hồi trưởng bộ môn (Tuần 11)
 
 ## M15 Phòng Thanh tra
 
 - [x] FR-153 [P0] gửi KHIEU_NAI_NGHIEM_TRONG với cảnh báo, loại vi phạm và mức độ danh tính (Tuần 10)
-- [ ] FR-154 [P0] hồ sơ Thanh tra và máy trạng thái tiếp nhận/xác minh/kết luận/thông báo/đóng — khởi tạo TIEP_NHAN ở Tuần 10 (Tuần 11)
+- [x] FR-154 [P0] hồ sơ Thanh tra và máy trạng thái tiếp nhận/xác minh/kết luận/thông báo/đóng — khởi tạo TIEP_NHAN ở Tuần 10 (Tuần 11)
 - [x] FR-155 [P0] loại người xung đột lợi ích khỏi hàng đợi, quyền xem và giao hồ sơ (Tuần 10)
-- [ ] FR-156 [P0] kết luận hồ sơ Thanh tra và thông báo đúng mức tiết lộ (Tuần 11)
-- [ ] FR-157 [P1] chuyển hồ sơ một chiều từ vai trò được phép sang Thanh tra (Tuần 11)
+- [x] FR-156 [P0] kết luận hồ sơ Thanh tra và thông báo đúng mức tiết lộ (Tuần 11)
+- [x] FR-157 [P1] chuyển hồ sơ một chiều từ vai trò được phép sang Thanh tra (Tuần 11)
 - [ ] FR-158 [P1] cảnh báo bất thường khảo sát và màn hình xem xét chỉ số (Tuần 12)
 - [ ] FR-159 [P1] thống kê Thanh tra không định danh, có ngưỡng (Tuần 12)
 
@@ -205,3 +205,10 @@ Chốt FR-70/71/72/73/76/146/149/153/155 trên nguồn `51f03e26f47d17279af0b681
 Chốt giao02/11: nguồn `8ffa99f6e67b06b579a3576506395e9856d1dd1d`, [CI41414188239](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239) check/smoke thành công; Linux1002/1002 và Windows1001passed/1skipped trong63tệp. Bản dựng hết cảnh báo tracing, thêm17test khởi động và kiểm CMD cold-start/mở lại thật, không trùng tiến trình, giữ .env. Hướng dẫn ba bước đầu README; web3000/scheduler đã mở lại. Không cộng thêm FR/điểm cho tiện ích mở dự án.
 
 Sửa tệp CMD tự đóng ngày 02/11: tái hiện lỗi ở cửa sổ tương tác do LF, đổi sang CRLF và giữ byte trong Git/ZIP, thêm một test trên tệp checkout. Check: 1002 passed, 1 skipped / 1003, trong 63 tệp; khởi động từ System32 và mở lại giữ `pause`, web trả HTTP 200. Đây là sửa vận hành, không thêm FR hoặc chuyển Tuần 11; vẫn 165/219 = 75,3%, 58/84 FR. Xem [hồ sơ sửa](SUA_KHOI_DONG_CMD_2026_11_02.md).
+
+Bắt đầu Tuần 11 ngày 02/11 theo lệnh người dùng; đang kiểm và chưa tick các FR mới. UI chưa bắt đầu, chờ nghiệm thu tuần 11 và lệnh giai đoạn riêng sau 15 tuần. [Checkpoint đang làm](WIP_TUAN_11.md).
+
+
+## Nghiệm thu Tuần 11 — 02–03/11/2026
+
+Hoàn tất FR-66/74/75/80/81/82/152/154/156/157; thêm 23 điểm, tổng188/219=85,8%,68/84FR. Check1140passed/1skipped trong76tệp, buildNext16.4.3, MySQL43nhóm, hồi quy Tuần10=19/Tuần9=12,SQL16,demo18. Hash37bảng/9399bản ghi cũ và seedlặp43bảng/9451bản ghi giữ nguyên. [Nghiệm thu](NGHIEM_THU_TUAN_11.md), [QA](QA_GIAO_DIEN_TUAN_11.md), [bằng chứng](assets/tuan-11/verification.json). FR-145 còn backlog, FR-160 chưa tick toàn bộ. CI nguồn mới phải đối chiếu SHA riêng. Người dùng đã yêu cầu tiếp tục Tuần12 sau khi chốt11; UI vẫn hoãn.

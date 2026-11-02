@@ -45,6 +45,49 @@ const db = getDb(),
     reason: "Kiểm thử seed demo trong database riêng",
   };
 const results: string[] = [];
+async function week11Snapshot() {
+  const feedback = await db.feedback.findUniqueOrThrow({
+    where: { id: demoId("week11:feedback") },
+  });
+  const item = await db.inspectionCase.findUniqueOrThrow({
+    where: { id: demoId("week11:case") },
+    include: {
+      notes: { orderBy: { id: "asc" } },
+      events: { orderBy: { id: "asc" } },
+    },
+  });
+  assert.equal(item.status, "XAC_MINH");
+  assert.equal(item.notes.length, 1);
+  assert.equal(item.events.length, 2);
+  const campaignId = demoId("week11:campaign");
+  const aggregate = await db.aggregateResult.findUniqueOrThrow({
+    where: { id: demoId("week11:result") },
+  });
+  assert.equal(aggregate.overallScore?.toString(), "2");
+  assert.equal(aggregate.eligibleToPublish, true);
+  assert.equal(aggregate.responseCount, 5);
+  const plans = await db.improvementPlan.findMany({
+    where: { campaignId },
+    include: { history: true },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(plans.length, 1);
+  assert.equal(plans[0].status, "CAN_GIAI_TRINH");
+  const responses = await db.surveyResponse.findMany({
+    where: { campaignId },
+    include: { answers: { orderBy: { id: "asc" } } },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(responses.length, 5);
+  const setting = await db.systemSetting.findUniqueOrThrow({
+    where: { key: "W11_DEMO_WORKFLOW_V1" },
+  });
+  return createHash("sha256")
+    .update(
+      JSON.stringify({ feedback, item, aggregate, plans, responses, setting }),
+    )
+    .digest("hex");
+}
 async function week10Snapshot() {
   const feedbackIds = Array.from({ length: 9 }, (_, index) =>
     demoId(`week10:feedback:${index}`),
@@ -469,6 +512,7 @@ try {
   const medium = await run("medium");
   const originalWeek9 = await week9Snapshot();
   const originalWeek10 = await week10Snapshot();
+  const originalWeek11 = await week11Snapshot();
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
   results.push(
@@ -810,6 +854,10 @@ try {
   assert.equal(await week10Snapshot(), originalWeek10);
   results.push(
     "Tuần10: seedlặp/medium→small→large giữ nguyên hash9phản hồi,8lớp/ghi danh,recipient/history vàhai case/event; sáu phản hồi lịch sử được đối chiếu riêng theoUUID, không gộp với bundle mới",
+  );
+  assert.equal(await week11Snapshot(), originalWeek11);
+  results.push(
+    "Tuần11: hồ sơ XAC_MINH/ghi chú, lớp2điểm/5phiếu và yêu cầu giải trình đúng ngưỡng; seed lặp đổi size giữ nguyên hash bundle mới",
   );
   Object.assign(process.env, { NODE_ENV: "production" });
   await assert.rejects(seedDemo(actor, "small"));

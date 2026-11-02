@@ -10,6 +10,17 @@ export interface RoleGrant {
 }
 
 export type PolicyAction =
+  | "notifications:list"
+  | "notifications:read"
+  | "notifications:mutate"
+  | "improvements:list"
+  | "improvements:read"
+  | "improvements:submit"
+  | "improvements:review"
+  | "exam-recommendations:list"
+  | "exam-recommendations:read"
+  | "exam-recommendations:create"
+  | "exam-recommendations:respond"
   | "feedback:access"
   | "feedback:list"
   | "feedback:read"
@@ -142,6 +153,82 @@ export function can(
   if (!hasFullSession(actor)) return false;
   const grants = actorGrants(actor);
   if (
+    action.startsWith("improvements:") &&
+    ![
+      "improvements:list",
+      "improvements:read",
+      "improvements:submit",
+      "improvements:review",
+    ].includes(action)
+  )
+    return false;
+  if (
+    action.startsWith("exam-recommendations:") &&
+    ![
+      "exam-recommendations:list",
+      "exam-recommendations:read",
+      "exam-recommendations:create",
+      "exam-recommendations:respond",
+    ].includes(action)
+  )
+    return false;
+  if (
+    action.startsWith("feedback:") &&
+    ![
+      "feedback:access",
+      "feedback:list",
+      "feedback:read",
+      "feedback:create",
+      "feedback:attach",
+      "feedback:process",
+    ].includes(action)
+  )
+    return false;
+  if (
+    action.startsWith("inspection:") &&
+    !["inspection:list", "inspection:read", "inspection:assign"].includes(
+      action,
+    )
+  )
+    return false;
+  if (
+    action.startsWith("feedback-settings:") &&
+    !["feedback-settings:read", "feedback-settings:write"].includes(action)
+  )
+    return false;
+  if (
+    [
+      "notifications:list",
+      "notifications:read",
+      "notifications:mutate",
+    ].includes(action)
+  )
+    return grants.length > 0;
+  if (
+    action.startsWith("improvements:") ||
+    action.startsWith("exam-recommendations:")
+  ) {
+    if (actor.roles.includes("ADMIN")) return false;
+    const roles = action.startsWith("improvements:")
+      ? action === "improvements:submit"
+        ? ["GIANG_VIEN"]
+        : action === "improvements:review"
+          ? ["TRUONG_BO_MON"]
+          : [
+              "GIANG_VIEN",
+              "TRUONG_BO_MON",
+              "TRUONG_KHOA",
+              "CAN_BO_DBCL",
+              "LANH_DAO",
+            ]
+      : action === "exam-recommendations:create"
+        ? ["PHONG_KHAO_THI"]
+        : action === "exam-recommendations:respond"
+          ? ["TRUONG_BO_MON"]
+          : ["PHONG_KHAO_THI", "TRUONG_BO_MON", "TRUONG_KHOA"];
+    return grants.some((grant) => roles.includes(grant.role));
+  }
+  if (
     action.startsWith("feedback:") ||
     action.startsWith("inspection:") ||
     action.startsWith("feedback-settings:")
@@ -168,6 +255,7 @@ export function can(
       "PHONG_DAO_TAO",
       "PHONG_KHAO_THI",
       "THANH_TRA",
+      "LANH_DAO",
     ];
     return grants.some(
       (grant) =>

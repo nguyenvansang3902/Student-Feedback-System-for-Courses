@@ -93,13 +93,29 @@ describe("BR-21 / FR-71 / FR-146 / FR-149 — tám loại phản hồi", () => {
 });
 
 describe("BR-18/61/62/68 / TC-ALL-01 — quyền đầu vào của mười vai trò", () => {
+  it("BR-34 từ chối hành động chưa định nghĩa dù có tiền tố đúng module", () => {
+    for (const role of [
+      "GIANG_VIEN",
+      "CAN_BO_DBCL",
+      "THANH_TRA",
+      "PHONG_KHAO_THI",
+    ] as const)
+      for (const action of [
+        "feedback:delete",
+        "inspection:export-all",
+        "feedback-settings:reset",
+        "improvements:remove",
+        "exam-recommendations:remove",
+      ])
+        expect(can(actor([role]), action)).toBe(false);
+  });
   it.each([
     ["SINH_VIEN", true, true, false, false, false, false],
     ["GIANG_VIEN", false, true, true, false, false, false],
     ["TRUONG_BO_MON", false, true, true, false, false, false],
     ["TRUONG_KHOA", false, true, true, false, false, false],
     ["CAN_BO_DBCL", false, true, true, false, false, true],
-    ["LANH_DAO", false, false, false, true, false, false],
+    ["LANH_DAO", false, true, true, true, false, false],
     ["ADMIN", false, false, false, false, false, false],
     ["PHONG_DAO_TAO", false, true, true, false, false, false],
     ["PHONG_KHAO_THI", false, true, true, false, false, false],
@@ -168,7 +184,7 @@ describe("BR-18/61/62/68 / TC-ALL-01 — quyền đầu vào của mười vai t
     const identity = actor(["LANH_DAO"]);
     expect(canReadInspection(identity, section)).toBe(true);
     expect(isInspectionOfficer(identity, section)).toBe(false);
-    expect(can(identity, "feedback:read")).toBe(false);
+    expect(can(identity, "feedback:read")).toBe(true);
     expect(can(identity, "inspection:assign")).toBe(false);
   });
   it("không tin tên vai trò nếu phạm vi cấp quyền không hợp lệ", () => {
@@ -261,16 +277,17 @@ describe("BR-21/34 — người nhận thường đúng phạm vi", () => {
       ),
     ).toBe(false);
   });
-  it("PĐT/Khảo thí/ĐBCL là các đơn vị nhận toàn trường, không mở rộng sang ADMIN/Thanhtra/Lãnhđạo", () => {
+  it("PĐT/Khảo thí/ĐBCL là các đơn vị nhận toàn trường, Lãnh đạo là tầng leo thang; không mở rộng sang ADMIN/Thanhtra", () => {
     for (const role of [
       "PHONG_DAO_TAO",
       "PHONG_KHAO_THI",
       "CAN_BO_DBCL",
+      "LANH_DAO",
     ] as const)
       expect(roleMatchesFeedbackSection(grant(role), otherId, section)).toBe(
         true,
       );
-    for (const role of ["SINH_VIEN", "ADMIN", "THANH_TRA", "LANH_DAO"] as const)
+    for (const role of ["SINH_VIEN", "ADMIN", "THANH_TRA"] as const)
       expect(roleMatchesFeedbackSection(grant(role), otherId, section)).toBe(
         false,
       );

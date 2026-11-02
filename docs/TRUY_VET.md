@@ -398,3 +398,19 @@ Tiếp tục01/11: fullcheck850/850(53tệp), build qua. `use-client-ready` và9
 Nguồn bàn giao02/11: `8ffa99f6e67b06b579a3576506395e9856d1dd1d`, [CI41414188239](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239) check/smoke thành công, Linux1002/1002 trong63tệp. Windows1001passed/1skipped; bản dựng hết cảnh báo tracing. Khởi động CMD từ web tắt và tái sử dụng web đang chạy đều qua, không trùng tiến trình hoặc sinh lại client trên phiên dev; .env giữ nguyên. Không cộng FR mới cho tiện ích khởi động. Nhãn nhóm kiểm định tuyến đã sửa BR-55 thành BR-54; BR-55/FR-145 vẫn chưa nghiệm thu.
 
 Sửa CMD ngày 02/11: KHOI_DONG_DU_AN.cmd, Gitattributes và test local-start bảo vệ CRLF của tệp thực tế. Đối chứng LF trong cửa sổ tương tác thoát mã 1; bản CRLF khởi động từ System32 hiện thông báo sẵn sàng, mở lại giữ `pause`, nhấn phím thoát mã 0 và web vẫn trả HTTP 200. Check: 1002 passed, 1 skipped / 1003, trong 63 tệp. Lượt kiểm nền cũ chưa bao phủ lỗi này; xem [hồ sơ sửa](SUA_KHOI_DONG_CMD_2026_11_02.md). Không thay FR/BR nghiệp vụ hoặc tiến độ.
+
+Tuần 11 đang triển khai: FR-66/74/75/80/81/82/152/154/156/157 được đối chiếu tại [checkpoint](WIP_TUAN_11.md); chưa nghiệm thu toàn tuần. Không áp dụng hoặc nhận đã kiểm các TC-UI từ prompt nâng cấp đã hoãn.
+
+### Tuần 11 — nghiệm thu kỹ thuật 03/11/2026
+
+| Yêu cầu | Hiện thực, bằng chứng |
+| --- | --- |
+| FR-66; BR-10 | improvements.ts, publish hook, form gửi/xác nhận/bổ sung, remindercursor; MySQL12nhóm chung, UI GV→TBM |
+| FR-74; BR-23/54/56/60 | feedback-sla.ts, workflow-settings.ts, feedback-deadlines.ts; unique marker+mutex+cursor, ngày làm việc, quyền đơn vị active; MySQL14nhóm chung + firstaccess7unit |
+| FR-75; BR-25/26 | feedback-satisfaction.ts, feedback.ts và UI; rating7ngày/1lần, reopen≤2/1lần, quota+duplicatewarning; MySQLrace/retry/IDOR |
+| FR-80/81/82 | notifications.ts/domain-notifications.ts/notification-access.ts, ownCSRF/center, workerSMTP; 10nhóm MySQL/Mailpit, tuplekey không xung đột tài nguyên |
+| FR-152; BR-57/58 | exam-recommendations.ts, từ dữ liệu gộp cóphiếu≥2GV; đúng TBM phản hồi,14ngày nhắc+báoTK; MySQL12nhóm chung |
+| FR-154/156/157; BR-61/62/63/64 | inspection-workflow.ts/notes/privateattachments; CAS/state/conflicts/summaryonly/transferoneway; 7nhóm MySQL,23unit+7firstaccess; UI xácminh→kếtluận→thôngbáo |
+| Schema/seed/quyền | 43runtime/46design; migration6bảng đúngcollation; old9399rows/37tables hashpreserved; repeat9451/43; demo18nhóm |
+
+Nguồn/bản dựng/CI và giới hạn UI cụ thể xem [nghiệm thu](NGHIEM_THU_TUAN_11.md), [QA](QA_GIAO_DIEN_TUAN_11.md), [verification](assets/tuan-11/verification.json). Không dùng CI lịch sử thay mã mới. Không thêm dashboard/xuất file/cờ bất thường trong commit tuần11; giai đoạn UI chưa bắt đầu.

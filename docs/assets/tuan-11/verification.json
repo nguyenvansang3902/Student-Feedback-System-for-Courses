@@ -1,0 +1,215 @@
+{
+  "week": 11,
+  "implementedAt": "2026-11-02/2026-11-03",
+  "branch": "main",
+  "sourceCommit": null,
+  "ci": {
+    "status": "pending",
+    "note": "Chỉ điền khi đối chiếu run đúng SHA."
+  },
+  "local": {
+    "check": {
+      "passed": 1140,
+      "skipped": 1,
+      "total": 1141,
+      "files": 76,
+      "platform": "Windows",
+      "skipReason": "Windows không cấp phép tạo file symlink"
+    },
+    "build": {
+      "status": "passed",
+      "next": "16.4.3"
+    },
+    "integration": [
+      {
+        "name": "feedback",
+        "passed": 14,
+        "cases": [
+          "BR-26/30 sáu yêu cầu tạo cùng requestId chỉ có một phản hồi",
+          "BR-26 giới hạn5/ngày cho phản hồi thường, cảnh báo nội dung trùng24giờ",
+          "BR-25 đánh giá đồng thời một lần, tự đóng và chặn sinh viên khác",
+          "BR-25 mở lại tối đa một lần, retry không tăng số lần",
+          "BR-23 sáu job đồng thời chỉ leo thang một cấp, quá hạn là cờ và thu hồi người nhận cũ",
+          "BR-23 chuỗi GV→TBM→TK→ĐBCL đúng theo thời hạn giữa các cấp",
+          "BR-54 PĐT→ĐBCL→Lãnh đạo; LĐ chỉ đọc phản hồi được giao",
+          "BR-60/61 hồ sơ3/30 ngày, quá hạn báo LĐ ở mức generic và không gửi người xung đột",
+          "BR-56 Khảo thí→ĐBCL→Lãnh đạo theo cùng SLA",
+          "BR-25 đánh giá sau cửa sổ7ngày bị chặn ở service",
+          "BR-23 cursor đi hết nhiều lô, hồ sơ cuối hàng không bị bỏ đói",
+          "BR-23/34 không giao người có phạm vi ngừng hoạt động; giữ người cũ và thử lại khi phạm vi hợp lệ",
+          "BR-26 SLA/giới hạn cấu hình được bằng đúng vai trò, CAS cấu hình",
+          "BR-17 học kỳ khóa sổ chặn ghi phản hồi"
+        ],
+        "cleaned": true
+      },
+      {
+        "name": "inspection",
+        "passed": 7,
+        "cases": [
+          "BR-61/62: GV và TBM đa vai trò bị loại động; ADMIN/ĐBCL không đọc hồ sơ",
+          "FR-154/BR-22: sáu lệnh tiếp nhận đồng thời tạo đúng một bước xác minh",
+          "BR-28/62: ghi chú và PDF nội bộ đúng quyền, hash, retry không trùng, giả mạo bị chặn",
+          "FR-156/BR-62/63: kết luận→thông báo→đóng, sinh viên chỉ nhận tóm tắt, LĐ không nhận nội dung",
+          "FR-154: CHUYEN_LAI về luồng thường giữ ẩn danh, không lộ lý do hoặc ghi chú hồ sơ",
+          "FR-157/BR-64: sáu lệnh chuyển chỉ tạo một hồ sơ, người chuyển chỉ còn trạng thái/kết luận",
+          "BR-34/61: phân công giảng viên và thu hồi phiên có hiệu lực ngay với hồ sơ hiện có"
+        ],
+        "cleaned": true
+      },
+      {
+        "name": "workflows",
+        "passed": 12,
+        "cases": [
+          "BR-10: bốn job đồng thời chỉ tạo hai giải trình, hạn 14 ngày từ công bố",
+          "BR-18/34: IDOR và vai trò ngoài phạm vi, không suy quyền giải trình từ ADMIN",
+          "BR-10: gửi lặp/đồng thời chỉ thêm một lịch sử, requestId khác nội dung bị chặn",
+          "BR-10: gửi → bổ sung có lý do → gửi lại → xác nhận, lịch sử bất biến",
+          "BR-17: học kỳ khóa sổ chặn gửi giải trình",
+          "FR-82: truy cập đầu tiên nhắc quá hạn, scheduler lặp không tạo trùng trong ngày",
+          "BR-57/58: kiến nghị từ môn đủ dữ liệu gộp, hạn 14 ngày, đồng thời chỉ một hồ sơ",
+          "BR-58/34: chọn đúng trưởng bộ môn, người ngoài phạm vi và ADMIN bị chặn",
+          "BR-58/FR-82: quá hạn nhắc trưởng bộ môn và báo trưởng khoa, không nhân đôi",
+          "BR-58: tiếp thu/không tiếp thu có lý do, retry cùng nội dung và CAS đúng",
+          "BR-34: thu hồi vai trò hoặc phiên có hiệu lực ngay ở tầng service",
+          "FR-80/81: thông báo và outbox cùng giao dịch, không sao chép nội dung hồ sơ"
+        ],
+        "cleaned": true
+      },
+      {
+        "name": "notifications",
+        "passed": 10,
+        "cases": [
+          "8 transaction xếp cùng sự kiện chỉ tạo 2 notification/outbox cho 2 người nhận",
+          "SV chỉ đọc và đánh dấu thông báo của mình, không có nội dung phản hồi trong payload",
+          "6 thao tác đánh dấu đồng thời chỉ đổi readAt một lần",
+          "thu hồi người nhận ẩn cả nội dung, tổng số và bộ đếm chưa đọc",
+          "Thanh tra không xung đột đọc được; GV kiêm Thanh tra và ADMIN không thấy notification hồ sơ",
+          "hai worker song song gửi một thư/người đủ quyền, chặn 3 người đã mất quyền hoặc xung đột",
+          "Mailpit nhận email generic không có nội dung phản hồi, tài khoản hoặc danh tính sinh viên",
+          "worker chạy lại không gửi thêm những thư đã SENT hoặc bị từ chối vĩnh viễn",
+          "cùng UUID yêu cầu/người nhận ở hai phản hồi vẫn giữ hai notification/outbox riêng, retry không nhân đôi",
+          "phiên đã thu hồi không truy cập hộp thông báo"
+        ],
+        "cleaned": true
+      }
+    ],
+    "regression": {
+      "week10": 19,
+      "week9": 12,
+      "database": 16,
+      "demo": 18
+    },
+    "preservation": {
+      "status": "passed",
+      "tables": 37,
+      "oldRowsPreserved": 9399,
+      "at": "2026-11-02T19:49:40.302Z"
+    },
+    "repeatSeed": {
+      "status": "passed",
+      "tables": 43,
+      "oldRowsPreserved": 9451,
+      "at": "2026-11-02T19:49:41.696Z"
+    },
+    "runtimeModels": 43,
+    "designModels": 46,
+    "historicalFilesUnchanged": true
+  },
+  "ui": {
+    "roles": [
+      "GIANG_VIEN",
+      "TRUONG_BO_MON",
+      "THANH_TRA"
+    ],
+    "screenshots": [
+      {
+        "file": "ui/gv-da-gui-giai-trinh.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 53587,
+        "sha256": "3483a84b6bfb99017b7a3d7dfbf87aa8ae11511548358166079759f6f65654f9",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/gv-danh-sach.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 35513,
+        "sha256": "5f0e1b48b760c1b04393e96cd737e107eec7be9af501a3d7f8e981b3fd8b7d0c",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/gv-giai-trinh-mobile.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 39992,
+        "sha256": "352f3ad92677389161762795c70e8d890d47804a3075232648446b1c7db18265",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tbm-da-xac-nhan.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 66281,
+        "sha256": "4cc0ed1f4873388b53dbd771cbc8c9fc1f913972516c781fa287208721b7ae6b",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tbm-thong-bao-da-doc.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 44030,
+        "sha256": "9affe04378a0d877809a18647ee0bee7d43b3e4ec470bf0266b5cf35ab6a8f2d",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tbm-xac-nhan-mobile.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 37299,
+        "sha256": "1bb1cd42e111e23e8fd131da2e2173dbc4ce65d066a5e006266352a028efeeea",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tt-ket-luan.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 68388,
+        "sha256": "c8840936e23a1b2086b404f1d44a5d841de1c95849f24b7bba1e141a1b8a189a",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tt-xac-minh.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 54646,
+        "sha256": "99b0bccce49fab879d62e9ff4e8fdb05e2d5aa7fe0ce1a60e7fbe94510999fb5",
+        "visuallyReviewed": true
+      }
+    ],
+    "notTestedManually": [
+      "Đóng hồ sơ Thanh tra",
+      "Sinh viên/Lãnh đạo đọc kết quả mới",
+      "Chuyển hồ sơ",
+      "Hài lòng/mở lại",
+      "Kiến nghị",
+      "Cấu hình SLA"
+    ],
+    "interruption": "Kết nối điều khiển trình duyệt không khả dụng sau bước thông báo; không tính các thao tác chưa chạy là qua.",
+    "uiUpgrade": "chưa bắt đầu, chờ nghiệm thu tuần 11"
+  },
+  "progress": {
+    "done": 188,
+    "total": 219,
+    "frDone": 68,
+    "frTotal": 84,
+    "planned": 190,
+    "backlog": [
+      "FR-145"
+    ],
+    "partial": [
+      "FR-160"
+    ]
+  },
+  "measuredAt": "2026-11-02T19:50:20.279Z"
+}

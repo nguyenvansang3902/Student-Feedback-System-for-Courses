@@ -1,4 +1,7 @@
 "use client";
+import { FeedbackSatisfaction } from "./feedback-satisfaction";
+import { InspectionStudentResult } from "./inspection-student-result";
+import { InspectionTransferForm } from "./inspection-transfer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
@@ -38,6 +41,7 @@ export function FeedbackContent({
   inspection?: boolean;
 }) {
   const ready = useClientReady();
+  const Title = inspection ? "h2" : "h1";
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -107,9 +111,9 @@ export function FeedbackContent({
           <p className="text-sm text-slate-500">
             {categoryLabels[item.category]} · {severityLabels[item.severity]}
           </p>
-          <h1 className="mt-2 break-words text-3xl font-bold text-slate-950">
+          <Title className="mt-2 break-words text-3xl font-bold text-slate-950">
             {item.title}
-          </h1>
+          </Title>
         </div>
         <FeedbackStatus status={item.status} />
       </div>
@@ -125,6 +129,9 @@ export function FeedbackContent({
       )}
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
         <div className="min-w-0 space-y-6">
+          {item.isAuthor && item.inspectionId && (
+            <InspectionStudentResult key={item.revision} feedbackId={item.id} />
+          )}
           <Panel title="Nội dung phản hồi">
             <p className="whitespace-pre-wrap break-words text-sm leading-8 text-slate-800">
               {item.body}
@@ -187,6 +194,11 @@ export function FeedbackContent({
           </Panel>
         </div>
         <aside className="min-w-0 space-y-6">
+          {item.isOverdue && <Notice message="Phản hồi đã quá hạn xử lý." />}
+          <FeedbackSatisfaction item={item} reload={reload} />
+          {item.canTransferToInspection && (
+            <InspectionTransferForm item={item} />
+          )}
           <Panel title="Thông tin phản hồi">
             <dl className="space-y-4 text-sm leading-7">
               <div>
@@ -211,6 +223,24 @@ export function FeedbackContent({
                 <dt className="text-xs text-slate-500">Người xử lý</dt>
                 <dd>{item.assignee?.displayName ?? "Chờ tiếp nhận"}</dd>
               </div>
+              {item.acceptDueAt && (
+                <div>
+                  <dt className="text-xs text-slate-500">Hạn tiếp nhận</dt>
+                  <dd>{vietnamTime(item.acceptDueAt)}</dd>
+                </div>
+              )}
+              {item.replyDueAt && (
+                <div>
+                  <dt className="text-xs text-slate-500">{item.inspectionId ? "Hạn hoàn tất" : "Hạn trả lời"}</dt>
+                  <dd>{vietnamTime(item.replyDueAt)}</dd>
+                </div>
+              )}
+              {!!item.escalationLevel && (
+                <div>
+                  <dt className="text-xs text-slate-500">Số lần leo thang</dt>
+                  <dd>{item.escalationLevel}</dd>
+                </div>
+              )}
               <div>
                 <dt className="text-xs text-slate-500">Thời điểm gửi</dt>
                 <dd>{vietnamTime(item.createdAt)}</dd>

@@ -48,9 +48,28 @@ export function roleMatchesFeedbackSection(
     return grant.departmentId === section.departmentId;
   if (grant.role === "TRUONG_KHOA")
     return grant.facultyId === section.facultyId;
-  return ["CAN_BO_DBCL", "PHONG_DAO_TAO", "PHONG_KHAO_THI"].includes(
-    grant.role,
-  );
+  return [
+    "CAN_BO_DBCL",
+    "PHONG_DAO_TAO",
+    "PHONG_KHAO_THI",
+    "LANH_DAO",
+  ].includes(grant.role);
+}
+/** Quyền trưởng đơn vị yêu cầu cả bộ môn và khoa của chính lớp còn hoạt động. */
+export function roleMatchesActiveFeedbackSection(
+  grant: RoleGrant,
+  userId: string,
+  section: FeedbackSectionContext & {
+    departmentActive: boolean;
+    facultyActive: boolean;
+  },
+): boolean {
+  if (
+    (grant.role === "TRUONG_BO_MON" || grant.role === "TRUONG_KHOA") &&
+    (!section.departmentActive || !section.facultyActive)
+  )
+    return false;
+  return roleMatchesFeedbackSection(grant, userId, section);
 }
 export function initialFeedbackRoles(
   category: string,

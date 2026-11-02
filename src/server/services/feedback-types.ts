@@ -170,6 +170,10 @@ export interface FeedbackAttachment {
   downloadUrl: string;
 }
 export interface FeedbackListItem {
+  isOverdue?: boolean;
+  acceptDueAt?: string;
+  replyDueAt?: string;
+  escalationLevel?: number;
   id: string;
   category: FeedbackCategory;
   severity: FeedbackSeverity;
@@ -184,6 +188,11 @@ export interface FeedbackListItem {
   inspectionId: string | null;
 }
 export interface FeedbackDetail extends FeedbackListItem {
+  rating?: { score: number; comment: string | null } | null;
+  canRate?: boolean;
+  canTransferToInspection?: boolean;
+  canReopen?: boolean;
+  duplicateWarning?: boolean;
   body: string;
   identityLevel: FeedbackIdentityLevel | null;
   author: { displayName: string; loginCode: string; email: string } | null;

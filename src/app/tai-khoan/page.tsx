@@ -49,22 +49,22 @@ function workspace(roles: readonly string[]) {
   if (roles.includes("CAN_BO_DBCL"))
     return {
       title: "Không gian đảm bảo chất lượng",
-      sections: ["Theo dõi cải tiến"],
+      sections: [],
     };
   if (roles.includes("LANH_DAO"))
     return {
       title: "Không gian lãnh đạo",
-      sections: ["Theo dõi cải tiến"],
+      sections: [],
     };
   if (roles.includes("TRUONG_KHOA") || roles.includes("TRUONG_BO_MON"))
     return {
       title: "Không gian quản lý đơn vị",
-      sections: ["Kế hoạch cải tiến"],
+      sections: [],
     };
   if (roles.includes("GIANG_VIEN"))
     return {
       title: "Không gian giảng viên",
-      sections: ["Giải trình kết quả khảo sát"],
+      sections: [],
     };
   return {
     title: "Không gian sinh viên",
@@ -101,7 +101,7 @@ export default async function AccountPage() {
                 <span aria-hidden="true">◎</span> Tài khoản của tôi
               </a>
             </nav>
-            <div className="mt-6 hidden border-t border-slate-200 pt-5 lg:block">
+            {view.sections.length>0&&<div className="mt-6 hidden border-t border-slate-200 pt-5 lg:block">
               <p className="px-4 text-xs font-medium text-slate-500">
                 Các khu vực sắp mở
               </p>
@@ -115,7 +115,7 @@ export default async function AccountPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div>}
           </aside>
           <div id="tai-khoan">
             <div className="mb-7">
@@ -283,6 +283,9 @@ export default async function AccountPage() {
                     <span aria-hidden="true">↗</span>
                   </Link>
                 )}
+                {can(actor,'improvements:list')&&<Link href="/giai-trinh" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Giải trình cải tiến</Link>}
+                {can(actor,'exam-recommendations:list')&&<Link href="/kien-nghi" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Kiến nghị rà soát</Link>}
+                {can(actor,'notifications:list')&&<Link href="/thong-bao" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Thông báo</Link>}
                 {actor.roles.map((role) => (
                   <Link
                     key={role}

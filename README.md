@@ -1,5 +1,11 @@
 # Website quản lý khảo sát và phản hồi sinh viên về môn học
 
+Tuần 11 đã hiện thực SLA/leo thang, hài lòng/mở lại, giải trình cải tiến, kiến nghị rà soát, quy trình Thanh tra và trung tâm thông báo/email. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_11.md), [bảng SLA](docs/SLA_TUAN_11.md) và [báo cáo](docs/bao-cao-tien-do/tuan-11.md). Tiến độ chức năng 188/219 điểm, 68/84 FR. Kết quả kiểm và CI theo đúng nguồn ghi trong hồ sơ nghiệm thu.
+
+Sau đăng nhập, mở **Giải trình cải tiến**, **Kiến nghị rà soát**, **Thông báo** hoặc **Hồ sơ Thanh tra** từ chức năng tài khoản theo vai trò. ĐBCL cấu hình SLA và giới hạn gửi ở **Phản hồi → Cấu hình**. Sinh viên đánh giá sau trả lời, điểm ≤2 được mở lại một lần trong hạn. Bundle mới có lớp `DEMO-W11-LHP01` điểm thấp và hồ sơ đang xác minh; seed lặp không đặt lại thao tác đã thực hiện.
+
+UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Prompt nâng cấp giao diện được giữ để dùng sau 15 tuần; lệnh tuần nghiệp vụ không kích hoạt UI-0.
+
 Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/09/2026**, khởi động thực tế **02/10/2026**. Tuần 3 thực hiện **21–22/10/2026**. Tuần 4 theo mốc giả định **21–27/10/2026**, bắt đầu thực tế **22/10/2026**; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
 ## Mở lại dự án hằng ngày trên Windows

@@ -1,3 +1,4 @@
+import { secondaryStyle } from "@/components/admin/ui";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Brand, focusRing } from "@/components/auth/auth-shell";
@@ -98,6 +99,19 @@ export default async function WorkspacePage({
               Kết quả khảo sát →
             </Link>
           )}
+          {can(actor, "improvements:list") && (
+            <Link href="/giai-trinh" className={secondaryStyle}>
+              Xem giải trình cải tiến
+            </Link>
+          )}
+          {can(actor, "exam-recommendations:list") && (
+            <Link href="/kien-nghi" className={secondaryStyle}>
+              Xem kiến nghị rà soát
+            </Link>
+          )}
+          <Link href="/thong-bao" className={secondaryStyle}>
+            Xem thông báo
+          </Link>
           {can(actor, "feedback:list") && (
             <Link
               href="/phan-hoi"

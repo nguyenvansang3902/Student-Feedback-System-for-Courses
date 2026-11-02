@@ -1,21 +1,21 @@
-# ERD toàn hệ thống — Tuần 10: phản hồi và tiếp nhận hồ sơ Thanh tra
+# ERD toàn hệ thống — Tuần 11: phản hồi nâng cao, giải trình và hồ sơ Thanh tra
 
 <!-- Tự sinh bởi scripts/export-erd.mjs. Sửa schema rồi generate và chạy exporter; không sửa tay phần sinh. -->
 
-Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 10 ngày **01/11/2026** theo yêu cầu người dùng. Mã nguồn bổ sung gửi/định tuyến/xử lý/trao đổi phản hồi, tệp riêng tư và hồ sơ Thanh tra ở trạng thái TIEP_NHAN có kiểm xung đột lợi ích. SLA, leo thang, đánh giá hài lòng, xác minh/kết luận hồ sơ, giải trình và xuất báo cáo còn chờ các tuần sau. ERD thể hiện cấu trúc và phạm vi mã nguồn; nghiệm thu chức năng và bằng chứng chạy thật được kiểm riêng, không suy từ hình.
+Thiết kế khởi tạo **21/10/2026**, cập nhật Tuần 11 ngày **02/11/2026** theo yêu cầu người dùng. Bổ sung SLA, đánh giá hài lòng, giải trình, kiến nghị rà soát, ghi chú nội bộ và quy trình hoàn tất hồ sơ Thanh tra. Các thống kê, cảnh báo bất thường và xuất báo cáo tổng hợp còn theo kế hoạch các tuần sau. ERD thể hiện cấu trúc và phạm vi mã nguồn; nghiệm thu chức năng và bằng chứng chạy thật được kiểm riêng, không suy từ hình.
 
-Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**46 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**37 model**, gồm 7 model chức năng phản hồi/tệp/hồ sơ tiếp nhận của Tuần 10). **9 model còn chỉ thiết kế**, chưa migrate. Tuần 10 thêm Attachment/InspectionCase/InspectionCaseEvent và hiện thực bốn bảng Feedback trước đây chỉ seed; không còn model chỉ seed. SHA-256 DMMF thiết kế: `72fe007a1c3ba27b0a32668ea0e1888243ed2914335db1d0fea56075b428fa76`.
+Nguồn: DMMF thật được Prisma sinh từ `prisma/design.prisma` (**46 model thiết kế**), đối chiếu `prisma/schema.prisma` runtime (**43 model**, gồm 7 model chức năng phản hồi/tệp/hồ sơ tiếp nhận của Tuần 10). **3 model còn chỉ thiết kế**, chưa migrate. Tuần 10 thêm Attachment/InspectionCase/InspectionCaseEvent và hiện thực bốn bảng Feedback trước đây chỉ seed; không còn model chỉ seed. SHA-256 DMMF thiết kế: `112d23c3a506ca538aed96942b07c2e140b185998107875a2a9828ab12896fb5`.
 
 ## Cách đọc và tái tạo
 
-- Tuần 2 có chín model nền; Tuần 3–4 thêm xác thực, MFA và cấu hình, tổng 16. Tuần 5 thêm 15 model seed demo theo quyền người dùng ngày 22/10/2026, tổng 31 runtime / 39 thiết kế. Tuần 6 hiện thực 4 bảng mẫu; G1 giữ 31 runtime, thêm 10 vai trò/cờ nhóm và thiết kế 46 model. Tuần 7 promote CampaignDataConfirmation, Notification và EmailOutbox vào runtime, thành34 runtime/46thiết kế/12model chưa migrate. Tuần 10 thêm ba model tệp/hồ sơ tiếp nhận, thành **37 runtime / 46 thiết kế / 9 model chưa migrate**. Báo cáo/gallery các tuần trước giữ nguyên bằng chứng lịch sử.
+- Tuần 2 có chín model nền; Tuần 3–4 thêm xác thực, MFA và cấu hình, tổng 16. Tuần 5 thêm 15 model seed demo theo quyền người dùng ngày 22/10/2026, tổng 31 runtime / 39 thiết kế. Tuần 6 hiện thực 4 bảng mẫu; G1 giữ 31 runtime, thêm 10 vai trò/cờ nhóm và thiết kế 46 model. Tuần 7 promote CampaignDataConfirmation, Notification và EmailOutbox vào runtime, thành34 runtime/46thiết kế/12model chưa migrate. Tuần 10 thêm ba model tệp/hồ sơ tiếp nhận, thành37 runtime/46thiết kế/9model chưa migrate. Tuần 11 thêm sáu model, thành **43 runtime / 46 thiết kế / 3 model chưa migrate**. Báo cáo/gallery các tuần trước giữ nguyên bằng chứng lịch sử.
 - 4 bảng mẫu phiếu thuộc Tuần 6: SurveyTemplate, CriterionGroup, Question, QuestionOption. **7 bảng thuộc chức năng Tuần 7:** SurveyCampaign, CampaignSection, CampaignHistory, SurveyTask, CampaignDataConfirmation, Notification, EmailOutbox. **2 bảng phiếu thuộc chức năng Tuần 8:** SurveyResponse, SurveyAnswer. SurveyTask dùng cho quyền và cập nhật PENDING → DONE cùng transaction chèn phiếu. **AggregateResult thuộc chức năng Tuần 9:** số đếm, tổng/phân bố và ảnh chụp mẫu/ngưỡng xếp mức/giảng viên nội bộ trong JSON; không nội dung hoặc ID phiếu/đáp án/sinh viên. **7 model chức năng Tuần 10:** Feedback, FeedbackRecipient, FeedbackMessage, FeedbackHistory, Attachment, InspectionCase, InspectionCaseEvent.
 - SurveyTemplate.version là phiên bản nghiệp vụ trong familyId; revision là số sửa để CAS chống ghi đè. CriterionGroup.isAssessmentGroup do ĐBCL đặt ở form nhóm, được giữ khi nhân bản/tạo phiên bản; cây mẫu khóa cũ không tự đổi. Tuần 9 chỉ chiếu nhóm có cờ trong kết quả gộp Khảo thí sau công bố/lưu trữ và đủ ngưỡng BR-57; không trả lớp/GV/TEXT. Không tạo liên kết từ SurveyResponse/SurveyAnswer sang danh tính.
 - SurveyCampaign.revision/updatedAt phục vụ CAS; openedAt/openedSnapshotHash/dataDriftDetected ghi thời điểm chốt thực tế và phát hiện lệch. CampaignDataConfirmation lưu hash, số lớp/cặp và revision của lần PĐT xác nhận/trả về; CampaignHistory thêm action/requestId/requestHash/campaignRevision cho truy vết và chống lặp, không sửa lịch sử cũ.
-- Notification/EmailOutbox dùng cho thông báo đợt Tuần 7 và nhắc khảo sát Tuần 9; chưa nhận hoàn thành toàn bộ trung tâm thông báo/SLA Tuần 11. EmailOutbox có idempotencyKey/lease; nhắc thủ công/tự động dùng khóa chung theo ngày Việt Nam để không vượt một lần/ngày/SV/đợt. SurveyReminder vẫn chỉ thiết kế: Tuần 9 dùng hàng chờ hiện có, không tạo quan hệ tới vùng phiếu ẩn danh.
+- Notification/EmailOutbox dùng cho thông báo đợt Tuần 7, nhắc khảo sát Tuần 9 và trung tâm thông báo/SLA Tuần 11. EmailOutbox có idempotencyKey/lease, worker kiểm lại quyền; nhắc thủ công/tự động dùng khóa chung theo ngày Việt Nam để không vượt một lần/ngày/SV/đợt. SurveyReminder vẫn chỉ thiết kế: dùng hàng chờ hiện có, không tạo quan hệ tới vùng phiếu ẩn danh.
 - Tuần 8 xác minh owner/task, phiên mới, học kỳ chưa khóa, đợt DANG_MO trong khoảng đóng [startsAt, endsAt], mẫu khóa và giá trị đúng câu/option trước khi ghi. Cập nhật task có điều kiện phải ảnh hưởng đúng một hàng rồi mới chèn Response/Answer UUID; lỗi rollback cả ba phần. doneDate/submittedDate cùng ngày Asia/Ho_Chi_Minh, không có mốc giờ chính xác trong vùng phiếu. Nháp chỉ nằm ở trình duyệt; xác nhận không trả ID hoặc nội dung phiếu. Không thêm FK, audit/log/queue hoặc model ánh xạ nối danh tính với phiếu.
-- Feedback có tác giả nội bộ để đối thoại đúng sinh viên, không phải vùng phiếu khảo sát ẩn danh. DTO che danh tính theo lựa chọn và quyền. Tệp Attachment lưu tên khóa ngẫu nhiên/SHA256 trong kho riêng, tải xuống qua kiểm quyền và audit; không đưa tên gốc vào DTO/header người xử lý. InspectionCase/InspectionCaseEvent chỉ hiện thực tiếp nhận, phân công và nhật ký ở Tuần 10; policy chặn xung đột kể cả đa vai trò, LANH_DAO chỉ xem tóm tắt, ADMIN/ĐBCL không xem hồ sơ.
-- Model chỉ thiết kế cho các tuần sau: `ImprovementPlan`, `ImprovementHistory`, `FeedbackRating`, `SlaEscalation`, `SurveyReminder`, `InspectionCaseNote`, `SurveyAnomalyFlag`, `ExamReviewRecommendation`, `ImportBatch`. Xác minh/kết luận hồ sơ Thanh tra, SLA/leo thang, bất thường và kiến nghị còn chờ đúng tuần; ImportBatch P1 vẫn chưa được nghiệm thu.
+- Feedback có tác giả nội bộ để đối thoại đúng sinh viên, không phải vùng phiếu khảo sát ẩn danh. DTO che danh tính theo lựa chọn và quyền. Tệp Attachment lưu tên khóa ngẫu nhiên/SHA256 trong kho riêng, tải xuống qua kiểm quyền và audit; không đưa tên gốc vào DTO/header người xử lý. InspectionCase/InspectionCaseEvent/InspectionCaseNote hiện thực quy trình tiếp nhận, xác minh, kết luận, thông báo và đóng ở Tuần 11; policy chặn xung đột kể cả đa vai trò, LANH_DAO chỉ xem tóm tắt, ADMIN/ĐBCL không xem hồ sơ.
+- Model chỉ thiết kế cho các tuần sau: `SurveyReminder`, `SurveyAnomalyFlag`, `ImportBatch`. Cảnh báo bất thường còn theo Tuần 12; ImportBatch P1 vẫn chưa được nghiệm thu.
 - Bốn sơ đồ có đúng 46 model chính (10 + 17 + 10 + 9); model ngữ cảnh lặp để đọc FK vượt miền, không cộng vào tổng. Tất cả scalar/enum và PK/UK/FK được sinh từ DMMF; object navigation không được lặp thành cột.
 - `PK` là khóa chính; `UK` là thành viên khóa duy nhất; `FK` chỉ xuất hiện khi DMMF có relationFromFields thật. Với khóa ghép, ký hiệu trên cột không nói từng cột duy nhất riêng: đọc bảng khóa ngay sau sơ đồ. Kiểu vật lý, NULL/default được ghi trong chú thích thuộc tính; danh mục enum ở cuối.
 - Cardinality sinh từ required/optional của quan hệ và unique của tập FK: cha bắt buộc/một hoặc tùy chọn/không–một; phía con không–nhiều hoặc không–một khi FK unique. Không khẳng định cha phải có ít nhất một con chỉ từ sự tồn tại FK.
@@ -34,9 +34,9 @@ Model chính: `User`, `Faculty`, `Department`, `Semester`, `Course`, `CourseSect
 
 Không cần model ngữ cảnh ngoài nhóm.
 
-![ERD tổng quan Nền người dùng và danh mục](assets/tuan-10/erd-nen-danh-muc.svg)
+![ERD tổng quan Nền người dùng và danh mục](assets/tuan-11/erd-nen-danh-muc.svg)
 
-[Mở SVG tổng quan](assets/tuan-10/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-11/erd-nen-danh-muc.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -179,9 +179,9 @@ Model chính: `SurveyTemplate`, `CriterionGroup`, `Question`, `QuestionOption`, 
 
 Ngữ cảnh lặp: `Course`, `CourseSection`, `Department`, `Faculty`, `Semester`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/tuan-10/erd-khao-sat.svg)
+![ERD tổng quan Khảo sát, giải trình và nhắc khảo sát](assets/tuan-11/erd-khao-sat.svg)
 
-[Mở SVG tổng quan](assets/tuan-10/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-11/erd-khao-sat.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
@@ -318,6 +318,7 @@ erDiagram
   }
   %% ImprovementPlan: model chính
   ImprovementPlan {
+    Int revision "NOT NULL; default 1"
     String id PK "NOT NULL; Char(36); default uuid(4)"
     String campaignId FK, UK "NOT NULL; Char(36)"
     String sectionId FK, UK "NOT NULL; Char(36)"
@@ -333,8 +334,10 @@ erDiagram
   }
   %% ImprovementHistory: model chính
   ImprovementHistory {
+    String requestHash "NULL; Char(64)"
+    String requestId UK "NULL; Char(36)"
     String id PK "NOT NULL; Char(36); default uuid(4)"
-    String planId FK "NOT NULL; Char(36)"
+    String planId FK, UK "NOT NULL; Char(36)"
     String actorId FK "NOT NULL; Char(36)"
     ImprovementStatus fromStatus "NOT NULL; enum"
     ImprovementStatus toStatus "NOT NULL; enum"
@@ -377,10 +380,15 @@ erDiagram
   }
   %% ExamReviewRecommendation: model chính
   ExamReviewRecommendation {
+    String responseRequestHash "NULL; Char(64)"
+    String responseRequestId "NULL; Char(36)"
+    String requestHash "NULL; Char(64)"
+    String requestId UK "NULL; Char(36)"
+    Int revision "NOT NULL; default 1"
     String id PK "NOT NULL; Char(36); default uuid(4)"
     String campaignId FK "NOT NULL; Char(36)"
     String courseId FK "NOT NULL; Char(36)"
-    String senderId FK "NOT NULL; Char(36)"
+    String senderId FK, UK "NOT NULL; Char(36)"
     String recipientId FK "NOT NULL; Char(36)"
     String body "NOT NULL; Text"
     ExamRecommendationStatus status "NOT NULL; enum; default DA_GUI"
@@ -492,11 +500,11 @@ erDiagram
 | SurveyAnswer             | (id)                    | (responseId, questionId)                                    |
 | AggregateResult          | (id)                    | (campaignId, sectionId)                                     |
 | ImprovementPlan          | (id)                    | (campaignId, sectionId, teacherId)                          |
-| ImprovementHistory       | (id)                    | —                                                           |
+| ImprovementHistory       | (id)                    | (planId, requestId)                                         |
 | SurveyReminder           | (id)                    | (campaignId, studentId, reminderDate)                       |
 | CampaignDataConfirmation | (id)                    | (campaignId, campaignRevision)                              |
 | SurveyAnomalyFlag        | (id)                    | (campaignId, sectionId, ruleCode)                           |
-| ExamReviewRecommendation | (id)                    | —                                                           |
+| ExamReviewRecommendation | (id)                    | (senderId, requestId)                                       |
 
 | Model.field                          | FK → đích                                                        | Bắt buộc | onDelete / onUpdate |
 | ------------------------------------ | ---------------------------------------------------------------- | -------- | ------------------- |
@@ -541,14 +549,15 @@ Model chính: `Feedback`, `FeedbackRecipient`, `FeedbackMessage`, `FeedbackHisto
 
 Ngữ cảnh lặp: `CourseSection`, `SurveyAnomalyFlag`, `SurveyCampaign`, `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Phản hồi liên tục](assets/tuan-10/erd-phan-hoi.svg)
+![ERD tổng quan Phản hồi liên tục](assets/tuan-11/erd-phan-hoi.svg)
 
-[Mở SVG tổng quan](assets/tuan-10/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-11/erd-phan-hoi.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram
   %% Feedback: model chính
   Feedback {
+    DateTime acceptedAt "NULL; DateTime(3)"
     Int revision "NOT NULL; default 1"
     String requestId UK "NULL; Char(36)"
     String requestHash "NULL; Char(64)"
@@ -658,8 +667,10 @@ erDiagram
   }
   %% InspectionCaseNote: model chính
   InspectionCaseNote {
+    String requestHash "NULL; Char(64)"
+    String requestId UK "NULL; Char(36)"
     String id PK "NOT NULL; Char(36); default uuid(4)"
-    String caseId FK "NOT NULL; Char(36)"
+    String caseId FK, UK "NOT NULL; Char(36)"
     String authorId FK "NOT NULL; Char(36)"
     String body "NOT NULL; Text"
     Json internalFiles "NULL"
@@ -771,7 +782,7 @@ erDiagram
 | Attachment          | (id)                 | (storageKey)                                                |
 | SlaEscalation       | (id)                 | (feedbackId, level)                                         |
 | InspectionCase      | (id)                 | (feedbackId); (anomalyFlagId)                               |
-| InspectionCaseNote  | (id)                 | —                                                           |
+| InspectionCaseNote  | (id)                 | (caseId, requestId)                                         |
 | InspectionCaseEvent | (id)                 | (caseId, requestId)                                         |
 
 | Model.field                        | FK → đích                               | Bắt buộc | onDelete / onUpdate |
@@ -805,9 +816,9 @@ Model chính: `UserSession`, `AuthToken`, `TotpCredential`, `TotpRecoveryCode`, 
 
 Ngữ cảnh lặp: `User`. Chỉ vẽ FK từ model chính; không mở rộng đệ quy quan hệ của model ngữ cảnh.
 
-![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/tuan-10/erd-he-thong.svg)
+![ERD tổng quan Xác thực, thông báo, cấu hình và kiểm toán](assets/tuan-11/erd-he-thong.svg)
 
-[Mở SVG tổng quan](assets/tuan-10/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
+[Mở SVG tổng quan](assets/tuan-11/erd-he-thong.svg) — SVG sinh trực tiếp từ DMMF, không render Mermaid.
 
 ```mermaid
 erDiagram

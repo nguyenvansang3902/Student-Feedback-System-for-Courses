@@ -1,3 +1,9 @@
+import { ensureDueFeedback } from "../src/server/services/feedback-sla";
+import {
+  ensureDueImprovements,
+  remindDomainWorkflows,
+} from "../src/server/services/improvements";
+import { processDomainMailOutbox } from "../src/server/services/notifications";
 import "dotenv/config";
 import { setTimeout as delay } from "node:timers/promises";
 import { getDb } from "../src/lib/db";
@@ -40,9 +46,19 @@ try {
     try {
       const lifecycle = await ensureDueCampaigns(actor, { limit: 100 });
       const reminders = await remindDueSurveyStudents(actor, { limit: 100 });
+      const feedback = await ensureDueFeedback(actor, { limit: 100 });
+      const improvements = await ensureDueImprovements(actor, { limit: 100 });
+      const workflowReminders = await remindDomainWorkflows(actor, {
+        limit: 100,
+      });
+      const domainMail = await processDomainMailOutbox(actor, { limit: 50 });
       const mail = await processCampaignMailOutbox(actor, { limit: 50 });
       console.log(
         JSON.stringify({
+          feedback,
+          improvements,
+          workflowReminders,
+          domainMail,
           checkedAt: new Date().toISOString(),
           checked: lifecycle.checked,
           opened: lifecycle.opened,

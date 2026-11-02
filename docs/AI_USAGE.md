@@ -277,3 +277,15 @@ Bản dựng cuối sau chú thích turbopackIgnore đã hết hai cảnh báo g
 Người dùng phản ánh bấm đúp tệp rồi cửa sổ tắt ngay. AI tái hiện bằng `cmd.exe /c` trong cửa sổ tương tác: tệp UTF-8 dùng LF trả lỗi `ist`, đường dẫn và cú pháp, thoát mã 1 trước `pause`. Chỉ đổi sang CRLF thì chạy được và giữ thông báo sẵn sàng. Lượt kiểm nền trước đã bỏ sót chế độ tương tác; không suy nó thành bằng chứng thao tác bấm đúp không lỗi. Một agent rà soát chỉ đọc xác nhận liên kết CMD chuẩn và không cần đổi registry; agent chính sửa tệp, Gitattributes và test.
 
 Giữ nguyên CRLF trong blob Git (`-text`) để bản ZIP cũng nhận đúng byte; thêm test trên tệp checkout. Check: 1002 passed, 1 skipped / 1003, trong 63 tệp; phép kiểm file-symlink bị Windows từ chối vẫn ghi là skipped. Đã thử mở bằng đường dẫn tuyệt đối từ System32, khởi động web cổng 3000; mở lần hai giữ tại **Press any key**, nhấn phím chỉ đóng cửa sổ thông báo và web vẫn trả HTTP 200. Không thay `.env`, khóa MFA, DB hoặc tính năng; không ghi lại báo cáo tuần lịch sử, không cộng FR. [Hồ sơ](SUA_KHOI_DONG_CMD_2026_11_02.md).
+
+## Bắt đầu Tuần 11 và hoãn prompt UI — 02/11/2026
+
+Người dùng yêu cầu Tuần 11, sau đó gửi prompt UI rồi chủ động hoãn tới sau 15 tuần. Kiểm Git xác nhận vẫn ở main, không có nhánh hoặc tag UI tại HEAD. Trước lệnh hoãn chỉ đọc prompt, chưa thay giao diện vì prompt đó. Sau lệnh, chỉ lưu nguyên văn docs/UI_NANG_CAP_PROMPT.md và ghi rõ điều kiện kích hoạt trong AGENTS.md, KE_HOACH_15_TUAN.md, PROJECT_STATE.md và nhật ký này. Không chạy UI-0 hoặc hỏi năm câu. Những trang chức năng mới thuộc Tuần 11 theo prompt chính, không phải giai đoạn nâng cấp UI.
+
+AI chia phần Thanh tra, giải trình/kiến nghị và thông báo cho ba agent, agent chính ghép schema, SLA, hài lòng, giới hạn gửi, API/UI và kiểm tổng. Các agent không phải thành viên nhóm sinh viên; không tự điền đóng góp của sinh viên. [Checkpoint](WIP_TUAN_11.md) ghi các kiểm đã chạy và việc chưa hoàn tất. Chưa tự nhận nghiệm thu tuần hoặc hoàn tất FR từ việc chỉ có mã nguồn.
+
+## Hoàn tất kỹ thuật Tuần 11 — 03/11/2026
+
+AI thực hiện SLA/ngày làm việc, leo thang/nhắc hạn có con trỏ; chống spam, hài lòng/mở lại; giải trình, kiến nghị; hồ sơ Thanh tra và thông báo/email. Ba agent hỗ trợ triển khai/rà soát; agent chính ghép, sửa collation, kiểm giao dịch/cạnh tranh, migration và dữ liệu cũ. Rà soát cuối phát hiện scope đơn vị inactive và thiếu first-access Thanh tra; đã sửa và thêm kiểm hồi quy. Không tự gán công việc AI thành đóng góp của sinh viên.
+
+Check cuối1140passed/1skipped(Windows),76tệp; build qua, MySQL43nhóm; hồi quy19+12,SQL16,demo18. 37bảng/9399bản ghi cũ giữ hash, seedlặp9451bản ghi không đổi. UI thật ba vai trò, támPNG đã xem; kết nối trình duyệt ngắt sau bước thông báo, các thao tác chưa thử tay ghi rõ tại QA. Không gọi MySQL/unit là E2E hoặc nghiệm thu WCAG. [Hồ sơ](NGHIEM_THU_TUAN_11.md) và verification ghi CI nguồn theo SHA khi có kết quả. Không đổi MFA của chủ dự án, không reset dữ liệu, không triển khai UI-0. Lệnh mới đã cho phép tuần12 sau tuần11.

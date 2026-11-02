@@ -39,6 +39,12 @@ const expectedTables = [
   "CampaignDataConfirmation",
   "Notification",
   "EmailOutbox",
+  "ImprovementPlan",
+  "ImprovementHistory",
+  "FeedbackRating",
+  "SlaEscalation",
+  "InspectionCaseNote",
+  "ExamReviewRecommendation",
 ];
 const tables = requireMysql(mysql("SHOW TABLES;"))
   .split(/\r?\n/)
@@ -46,7 +52,7 @@ const tables = requireMysql(mysql("SHOW TABLES;"))
   .sort();
 if (JSON.stringify(tables) !== JSON.stringify(expectedTables.sort()))
   throw new Error(
-    "Database không đúng 37 bảng runtime đến Tuần 10 (gồm tệp riêng tư và hồ sơ tiếp nhận Thanh tra).",
+    "Database không đúng 43 bảng runtime đến Tuần 11 (gồm giải trình, SLA và hồ sơ Thanh tra).",
   );
 
 const ids = Object.fromEntries(

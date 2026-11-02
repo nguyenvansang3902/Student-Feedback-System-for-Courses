@@ -38,6 +38,7 @@ export function FeedbackCreate() {
   const [files, setFiles] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [duplicateWarning, setDuplicateWarning] = useState(false);
   const [createdId, setCreatedId] = useState("");
   const [uploaded, setUploaded] = useState(false);
   const pending = useRef(false);
@@ -71,28 +72,28 @@ export function FeedbackCreate() {
     setError("");
     requestId.current ||= crypto.randomUUID();
     try {
-      const result = await feedbackRequest<{ item: { id: string } }>(
-        "/api/feedback",
-        {
-          sectionId: String(values.get("sectionId") ?? ""),
-          category,
-          severity: serious
-            ? "KHIEU_NAI"
-            : String(values.get("severity") ?? "GOP_Y"),
-          title: String(values.get("title") ?? "").trim(),
-          body: String(values.get("body") ?? "").trim(),
-          isAnonymous: serious ? true : isAnonymous,
-          ...(serious
-            ? {
-                identityLevel,
-                violation: String(values.get("violation") ?? ""),
-                acknowledgedSerious: values.get("acknowledgedSerious") === "on",
-              }
-            : {}),
-          requestId: requestId.current,
-        },
-      );
+      const result = await feedbackRequest<{
+        item: { id: string; duplicateWarning?: boolean };
+      }>("/api/feedback", {
+        sectionId: String(values.get("sectionId") ?? ""),
+        category,
+        severity: serious
+          ? "KHIEU_NAI"
+          : String(values.get("severity") ?? "GOP_Y"),
+        title: String(values.get("title") ?? "").trim(),
+        body: String(values.get("body") ?? "").trim(),
+        isAnonymous: serious ? true : isAnonymous,
+        ...(serious
+          ? {
+              identityLevel,
+              violation: String(values.get("violation") ?? ""),
+              acknowledgedSerious: values.get("acknowledgedSerious") === "on",
+            }
+          : {}),
+        requestId: requestId.current,
+      });
       setCreatedId(result.item.id);
+      setDuplicateWarning(!!result.item.duplicateWarning);
       formRef.current?.reset();
       await upload(result.item.id);
     } catch (caught) {
@@ -111,6 +112,9 @@ export function FeedbackCreate() {
           Phản hồi đã được lưu và chuyển đến đơn vị xử lý. Sinh viên có thể theo
           dõi hoặc trao đổi thêm tại trang chi tiết.
         </p>
+        {duplicateWarning && (
+          <Notice message="Đã có phản hồi với nội dung trùng trong khoảng thời gian cảnh báo. Sinh viên có thể theo dõi và trao đổi tại phản hồi đã gửi." />
+        )}
         <Notice error message={error} />
         {!uploaded && files.length > 0 && (
           <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-5">

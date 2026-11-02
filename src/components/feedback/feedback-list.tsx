@@ -174,6 +174,11 @@ export function FeedbackListPanel({
                     </h2>
                   </div>
                   <FeedbackStatus status={item.status} />
+                  {item.isOverdue && (
+                    <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+                      Quá hạn
+                    </span>
+                  )}
                 </div>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
                   {item.section.code} · {item.section.courseName}

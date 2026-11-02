@@ -1,3 +1,4 @@
+import { ensureDueFeedback } from "@/server/services/feedback-sla";
 import type { NextRequest } from "next/server";
 import { apiFailure } from "@/server/auth/api-error";
 import { authJson } from "@/server/auth/http";
@@ -17,6 +18,10 @@ export const runtime = "nodejs";
 export async function GET(request: NextRequest) {
   try {
     const actor = await feedbackActor(request);
+    await ensureDueFeedback(
+      { kind: "SERVER_CONSOLE", reason: "Kiểm tra hạn khi truy cập phản hồi" },
+      { limit: 100 },
+    );
     return authJson({
       ok: true,
       ...(await listFeedback(

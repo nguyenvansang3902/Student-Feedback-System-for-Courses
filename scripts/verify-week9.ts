@@ -1568,7 +1568,14 @@ try {
             where: { campaignId: { in: campaignIds } },
           });
           await tx.emailOutbox.deleteMany({
-            where: { notification: { targetId: { in: campaignIds } } },
+            where: {
+              notification: {
+                OR: [
+                  { targetId: { in: campaignIds } },
+                  { userId: { in: userIds } },
+                ],
+              },
+            },
           });
           await tx.notification.deleteMany({
             where: {
@@ -1594,6 +1601,12 @@ try {
                 },
               ],
             },
+          });
+          await tx.improvementHistory.deleteMany({
+            where: { plan: { campaignId: { in: campaignIds } } },
+          });
+          await tx.improvementPlan.deleteMany({
+            where: { campaignId: { in: campaignIds } },
           });
           await tx.aggregateResult.deleteMany({
             where: { campaignId: { in: campaignIds } },
