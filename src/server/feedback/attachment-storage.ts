@@ -31,12 +31,13 @@ function assertStorageKey(key: string): void {
 /** Chỉ gọi sau khi service đã xác minh quyền trên phản hồi trong database. */
 async function storageRoot(create: boolean): Promise<string> {
   const configured = resolve(
-    process.env.FEEDBACK_STORAGE_DIR || ".local/private-feedback-attachments",
+    /* turbopackIgnore: true */ process.env.FEEDBACK_STORAGE_DIR ||
+      ".local/private-feedback-attachments",
   );
   const publicPath = resolve("public");
   if (inside(publicPath, configured)) throw storageError();
   if (create) await mkdir(configured, { recursive: true, mode: 0o700 });
-  const actualRoot = await realpath(configured);
+  const actualRoot = await realpath(/* turbopackIgnore: true */ configured);
   let actualPublic: string;
   try {
     actualPublic = await realpath(publicPath);

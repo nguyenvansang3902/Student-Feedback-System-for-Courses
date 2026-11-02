@@ -580,7 +580,7 @@ try {
     severity: "KHIEU_NAI",
   });
   ok(await request(`/api/feedback/${complaint.id}`, head));
-  pass("BR-21/55/56: đủ bảy tuyến thường và khiếu nại đồng gửi trưởng bộ môn");
+  pass("BR-21/54/56: đủ bảy tuyến thường và khiếu nại đồng gửi trưởng bộ môn");
   for (const receiver of [teacher, head, training, exam, quality]) {
     const queue = ok(
       await request("/api/feedback?view=queue&page=1&pageSize=20", receiver),
