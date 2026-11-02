@@ -2,7 +2,25 @@
 
 Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/09/2026**, khởi động thực tế **02/10/2026**. Tuần 3 thực hiện **21–22/10/2026**. Tuần 4 theo mốc giả định **21–27/10/2026**, bắt đầu thực tế **22/10/2026**; nhóm đối chiếu lịch trường, không ghi lùi ngày.
 
-## Phạm vi hiện tại — Tuần 9: kết quả khảo sát
+## Mở lại dự án hằng ngày trên Windows
+
+1. Mở **Docker Desktop**, đợi Docker chạy xong.
+2. Mở thư mục dự án và bấm đúp [KHOI_DONG_DU_AN.cmd](KHOI_DONG_DU_AN.cmd).
+3. Đợi cửa sổ báo **Website đã sẵn sàng: http://localhost:3000**, rồi mở [website](http://localhost:3000).
+
+Giữ cửa sổ khởi động mở trong lúc sử dụng. Khi muốn dừng, nhấn **Ctrl+C** trong cửa sổ đó; dữ liệu vẫn được giữ. Nếu cửa sổ báo website đã chạy ở cửa sổ khác, có thể đóng riêng cửa sổ thông báo này. Mở Docker rồi chỉ nhập localhost:3000 chưa đủ: Docker chạy MySQL/email, còn tệp khởi động mở máy chủ web và tác vụ lịch/email của dự án.
+
+Thư mục trên máy hiện tại: `C:\Users\nguye\Documents\Codex\2026-10-02\hay\outputs\website-khao-sat-phan-hoi`. Có thể tạo shortcut của tệp CMD ra Desktop để mở nhanh. Nếu đã mở PowerShell tại thư mục dự án, dùng `npm.cmd run local:start` cho cùng kết quả. Tệp khởi động nhận diện bản web đang chạy, không tự chuyển sang cổng khác và không đặt lại tài khoản, khóa 2FA hoặc dữ liệu.
+
+Lần đầu tải dự án từ GitHub vẫn cần thiết lập Node.js, Docker và `.env` theo phần cài đặt bên dưới. Tệp khởi động giữ nguyên `.env`, cập nhật migration và chuẩn bị bộ kết nối trước khi mở web; không tự seed hoặc reset database. Tệp đính kèm riêng nằm ở `FEEDBACK_STORAGE_DIR` (mặc định `.local/private-feedback-attachments`), không đưa lên GitHub.
+
+## Phạm vi hiện tại — Tuần 10: phản hồi môn học
+
+Thực hiện **01–02/11/2026** theo yêu cầu: gửi phản hồi với tám loại, định tuyến, hàng đợi xử lý, trao đổi, chuyển tiếp/từ chối có lý do, lịch sử và đính kèm riêng tư. Có hàng đợi PĐT/Khảo thí và lời nhắc phúc khảo; khiếu nại nghiêm trọng tạo hồ sơ **TIEP_NHAN**, kiểm xung đột và mức tiết lộ danh tính. Quy trình xác minh/kết luận, SLA, hài lòng/mở lại theo Tuần 11. Tiến độ **165/219 = 75,3%, 58/84 FR**; xem [nghiệm thu Tuần 10](docs/NGHIEM_THU_TUAN_10.md), [báo cáo](docs/bao-cao-tien-do/tuan-10.md), [QA](docs/QA_GIAO_DIEN_TUAN_10.md) và [bằng chứng](docs/assets/tuan-10/verification.json).
+
+Mở [Phản hồi](http://localhost:3000/phan-hoi) sau đăng nhập. Sinh viên demo `DEMO-SV00001` có các lớp `W10-LHP01` đến `W10-LHP08`; `DEMO-GV00001` xử lý phản hồi giảng dạy, `PDT2026001` nhận tổ chức lớp, `KT2026001` nhận thi kết thúc học phần. `TT2026001` mở [Hồ sơ Thanh tra](http://localhost:3000/thanh-tra); `LD2026001` chỉ xem tóm tắt; `DBCL2026001` chỉnh [cấu hình phản hồi](http://localhost:3000/phan-hoi/cau-hinh). Mật khẩu demo ban đầu `Demo2026!HocTap`; seed giữ mật khẩu đã đổi. ADMIN không có quyền đọc nội dung phản hồi hoặc hồ sơ Thanh tra. Dữ liệu minh họa dùng tám lớp/chín phản hồi/hai hồ sơ tiếp nhận, chưa tạo trạng thái Thanh tra của tuần sau.
+
+## Mốc nghiệm thu Tuần 9: kết quả khảo sát
 
 Bắt đầu và nghiệm thu **30/10/2026** theo yêu cầu người dùng: tổng hợp, công bố theo ngưỡng, kết quả theo vai trò/phạm vi, so sánh, kiểm duyệt tự luận, danh sách chưa hoàn thành/nhắc nhở và kết quả gộp Khảo thí. Đã qua **797 kiểm thử/50 tệp**, build Next16.4.3, HTTP/MySQL **12/12**, seed **15/15**, UI **14 nhóm/46 ảnh cuối đã xem** và [CI nguồn 5eb5a84](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41079971520). Tiến độ **138/219=63,0%, 49/84 FR**; CI main/tài liệu cuối đối chiếu riêng. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_09.md), [công thức](docs/CONG_THUC_TONG_HOP.md) và [báo cáo](docs/bao-cao-tien-do/tuan-09.md) để biết bằng chứng và giới hạn. Phản hồi liên tục, giải trình và xuất báo cáo làm theo các tuần sau. Giao diện dùng tên chức năng và hướng dẫn ngắn, hạn chế slogan, không gọi người dùng là “bạn”. Trang dùng chung viết trung tính; trang dành riêng cho sinh viên dùng danh xưng “sinh viên”. Các ô nhập và tìm kiếm không có chữ gợi ý bên trong; nhãn và hướng dẫn đặt bên ngoài ô.
 

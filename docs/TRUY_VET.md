@@ -1,4 +1,4 @@
-# Bảng truy vết yêu cầu — Tuần 9 sau Điều chỉnh số 01
+# Bảng truy vết yêu cầu — Tuần 10 sau Điều chỉnh số 01
 
 Chỉnh giao diện 30/10/2026 theo yêu cầu người dùng, liên quan FR-01/50/54: bỏ slogan thừa và ví dụ trong ô đăng nhập, dùng tiêu đề chức năng; không đổi chính sách hay luồng nộp. Check 646/646, QA 5 nhóm/8 bố cục qua. [Bằng chứng và ảnh mới](CHINH_SUA_GIAO_DIEN_2026_10_30.md); kiểm HTTP và CI smoke dùng tiêu đề mới, bằng chứng Tuần 8 cũ giữ nguyên.
 
@@ -119,13 +119,13 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-64  | 9            | [WF-10](wireframes/tuan-02.html#wf-10)                                         | results / aggregation / công bố; chưa triển khai             | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-65  | 9            | [WF-11](wireframes/tuan-02.html#wf-11)                                         | results / kiểm duyệt; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-66  | 11           | [WF-15](wireframes/tuan-02.html#wf-15)                                         | improvements; chỉ blueprint                                  | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-70  | 10           | [WF-12](wireframes/tuan-02.html#wf-12)                                         | feedback / upload; chưa triển khai                           | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-71  | 10           | [WF-13](wireframes/tuan-02.html#wf-13)                                         | feedback / định tuyến; chưa triển khai                       | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-72  | 10           | [WF-13](wireframes/tuan-02.html#wf-13), [WF-14](wireframes/tuan-02.html#wf-14) | feedback / trạng thái, lịch sử; chưa triển khai              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-73  | 10           | [WF-14](wireframes/tuan-02.html#wf-14)                                         | feedback / đối thoại; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-70 | 10 | /phan-hoi/gui, /phan-hoi/:id | feedback.ts/createFeedback, feedback-types, feedback-attachments và kho riêng | Hoàn thành: HTTP19/19 có BR-20/24/28, nội dung10.000ký tự, tệp giả/quá số/quá dung lượng; UI gửi thật |
+| FR-71 | 10 | /phan-hoi và hàng đợi theo actor | policies/feedback.ts, recipientsFor/queueWhere, policy can.ts | Hoàn thành: tám tuyến, primary/copy, danh sách/tổng số/IDOR và quyền mới; HTTP/ma trận10vai trò |
+| FR-72 | 10 | /phan-hoi/:id | transitionFeedback, FeedbackHistory, revision/requestId | Hoàn thành: tám lệnh đồng thời1thành công/7x409, một lịch sử; retry/hash conflict/kỳ khóa, không API sửa lịch sử |
+| FR-73 | 10 | /phan-hoi/:id | addFeedbackMessage, DTO và feedback-detail.tsx | Hoàn thành: trao đổi retry không trùng; handlerẩn danh, SV đọc trả lời và đóng qua UI; không liên kết vùng phiếu khảo sát |
 | FR-74  | 11           | [WF-13](wireframes/tuan-02.html#wf-13)                                         | feedback / SLA / job; chưa triển khai                        | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-75  | 11           | [WF-14](wireframes/tuan-02.html#wf-14)                                         | feedback / rating / mở lại; chưa triển khai                  | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
-| FR-76  | 10           | [WF-13](wireframes/tuan-02.html#wf-13), [WF-14](wireframes/tuan-02.html#wf-14) | feedback / trạng thái, lịch sử; chưa triển khai              | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-76 | 10 | /phan-hoi/:id | transitionFeedback và FeedbackRecipient.isActive | Hoàn thành: lý do bắt buộc, chuyển về MOI, người cũ GET/ghi404; receipt retry không nhân lịch sử hoặc lộ nội dung |
 | FR-80  | 11           | [WF-03](wireframes/tuan-02.html#wf-03)                                         | notifications; chỉ blueprint                                 | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-81  | 11           | Email / Mailpit (chưa có luồng gửi)                                            | mail / outbox; chỉ blueprint                                 | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-82  | 11           | [WF-08](wireframes/tuan-02.html#wf-08), [WF-13](wireframes/tuan-02.html#wf-13) | nhắc hạn / jobs; chưa triển khai                             | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
@@ -146,21 +146,21 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-143 | 7 | PĐT xác nhận hoặc trả về NHAP có lý do | campaigns.ts, CampaignDataConfirmation theo revision | TC-PDT-02: W7-HTTP05/07/13, campaign-services; snapshot/hash/người xác nhận bất biến và vòng xác nhận mới |
 | FR-144 | 7 | Hash lệch khi mở: chốt hiện tại và cảnh báo PĐT/ĐBCL | campaign-lifecycle.ts, campaign-notifications.ts, EmailOutbox | TC-PDT-03: W7-HTTP08/09/12, W7-SETTINGS10–12; audit/queue/Mailpit, không resync nhiệm vụ |
 | FR-145 | 7, P1 | Lô nhập/hoàn tác chưa dùng trong đợt đã chốt | ImportBatch; chưa triển khai, không tự cắt | Chưa nghiệm thu mới: BR-55; thiếu test, chỉ hiện thực nếu đủ thời gian |
-| FR-146 | 10 | Hàng đợi TO_CHUC_LOP_HOC | feedback routing/PĐT; chưa triển khai | Chưa nghiệm thu mới: BR-54; scope, SLA, forward, privacy Tuần10–11 |
+| FR-146 | 10 | /phan-hoi?view=queue cho PĐT | initialFeedbackRoles/queueWhere, feedback.ts | Hoàn thành phần lõi: TO_CHUC_LOP_HOC đúng PĐT, xử lý/chuyển có lý do; BR-54 SLA/leo thang còn Tuần11 |
 | FR-147 | 12, P1 | Dashboard PĐT | reports/readiness/feedback; chưa triển khai | Chưa nghiệm thu mới: BR-67; ngưỡng và không định danh, kiểm tệp xuất |
 | FR-148 | G1 / bù Tuần6 | Trình soạn/xem trước cờ nhóm đánh giá và mẫu mặc định mới | CriterionGroup.isAssessmentGroup, templates/template-input/default seed | Đạt G1: TC-FR148-01–09 trong templates/default-template-seed tests; HTTP20, demo12, UI lưu/reload/preview; giữ cây mẫu khóa cũ |
-| FR-149 | 10 | Hàng đợi THI_KET_THUC_HOC_PHAN/lời nhắc | feedback routing/KT; chưa triển khai | Chưa nghiệm thu mới: TC-KT-02; SLA/leo thang Tuần11 |
+| FR-149 | 10 | /phan-hoi và /phan-hoi/cau-hinh | tuyến Khảo thí, feedback-settings và examNotice DTO | Hoàn thành: THI_KET_THUC_HOC_PHAN đúng KT, lời nhắc cấu hình được; kiểm tra thành phần không mặc địnhKT; SLA Tuần11 |
 | FR-150 | 9 | Kết quả nhóm đánh giá gộp | results/policy KT; chưa triển khai | Chưa nghiệm thu mới: TC-KT-01; ≥2 GV/đủ phiếu, không lớp/GV/tự luận |
 | FR-151 | 12, P1 | Thống kê phản hồi thi | reports KT; chưa triển khai | Chưa nghiệm thu mới: BR-59/67; ngưỡng, không định danh và tệp xuất |
 | FR-152 | 11, P1 | Kiến nghị rà soát và phản hồi TBM | ExamReviewRecommendation; chưa triển khai | Chưa nghiệm thu mới: BR-58; lý do, hạn14ngày, nhắc TBM/báo TK |
-| FR-153 | 10 | Form khiếu nại nghiêm trọng/loại vi phạm/danh tính | feedback nghiêm trọng; chưa triển khai | Chưa nghiệm thu mới: TC-TT-01/02/03; BR-26/61/62/63 |
-| FR-154 | 10 tiếp nhận / 11 hoàn tất | Hồ sơ và máy trạng thái Thanh tra | InspectionCase/Note/Event; chưa triển khai | Chưa nghiệm thu mới: BR-60/62; reject/return/reason, SLA, lịch sử bất biến |
-| FR-155 | 10 | Chặn xung đột lợi ích/list/detail/assign | inspection policy chung; chưa triển khai | Chưa nghiệm thu mới: TC-TT-01; 404 không lộ tồn tại, kể cả nhiều vai trò |
+| FR-153 | 10 | /phan-hoi/gui loại nghiêm trọng | createFeedbackSchema/createFeedback, InspectionCase TIEP_NHAN | Hoàn thành: năm vi phạm, mức KHIEU_NAI cố định, cảnh báo/ack, hai mức danh tính; quota6request đồng thời thêm đúng3 khi đã có2 |
+| FR-154 | 10 tiếp nhận / 11 hoàn tất | /thanh-tra và /thanh-tra/:id | InspectionCase/Event, list/get/assignInspectionCase | Một phần, chưa tick: chỉ tạo/giao TIEP_NHAN và lịch sử; Note/xác minh/kết luận/thông báo/đóng còn Tuần11 |
+| FR-155 | 10 | /thanh-tra, /phan-hoi, route tải tệp | hasInspectionConflict/canReadInspection/inspectionScope; fresh actor | Hoàn thành: GV/TBM/TK liên quan kể cả đaTT bị loại list/count/404/giao/tải; conflict mới có hiệu lực ngay; TC-TT-01/02/03 phần hiện có |
 | FR-156 | 11 | Kết luận/thông báo đúng mức tiết lộ | inspection conclusion/notifications; chưa triển khai | Chưa nghiệm thu mới: TC-TT-02/03; tóm tắt LĐ, kênh SV, danh tính và audit |
 | FR-157 | 11, P1 | Chuyển một chiều sang Thanh tra | feedback→inspection history; chưa triển khai | Chưa nghiệm thu mới: BR-64; sender chỉ trạng thái/kết luận tóm tắt |
 | FR-158 | 12, P1 | Chỉ số và xem xét cảnh báo khảo sát | SurveyAnomalyFlag; chưa triển khai | Chưa nghiệm thu mới: BR-65; ≥10phiếu, ngưỡng, không điểm/đáp án/tự luận |
 | FR-159 | 12, P1 | Thống kê Thanh tra không định danh | inspection reports; chưa triển khai | Chưa nghiệm thu mới: BR-66/67; ngưỡng mẫu, tệp xuất |
-| FR-160 | G1 một phần / đầy đủ Tuần13 | Ma trận 10 vai trò; IDOR chức năng hiện có | MA_TRAN_QUYEN, can/access/workspace và service hiện có | G1 phần hiện có đạt: ma trận10vai trò, IDOR/unit/HTTP/UI; toàn bộ hồ sơ/thống kê/tệp xuất chờ Tuần13, chưa tick |
+| FR-160 | G1/Tuần10 một phần / đầy đủ Tuần13 | Ma trận10vai trò, IDOR chức năng hiện có | MA_TRAN_QUYEN, can/access và service/route hiện có | Chưa tick toàn bộ: Tuần10 thêm feedback/inspection/quyền tệp/fresh actor; thống kê/dashboard/export và đủ bộ TC-ALL-01 chờ Tuần13 |
 
 ## 4. Truy vết 33 BR gốc và điểm mở rộng
 
@@ -310,6 +310,24 @@ Lượt HTTP cuối **12/12**, `cleaned=true` ở `.local/week9-http-result.json
 
 Tám FR-47/60–65/150 thêm **21 điểm**, tiến độ **138/219=63,0%, 49/84 FR**; kế hoạch Tuần 9 là **140/219**, còn chênh hai điểm của FR-145. M5 đạt 22/22, M7 16/18, M14 6/13. FR-145 còn backlog, FR-160 chờ Tuần 13; nhắc khảo sát không tự hoàn thành FR-80–82 của các tuần sau.
 
+## 4.7. Truy vết hiện thực Tuần 10 — 01–02/11/2026
+
+Người dùng yêu cầu tiếp tục đến khi hoàn tất Tuần10, giữ câu chữ tự nhiên và hướng dẫn mở dự án. Chín FR-70/71/72/73/76/146/149/153/155 được nghiệm thu trên nguồn `51f03e26f47d17279af0b681d11994d7abd10d39`, [CI41274448630](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41274448630) check/smoke đúng SHA thành công. Lần chốt khởi động/tài liệu/sửa tracing và CI commit giao cuối được đối chiếu riêng tại [nghiệm thu](NGHIEM_THU_TUAN_10.md), không suy từ nguồn này.
+
+| Yêu cầu/quy tắc | Hiện thực | Bằng chứng và giới hạn |
+| --- | --- | --- |
+| FR-70/71; BR-17/20/21 | feedback-types.ts, feedback.ts, policies/feedback.ts, /api/feedback và /phan-hoi | HTTP19/19: lớp đăng ký/kỳ hiện hành-liền trước/kỳ khóa, tám tuyến và vai trò; tạo retry cùngID, đổi payload cùngrequestId409 |
+| FR-72/73/76; BR-22/24 | transitionFeedback/addFeedbackMessage, FeedbackHistory/Recipient, feedback-client/detail | Tám accept1thắng7x409, một lịch sử; trao đổi retry, chuyển có lý do/vô hiệu hóa người cũ/receipt retry; UI giả gửi→trả lời→đóng |
+| BR-28/30/34 | attachment-files/storage, feedback-attachments và hai API upload/download | Tệp spoof/quá số/quá dung lượng, privateUUID/public/path/header/authorization-before-I/O, tảiPDF đúngbyte, IDOR/audit; Windows file-symlink skipped, LinuxCI đã qua |
+| FR-146/149; BR-54/56 phần lõi | tuyến PĐT/KT, feedback-settings.ts và examNotice | HTTP xác nhận đúng queue, KT không nhận mặc định kiểm tra thành phần, ĐBCL sửa lời nhắc/cửa sổ kỳ; SLA/leo thang Tuần11 chưa nghiệm thu |
+| FR-153; BR-26/63 phần tiếp nhận | formnghiêmtrọng/schemaack/fixedseverity/identity, createcase trongtransaction | Năm vi phạm/hai mức danh tính; sáu request sauhai phản hồi chỉ thêmba/chặnba; TTonlyidentity/audit, UI hai chế độ; spam nâng cao Tuần11 |
+| FR-155; BR-61/62/68 | policy chung hasInspectionConflict/canReadInspection, scope list/count/detail/assign/tải | Ba xung đột GV/TBM/TK đaTT trả404, không có trongqueue/targets; ADMIN/ĐBCL403; lãnh đạo summarykhôngcontent/PII/tệp; quyền/phiên/xung đột mới hiệu lực ngay |
+| FR-154/160 | InspectionCase/Event TIEP_NHAN, ma trận chức năng hiện có | Một phần: chưaNote/xác minh/kết luận/thông báo/đóng, thống kê/xuất file; không tick toàn bộ |
+| Migration/seed/ẩn danh khảo sát | 20261101020000_week10_feedback_core, week10-demo-seed, DMMF/ERD | 37runtime/46design/9chỉthiết kế;9migrationdemo sạch, seed17/17, bundle8lớp/9phản hồi/2TIEP_NHAN lặp giữhash;34bảng/9168rows main cũ giữhash, không nối SurveyResponse/Answer tới User/Task |
+| Tài liệu/UI | [ADR011](decisions/ADR-011-phan-hoi-va-tiep-nhan-thanh-tra.md), [sơ đồ](SO_DO_TUAN_10.md), [năm câu bảo vệ](GIAI_THICH/tuan-10.md), [QA](QA_GIAO_DIEN_TUAN_10.md) | 14JPEG đã chụp với4vai trò/2kích thước; QA ghi đúng phạm vi ảnh xem/thao tác, không nhận mọi vai trò/manual hoặcWCAG đầy đủ |
+
+Fullcheck nguồn chức năng: Windows984passed/1skipped trong985test/62tệp; LinuxCI985/985. HTTP19/19/cleaned=true, SQL16/16, seed17/17, buildNext16.4.3exit0; hai cảnh báo tracing kho tệp được sửa và kiểm lại ở lần giao cuối. [Báo cáo10mục](bao-cao-tien-do/tuan-10.md) giữ ngày thực tế01–02/11, không thay ngày/tên GVHD yêu cầu; chỉ dữ liệu giả, không deploy công khai hoặc đổi MFA của chủ dự án. Tiến độ **165/219=75,3%,58/84FR**, kế hoạch167/219, còn2điểm FR-145. FR-154/160 chưa tick, không cộng FR tương lai từ enum/seed.
+
 ## 5. Quy tắc cập nhật
 
 Khi hiện thực mỗi tuần, thay tên miền dự kiến bằng đường dẫn service/policy thật và tên test gắn mã, ghi command/commit/CI/ảnh thật; chỉ tick PROGRESS sau test và nghiệm thu. Tệp xuất/trạng thái chưa hoàn thành là luồng riêng, không ghép với phiếu. Các sơ đồ, wireframe, blueprint và checklist là thiết kế có thể review, không thay bằng chứng runtime.
@@ -376,3 +394,5 @@ Check816/816 trong51tệp; [bằng chứng và giới hạn](QR_60_GIAY_2026_10_
 Đây là điều chỉnh trong FR-07 đã có, không thêm FR/điểm hoặc mở Tuần10. Việc hiện thực và migration không có nghĩa tài khoản chủ dự án đã60giây: chủ tài khoản còn phải tự quét/xác nhận mã mới. Kết quả CI phải đối chiếu đúng SHA mới, không dùng runcũ.
 
 Tiếp tục01/11: fullcheck850/850(53tệp), build qua. `use-client-ready` và9kiểm SSR chặn nhập/gửi trước hydration, biểu mẫu xác thực dùng POST dự phòng; lỗi MFA gửi GET kèm mã giả đã được tái hiện rồi sửa. UI thật đã kiểm login30→Tài khoản/link→mã cũ→QR60/hướng dẫn60→hủy về30; ảnh form trống đã xem. HTTP12nhóm dùng database TOTP60 riêng, giữ User/AuditLog sau dọn bí mật và không ảnh hưởng database thửTuần4. Không tự cấu hình 2FA cho chủ tài khoản.
+
+Nguồn bàn giao02/11: `8ffa99f6e67b06b579a3576506395e9856d1dd1d`, [CI41414188239](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239) check/smoke thành công, Linux1002/1002 trong63tệp. Windows1001passed/1skipped; bản dựng hết cảnh báo tracing. Khởi động CMD từ web tắt và tái sử dụng web đang chạy đều qua, không trùng tiến trình hoặc sinh lại client trên phiên dev; .env giữ nguyên. Không cộng FR mới cho tiện ích khởi động. Nhãn nhóm kiểm định tuyến đã sửa BR-55 thành BR-54; BR-55/FR-145 vẫn chưa nghiệm thu.

@@ -1,40 +1,35 @@
 # Trạng thái dự án
 
-- Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 9 — đã nghiệm thu FR-47/60–65/150 ngày 30/10/2026 theo yêu cầu người dùng.
-- Mốc kế hoạch giả định: 25/11–01/12; làm sớm theo lệnh, không ghi lùi ngày, nhóm đối chiếu lịch trường.
-- Nguồn ứng dụng: 5eb5a84d19b8a526bbce3ed5e61852533e8b6b1f, feat/week9-survey-results; CI41079971520 check/smoke đúng SHA thành công.
+- Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ30/09/2026, khởi động thực tế02/10.
+- Tuần hiện tại: Tuần 10 — chức năng thực hiện01/11, chốt bàn giao02/11/2026 theo yêu cầu người dùng.
+- Mốc kế hoạch giả định:02–08/12/2026; làm sớm theo lệnh, nhóm đối chiếu lịch trường, không ghi lùi ngày.
+- Nguồn chức năng ban đầu51f03e2, CI41274448630 check/smoke qua; nguồn bàn giao8ffa99f, CI41414188239 check/smoke qua đúng SHA; Linux1002/1002.
 
 ## Đã hoàn thành
 
-- Tuần 1–8/G1 đã nghiệm thu; báo cáo và ảnh lịch sử giữ nguyên, xem NGHIEM_THU_TUAN_08.md.
-- Tuần 9: tổng hợp chính xác câu/nhóm/tổng, ngưỡng số phiếu và tỉ lệ, CAS/requestId/lịch sử, khóa kỳ lưu trữ.
-- Kết quả theo quyền/phạm vi mới; lớp thiếu mẫu ẩn điểm/TEXT. ADMIN/PĐT/SV/Thanh tra không có quyền kết quả ngầm.
-- Khảo thí chỉ nhóm đánh giá gộp môn/bộ môn/khoa sau công bố, đủ mẫu và ít nhất hai GV snapshot; không lớp/GV/TEXT/ID trả lời trong DTO.
-- So sánh bộ môn/khoa/kỳ trước trên thống kê gốc cùng mẫu; khác cấu hình xếp mức vẫn có điểm, bỏ mức chung tùy ý.
-- Kiểm duyệt TEXT có lý do, cờ từ khóa, audit cán bộ/mã đáp án scalar; không tạo quan hệ danh tính–phiếu hoặc giờ nộp chính xác.
-- Danh sách PENDING theo phạm vi, audit mỗi lần xem; nhắc tay/tự động chung khóa ngày Việt Nam, cursor không bỏ đợt sau.
-- Check 797/797 trong 50 tệp, schema/ERD/lint/TypeScript; build Next16.4.3 qua trên nguồn ứng dụng cuối.
-- HTTP/MySQL 12/12 sạch fixture: TC-AGG-01=4,11/40%; 10POST tổng hợp một thành công/chín409; lỗi lớp cuối rollback không lưu kết quả/history/audit rồi retry qua.
-- TOTP thật lưu cấu hình, chặn replay/CAS cũ, gắn cờ ba góp ý; cấu hình và ratebucket thử khôi phục nguyên vẹn.
-- UI 14 nhóm/23 trạng thái/46PNG desktop/mobile đã xem; bốn ảnh cuối chụp lại mainE8 qua, không lỗi trong phép đo.
-- Demo MySQL 15/15; E8 riêng hai đợt/bốn lớp/18 phiếu/40 nhiệm vụ, hai GV cùng môn, đủ/thiếu mẫu và kỳ trước; seed lặp giữ hash.
-- Nghiệm thu Tuần9 không migration mới: 34 runtime/46 design/12 model chỉ thiết kế; 27 tập main cũ khớp hash sau seed và UI đọc, không reset DB/volume.
-- Công thức, ADR010, năm câu bảo vệ, báo cáo 10 mục, ba sơ đồ nghiệp vụ/ERD/ảnh/README/truy vết/nhật ký AI đã cập nhật.
-- Tiến độ 138/219=63,0%, 49/84FR; M5=22/22, M7=16/18, M14=6/13. Kế hoạch 140/219, chênh hai điểm FR-145.
+- Tuần1–9/G1 và các báo cáo, ảnh, migration lịch sử được giữ; xem NGHIEM_THU_TUAN_09.md.
+- Tuần10: FR-70/71/72/73/76/146/149/153/155; gửi/định tuyến tám loại, hàng đợi, trạng thái, trao đổi, chuyển tiếp/từ chối có lý do, lịch sử.
+- Đính kèm tối đa3tệp×5MiB PNG/JPG/PDF; kiểm đuôi/magic, tên ngẫu nhiên ngoài public, tải theo quyền và audit chứng cứ.
+- PĐT nhận tổ chức lớp; Khảo thí nhận thi cuối kỳ và lời nhắc phúc khảo cấu hình được; ĐBCL cấu hình cửa sổ học kỳ.
+- Khiếu nại nghiêm trọng tạo hồ sơ TIEP_NHAN; hai mức danh tính, kiểm xung đột động cả đa vai trò; lãnh đạo chỉ tóm tắt, ADMIN/ĐBCL không đọc hồ sơ.
+- CAS/requestId chống trùng; chuyển tiếp thu hồi quyền nội dung người nhận cũ, retry chỉ trả biên nhận. Quyền/phiên/phạm vi được đọc lại trong giao dịch.
+- Check cuối1001passed/1skipped(Windows file-symlink),63tệp; build Next16.4.3 qua và hết cảnh báo tracing kho tệp.
+- HTTP/MySQL19/19 sạch fixture;8lệnh tiếp nhận=1thành công/7xung đột,6khiếu nại song song chỉ thêm3/chặn3 khi đã có2.
+- SQL16/16, demo17/17;8lớp/9phản hồi/2hồ sơ tiếp nhận, seed lặp/tăng size giữ hash; migration sạch trên database thử mới.
+- Migration thêm3bảng,37runtime/46design/9chỉthiết kế;34bảng/9.168bản ghi main cũ giữ hash sau migration và seed, không reset.
+- UI4vai trò/2kích thước/14JPEG đã xem; luồng giả gửi→GVtrả lời→SVđóng, Thanh tra ẩn danh/cho biết và lãnh đạo tóm tắt.
+- Khởi động Windows bằng KHOI_DONG_DU_AN.cmd; đã thử cold-start và mở lại không tạo tiến trình trùng/không generate khi web đang chạy, .env giữ nguyên.
+- Tiến độ165/219=75,3%,58/84FR; kế hoạch167/219, chênh2điểm FR-145. M8=15/19,M13=18/22,M14=9/13,M15=6/18.
 
-## Cách chạy và phần còn lại
+## Cách mở và phần còn lại
 
-- Web chính http://localhost:3000/ket-qua và scheduler đã mở lại; MySQL/Mailpit healthy, health/đăng nhập200.
-- Xem kết quả: DEMO-GV00001 hoặc KT2026001/DBCL2026001, mật khẩu Demo2026!HocTap; chọn đợt giả Tuần9 theo README.
-- Lỗi tải lại31/10: dev dùng --webpack; check797/797 qua, IAB giữ nội dung thử hơn156giây và đăng nhập/đăng xuất demo qua. Dừng dev trước check/generate/build; xem SUA_TAI_LAI_TRANG_2026_10_31.md.
-- FR-145 ImportBatch/hoàn tác P1 có điều kiện còn backlog, chưa tự cắt; FR-160 đầy đủ chờ Tuần13.
-- Chưa làm phản hồi liên tục/giải trình/dashboard/xuất file; 5.6(d) xuất CSV/Excel/PDF phải kiểm khi Tuần12 hiện thực.
-- Chưa kiểm tải1500 request/WCAG/mọi thiết bị/log proxy; ẩn danh mức ứng dụng, không chống DBA/binlog hoặc tự tiết lộ.
-- Chỉ dữ liệu giả, không deploy công khai; đóng góp/ngày yêu cầu/GVHD do sinh viên xác minh, không viết quy trình hiện tại ở trường.
-- CI main Tuần9: 43da7f8017a16759f9883af49cfff29b44eabfcb/run41082112228 qua check/smoke; không suy kết quả này cho commit sửa câu chữ sau đó.
-- Câu chữ các tuần sau: trang chủ/xác thực/email dùng chung trung tính, đăng nhập dùng “Tài khoản hoặc email”; không gọi “bạn”, hạn chế slogan và không placeholder.
-- Sau xác thực: chỉ SINH_VIEN dùng “Mã số sinh viên”, chỉ GIANG_VIEN dùng “Mã giảng viên”; cán bộ/ADMIN/đa vai trò dùng “Tài khoản”. Giữ danh xưng sinh viên ở màn hình riêng cho sinh viên.
-- Lịch sử QR31/10: thiết lập60giây tự cấp lại/đếmngược, phiên5phút, khi đó TOTP30giây giữ nguyên; check816/816, HTTP29/29, UI5lần cấp cách60,25giây. Xem QR_60_GIAY_2026_10_31.md.
-- Theo lệnh31/10, tiếp tục01/11: TOTP mới60giây; tài khoản cũ30 tự xác nhận QR60 rồi mới chuyển, ADMIN chính chưa đổi. Migration thêm6cột/hash34bảng cũ khớp; check850/850(53tệp), build, HTTP12/12, UI30→QR60→hủy giữ30 qua; CI đối chiếu SHA mới. Xem TOTP_60_GIAY_2026_10_31.md.
-- Bước tiếp: chỉ bắt đầu Tuần10 khi người dùng yêu cầu; xem NGHIEM_THU_TUAN_09.md và báo cáo Tuần9.
+- Mở Docker Desktop, đợi chạy xong, bấm đúp KHOI_DONG_DU_AN.cmd tại thư mục dự án; đợi Website đã sẵn sàng rồi vào http://localhost:3000.
+- Giữ cửa sổ khởi động mở; Ctrl+C dừng máy chủ do cửa sổ đó mở, dữ liệu vẫn giữ. Docker riêng chưa bật máy chủ web.
+- Web3000/scheduler được mở lại sau kiểm tra; xem README.md, NGHIEM_THU_TUAN_10.md và bao-cao-tien-do/tuan-10.md.
+- Demo: DEMO-SV00001/DEMO-GV00001/PDT2026001/KT2026001/TT2026001/LD2026001/DBCL2026001; mật khẩu ban đầu Demo2026!HocTap, giữ mật khẩu đã đổi.
+- FR-154 chỉ phần khởi tạo, chưa tick đủ; xác minh/kết luận/SLA/leo thang/hài lòng/mở lại theo Tuần11. FR-145 còn backlog, FR-160 đủ ở Tuần13.
+- Không tự đặt lại tài khoản/MFA của chủ dự án; QR chuyển chu kỳ do người dùng thực hiện khi sẵn sàng. Giữ đặc tả gốc và ngoại lệ TOTP60 riêng.
+- Trang chung dùng ngữ cảnh trung tính/Tài khoản hoặc email; không placeholder hoặc gọi người dùng là bạn, hạn chế slogan.
+- Chỉ dữ liệu giả, không deploy công khai; chưa chứng nhận mọi thiết bị/WCAG/kiểm tải1500request hoặc chống DBA/binlog/tự tiết lộ.
+- Các thao tác chưa thử tay và kết quả CI theo SHA được ghi rõ trong QA/verification; không suy kiểm HTTP thành kiểm UI.
+- Bước tiếp: chỉ bắt đầu Tuần11 khi người dùng yêu cầu; sinh viên tự điền đóng góp, GVHD và ngày yêu cầu, không viết quy trình hiện tại ở trường.

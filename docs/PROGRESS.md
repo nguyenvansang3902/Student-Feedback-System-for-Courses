@@ -1,6 +1,6 @@
 # Tiến độ yêu cầu chức năng
 
-**Hiện tại sau Tuần9: 138/219=63,0%, 49/84 FR**. Sửa câu chữ và điều chỉnh chu kỳ TOTP trong FR-07 không cộng điểm.
+**Hiện tại sau nghiệm thu chức năng Tuần10: 165/219=75,3%, 58/84 FR**. Chốt khởi động/tài liệu và CI commit giao cuối được ghi tại NGHIEM_THU_TUAN_10.md; sửa câu chữ/TOTP không cộng điểm.
 
 Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 
@@ -78,13 +78,13 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M8 Phản hồi
 
-- [ ] FR-70 [P0] gửi phản hồi (loại, mức độ, ẩn danh, đính kèm) (Tuần 10)
-- [ ] FR-71 [P0] định tuyến và hàng đợi xử lý (Tuần 10)
-- [ ] FR-72 [P0] trạng thái và lịch sử (Tuần 10)
-- [ ] FR-73 [P0] trao đổi qua lại (Tuần 10)
+- [x] FR-70 [P0] gửi phản hồi (loại, mức độ, ẩn danh, đính kèm) (Tuần 10)
+- [x] FR-71 [P0] định tuyến và hàng đợi xử lý (Tuần 10)
+- [x] FR-72 [P0] trạng thái và lịch sử (Tuần 10)
+- [x] FR-73 [P0] trao đổi qua lại (Tuần 10)
 - [ ] FR-74 [P1] SLA, quá hạn, leo thang (Tuần 11)
 - [ ] FR-75 [P1] đánh giá hài lòng và mở lại (Tuần 11)
-- [ ] FR-76 [P0] chuyển tiếp/từ chối có lý do (Tuần 10)
+- [x] FR-76 [P0] chuyển tiếp/từ chối có lý do (Tuần 10)
 
 ## M9 Thông báo
 
@@ -121,22 +121,22 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-143 [P0] PĐT xác nhận hoặc trả về dữ liệu đối tượng khảo sát (Tuần 7)
 - [x] FR-144 [P0] cảnh báo lệch dữ liệu khi mở đợt, chốt theo dữ liệu hiện tại (Tuần 7)
 - [ ] FR-145 [P1] lô nhập ImportBatch và hoàn tác khi chưa bị đợt chốt dùng — tùy thời gian, không tự cắt (Tuần 7)
-- [ ] FR-146 [P0] hàng đợi phản hồi TO_CHUC_LOP_HOC của PĐT (Tuần 10)
+- [x] FR-146 [P0] hàng đợi phản hồi TO_CHUC_LOP_HOC của PĐT (Tuần 10)
 - [ ] FR-147 [P1] dashboard PĐT: độ sẵn sàng, lớp lỗi, phản hồi đang chờ (Tuần 12)
 
 ## M14 Phòng Khảo thí
 
 - [x] FR-148 [P0] cờ isAssessmentGroup trong trình soạn/xem trước và một nhóm mặc định Kiểm tra, đánh giá — việc bù G1 (Tuần 6)
-- [ ] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
+- [x] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
 - [x] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
 - [ ] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
 - [ ] FR-152 [P1] kiến nghị rà soát của Khảo thí và phản hồi trưởng bộ môn (Tuần 11)
 
 ## M15 Phòng Thanh tra
 
-- [ ] FR-153 [P0] gửi KHIEU_NAI_NGHIEM_TRONG với cảnh báo, loại vi phạm và mức độ danh tính (Tuần 10)
+- [x] FR-153 [P0] gửi KHIEU_NAI_NGHIEM_TRONG với cảnh báo, loại vi phạm và mức độ danh tính (Tuần 10)
 - [ ] FR-154 [P0] hồ sơ Thanh tra và máy trạng thái tiếp nhận/xác minh/kết luận/thông báo/đóng — khởi tạo TIEP_NHAN ở Tuần 10 (Tuần 11)
-- [ ] FR-155 [P0] loại người xung đột lợi ích khỏi hàng đợi, quyền xem và giao hồ sơ (Tuần 10)
+- [x] FR-155 [P0] loại người xung đột lợi ích khỏi hàng đợi, quyền xem và giao hồ sơ (Tuần 10)
 - [ ] FR-156 [P0] kết luận hồ sơ Thanh tra và thông báo đúng mức tiết lộ (Tuần 11)
 - [ ] FR-157 [P1] chuyển hồ sơ một chiều từ vai trò được phép sang Thanh tra (Tuần 11)
 - [ ] FR-158 [P1] cảnh báo bất thường khảo sát và màn hình xem xét chỉ số (Tuần 12)
@@ -154,21 +154,21 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-51 | P0 | G1/Tuần6 | Đạt G1: lý do/CAS/audit/thư Mailpit thật; SMTP lỗi có trạng thái rõ |
 | BR-52 | P0 | Tuần7 | Đạt: RS-01–06, snapshot, ghi chú cảnh báo và trả về có lý do; TC-PDT-02 qua unit/HTTP/UI |
 | BR-53 | P0 | Tuần7 | Đạt: drift vẫn chốt hiện tại, audit/queue PĐT-ĐBCL, sau mở task bất biến; TC-PDT-03 qua |
-| BR-54 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-54 | P0 | Tuần10–11 | Đạt phần lõi Tuần10: tuyến/hàng đợi PĐT, xử lý/chuyển có lý do; SLA/leo thang Tuần11 chưa nghiệm thu |
 | BR-55 | P1 | Tuần7 (P1) | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-56 | P0 | Tuần10–11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-56 | P0 | Tuần10–11 | Đạt phần lõi Tuần10: tuyến Khảo thí, lời nhắc phúc khảo cấu hình được, quyền/chuyển; SLA/leo thang Tuần11 chưa nghiệm thu |
 | BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Đạt Tuần9: projection Khảo thí, nhóm có cờ, ít nhất hai GV/đủ mẫu; TC-KT-01 qua unit/HTTP/UI |
 | BR-58 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-59 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-60 | P0 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-61 | P0 | Tuần10–13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-62 | P0 | Tuần10–13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-63 | P0 | Tuần10–13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-61 | P0 | Tuần10–13 | Đạt lát cắt tiếp nhận: xung đột động GV/TBM/TK kể cả đa vai trò, lọc list/count, 404 và chặn giao; rà đủ luồng tương lai Tuần13 |
+| BR-62 | P0 | Tuần10–13 | Đạt tiếp nhận: TT không xung đột xem nội dung/tệp, lãnh đạo chỉ tóm tắt, ADMIN/ĐBCL bị chặn, audit mở/tải; luồng sau tiếp nhận còn Tuần11 |
+| BR-63 | P0 | Tuần10–13 | Đạt tiếp nhận: mặc định ẩn danh hoàn toàn, danh tính chỉ mở cho TT khi sinh viên chọn, audit; giới hạn ẩn danh mức ứng dụng được ghi rõ |
 | BR-64 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-65 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
 | BR-66 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | G1 giữ deny default/ADMIN không có quyền ngầm; kiểm module tương lai chờ Tuần13 |
+| BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Tuần10 DTO tóm tắt/queue không định danh theo quyền đã kiểm; dashboard/thống kê/tệp xuất và ngưỡng chưa hiện thực, chưa nghiệm thu toàn bộ |
+| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | ADMIN bị chặn nội dung phản hồi/hồ sơ trong unit/HTTP Tuần10; giữ kết quả Tuần9, còn kiểm đủ thống kê/tệp xuất ở Tuần13 |
 
 ## Nghiệm thu phần chính Tuần 7 — 29/10/2026
 
@@ -197,3 +197,9 @@ QR60giây và nhãn tài khoản —31/10/2026: QR chờ xác nhận có hạn60
 Mã xác minh 6 chữ số 60 giây — 31/10/2026: theo lệnh mới, đăng ký mới dùng TOTP60; credential 30 giây cũ tiếp tục dùng cho đến khi chủ tài khoản nhập mã cũ mới, quét QR60 và xác nhận thành công. Chỉ chu kỳ 30 giây ở mục8.4 được điều chỉnh theo yêu cầu này; giữ bản đặc tả gốc và ghi [hồ sơ thay đổi](TOTP_60_GIAY_2026_10_31.md) riêng. Check **841/841 trong52tệp**, HTTP/MySQL **12/12** và dọn bí mật fixture qua; migration thêm6cột, hash34bảng dữ liệu cũ giữ nguyên. ADMIN chính chưa được chuyển hộ hoặc đổi khóa, vẫn dùng30 cho đến bước xác nhận cá nhân. UI/CI bản mới đang được kiểm, không suy từ kết quả cũ. Không thêm FR hoặc bắt đầu Tuần10; tiến độ giữ **138/219=63,0%,49/84FR**.
 
 Tiếp tục01/11: check cuối **850/850 trong53tệp**, build qua; UI tài khoản giả kiểm đăng nhập30, đường chuyển, QR/hướng dẫn60, hủy giữ30 và ảnh đã xem. Bổ sung9kiểm SSR, khóa biểu mẫu trước khi phía máy khách sẵn sàng và POST dự phòng sau khi phát hiện gửi mã giả qua GET lúc bấm quá sớm. HTTP TOTP60 có database/marker riêng, không ghi lịch sử fixture vào database thửTuần4. Kết quả CI theo SHA bản cập nhật; chủ tài khoản tự quét/xác nhận QR mới, tiến độ không đổi.
+
+## Nghiệm thu chức năng Tuần 10 — 01–02/11/2026
+
+Chốt FR-70/71/72/73/76/146/149/153/155 trên nguồn `51f03e26f47d17279af0b681d11994d7abd10d39`, [CI41274448630](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41274448630) check/smoke đúng SHA thành công. Linux985/985 trong62tệp; Windows984passed/1skipped do không tạo được file symlink; HTTP/MySQL19/19, SQL16/16, seed17/17, build Next16.4.3 qua. Luồng UI giả từ gửi ẩn danh tới trả lời/đóng đã chạy;14JPEG của4vai trò/2kích thước được ghi phạm vi tại [QA](QA_GIAO_DIEN_TUAN_10.md). Migration thêm3bảng, tổng37runtime/46design/9chỉthiết kế;34bảng/9.168bản ghi main cũ giữ hash sau migration và seed. Chín FR P0 thêm27điểm: **165/219=75,3%,58/84FR**; kế hoạch167/219, chênh2điểm FR-145. M8=15/19,M13=18/22,M14=9/13,M15=6/18. FR-154 chỉ TIEP_NHAN, FR-160 vẫn một phần; không tick SLA/hài lòng/kết luận/giải trình/thông báo tương lai. Bản sửa tracing, khởi động đơn giản, tài liệu và CI giao cuối đối chiếu riêng tại [nghiệm thu](NGHIEM_THU_TUAN_10.md) và [báo cáo](bao-cao-tien-do/tuan-10.md).
+
+Chốt giao02/11: nguồn `8ffa99f6e67b06b579a3576506395e9856d1dd1d`, [CI41414188239](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239) check/smoke thành công; Linux1002/1002 và Windows1001passed/1skipped trong63tệp. Bản dựng hết cảnh báo tracing, thêm17test khởi động và kiểm CMD cold-start/mở lại thật, không trùng tiến trình, giữ .env. Hướng dẫn ba bước đầu README; web3000/scheduler đã mở lại. Không cộng thêm FR/điểm cho tiện ích mở dự án.

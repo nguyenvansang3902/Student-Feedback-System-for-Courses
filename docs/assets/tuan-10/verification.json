@@ -1,0 +1,388 @@
+{
+  "week": 10,
+  "recordedOn": "2026-11-02",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "verified-at-referenced-source",
+  "source": {
+    "branch": "feat/week10-feedback-core",
+    "verifiedCommit": "8ffa99f6e67b06b579a3576506395e9856d1dd1d",
+    "note": "Nguồn ứng dụng và tiện ích khởi động đã kiểm; các commit tài liệu sau đó giữ nguyên mã chạy và CI main đối chiếu riêng."
+  },
+  "quality": {
+    "localCheck": {
+      "status": "passed-with-one-platform-skip",
+      "passed": 1001,
+      "skipped": 1,
+      "files": 63,
+      "skipReason": "Windows không cho tạo file symlink trong phép thử."
+    },
+    "linuxCi": {
+      "status": "passed",
+      "passed": 1002,
+      "skipped": 0,
+      "files": 63,
+      "run": 41414188239,
+      "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239",
+      "jobs": [
+        {
+          "name": "smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "check",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "productionBuild": {
+      "status": "passed",
+      "nextVersion": "16.4.3",
+      "filesystemTracingWarnings": 0
+    }
+  },
+  "http": {
+    "status": "passed",
+    "groups": 19,
+    "cases": [
+      "BR-18/30/34: phiên, Origin, CSRF, tham số và ADMIN bị chặn",
+      "BR-20/24/34: đúng đăng ký, IDOR404 và DTO ẩn danh không chứa danh tính",
+      "BR-22/30: retry tạo phản hồi trả cùng ID, đổi nội dung cùng requestId bị chặn",
+      "FR-70/BR-34: nội dung 10.000 ký tự tiếng Việt đi qua HTTP; từ chối quá dài và khóa lạ",
+      "BR-21/54/56: đủ bảy tuyến thường và khiếu nại đồng gửi trưởng bộ môn",
+      "BR-24/34: hàng đợi năm vai trò không chứa định danh; không đổi view để vượt quyền",
+      "BR-22: tám lệnh đồng thời một chuyển; trao đổi retry, trả lời, đóng và chặn sai trạng thái",
+      "BR-21/22: chuyển tiếp về MỚI, thu hồi quyền người nhận cũ; chuyển và từ chối bắt buộc lý do",
+      "BR-17/20: học kỳ hiện hành/liền trước và khóa kỳ được kiểm ở máy chủ",
+      "BR-20/56: ĐBCL cấu hình lời nhắc phúc khảo và cửa sổ học kỳ; vai trò khác không sửa",
+      "TC-TT-01/02/03: hồ sơ tiếp nhận, ba xung đột đa vai trò, summary và audit, mặc định ẩn danh",
+      "BR-61/62/67: truy vấn danh sách và total lọc xung đột; lãnh đạo chỉ nhận tóm tắt",
+      "BR-61/63: chỉ Thanh tra không xung đột thấy danh tính khi được chọn; chặn giao người xung đột",
+      "BR-61: xung đột mới có hiệu lực ngay trên phiên cũ, bỏ xung đột đọc lại đúng quyền",
+      "BR-28: đuôi giả, tổng số tệp, quá dung lượng, tải đúng byte, tên trung tính và IDOR",
+      "BR-61/62: chứng cứ Thanh tra chỉ người không xung đột tải, mỗi lần tải có audit",
+      "BR-34: thu hồi vai trò có hiệu lực ngay trên access token cũ",
+      "FR-153/BR-26: sáu yêu cầu nghiêm trọng đồng thời không vượt tổng năm phản hồi/ngày",
+      "BR-30/34: phiên bị thu hồi mất quyền ngay"
+    ],
+    "concurrentAcceptance": {
+      "requests": 8,
+      "succeeded": 1,
+      "conflicts": 7
+    },
+    "fixturesCleaned": true,
+    "checkedAt": "2026-11-01T04:04:43.137Z",
+    "labelCorrection": "Nhãn định tuyến cũ ghi BR-55 được sửa thành BR-54; phép kiểm không đổi. BR-55 thuộc ImportBatch chưa nghiệm thu."
+  },
+  "demo": {
+    "status": "passed",
+    "groups": 17,
+    "results": [
+      "medium: 3/8/40/120/60/1500/4501",
+      "Tuần10: bundle riêng8lớp/9phản hồi đủ8loại, hai sinh viên4/5phản hồi và2hồ sơ TIEP_NHAN vớihai mức danh tính; định tuyến/đồnggửi/lịch sử ban đầu đúng",
+      "TC-PDT-02 phần seed: bundle W7 riêng đủ RS-01–06; cảnh báo cần ghi chú, lỗi chặn không xác nhận; chỉ đọc readiness, không task/SMTP",
+      "G1: bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra hỗ trợ xem/phân công hồ sơ tiếp nhận Tuần10, chưa xác minh/kết luận Tuần11",
+      "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
+      "TC-FR148-06/07: họ mẫu mới 3 nhóm/7 câu, đúng 1 nhóm Kiểm tra, đánh giá; giữ nguyên UUID/cây hai họ cũ và phiếu/kết quả",
+      "FR-35/BR-05: seed lại giữ lựa chọn mặc định đã đổi và không ghi lại cây câu hỏi cũ",
+      "Chạy lại không nhân đôi hoặc đặt lại mật khẩu",
+      "small: bổ sung an toàn, không xóa dữ liệu/mở lại tài khoản",
+      "large: 3/8/80/240/120/3000/9001",
+      "Tăng size giữ nguyên danh sách đã chốt, UUID phiếu/đáp án và kết quả đã có",
+      "Tăng size không tạo hai giảng viên chính trong một lớp",
+      "Seed lại/tăng size giữ bundle W7 và mật khẩu/trạng thái đã đổi; không viết lại lịch sử hoặc dữ liệu khảo sát cũ",
+      "E8 Tuần 9: cùng môn hai giảng viên, nhóm đánh giá, hai lớp đủ mẫu/một lớp thiếu, kỳ trước; 18 phiếu/40 nhiệm vụ, seed lại giữ nguyên hash",
+      "Tuần10: seedlặp/medium→small→large giữ nguyên hash9phản hồi,8lớp/ghi danh,recipient/history vàhai case/event; sáu phản hồi lịch sử được đối chiếu riêng theoUUID, không gộp với bundle mới",
+      "Từ chối production, actor không hợp lệ và size sai trước khi ghi",
+      "Seed từ chối học kỳ khóa và không thêm tài khoản"
+    ],
+    "checkedAt": "2026-11-01T04:29:51.349Z"
+  },
+  "database": {
+    "runtimeModels": 37,
+    "designModels": 46,
+    "designOnlyModels": 9,
+    "newModels": [
+      "Attachment",
+      "InspectionCase",
+      "InspectionCaseEvent"
+    ],
+    "migrationAndSeedPreservation": {
+      "status": "passed",
+      "oldTablesCompared": 34,
+      "oldRowsUnchanged": 9168,
+      "checkedAt": "2026-11-01T04:18:13.912Z",
+      "scope": "So dữ liệu cũ trước/sau migration và seed; lượt giao diện sau đó tạo phiên và phản hồi giả mới."
+    }
+  },
+  "ui": {
+    "conductedOn": "2026-11-01",
+    "reviewedOn": "2026-11-02",
+    "browser": "Trình duyệt trong ứng dụng",
+    "server": "Next dev Webpack, cổng thử riêng 3003",
+    "rolesObserved": [
+      "SINH_VIEN",
+      "GIANG_VIEN",
+      "THANH_TRA",
+      "LANH_DAO"
+    ],
+    "screenshotCount": 14,
+    "allScreenshotsVisuallyReviewed": true,
+    "screenshots": [
+      {
+        "file": "ui/giang-vien-an-danh.jpg",
+        "width": 1264,
+        "height": 1149,
+        "bytes": 76520,
+        "sha256": "87fc6d3ca4f0c0dcf8e289e1c756d05d18626f4cbfd54432aa9586b0e88a6675",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/giang-vien-da-tra-loi.jpg",
+        "width": 1264,
+        "height": 1410,
+        "bytes": 92794,
+        "sha256": "39416bbe0b24c53f406becef9ffd6e12935956e8e620cd6da20dfd10045cfc57",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/lanh-dao-tom-tat.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 32854,
+        "sha256": "5b88cb66e88b41f5b8e9bc94e0bc09d926aa34a68c89397344d9f8ba759348d5",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-chi-tiet.jpg",
+        "width": 1264,
+        "height": 1352,
+        "bytes": 90356,
+        "sha256": "d7a1139f050750920fa8423b5370b9db11f435672d646c8f56f038bca65ae8e6",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-da-dong.jpg",
+        "width": 1264,
+        "height": 1262,
+        "bytes": 90889,
+        "sha256": "722f59fd2517c4910fca4426097f2974f9fe3f77a9975111ff4f3ee794066fc6",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-danh-sach.jpg",
+        "width": 1264,
+        "height": 1702,
+        "bytes": 104023,
+        "sha256": "99a8d6f8c8ea232db4040051fe56480fec0d20536598f12239ca992b3b8b5614",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-form.jpg",
+        "width": 1264,
+        "height": 1048,
+        "bytes": 64019,
+        "sha256": "f847422370c54c0edc5c1b781d2c8fb38de537f40c5218d3f5ed4a9914af5abc",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-mobile.jpg",
+        "width": 374,
+        "height": 1816,
+        "bytes": 78685,
+        "sha256": "1db3f1c24b06227cd89f16b082386da378148392dc9a76ebafc1f5480ad33765",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-nghiem-trong.jpg",
+        "width": 1264,
+        "height": 1446,
+        "bytes": 104873,
+        "sha256": "fdca109b824ac9ee6a4dc9770ff6cd38ab2abd29848d7f79fb2cc2cc45fb2d29",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sinh-vien-nhan-tra-loi.jpg",
+        "width": 1264,
+        "height": 1410,
+        "bytes": 102121,
+        "sha256": "9b11148f3cd8f7993c6cc9426ae43efd0795428495246859dfe2380b6498ff5c",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh-tra-an-danh.jpg",
+        "width": 1264,
+        "height": 1939,
+        "bytes": 128316,
+        "sha256": "d6b4b172b1f7aaa7d0d39584a1715a83f8d4acc81a9b49933e6d10aa52be8cba",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh-tra-danh-sach.jpg",
+        "width": 1264,
+        "height": 790,
+        "bytes": 50606,
+        "sha256": "80ba7c9d1484c9ed605875ad4e9861136591d48636701e0c528e5269f355c7e8",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh-tra-danh-tinh-cho-phep.jpg",
+        "width": 1264,
+        "height": 1939,
+        "bytes": 133181,
+        "sha256": "ecca25f0d3df069d86f72a6b186fea7fbac255cc49ceaad7a757aabfd71e9a83",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh-tra-mobile.jpg",
+        "width": 374,
+        "height": 2592,
+        "bytes": 105630,
+        "sha256": "550a3edc868b509d27f57cd9c582b9340f722d334ce1376ab2e7d4de43c761fa",
+        "visuallyReviewed": true
+      }
+    ],
+    "observedViewports": [
+      {
+        "innerWidth": 1280,
+        "kind": "desktop"
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "kind": "mobile override"
+      }
+    ],
+    "domChecksReportedByBrowserOperator": [
+      {
+        "view": "form sinh viên thường",
+        "innerWidth": 1280,
+        "horizontalOverflow": false,
+        "inputTextareaPlaceholders": 0
+      },
+      {
+        "view": "form nghiêm trọng mobile",
+        "innerWidth": 390,
+        "horizontalOverflow": false,
+        "inputTextareaPlaceholders": 0
+      },
+      {
+        "view": "hồ sơ Thanh tra mobile",
+        "innerWidth": 390,
+        "horizontalOverflow": false,
+        "inputTextareaPlaceholders": 0
+      },
+      {
+        "view": "lãnh đạo tóm tắt",
+        "innerWidth": 1280,
+        "horizontalOverflow": false,
+        "studentIdentityPresent": false,
+        "complaintBodyPresent": false
+      }
+    ],
+    "completedBrowserFlow": {
+      "mode": "data-demo-only",
+      "steps": [
+        "Sinh viên gửi ẩn danh",
+        "Giảng viên tiếp nhận",
+        "Giảng viên bắt đầu xử lý",
+        "Giảng viên trả lời",
+        "Sinh viên đọc trả lời và đóng"
+      ],
+      "finalStatus": "DA_DONG"
+    },
+    "inspectionObservations": [
+      "Hai hồ sơ TIEP_NHAN",
+      "Mặc định ẩn danh trong thông tin và lịch sử",
+      "Chỉ Thanh tra thấy danh tính khi được chọn",
+      "Lãnh đạo chỉ thấy tóm tắt",
+      "Không có nút quy trình xác minh/kết luận Tuần 11"
+    ],
+    "notExecutedThroughBrowser": [
+      "Lọc/danh sách rỗng",
+      "Chọn phản hồi thi cuối kỳ để xem lời nhắc",
+      "Gửi khiếu nại nghiêm trọng",
+      "Tải tệp",
+      "Gửi tin nhắn riêng",
+      "Chuyển tiếp/từ chối",
+      "Giao cán bộ Thanh tra",
+      "Hàng đợi PĐT/Khảo thí và cấu hình ĐBCL",
+      "Rà bàn phím/trình đọc màn hình/console đầy đủ"
+    ],
+    "limitations": [
+      "Ảnh của bản dev có biểu tượng/chỉ báo Next, gồm Compiling ở ảnh mobile.",
+      "Một số locator hết hạn khi trang tải bất đồng bộ; không tính lần thử chưa tới đích là qua.",
+      "Trong lượt kéo dài có hai lần access hết hạn và làm mới chuyển về trang tài khoản; điều phối viên đăng nhập/làm mới rồi hoàn tất luồng.",
+      "Không chứng nhận mọi trình duyệt/thiết bị hoặc WCAG."
+    ]
+  },
+  "scopeExcluded": [
+    "FR-154 quy trình sau TIEP_NHAN",
+    "SLA/quá hạn/leo thang",
+    "Hài lòng/mở lại",
+    "Dashboard/xuất file/anomaly",
+    "Ma trận toàn hệ thống Tuần 13"
+  ],
+  "privacy": {
+    "data": "Chỉ dữ liệu giả",
+    "ownerCredentialsIncluded": false,
+    "cookiesOrTokensIncluded": false,
+    "qrOrRecoveryCodesIncluded": false,
+    "privateDatabaseIdentifiersIncluded": false
+  },
+  "baseline": {
+    "source": {
+      "branch": "feat/week10-feedback-core",
+      "verifiedCommit": "51f03e26f47d17279af0b681d11994d7abd10d39",
+      "note": "Bằng chứng này gắn với nguồn đã nêu. Thay đổi bàn giao sau đó cần đối chiếu lại trong nghiệm thu cuối; không suy CI cũ cho SHA mới."
+    },
+    "quality": {
+      "localCheck": {
+        "status": "passed-with-one-platform-skip",
+        "passed": 984,
+        "skipped": 1,
+        "files": 62,
+        "skipReason": "Windows không cho tạo file symlink trong phép thử."
+      },
+      "linuxCi": {
+        "status": "passed",
+        "passed": 985,
+        "skipped": 0,
+        "files": 62,
+        "run": 41274448630,
+        "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41274448630",
+        "jobs": [
+          {
+            "name": "smoke",
+            "conclusion": "success"
+          },
+          {
+            "name": "check",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "productionBuildAtReferencedSource": {
+        "status": "passed",
+        "nextVersion": "16.4.3",
+        "filesystemTracingWarnings": 2,
+        "note": "Hai cảnh báo tracing kho riêng đã được xử lý bằng chú thích trong thay đổi sau nguồn này; bản dựng cuối cần xác minh riêng."
+      }
+    }
+  },
+  "startup": {
+    "status": "passed",
+    "windowsWrapper": "KHOI_DONG_DU_AN.cmd",
+    "npmCommand": "npm run local:start",
+    "coldStart": true,
+    "reusePassed": true,
+    "noDuplicateProcesses": true,
+    "noGenerateOnReuse": true,
+    "envUnchanged": true,
+    "url": "http://localhost:3000",
+    "ownerCredentialsChanged": false,
+    "proof": {
+      "file": "khoi-dong-website.jpg",
+      "sha256": "cc8c1ebdbc12da6e65e6f0aa500ff7a29f455e7f8c7f6ac2dcce741ecb9a36ef"
+    }
+  }
+}

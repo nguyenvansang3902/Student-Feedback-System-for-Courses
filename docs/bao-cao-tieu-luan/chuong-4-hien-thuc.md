@@ -44,4 +44,16 @@ Giờ server cùng `performance.now()` hỗ trợ hiển thị đếm hạn, tr�
 
 Các kiểm DMMF, service/input, body, client/clock/draft và privacy route→service bảo vệ từng ranh giới. HTTP/MySQL kiểm10 vai trò, taskown/IDOR, fresh quyền, dữ liệu câu trả lời, duplicate,20 POST đồng thời và rollback lỗi answer. Kết quả thực từng gate/build/UI/CI được chốt tại [nghiệm thu](../NGHIEM_THU_TUAN_08.md) và [truy vết](../TRUY_VET.md), không suy từ thiết kế hoặc mock. Sơ đồ/giải thích tại [SO_DO_TUAN_08](../SO_DO_TUAN_08.md), [ADR-009](../decisions/ADR-009-nop-phieu-an-danh.md) và [5 câu bảo vệ](../GIAI_THICH/tuan-08.md).
 
-Tuần 9 mới tổng hợp/công bố/kiểm duyệt; các tuần sau xử lý phản hồi, SLA, báo cáo và kiểm tải. Phần5.6(d) hiện kiểm DTO/payload/lỗi/log có thật; exportCSV/Excel/PDF kết quả chưa có và phải kiểm khi Tuần 12 hiện thực. Dữ liệu từ seed được người dùng cho phép không đồng nghĩa API tương lai đã hoàn thành. FR-145 ImportBatch/hoàn tác còn backlog; chỉ đưa số liệu kiểm thử thật vào bản nộp cuối.
+Tại mốc Tuần 8, tổng hợp/công bố/kiểm duyệt chờ Tuần 9; phản hồi chờ Tuần 10. ExportCSV/Excel/PDF kết quả phải kiểm khi Tuần 12 hiện thực. Dữ liệu seed không đồng nghĩa API tương lai đã hoàn thành. FR-145 ImportBatch/hoàn tác còn backlog; chỉ đưa số liệu kiểm thử thật vào bản nộp cuối.
+
+## 4.8. Phản hồi và tiếp nhận Thanh tra — Tuần 10
+
+[CẦN SINH VIÊN ĐỌC VÀ VIẾT LẠI BẰNG LỜI CỦA MÌNH]
+
+Phản hồi liên tục dùng các service riêng để kiểm đăng ký học phần, học kỳ được phép và định tuyến tám loại. Người gửi được theo dõi cuộc trao đổi; người xử lý chỉ thấy nhãn Sinh viên ẩn danh khi được chọn. Mọi lượt đọc, thay đổi trạng thái và tải tệp kiểm lại phiên/quyền/phạm vi từ database. Không thêm liên kết danh tính vào miền phiếu khảo sát ẩn danh.
+
+Revision và requestId bảo vệ thay đổi đồng thời và gửi lại sau lỗi mạng. Chuyển tiếp thay người nhận hiện hành; người cũ mất quyền đọc nội dung, nhưng gửi lại đúng yêu cầu đã thành công chỉ nhận biên nhận. Lịch sử chỉ thêm, lý do chuyển hoặc từ chối là bắt buộc. Tệp giới hạn ba tệp trên toàn phản hồi, mỗi tệp 5 MiB; kiểm đuôi/chữ ký nội dung, lưu tên ngẫu nhiên ngoài public và tải qua API có quyền.
+
+Gửi khiếu nại nghiêm trọng tạo đồng thời phản hồi và hồ sơ TIEP_NHAN. Xung đột lợi ích tính động theo lớp, bộ môn và khoa, có hiệu lực cả với tài khoản nhiều vai trò. Mặc định Thanh tra cũng không nhận danh tính; sinh viên có thể chọn cho riêng Thanh tra không xung đột biết, có kiểm toán lượt xem. Lãnh đạo nhận tóm tắt; ADMIN và ĐBCL không đọc hồ sơ. Xác minh, kết luận và thông báo chưa được mở ở Tuần 10.
+
+Nguồn và kiểm thử thực tế đối chiếu ở [nghiệm thu Tuần 10](../NGHIEM_THU_TUAN_10.md), [QA](../QA_GIAO_DIEN_TUAN_10.md) và [ADR-011](../decisions/ADR-011-phan-hoi-va-tiep-nhan-thanh-tra.md). Phạm vi hạn chế gồm tự tiết lộ qua nội dung/tệp, quyền DBA và log hạ tầng, chưa quét mã độc ngoài hoặc chứng nhận mọi thiết bị/WCAG.
