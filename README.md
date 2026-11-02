@@ -12,6 +12,8 @@ Giữ cửa sổ khởi động mở trong lúc sử dụng. Khi muốn dừng, 
 
 Thư mục trên máy hiện tại: `C:\Users\nguye\Documents\Codex\2026-10-02\hay\outputs\website-khao-sat-phan-hoi`. Có thể tạo shortcut của tệp CMD ra Desktop để mở nhanh. Nếu đã mở PowerShell tại thư mục dự án, dùng `npm.cmd run local:start` cho cùng kết quả. Tệp khởi động nhận diện bản web đang chạy, không tự chuyển sang cổng khác và không đặt lại tài khoản, khóa 2FA hoặc dữ liệu.
 
+Lỗi tệp CMD vừa mở đã tự đóng được sửa ngày02/11: [nguyên nhân và kiểm tra lại](docs/SUA_KHOI_DONG_CMD_2026_11_02.md). Tệp dùng đúng định dạng xuống dòng Windows, giữ nguyên qua Git và bản ZIP.
+
 Lần đầu tải dự án từ GitHub vẫn cần thiết lập Node.js, Docker và `.env` theo phần cài đặt bên dưới. Tệp khởi động giữ nguyên `.env`, cập nhật migration và chuẩn bị bộ kết nối trước khi mở web; không tự seed hoặc reset database. Tệp đính kèm riêng nằm ở `FEEDBACK_STORAGE_DIR` (mặc định `.local/private-feedback-attachments`), không đưa lên GitHub.
 
 ## Phạm vi hiện tại — Tuần 10: phản hồi môn học

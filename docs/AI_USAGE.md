@@ -271,3 +271,9 @@ Bản dựng cuối sau chú thích turbopackIgnore đã hết hai cảnh báo g
 
 
 Đối chiếu CI nguồn bàn giao `8ffa99f6e67b06b579a3576506395e9856d1dd1d`: [run41414188239](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41414188239) check/smoke thành công, Linux1002/1002 trong63tệp (file-symlink đã chạy); bản dựng không còn cảnh báo tracing. Đã mở xem đủ14ảnh QA và ảnh website chạy ở cổng3000, không nhận upload/chuyển tiếp/giao Thanh tra hay toàn bộ vai trò là đã thử tay khi chỉ kiểm HTTP. Gate tài liệu bảo toàn267tệp lịch sử,5mục đặc tả,AGENTS và prompt bổ sung;84FR duy nhất, báo cáo10mục/tóm tắt122từ/năm câu giải thích.
+
+## Sửa tệp CMD tự đóng khi mở trực tiếp — 02/11/2026
+
+Người dùng phản ánh bấm đúp tệp rồi cửa sổ tắt ngay. AI tái hiện bằng `cmd.exe /c` trong cửa sổ tương tác: tệp UTF-8 dùng LF trả lỗi `ist`, đường dẫn và cú pháp, thoát mã 1 trước `pause`. Chỉ đổi sang CRLF thì chạy được và giữ thông báo sẵn sàng. Lượt kiểm nền trước đã bỏ sót chế độ tương tác; không suy nó thành bằng chứng thao tác bấm đúp không lỗi. Một agent rà soát chỉ đọc xác nhận liên kết CMD chuẩn và không cần đổi registry; agent chính sửa tệp, Gitattributes và test.
+
+Giữ nguyên CRLF trong blob Git (`-text`) để bản ZIP cũng nhận đúng byte; thêm test trên tệp checkout. Check: 1002 passed, 1 skipped / 1003, trong 63 tệp; phép kiểm file-symlink bị Windows từ chối vẫn ghi là skipped. Đã thử mở bằng đường dẫn tuyệt đối từ System32, khởi động web cổng 3000; mở lần hai giữ tại **Press any key**, nhấn phím chỉ đóng cửa sổ thông báo và web vẫn trả HTTP 200. Không thay `.env`, khóa MFA, DB hoặc tính năng; không ghi lại báo cáo tuần lịch sử, không cộng FR. [Hồ sơ](SUA_KHOI_DONG_CMD_2026_11_02.md).

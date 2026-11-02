@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   isProjectProcess,
@@ -31,6 +32,14 @@ const healthy = {
 };
 
 describe("Khởi động cục bộ — giữ dữ liệu và tránh hai máy chủ cùng sinh tệp", () => {
+  it("tệp CMD thực tế dùng CRLF để Windows không cắt lệch lệnh khi mở trực tiếp", () => {
+    const script = readFileSync(
+      new URL("../KHOI_DONG_DU_AN.cmd", import.meta.url),
+      "utf8",
+    );
+    expect(script.startsWith("@echo off\r\n")).toBe(true);
+    expect(script).not.toMatch(/(?<!\r)\n/);
+  });
   it("giữ đường dẫn Docker khi Windows truyền biến Path thay vì PATH", () => {
     const env = { Path: "C:\\Docker;C:\\Windows" };
     const result = withToolPaths(env, ["C:\\Node"], "win32");

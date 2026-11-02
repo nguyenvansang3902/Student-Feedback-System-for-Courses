@@ -18,7 +18,7 @@
 - SQL16/16, demo17/17;8lớp/9phản hồi/2hồ sơ tiếp nhận, seed lặp/tăng size giữ hash; migration sạch trên database thử mới.
 - Migration thêm3bảng,37runtime/46design/9chỉthiết kế;34bảng/9.168bản ghi main cũ giữ hash sau migration và seed, không reset.
 - UI4vai trò/2kích thước/14JPEG đã xem; luồng giả gửi→GVtrả lời→SVđóng, Thanh tra ẩn danh/cho biết và lãnh đạo tóm tắt.
-- Khởi động Windows bằng KHOI_DONG_DU_AN.cmd; đã thử cold-start và mở lại không tạo tiến trình trùng/không generate khi web đang chạy, .env giữ nguyên.
+- Sửa CMD tự đóng02/11: CRLF nguyên vẹn trong Git; đã kiểm cửa sổ CMD tương tác từ System32 và mở lại giữ pause/web200. Check1002passed/1skipped(1003),63tệp; xem SUA_KHOI_DONG_CMD_2026_11_02.md.
 - Tiến độ165/219=75,3%,58/84FR; kế hoạch167/219, chênh2điểm FR-145. M8=15/19,M13=18/22,M14=9/13,M15=6/18.
 
 ## Cách mở và phần còn lại

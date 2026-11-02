@@ -1,4 +1,6 @@
 # Giữ artifact sinh tự động và SHA-256 ổn định khi checkout Windows/Linux.
+# Giữ nguyên CRLF trong blob để cả checkout và Download ZIP chạy đúng CMD Windows.
+KHOI_DONG_DU_AN.cmd -text whitespace=cr-at-eol
 docs/ERD.md text eol=lf
 docs/assets/tuan-02/*.svg text eol=lf
 docs/assets/tuan-02/mermaid/*.svg text eol=lf
