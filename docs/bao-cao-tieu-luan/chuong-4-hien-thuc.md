@@ -57,3 +57,9 @@ Revision và requestId bảo vệ thay đổi đồng thời và gửi lại sau
 Gửi khiếu nại nghiêm trọng tạo đồng thời phản hồi và hồ sơ TIEP_NHAN. Xung đột lợi ích tính động theo lớp, bộ môn và khoa, có hiệu lực cả với tài khoản nhiều vai trò. Mặc định Thanh tra cũng không nhận danh tính; sinh viên có thể chọn cho riêng Thanh tra không xung đột biết, có kiểm toán lượt xem. Lãnh đạo nhận tóm tắt; ADMIN và ĐBCL không đọc hồ sơ. Xác minh, kết luận và thông báo chưa được mở ở Tuần 10.
 
 Nguồn và kiểm thử thực tế đối chiếu ở [nghiệm thu Tuần 10](../NGHIEM_THU_TUAN_10.md), [QA](../QA_GIAO_DIEN_TUAN_10.md) và [ADR-011](../decisions/ADR-011-phan-hoi-va-tiep-nhan-thanh-tra.md). Phạm vi hạn chế gồm tự tiết lộ qua nội dung/tệp, quyền DBA và log hạ tầng, chưa quét mã độc ngoài hoặc chứng nhận mọi thiết bị/WCAG.
+# Phần bổ sung Tuần 11
+
+[CẦN SINH VIÊN ĐỌC VÀ VIẾT LẠI BẰNG LỜI CỦA MÌNH]
+
+Nội dung kỹ thuật bổ sung: [SLA, giao dịch, giải trình và kiến nghị](../CHUONG_HIEN_THUC_TUAN_11.md), [quy trình Thanh tra](../QUY_TRINH_THANH_TRA_TUAN_11.md), [bằng chứng nghiệm thu](../NGHIEM_THU_TUAN_11.md). Các phần bên dưới giữ nội dung lịch sử của các tuần trước; không suy chúng đã bao gồm chức năng mới tại thời điểm viết.
+
