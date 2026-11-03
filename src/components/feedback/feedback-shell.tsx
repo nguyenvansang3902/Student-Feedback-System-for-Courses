@@ -46,6 +46,13 @@ export async function FeedbackShell({
     ...(can(actor, "exam-recommendations:list")
       ? [["/kien-nghi", "Kiến nghị rà soát"]]
       : []),
+    ...(can(actor, "anomalies:list")
+      ? [["/thanh-tra/bat-thuong", "Cảnh báo khảo sát"]]
+      : []),
+    ...(can(actor, "anomalies:settings:read")
+      ? [["/phan-hoi/cau-hinh/bat-thuong", "Ngưỡng bất thường"]]
+      : []),
+    ...(can(actor, "reports:read") ? [["/bao-cao", "Báo cáo"]] : []),
     ["/thong-bao", "Thông báo"],
     ["/tai-khoan", "Tài khoản của tôi"],
   ];

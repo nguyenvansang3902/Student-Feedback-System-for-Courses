@@ -433,6 +433,55 @@ describe("BR-08/18/34/57 — kết quả theo năng lực và phạm vi riêng",
     const result = await getSurveyResults(actor("PHONG_KHAO_THI"), ids[6]);
     expect(result.buckets.every((bucket) => !bucket.available)).toBe(true);
   });
+  it.each(["NA", "trống"])(
+    "BR-57 giảng viên thứ hai có nhóm đánh giá toàn %s không mở điểm của giảng viên thứ nhất",
+    async (mode) => {
+      sample.cohort.result.details = details(5, [ids[0]]);
+      const second = structuredClone(sample.cohort);
+      second.sectionId = randomUUID();
+      second.section.id = second.sectionId;
+      second.result.details = details(5, [ids[1]]);
+      second.result.details.score = calculateSurveyScore(
+        template,
+        [
+          { questionId: ids[10], hasText: true, count: 5 },
+          {
+            questionId: template.groups[1].questions[0].id,
+            valueNumber: 3,
+            count: 5,
+          },
+          ...(mode === "NA"
+            ? [{ questionId: ids[9], isNotApplicable: true, count: 5 }]
+            : []),
+        ],
+        {
+          responseCount: 5,
+          taskCount: 7,
+          doneTaskCount: 5,
+          minResponses: 5,
+          minRate: 0.3,
+        },
+      );
+      expect(second.result.details.score.overallScore).toBe(3);
+      db.campaignSection.findMany.mockResolvedValue([sample.cohort, second]);
+      const result = await getSurveyResults(actor("PHONG_KHAO_THI"), ids[6]);
+      expect(result.buckets).toHaveLength(3);
+      for (const bucket of result.buckets)
+        expect(bucket).toMatchObject({
+          available: false,
+          message: "Chưa đủ dữ liệu gộp",
+          responseCount: null,
+          taskCount: null,
+          participationRate: null,
+          overallScore: null,
+          rating: null,
+          groups: [],
+        });
+      second.result.details = details(5, [ids[1]]);
+      const allowed = await getSurveyResults(actor("PHONG_KHAO_THI"), ids[6]);
+      expect(allowed.buckets.every((bucket) => bucket.available)).toBe(true);
+    },
+  );
   it("Khảo thí đổi audience sang STANDARD bị403; vai trò kết hợp chọn audience không nới scope", async () => {
     await expect(
       getSurveyResults(actor("PHONG_KHAO_THI"), ids[6], "STANDARD"),

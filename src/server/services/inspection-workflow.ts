@@ -30,6 +30,7 @@ import {
 import { enqueueDomainNotice } from "./domain-notifications";
 import { readWorkflowSettings } from "./workflow-settings";
 import { addBusinessDays } from "./feedback-deadlines";
+import { anomalyMetricsSchema } from "./survey-anomaly-types";
 import {
   inspectionActions,
   inspectionNoteSchema,
@@ -61,6 +62,7 @@ const sectionInclude = {
   teaching: { select: { teacherId: true, isLead: true } },
 } as const;
 const caseInclude = {
+  anomalyFlag: { select: { id: true, ruleCode: true, metrics: true } },
   section: { include: sectionInclude },
   feedback: {
     select: {
@@ -240,7 +242,11 @@ function itemDto(actor: AuthActor, row: CaseRow): InspectionWorkflowItem {
     isOverdue: inspectionOverdue(row),
     ...(full
       ? {
-          title: row.feedback?.title ?? "Hồ sơ Thanh tra",
+          title:
+            row.feedback?.title ??
+            (row.source === "BAT_THUONG_KHAO_SAT"
+              ? "Hồ sơ bất thường khảo sát"
+              : "Hồ sơ Thanh tra"),
           assignee: row.assignee,
         }
       : {}),
@@ -294,6 +300,15 @@ async function dto(
   return {
     ...item,
     conclusionReason: row.reason,
+    ...(row.anomalyFlag
+      ? {
+          anomaly: {
+            id: row.anomalyFlag.id,
+            ruleCode: row.anomalyFlag.ruleCode,
+            metrics: anomalyMetricsSchema.parse(row.anomalyFlag.metrics),
+          },
+        }
+      : {}),
     canAssign: writable && ["TIEP_NHAN", "XAC_MINH"].includes(row.status),
     assignTargets:
       writable && ["TIEP_NHAN", "XAC_MINH"].includes(row.status)
@@ -304,7 +319,9 @@ async function dto(
     canNote: canProcess && row.status === "XAC_MINH",
     allowedActions: canProcess
       ? inspectionActions.filter(
-          (action) => inspectionTransitionTarget(row.status, action) !== null,
+          (action) =>
+            inspectionTransitionTarget(row.status, action) !== null &&
+            !(row.source === "BAT_THUONG_KHAO_SAT" && action === "return"),
         )
       : [],
     ...(feedback ? { feedback } : {}),
@@ -593,6 +610,28 @@ export async function transitionInspectionCase(
     if (await previousMutation(tx, row, fresh, data.requestId, hash(data)))
       return dto(tx, fresh, row);
     assertOfficerWrite(fresh, row, data.revision);
+    if (row.source === "BAT_THUONG_KHAO_SAT" && data.action === "return")
+      throw new AuthError(
+        "Hồ sơ bất thường khảo sát không có phản hồi sinh viên để chuyển lại.",
+        409,
+        "INSPECTION_RETURN_UNAVAILABLE",
+      );
+    if (data.action === "notify" && row.feedbackId && !data.studentSummary)
+      throw new AuthError(
+        "Nhập tóm tắt kết quả gửi sinh viên.",
+        400,
+        "INVALID_INPUT",
+      );
+    if (
+      data.action === "notify" &&
+      !row.feedbackId &&
+      data.studentSummary !== undefined
+    )
+      throw new AuthError(
+        "Hồ sơ bất thường khảo sát không gửi kết quả đến sinh viên.",
+        400,
+        "INVALID_INPUT",
+      );
     const target = inspectionTransitionTarget(row.status, data.action);
     if (!target)
       throw new AuthError(
@@ -618,7 +657,7 @@ export async function transitionInspectionCase(
         ...(data.action === "conclude"
           ? { conclusion: data.conclusion, reason: data.reason }
           : {}),
-        ...(data.action === "notify"
+        ...(data.action === "notify" && row.feedbackId
           ? { studentSummary: data.studentSummary }
           : {}),
         ...(["close", "reject", "return"].includes(data.action)

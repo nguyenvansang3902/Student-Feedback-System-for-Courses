@@ -45,6 +45,46 @@ const db = getDb(),
     reason: "Kiểm thử seed demo trong database riêng",
   };
 const results: string[] = [];
+async function week12Snapshot() {
+  const campaignId = demoId("week12:campaign");
+  const campaign = await db.surveyCampaign.findUniqueOrThrow({
+    where: { id: campaignId },
+  });
+  const flags = await db.surveyAnomalyFlag.findMany({
+    where: { campaignId },
+    include: { events: true },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(campaign.status, "DA_TONG_HOP");
+  assert.equal(flags.length, 1);
+  assert.equal(flags[0].status, "CHO_XEM_XET");
+  assert.equal(flags[0].events.length, 0);
+  const responses = await db.surveyResponse.findMany({
+    where: { campaignId },
+    include: { answers: { orderBy: { id: "asc" } } },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(responses.length, 10);
+  assert.equal(responses.flatMap((row) => row.answers).length, 20);
+  const tasks = await db.surveyTask.findMany({
+    where: { campaignId },
+    orderBy: { id: "asc" },
+  });
+  assert.equal(tasks.length, 10);
+  assert(tasks.every((row) => row.status === "DONE"));
+  const aggregate = await db.aggregateResult.findUniqueOrThrow({
+    where: { id: demoId("week12:aggregate") },
+  });
+  assert.equal(aggregate.responseCount, 10);
+  const setting = await db.systemSetting.findUniqueOrThrow({
+    where: { key: "W12_DEMO_ANOMALY_V1" },
+  });
+  return createHash("sha256")
+    .update(
+      JSON.stringify({ campaign, flags, responses, tasks, aggregate, setting }),
+    )
+    .digest("hex");
+}
 async function week11Snapshot() {
   const feedback = await db.feedback.findUniqueOrThrow({
     where: { id: demoId("week11:feedback") },
@@ -513,6 +553,7 @@ try {
   const originalWeek9 = await week9Snapshot();
   const originalWeek10 = await week10Snapshot();
   const originalWeek11 = await week11Snapshot();
+  const originalWeek12 = await week12Snapshot();
   assert.deepEqual(medium, [3, 8, 40, 120, 60, 1500, 4501]);
   results.push("medium: 3/8/40/120/60/1500/4501");
   results.push(
@@ -697,7 +738,9 @@ try {
   assert.equal(legacyBefore.groups.flatMap((g) => g.questions).length, 3);
   assert.equal(
     await db.surveyTemplate.count({
-      where: { id: { not: demoId("week9:template") } },
+      where: {
+        id: { notIn: [demoId("week9:template"), demoId("week12:template")] },
+      },
     }),
     2 +
       Number(
@@ -858,6 +901,10 @@ try {
   assert.equal(await week11Snapshot(), originalWeek11);
   results.push(
     "Tuần11: hồ sơ XAC_MINH/ghi chú, lớp2điểm/5phiếu và yêu cầu giải trình đúng ngưỡng; seed lặp đổi size giữ nguyên hash bundle mới",
+  );
+  assert.equal(await week12Snapshot(), originalWeek12);
+  results.push(
+    "E8 Tuần12: 10phiếu/20đápán/10task độc lập, một cờ đồng nhất70% CHO_XEM_XET; seed lặp medium→small→large giữ nguyên hash, không công bố lại hoặc sửa dữ liệu cũ",
   );
   Object.assign(process.env, { NODE_ENV: "production" });
   await assert.rejects(seedDemo(actor, "small"));

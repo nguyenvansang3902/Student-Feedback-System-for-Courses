@@ -160,6 +160,47 @@ beforeEach(() => {
   db.user.findMany.mockResolvedValue([]);
 });
 describe("W11 FR-154/156 BR-60/61/62 — quy trình Thanh tra", () => {
+  it("W12 BR-65 hồ sơ BAT thông báo không cần studentSummary và không tạo studentnotice", async () => {
+    const current = actor("THANH_TRA"),
+      row = {
+        ...fixture(),
+        source: "BAT_THUONG_KHAO_SAT",
+        status: "KET_LUAN",
+        assigneeId: current.userId,
+        conclusion: "KHONG_CAN_CU",
+      };
+    db.inspectionCase.findUnique.mockResolvedValue(row);
+    await transitionInspectionCase(current, caseId, {
+      revision: 1,
+      requestId: randomUUID(),
+      action: "notify",
+    });
+    expect(db.feedback.update).not.toHaveBeenCalled();
+    expect(notices).not.toHaveBeenCalled();
+    expect(db.inspectionCase.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ status: "THONG_BAO" }),
+      }),
+    );
+  });
+  it("BR-63 hồ sơ có sinh viên gửi vẫn bắt buộc studentSummary ở service", async () => {
+    const current = actor("THANH_TRA"),
+      row = {
+        ...fixture(),
+        feedbackId,
+        status: "KET_LUAN",
+        assigneeId: current.userId,
+      };
+    db.inspectionCase.findUnique.mockResolvedValue(row);
+    await expect(
+      transitionInspectionCase(current, caseId, {
+        revision: 1,
+        requestId: randomUUID(),
+        action: "notify",
+      }),
+    ).rejects.toMatchObject({ status: 400, code: "INVALID_INPUT" });
+    expect(db.inspectionCase.updateMany).not.toHaveBeenCalled();
+  });
   it("BR-62 lãnh đạo chỉ nhận loại/trạng thái/kết luận, không nhận ghi chú/tệp/nội dung/người giao", async () => {
     const current = actor("LANH_DAO"),
       row = fixture();
@@ -405,7 +446,7 @@ describe("W11 FR-154 BR-22 — trạng thái và đầu vào", () => {
         expect(inspectionTransitionTarget(status, action)).toBeNull();
     expect(inspectionTransitionTarget("DONG", "accept")).toBeNull();
   });
-  it("BR-22 kết luận bắt buộc lý do và phân loại, thông báo bắt buộc tóm tắt", () => {
+  it("BR-22 kết luận bắt buộc lý do và phân loại; điều kiện tóm tắt thông báo kiểm theo nguồn ở service", () => {
     const base = { revision: 1, requestId: randomUUID() };
     expect(
       inspectionTransitionSchema.safeParse({ ...base, action: "conclude" })
@@ -422,7 +463,7 @@ describe("W11 FR-154 BR-22 — trạng thái và đầu vào", () => {
     expect(
       inspectionTransitionSchema.safeParse({ ...base, action: "notify" })
         .success,
-    ).toBe(false);
+    ).toBe(true);
     expect(
       inspectionTransitionSchema.safeParse({
         ...base,

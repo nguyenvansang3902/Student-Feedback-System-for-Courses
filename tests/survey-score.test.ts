@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  assessmentContributingTeachers,
   calculateSurveyScore,
   DEFAULT_SURVEY_RATING_BANDS,
+  hasAssessmentContribution,
   parseSurveyAggregateDetails,
   poolSurveyScores,
   surveyScoreBand,
@@ -327,6 +329,84 @@ describe("FR-60/61 — BR-07/11/12 tổng hợp chính xác", () => {
         true,
       ),
     ).toBeNull();
+  });
+  it.each(["NA", "trống"])(
+    "BR-57 không đếm giảng viên có điểm giảng dạy nhưng nhóm đánh giá toàn %s",
+    (mode) => {
+      const nonContributing = details({
+        teacherIds: ["teacher-b"],
+        score: calculateSurveyScore(
+          template,
+          [
+            ...answers.filter((answer) => answer.questionId !== "Q3"),
+            ...(mode === "NA"
+              ? [{ questionId: "Q3", isNotApplicable: true, count: 4 }]
+              : []),
+          ],
+          counts,
+        ),
+      });
+      expect(nonContributing.score.overallScore).not.toBeNull();
+      expect(hasAssessmentContribution(nonContributing)).toBe(false);
+      expect(
+        assessmentContributingTeachers([details(), nonContributing]),
+      ).toEqual(new Set(["teacher-a"]));
+    },
+  );
+  it("BR-57 dùng cờ/câu LIKERT trong snapshot mẫu, không đếm nhóm rỗng hoặc chỉ có câu khác loại", () => {
+    const empty = details({
+      template: { groups: [{ ...template.groups[1], questions: [] }] },
+    });
+    expect(hasAssessmentContribution(empty)).toBe(false);
+    const textTemplate: SurveyScoreTemplate = {
+      groups: [
+        {
+          ...template.groups[1],
+          questions: [
+            {
+              ...template.groups[1].questions[0],
+              type: "TEXT",
+              scaleMin: null,
+              scaleMax: null,
+            },
+          ],
+        },
+      ],
+    };
+    const text = details({
+      template: textTemplate,
+      score: calculateSurveyScore(
+        textTemplate,
+        [{ questionId: "Q3", hasText: true, count: 4 }],
+        counts,
+      ),
+    });
+    expect(text.score.groups[0].questions[0].validCount).toBe(4);
+    expect(hasAssessmentContribution(text)).toBe(false);
+    expect(
+      hasAssessmentContribution(
+        details({
+          template: {
+            groups: template.groups.map((group) => ({
+              ...group,
+              isAssessmentGroup: false,
+            })),
+          },
+        }),
+      ),
+    ).toBe(false);
+  });
+  it("BR-57 chỉ đếm giảng viên khác nhau từ tập có phiếu và điểm đánh giá hợp lệ", () => {
+    expect(
+      assessmentContributingTeachers([
+        details({ teacherIds: ["teacher-a", "", " "] }),
+        details({ teacherIds: ["teacher-a", "teacher-b"] }),
+        details({
+          teacherIds: ["teacher-c"],
+          score: { ...details().score, responseCount: 0 },
+        }),
+      ]),
+    ).toEqual(new Set(["teacher-a", "teacher-b"]));
   });
   it("BR-11 đọc chi tiết version2 đã kiểm đếm, fail closed dữ liệu cũ/hỏng", () => {
     expect(parseSurveyAggregateDetails(details())).not.toBeNull();

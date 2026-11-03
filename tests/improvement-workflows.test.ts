@@ -370,6 +370,67 @@ describe("BR-10 — tự tạo bắt buộc khi công bố, giữ hạn và ch�
   });
 });
 describe("BR-57/58 — điều kiện tạo kiến nghị không lộ lớp hay giảng viên", () => {
+  it.each(["NA", "trống"])(
+    "BR-57 không tạo kiến nghị nhờ giảng viên thứ hai có nhóm đánh giá toàn %s",
+    (mode) => {
+      const emptyAssessment = aggregateDetails([randomUUID()]);
+      emptyAssessment.score = calculateSurveyScore(
+        template,
+        mode === "NA" ? [{ questionId, isNotApplicable: true, count: 5 }] : [],
+        {
+          responseCount: 5,
+          taskCount: 5,
+          doneTaskCount: 5,
+          minResponses: 5,
+          minRate: 0.3,
+        },
+      );
+      expect(
+        hasRecommendationEvidence(
+          [
+            { details: aggregateDetails(), responseCount: 5 },
+            { details: emptyAssessment, responseCount: 5 },
+          ],
+          5,
+        ),
+      ).toBe(false);
+    },
+  );
+  it("BR-57 phiếu toàn NA không bù ngưỡng mẫu khi đã có hai giảng viên đóng góp", () => {
+    const contributing = aggregateDetails([teacherId, randomUUID()]);
+    contributing.score = calculateSurveyScore(
+      template,
+      [{ questionId, valueNumber: 2, count: 4 }],
+      {
+        responseCount: 4,
+        taskCount: 4,
+        doneTaskCount: 4,
+        minResponses: 5,
+        minRate: 0.3,
+      },
+    );
+    const allNa = aggregateDetails([randomUUID()]);
+    allNa.score = calculateSurveyScore(
+      template,
+      [{ questionId, isNotApplicable: true, count: 5 }],
+      {
+        responseCount: 5,
+        taskCount: 5,
+        doneTaskCount: 5,
+        minResponses: 5,
+        minRate: 0.3,
+      },
+    );
+    expect(
+      hasRecommendationEvidence(
+        [
+          { details: contributing, responseCount: 4 },
+          { details: allNa, responseCount: 5 },
+        ],
+        5,
+      ),
+    ).toBe(false);
+  });
   it("lớp không có phiếu không được dùng để đủ số giảng viên", () => {
     const contributing = { details: aggregateDetails(), responseCount: 5 };
     const empty = {

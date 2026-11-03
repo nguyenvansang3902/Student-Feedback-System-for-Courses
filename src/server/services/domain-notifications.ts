@@ -7,6 +7,8 @@ export const domainNoticeTargets = [
   "InspectionCase",
   "ImprovementPlan",
   "ExamReviewRecommendation",
+  "SurveyAnomalyFlag",
+  "SurveyAnomalyAttention",
 ] as const;
 export type DomainNoticeTarget = (typeof domainNoticeTargets)[number];
 const inputSchema = z

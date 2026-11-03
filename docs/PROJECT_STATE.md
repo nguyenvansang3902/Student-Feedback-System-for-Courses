@@ -1,8 +1,8 @@
 # Trạng thái dự án
 
 - Đề tài: khảo sát và phản hồi sinh viên về môn học; 15 tuần từ 30/09/2026, khởi động thực tế 02/10.
-- Tuần hiện tại: Tuần 11 — thực hiện 02–03/11/2026; hoàn tất chức năng, đang chốt CI bàn giao.
-- Mốc kế hoạch giả định 09–15/12/2026; làm sớm theo lệnh, nhóm đối chiếu lịch trường, không ghi lùi ngày.
+- Tuần hiện tại: Tuần 12 — bắt đầu 03/11/2026 theo lệnh người dùng; đang triển khai, chưa nghiệm thu.
+- Mốc kế hoạch giả định 16–22/12/2026; làm sớm theo lệnh, nhóm đối chiếu lịch trường, không ghi lùi ngày.
 - UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Prompt giữ nguyên tại UI_NANG_CAP_PROMPT.md; chỉ bật khi có BẮT ĐẦU GIAI ĐOẠN UI-n sau 15 tuần.
 
 ## Kết quả
@@ -27,3 +27,4 @@
 - Không placeholder/slogan,dùng ngữ cảnh trung tính ở trang chung. Không gọi người dùng là bạn.
 - Chỉ dữ liệu giả,không deploy công khai. Chưa chứng nhận WCAG/mọi thiết bị/tải1500request hoặc chống DBA/binlog/tự tiết lộ.
 - Xem NGHIEM_THU_TUAN_11.md,assets/tuan-11/verification.json,bao-cao-tien-do/tuan-11.md; sinh viên tự điền đóng góp/GVHD/ngày yêu cầu.
+

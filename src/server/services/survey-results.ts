@@ -18,6 +18,7 @@ import {
   parseInput,
 } from "./access";
 import {
+  assessmentContributingTeachers,
   calculateSurveyScore,
   DEFAULT_SURVEY_RATING_BANDS,
   parseSurveyAggregateDetails,
@@ -398,13 +399,9 @@ function makeBucket(
     assessmentOnly,
   );
   if (!score) return emptyBucket(meta, "Không có dữ liệu tương thích");
-  const teachers = new Set(
-    details
-      .filter((value) => value.score.responseCount > 0)
-      .flatMap((value) => value.teacherIds),
-  );
   const available =
-    score.eligibleToPublish && (!assessmentOnly || teachers.size >= 2);
+    score.eligibleToPublish &&
+    (!assessmentOnly || assessmentContributingTeachers(details).size >= 2);
   const counts =
     available || showInsufficientCounts
       ? {

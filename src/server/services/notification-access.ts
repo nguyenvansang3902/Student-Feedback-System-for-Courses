@@ -1,5 +1,6 @@
 import type { Prisma } from "../../generated/prisma/client";
 import type { AuthActor } from "../auth/types";
+import { canReadSurveyAnomaly } from "../policies/survey-anomalies";
 import { actorGrants, can, isValidGrant } from "../policies/can";
 import {
   canReadInspection,
@@ -76,6 +77,36 @@ export async function canReadNoticeTarget(
 ): Promise<boolean> {
   if (!targetId) return false;
   const grants = actorGrants(actor);
+  if (targetType === "SurveyAnomalyAttention") {
+    if (!can(actor, "anomalies:settings:read")) return false;
+    const row = await tx.surveyAnomalyFlag.findUnique({
+      where: { id: targetId },
+      select: { status: true, campaign: { select: { status: true } } },
+    });
+    return (
+      !!row &&
+      row.status === "CAN_LUU_Y" &&
+      ["DA_TONG_HOP", "DA_CONG_BO", "LUU_TRU"].includes(row.campaign.status)
+    );
+  }
+  if (targetType === "SurveyAnomalyFlag") {
+    const row = await tx.surveyAnomalyFlag.findUnique({
+      where: { id: targetId },
+      include: {
+        campaign: { select: { status: true } },
+        section: { include: sectionInclude },
+      },
+    });
+    return (
+      !!row &&
+      ["DA_TONG_HOP", "DA_CONG_BO", "LUU_TRU"].includes(row.campaign.status) &&
+      canReadSurveyAnomaly(actor, {
+        departmentId: row.section.course.departmentId,
+        facultyId: row.section.course.department.facultyId,
+        teacherIds: row.section.teaching.map((item) => item.teacherId),
+      })
+    );
+  }
   if (targetType === "Feedback") {
     if (!can(actor, "feedback:read")) return false;
     const row = await tx.feedback.findUnique({
@@ -195,6 +226,10 @@ export function notificationTargetHref(
 ): string | null {
   if (!targetId || !/^[0-9a-f-]{36}$/i.test(targetId)) return null;
   switch (targetType) {
+    case "SurveyAnomalyAttention":
+      return "/ket-qua";
+    case "SurveyAnomalyFlag":
+      return `/thanh-tra/bat-thuong/${targetId}`;
     case "Feedback":
       return `/phan-hoi/${targetId}`;
     case "InspectionCase":

@@ -14,9 +14,16 @@ const nextConfig: NextConfig = {
     ".next-week8",
     ".next-week9",
     ".next-week10",
+    ".next-week12",
   ].includes(process.env.SFS_TEST_DIST_DIR ?? "")
     ? process.env.SFS_TEST_DIST_DIR
     : ".next",
+  outputFileTracingIncludes: {
+    "/api/reports/*": [
+      "./resources/fonts/NotoSans-Regular.ttf",
+      "./resources/fonts/OFL.txt",
+    ],
+  },
 };
 
 export default nextConfig;

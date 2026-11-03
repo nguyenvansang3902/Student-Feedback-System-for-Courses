@@ -52,6 +52,52 @@ const other = {
   teacherIds: [randomUUID()],
 };
 
+describe("FR-90/158, BR-65/68 quyền mở chức năng Tuần12", () => {
+  it.each<Role>([
+    "SINH_VIEN",
+    "GIANG_VIEN",
+    "TRUONG_BO_MON",
+    "TRUONG_KHOA",
+    "CAN_BO_DBCL",
+    "LANH_DAO",
+    "ADMIN",
+    "PHONG_DAO_TAO",
+    "PHONG_KHAO_THI",
+    "THANH_TRA",
+  ])(
+    "%s có dashboard nhưng cảnh báo và cấu hình không được suy rộng",
+    (role) => {
+      const current = actor(role);
+      expect(can(current, "reports:read")).toBe(true);
+      expect(can(current, "reports:export")).toBe(true);
+      expect(can(current, "reports:settings:write")).toBe(
+        role === "CAN_BO_DBCL",
+      );
+      expect(can(current, "anomalies:read")).toBe(role === "THANH_TRA");
+      expect(can(current, "anomalies:review")).toBe(role === "THANH_TRA");
+      expect(can(current, "anomalies:settings:write")).toBe(
+        role === "CAN_BO_DBCL",
+      );
+    },
+  );
+  it("ADMIN/ĐBCL đa vai trò không mở chỉ số Thanh tra, action lạ bị từ chối", () => {
+    expect(can(actor("ADMIN", "THANH_TRA"), "anomalies:read")).toBe(false);
+    expect(can(actor("CAN_BO_DBCL", "THANH_TRA"), "anomalies:read")).toBe(
+      false,
+    );
+    expect(can(actor("CAN_BO_DBCL"), "reports:read-secret")).toBe(false);
+    expect(can(actor("THANH_TRA"), "anomalies:delete")).toBe(false);
+  });
+  it("phiên chưa hoàn tất/thiếu MFA không được dùng dashboard làm đường vòng", () => {
+    const incomplete = { ...actor("ADMIN"), mfa: false };
+    expect(can(incomplete, "reports:read")).toBe(false);
+    expect(
+      can({ ...actor("SINH_VIEN"), mustChangePassword: true }, "reports:read"),
+    ).toBe(false);
+    expect(can(null, "reports:read")).toBe(false);
+  });
+});
+
 describe("FR-11/BR-34 — ma trận vai trò/phạm vi tập trung", () => {
   it.each<Role>([
     "SINH_VIEN",

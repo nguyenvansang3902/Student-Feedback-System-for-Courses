@@ -40,6 +40,7 @@ enum ScopeType {
 }
 
 model User {
+  anomalyReviewEvents         SurveyAnomalyReviewEvent[]
   dataConfirmations           CampaignDataConfirmation[]
   assignedInspectionCases     InspectionCase[]           @relation("InspectionAssignee")
   createdInspectionCases      InspectionCase[]           @relation("InspectionCreator")
@@ -966,22 +967,42 @@ model InspectionCaseEvent {
 }
 
 model SurveyAnomalyFlag {
-  id             String              @id @default(uuid()) @db.Char(36)
-  campaignId     String              @db.Char(36)
-  sectionId      String              @db.Char(36)
-  ruleCode       String              @db.VarChar(32)
+  revision       Int                        @default(1)
+  id             String                     @id @default(uuid()) @db.Char(36)
+  campaignId     String                     @db.Char(36)
+  sectionId      String                     @db.Char(36)
+  ruleCode       String                     @db.VarChar(32)
   metrics        Json
-  status         AnomalyReviewStatus @default(CHO_XEM_XET)
-  reviewedById   String?             @db.Char(36)
-  note           String?             @db.Text
-  createdAt      DateTime            @default(now()) @db.DateTime(3)
-  reviewedAt     DateTime?           @db.DateTime(3)
-  campaign       SurveyCampaign      @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  section        CourseSection       @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  reviewedBy     User?               @relation(fields: [reviewedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  status         AnomalyReviewStatus        @default(CHO_XEM_XET)
+  reviewedById   String?                    @db.Char(36)
+  note           String?                    @db.Text
+  createdAt      DateTime                   @default(now()) @db.DateTime(3)
+  reviewedAt     DateTime?                  @db.DateTime(3)
+  campaign       SurveyCampaign             @relation(fields: [campaignId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  section        CourseSection              @relation(fields: [sectionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reviewedBy     User?                      @relation(fields: [reviewedById], references: [id], onDelete: Restrict, onUpdate: Restrict)
   inspectionCase InspectionCase?
+  events         SurveyAnomalyReviewEvent[]
 
   @@unique([campaignId, sectionId, ruleCode])
+  @@index([status, createdAt])
+}
+
+model SurveyAnomalyReviewEvent {
+  id          String              @id @default(uuid()) @db.Char(36)
+  flagId      String              @db.Char(36)
+  actorId     String              @db.Char(36)
+  fromStatus  AnomalyReviewStatus
+  toStatus    AnomalyReviewStatus
+  note        String              @db.Text
+  requestId   String              @db.Char(36)
+  requestHash String              @db.Char(64)
+  occurredAt  DateTime            @default(now()) @db.DateTime(3)
+  flag        SurveyAnomalyFlag   @relation(fields: [flagId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor       User                @relation(fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([flagId, requestId])
+  @@index([flagId, occurredAt])
 }
 
 model ExamReviewRecommendation {

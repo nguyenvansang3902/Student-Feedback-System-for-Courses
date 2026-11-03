@@ -40,6 +40,10 @@ export function InspectionWorkflowPanel({
   item: InspectionWorkflowDetail;
   reload: () => void;
 }) {
+  const labelFor = (action: InspectionAction) =>
+    action === "notify" && item.source === "BAT_THUONG_KHAO_SAT"
+      ? "Ghi nhận thông báo kết quả"
+      : actionLabels[action];
   const ready = useClientReady(),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -155,7 +159,7 @@ export function InspectionWorkflowPanel({
                 aria-busy={busy}
               >
                 <h3 className="font-semibold text-slate-900">
-                  {actionLabels[action]}
+                  {labelFor(action)}
                 </h3>
                 {action === "conclude" && (
                   <Field label="Kết luận" id="inspection-conclusion">
@@ -216,29 +220,30 @@ export function InspectionWorkflowPanel({
                     </select>
                   </Field>
                 )}
-                {action === "notify" && (
-                  <Field
-                    label="Tóm tắt kết quả gửi sinh viên"
-                    id="inspection-student-summary"
-                  >
-                    <textarea
+                {action === "notify" &&
+                  item.source !== "BAT_THUONG_KHAO_SAT" && (
+                    <Field
+                      label="Tóm tắt kết quả gửi sinh viên"
                       id="inspection-student-summary"
-                      name="studentSummary"
-                      rows={5}
-                      required
-                      minLength={10}
-                      maxLength={5000}
-                      className={inputStyle}
-                      disabled={!ready || busy}
-                    />
-                  </Field>
-                )}
+                    >
+                      <textarea
+                        id="inspection-student-summary"
+                        name="studentSummary"
+                        rows={5}
+                        required
+                        minLength={10}
+                        maxLength={5000}
+                        className={inputStyle}
+                        disabled={!ready || busy}
+                      />
+                    </Field>
+                  )}
                 <button
                   type="submit"
                   className={buttonStyle}
                   disabled={!ready || busy}
                 >
-                  {busy ? "Đang cập nhật…" : actionLabels[action]}
+                  {busy ? "Đang cập nhật…" : labelFor(action)}
                 </button>
               </form>
             ))}

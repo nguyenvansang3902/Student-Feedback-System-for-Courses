@@ -63,3 +63,43 @@ Nguồn và kiểm thử thực tế đối chiếu ở [nghiệm thu Tuần 10]
 
 Nội dung kỹ thuật bổ sung: [SLA, giao dịch, giải trình và kiến nghị](../CHUONG_HIEN_THUC_TUAN_11.md), [quy trình Thanh tra](../QUY_TRINH_THANH_TRA_TUAN_11.md), [bằng chứng nghiệm thu](../NGHIEM_THU_TUAN_11.md). Các phần bên dưới giữ nội dung lịch sử của các tuần trước; không suy chúng đã bao gồm chức năng mới tại thời điểm viết.
 
+# Phần bổ sung Tuần 12
+
+Ngày bổ sung: 03/11/2026, thực hiện sớm theo lệnh người dùng so với mốc kế hoạch 16–22/12/2026. Nội dung các phần trước được giữ theo thời điểm đã viết. AI hỗ trợ nháp phần này; nhóm cần đối chiếu mã, chạy lại và viết bằng lời của mình trước khi nộp.
+
+## 4.9. Dashboard và phạm vi báo cáo
+
+Dashboard và API báo cáo đi qua service kiểm tài khoản, phiên, gán quyền và phạm vi hiện tại trong giao dịch có cùng khóa điều phối với thay đổi phân quyền. Đầu vào chọn một vai trò hợp lệ của tài khoản. Điều kiện phạm vi và bộ lọc được ghép bằng AND; định danh ngoài phạm vi trả lỗi không tìm thấy. Vai trò được chọn quyết định tập dữ liệu, không lấy quyền toàn trường từ vai trò khác để mở rộng kết quả.
+
+Sinh viên nhận số nhiệm vụ và phản hồi của chính tài khoản. Giảng viên nhận tập lớp đang được phân công; trưởng bộ môn/khoa nhận phạm vi đơn vị được gán. Điểm của các vai trò này chỉ được xem sau công bố/lưu trữ, còn ĐBCL và Lãnh đạo xem từ khi tổng hợp theo quyền. Phòng Đào tạo có độ sẵn sàng đợt và thống kê phản hồi tổ chức lớp; Khảo thí có điểm nhóm đánh giá gộp và phản hồi thi; Thanh tra có thống kê hồ sơ không xung đột. ADMIN, kể cả khi ghép vai trò khác, chỉ nhận dashboard tài khoản/phiên. ĐBCL ghép Thanh tra không được chọn báo cáo hồ sơ mật. Lãnh đạo chỉ nhận số liệu tóm tắt hồ sơ, không có nội dung xác minh.
+
+Độ sẵn sàng dùng kiểm tra dữ liệu nội bộ nhưng chỉ trả số lớp, số lớp có lỗi, số lỗi/cảnh báo và trạng thái. Không đưa danh sách sinh viên, cặp đăng ký, email hoặc mã băm danh sách vào dashboard. Khi chọn một đơn vị, đợt giao với đơn vị đó vẫn được kiểm trên toàn phạm vi đợt để tránh nhận định đủ điều kiện từ một phần dữ liệu.
+
+## 4.10. Tính chỉ số và bảo vệ ô nhỏ
+
+Điểm khảo sát dùng lại `poolSurveyScores` để cộng số phiếu, phân bố và tổng giá trị gốc; không lấy trung bình điểm lớp đã làm tròn. Khảo thí chỉ nhận điểm nhóm có cờ `isAssessmentGroup`, gộp theo môn/bộ môn/khoa. Ngưỡng hai giảng viên chỉ tính người thuộc tập có phản hồi và có ít nhất một giá trị LIKERT hợp lệ ở nhóm đánh giá. Giảng viên chỉ có câu đánh giá NA/trống không giúp đạt ngưỡng, dù nhóm giảng dạy của cùng lớp có điểm. Helper này được dùng chung ở báo cáo, đường đọc kết quả và bằng chứng tạo kiến nghị để tránh ba cách áp dụng khác nhau.
+
+Với khảo sát thường, lớp thiếu mẫu bị ẩn và kéo theo tổng bộ môn/khoa; với Khảo thí, quy tắc bắt đầu từ môn. Cách ẩn này ngăn việc công bố tổng cha cùng các nhóm còn lại rồi suy ra nhóm bị ẩn bằng phép trừ. Dữ liệu mẫu không tương thích hoặc ảnh chụp không hợp lệ không được gộp thành điểm chung.
+
+Báo cáo phản hồi và hồ sơ dùng ngưỡng riêng, mặc định 5 bản ghi, tách khỏi ngưỡng công bố đợt. Ô trạng thái/quá hạn/kết luận có số dương dưới ngưỡng làm cả hàng bị ẩn, gồm tổng; tổng học kỳ không hiện khi nhóm lá bị ẩn. Trung bình thời gian, hài lòng và các tỷ lệ còn kiểm riêng số mẫu của chính chỉ số. Không có mẫu số hoặc không đủ mẫu trả `null`; biểu đồ không đổi thành 0 hay tự tính lại từ ô đã ẩn. Thời gian xử lý là ngày lịch; hạn SLA vẫn tính ngày làm việc. Tỷ lệ đang quá hạn dùng số đang xử lý làm mẫu số; tỷ lệ trả lời trễ dùng bản ghi có mốc trả lời gần nhất, không được hiểu là toàn bộ lịch sử sau các lần mở lại. Công thức và ví dụ đối chiếu ở [CONG_THUC_BAO_CAO](../CONG_THUC_BAO_CAO.md).
+
+## 4.11. Xuất CSV, Excel và PDF
+
+Dashboard, biểu đồ và ba renderer nhận cùng DTO đã kiểm quyền và ngưỡng. Không có nhánh xuất đọc lại bảng thô. Dữ liệu xuất gồm nhãn phạm vi/bộ lọc được phép và các ô tổng hợp, không gồm tài khoản/email sinh viên, nội dung phản hồi, câu trả lời, ghi chú hoặc tệp Thanh tra. Dòng bị ẩn giữ các ô số là `null` trong cả ba định dạng. Chuỗi CSV/Excel được xử lý để không trở thành công thức bảng tính; PDF dùng phông tiếng Việt đi kèm dự án.
+
+Trước khi trả dữ liệu cho renderer, service ghi sự kiện `REPORT_EXPORTED` chứa vai trò, định dạng và nhóm báo cáo, không ghi nội dung riêng tư vào audit. Cấu hình ngưỡng báo cáo do ĐBCL quản lý, kiểm revision, requestId, hash và ghi nhật ký. Đổi ngưỡng báo cáo không sửa ngưỡng công bố của các đợt. Quyết định kiến trúc và các giới hạn được ghi ở [ADR-012](../decisions/ADR-012-bao-cao-va-nguong-du-lieu.md).
+
+## 4.12. Cảnh báo bất thường và hồ sơ xác minh
+
+Sau tổng hợp, bộ phát hiện xét hai luật với mặc định tối thiểu 10 phiếu: tỷ lệ phiếu đồng nhất từ 70% hoặc chênh lệch tuyệt đối so với kỳ trước từ 1,5 điểm. Một phiếu đồng nhất cần ít nhất hai giá trị LIKERT hợp lệ và bằng nhau; NA/trống không tham gia so sánh, mẫu số là toàn bộ phiếu của lớp. Đối chiếu kỳ trước chỉ dùng cùng môn, cùng mẫu, dữ liệu đã công bố/lưu trữ và đủ ngưỡng. So ngưỡng trước làm tròn; thiếu dữ liệu tương thích được ghi là chưa xác định, không thay bằng 0.
+
+Mỗi lớp/đợt/luật có tối đa một cờ, lưu chỉ số và ngưỡng tại lúc tạo. Thanh tra không xung đột xem chỉ số, ghi lý do và chọn Bình thường, Cần lưu ý hoặc Chuyển xác minh. Quyền và xung đột kiểm lại khi đọc và ghi, gồm cả tài khoản nhiều vai trò. Đầu ra không có điểm tuyệt đối, câu trả lời, tự luận hay danh tính người nộp. Thông báo Cần lưu ý cho ĐBCL chỉ là thông báo chung, không cấp quyền đọc hồ sơ hoặc toàn bộ chỉ số.
+
+Chuyển xác minh tạo một hồ sơ nguồn `BAT_THUONG_KHAO_SAT` trong cùng giao dịch; revision, requestId, hash và khóa duy nhất ngăn gửi lặp/cạnh tranh tạo thêm hồ sơ. Hồ sơ đi qua quy trình Thanh tra đã có, giữ ghi chú/tệp nội bộ và lịch sử xem xét. Không tạo phản hồi giả, không nối đến sinh viên hoặc phiếu cụ thể và không gửi thông báo kết luận cho toàn bộ sinh viên. Scheduler và lần mở danh sách bù các lần tính chưa thực hiện; cờ không tự ngăn công bố và không tự kết luận vi phạm. Chi tiết ở [cảnh báo bất thường Tuần 12](../CANH_BAO_BAT_THUONG_TUAN_12.md).
+
+## 4.13. Kiểm chứng và giới hạn tại thời điểm bổ sung
+
+UC-GOLD đã có kết quả tự động 3/3 bài đạt bằng tổ hợp thao tác API và trình duyệt. Đây không phải xác nhận đã thử tay toàn bộ kịch bản hoặc mọi vai trò/thiết bị. Kịch bản, cách dựng dữ liệu giả, bước đã kiểm và phần còn lại được ghi riêng tại [UC_GOLD_TUAN_12](../UC_GOLD_TUAN_12.md) và [QA giao diện](../QA_GIAO_DIEN_TUAN_12.md). Tại thời điểm bổ sung đoạn này, kiểm tra tổng, build và CI Tuần 12 chưa được chốt; kết quả cuối phải lấy từ [nghiệm thu Tuần 12](../NGHIEM_THU_TUAN_12.md), không suy từ việc có mã nguồn hoặc test.
+
+Ẩn ô nhỏ và tổng cha giảm suy ngược trực tiếp trong tập dữ liệu xuất; chưa bảo đảm chống mọi phép kết hợp nhiều báo cáo, kiến thức bên ngoài hoặc quyền quản trị database/hạ tầng. Không có đường nối người nộp với phiếu khảo sát được bổ sung ở tuần này. Cảnh báo chỉ hỗ trợ xem xét ở mức ứng dụng, không thay quy trình thanh tra, kỷ luật hoặc phúc khảo chính thức. Phần giải thích bằng lời thường và năm câu hỏi ngắn nằm ở [GIAI_THICH/tuan-12](../GIAI_THICH/tuan-12.md).
+

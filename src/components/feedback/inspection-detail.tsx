@@ -92,7 +92,9 @@ export function InspectionDetailPanel({ id }: { id: string }) {
               <p className="mt-3 text-sm leading-7 text-slate-600">
                 {item.violation
                   ? violationLabels[item.violation]
-                  : "Khiếu nại nghiêm trọng"}{" "}
+                  : item.source === "BAT_THUONG_KHAO_SAT"
+                    ? "Bất thường khảo sát"
+                    : "Khiếu nại nghiêm trọng"}{" "}
                 · {vietnamTime(item.createdAt)}
               </p>
             </div>
@@ -133,6 +135,54 @@ export function InspectionDetailPanel({ id }: { id: string }) {
                 không thay thế quy trình thanh tra hoặc kỷ luật chính thức của
                 trường.
               </div>
+              {item.anomaly && (
+                <div className="mb-6">
+                  <Panel title="Chỉ số cảnh báo khảo sát">
+                    <dl className="grid gap-4 text-sm sm:grid-cols-2">
+                      <div>
+                        <dt className="text-slate-500">Số phiếu</dt>
+                        <dd className="mt-1 font-semibold">
+                          {item.anomaly.metrics.responseCount}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">Tỉ lệ tham gia</dt>
+                        <dd className="mt-1 font-semibold">
+                          {(
+                            item.anomaly.metrics.participationRate * 100
+                          ).toFixed(2)}
+                          %
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">
+                          Tỉ lệ phiếu đồng nhất
+                        </dt>
+                        <dd className="mt-1 font-semibold">
+                          {item.anomaly.metrics.uniformRate === null
+                            ? "Không đủ câu thang điểm"
+                            : `${(item.anomaly.metrics.uniformRate * 100).toFixed(2)}%`}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">
+                          Chênh lệch tuyệt đối với học kỳ trước
+                        </dt>
+                        <dd className="mt-1 font-semibold">
+                          {item.anomaly.metrics.scoreDeltaAbs === null
+                            ? "Không có dữ liệu tương thích"
+                            : `${item.anomaly.metrics.scoreDeltaAbs.toFixed(2)} điểm`}
+                        </dd>
+                      </div>
+                    </dl>
+                    <p className="mt-4 text-sm leading-7 text-slate-600">
+                      Chỉ số vượt ngưỡng là thông tin cần xem xét, chưa phải kết
+                      luận vi phạm. Hồ sơ này không có sinh viên gửi nên không
+                      gửi thông báo kết quả tới sinh viên.
+                    </p>
+                  </Panel>
+                </div>
+              )}
               {item.conclusion && (
                 <div className="mb-6">
                   <Panel title="Kết luận đã lưu">

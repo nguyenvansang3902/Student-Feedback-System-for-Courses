@@ -10,6 +10,15 @@ export interface RoleGrant {
 }
 
 export type PolicyAction =
+  | "reports:read"
+  | "reports:export"
+  | "reports:settings:read"
+  | "reports:settings:write"
+  | "anomalies:list"
+  | "anomalies:read"
+  | "anomalies:review"
+  | "anomalies:settings:read"
+  | "anomalies:settings:write"
   | "notifications:list"
   | "notifications:read"
   | "notifications:mutate"
@@ -152,6 +161,30 @@ export function can(
 ): boolean {
   if (!hasFullSession(actor)) return false;
   const grants = actorGrants(actor);
+  if (action.startsWith("reports:")) {
+    if (["reports:read", "reports:export"].includes(action))
+      return grants.length > 0;
+    if (["reports:settings:read", "reports:settings:write"].includes(action))
+      return (
+        !actor.roles.includes("ADMIN") &&
+        grants.some((g) => g.role === "CAN_BO_DBCL")
+      );
+    return false;
+  }
+  if (action.startsWith("anomalies:")) {
+    if (actor.roles.includes("ADMIN")) return false;
+    if (
+      ["anomalies:settings:read", "anomalies:settings:write"].includes(action)
+    )
+      return grants.some((g) => g.role === "CAN_BO_DBCL");
+    return (
+      ["anomalies:list", "anomalies:read", "anomalies:review"].includes(
+        action,
+      ) &&
+      !actor.roles.includes("CAN_BO_DBCL") &&
+      grants.some((g) => g.role === "THANH_TRA")
+    );
+  }
   if (
     action.startsWith("improvements:") &&
     ![

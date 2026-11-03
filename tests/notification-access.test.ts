@@ -50,6 +50,7 @@ function actor(
   };
 }
 const tx = {
+  surveyAnomalyFlag: { findUnique: vi.fn() },
   feedback: { findUnique: vi.fn() },
   inspectionCase: { findUnique: vi.fn() },
   improvementPlan: { findUnique: vi.fn() },
@@ -67,6 +68,89 @@ beforeEach(() => {
   tx.faculty.findFirst.mockResolvedValue({ id: facultyId });
 });
 describe("FR-80/81, BR-18/24/34/61/62 — thông báo không vượt quyền tài nguyên", () => {
+  it("BR-65 thông báo chỉ số chỉ TT khôngxungđột nhận; ĐBCL/LĐ khôngđược hưởng quyền qua notice", async () => {
+    const flagId = randomUUID();
+    tx.surveyAnomalyFlag.findUnique.mockResolvedValue({
+      campaign: { status: "DA_TONG_HOP" },
+      section,
+    });
+    expect(
+      await canReadNoticeTarget(
+        client,
+        actor("THANH_TRA"),
+        "SurveyAnomalyFlag",
+        flagId,
+      ),
+    ).toBe(true);
+    expect(
+      await canReadNoticeTarget(
+        client,
+        actor("THANH_TRA", teacherId),
+        "SurveyAnomalyFlag",
+        flagId,
+      ),
+    ).toBe(false);
+    for (const role of ["CAN_BO_DBCL", "LANH_DAO", "ADMIN"] as const)
+      expect(
+        await canReadNoticeTarget(
+          client,
+          actor(role),
+          "SurveyAnomalyFlag",
+          flagId,
+        ),
+      ).toBe(false);
+    expect(notificationTargetHref("SurveyAnomalyFlag", flagId)).toBe(
+      `/thanh-tra/bat-thuong/${flagId}`,
+    );
+  });
+  it("BR-65 thông báo Cần lưu ý riêng cho DBCL, không dùng target để mở full chỉ số", async () => {
+    const flagId = randomUUID();
+    tx.surveyAnomalyFlag.findUnique.mockResolvedValue({
+      status: "CAN_LUU_Y",
+      campaign: { status: "DA_TONG_HOP" },
+      section,
+    });
+    expect(
+      await canReadNoticeTarget(
+        client,
+        actor("CAN_BO_DBCL"),
+        "SurveyAnomalyAttention",
+        flagId,
+      ),
+    ).toBe(true);
+    expect(
+      await canReadNoticeTarget(
+        client,
+        actor("CAN_BO_DBCL"),
+        "SurveyAnomalyFlag",
+        flagId,
+      ),
+    ).toBe(false);
+    for (const role of ["THANH_TRA", "LANH_DAO", "ADMIN", "SINH_VIEN"] as const)
+      expect(
+        await canReadNoticeTarget(
+          client,
+          actor(role),
+          "SurveyAnomalyAttention",
+          flagId,
+        ),
+      ).toBe(false);
+    expect(notificationTargetHref("SurveyAnomalyAttention", flagId)).toBe(
+      "/ket-qua",
+    );
+    tx.surveyAnomalyFlag.findUnique.mockResolvedValue({
+      status: "BINH_THUONG",
+      campaign: { status: "DA_TONG_HOP" },
+    });
+    expect(
+      await canReadNoticeTarget(
+        client,
+        actor("CAN_BO_DBCL"),
+        "SurveyAnomalyAttention",
+        flagId,
+      ),
+    ).toBe(false);
+  });
   const row = () => ({
     authorId,
     category: "GIANG_DAY",

@@ -16,7 +16,12 @@ import {
   type RecommendationDetail,
   type RecommendationList,
 } from "./improvement-types";
-import { parseSurveyAggregateDetails } from "./survey-score";
+import {
+  assessmentContributingTeachers,
+  hasAssessmentContribution,
+  parseSurveyAggregateDetails,
+  type SurveyAggregateDetails,
+} from "./survey-score";
 import { readWorkflowSettings } from "./workflow-settings";
 import { ensureWorkflowReminders } from "./improvements";
 import {
@@ -91,21 +96,23 @@ export function hasRecommendationEvidence(
   rows: { details: unknown; responseCount: number }[],
   minResponses: number,
 ) {
-  const teachers = new Set<string>();
+  const contributing: SurveyAggregateDetails[] = [];
   let count = 0;
   for (const row of rows) {
     const details = parseSurveyAggregateDetails(row.details);
     if (
       !details ||
       row.responseCount <= 0 ||
-      details.score.responseCount <= 0 ||
-      !details.template.groups.some((g) => g.isAssessmentGroup)
+      !hasAssessmentContribution(details)
     )
       continue;
-    for (const id of details.teacherIds) teachers.add(id);
+    contributing.push(details);
     count += row.responseCount;
   }
-  return teachers.size >= 2 && count >= minResponses;
+  return (
+    assessmentContributingTeachers(contributing).size >= 2 &&
+    count >= minResponses
+  );
 }
 async function publishedCourses(
   tx: Prisma.TransactionClient,

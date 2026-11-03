@@ -154,8 +154,8 @@ describe("BR-03 — Mục 5.6(a), DMMF của thiết kế đầy đủ", () => {
   });
 });
 
-describe("W11 — tính nhất quán schema và phạm vi migration được người dùng cho phép", () => {
-  it("schema gồm43model runtime đến phản hồi, tệp và hồ sơ và quy trình Tuần11", () => {
+describe("W12 — tính nhất quán schema và phạm vi migration được người dùng cho phép", () => {
+  it("schema gồm45model runtime đến báo cáo và cảnh báo khảo sát Tuần12", () => {
     expect(
       foundation.datamodel.models.map((model) => model.name).sort(),
     ).toEqual(
@@ -203,25 +203,20 @@ describe("W11 — tính nhất quán schema và phạm vi migration được ng�
         "SlaEscalation",
         "InspectionCaseNote",
         "ExamReviewRecommendation",
+        "SurveyAnomalyFlag",
+        "SurveyAnomalyReviewEvent",
       ].sort(),
     );
   });
 
-  it("trường, quan hệ và khóa của43model runtime không lệch thiết kế đầy đủ", () => {
+  it("trường, quan hệ và khóa của45model runtime không lệch thiết kế đầy đủ", () => {
     for (const model of foundation.datamodel.models) {
-      const futureFields =
-        model.name === "InspectionCase" ? ["anomalyFlagId", "campaignId"] : [];
       const expected = model.fields
         .filter((field) => field.kind !== "object")
         .sort((a, b) => a.name.localeCompare(b.name));
       const actual = getModel(model.name)
-        .fields.filter(
-          (field) =>
-            field.kind !== "object" && !futureFields.includes(field.name),
-        )
+        .fields.filter((field) => field.kind !== "object")
         .sort((a, b) => a.name.localeCompare(b.name));
-      for (const name of futureFields)
-        expect(model.fields.some((field) => field.name === name)).toBe(false);
       expect(actual, model.name).toEqual(expected);
       for (const field of model.fields.filter(
         (candidate) => candidate.kind === "object",
@@ -281,8 +276,8 @@ describe("W11 — tính nhất quán schema và phạm vi migration được ng�
         .find((item) => item.name === "Feedback")
         ?.fields.some((item) => item.name === "identityLevel"),
     ).toBe(true);
-    expect(models).toHaveLength(46);
-    for (const name of ["SurveyAnomalyFlag", "ImportBatch", "SurveyReminder"]) {
+    expect(models).toHaveLength(47);
+    for (const name of ["ImportBatch", "SurveyReminder"]) {
       expect(getModel(name)).toBeDefined();
       expect(
         foundation.datamodel.models.some((model) => model.name === name),

@@ -101,21 +101,23 @@ export default async function AccountPage() {
                 <span aria-hidden="true">◎</span> Tài khoản của tôi
               </a>
             </nav>
-            {view.sections.length>0&&<div className="mt-6 hidden border-t border-slate-200 pt-5 lg:block">
-              <p className="px-4 text-xs font-medium text-slate-500">
-                Các khu vực sắp mở
-              </p>
-              <ul className="mt-2 space-y-2">
-                {view.sections.map((name) => (
-                  <li
-                    key={name}
-                    className="px-4 py-2 text-sm leading-6 text-slate-400"
-                  >
-                    {name}
-                  </li>
-                ))}
-              </ul>
-            </div>}
+            {view.sections.length > 0 && (
+              <div className="mt-6 hidden border-t border-slate-200 pt-5 lg:block">
+                <p className="px-4 text-xs font-medium text-slate-500">
+                  Các khu vực sắp mở
+                </p>
+                <ul className="mt-2 space-y-2">
+                  {view.sections.map((name) => (
+                    <li
+                      key={name}
+                      className="px-4 py-2 text-sm leading-6 text-slate-400"
+                    >
+                      {name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </aside>
           <div id="tai-khoan">
             <div className="mb-7">
@@ -283,9 +285,54 @@ export default async function AccountPage() {
                     <span aria-hidden="true">↗</span>
                   </Link>
                 )}
-                {can(actor,'improvements:list')&&<Link href="/giai-trinh" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Giải trình cải tiến</Link>}
-                {can(actor,'exam-recommendations:list')&&<Link href="/kien-nghi" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Kiến nghị rà soát</Link>}
-                {can(actor,'notifications:list')&&<Link href="/thong-bao" className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}>Thông báo</Link>}
+                {can(actor, "improvements:list") && (
+                  <Link
+                    href="/giai-trinh"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Giải trình cải tiến
+                  </Link>
+                )}
+                {can(actor, "exam-recommendations:list") && (
+                  <Link
+                    href="/kien-nghi"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Kiến nghị rà soát
+                  </Link>
+                )}
+                {can(actor, "notifications:list") && (
+                  <Link
+                    href="/thong-bao"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Thông báo
+                  </Link>
+                )}
+                {can(actor, "reports:read") && (
+                  <Link
+                    href="/bao-cao"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Báo cáo
+                  </Link>
+                )}
+                {can(actor, "anomalies:list") && (
+                  <Link
+                    href="/thanh-tra/bat-thuong"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Cảnh báo khảo sát
+                  </Link>
+                )}
+                {can(actor, "anomalies:settings:read") && (
+                  <Link
+                    href="/phan-hoi/cau-hinh/bat-thuong"
+                    className={`rounded-xl bg-teal-800 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-900 ${focusRing}`}
+                  >
+                    Ngưỡng bất thường
+                  </Link>
+                )}
                 {actor.roles.map((role) => (
                   <Link
                     key={role}

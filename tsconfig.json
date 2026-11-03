@@ -51,7 +51,9 @@
     ".next-week9/types/**/*.ts",
     ".next-week9/dev/types/**/*.ts",
     ".next-week10/types/**/*.ts",
-    ".next-week10/dev/types/**/*.ts"
+    ".next-week10/dev/types/**/*.ts",
+    ".next-week12/types/**/*.ts",
+    ".next-week12/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

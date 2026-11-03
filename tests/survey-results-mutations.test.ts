@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Role } from "../src/generated/prisma/enums";
 import type { AuthActor } from "../src/server/auth/types";
+import { ensureCampaignAnomalies } from "../src/server/services/survey-anomaly-detection";
 import {
   aggregateSurveyResults,
   publishSurveyResults,
@@ -38,6 +39,9 @@ const { db } = vi.hoisted(() => {
   };
 });
 vi.mock("../src/lib/db", () => ({ getDb: () => db }));
+vi.mock("../src/server/services/survey-anomaly-detection", () => ({
+  ensureCampaignAnomalies: vi.fn().mockResolvedValue({ created: 0 }),
+}));
 
 const ids = Array.from({ length: 10 }, () => randomUUID());
 function actor(role: Role = "CAN_BO_DBCL"): AuthActor {
@@ -262,6 +266,7 @@ describe("FR-60/61/62 — BR-07/09/11/17/18 chuyển trạng thái tổng hợp/
   });
   it("BR-11 tổng hợp lưu đủ số đếm, ảnh chụp giáo viên nội bộ nhưng không nội dung/định danh phiếu", async () => {
     const result = await aggregateSurveyResults(actor(), campaign.id, input());
+    expect(ensureCampaignAnomalies).toHaveBeenCalledWith(db, campaign.id);
     expect(result).toMatchObject({
       status: "DA_TONG_HOP",
       revision: 4,

@@ -13,7 +13,8 @@ type CsrfPurpose =
   | "student-surveys"
   | "survey-results"
   | "feedback"
-  | "notifications";
+  | "notifications"
+  | "reports";
 function signature(payload: string, purpose: CsrfPurpose) {
   return createHmac("sha256", getAuthConfig().jwtSecret)
     .update(`sfs-${purpose}-csrf-v1:${payload}`)
@@ -177,4 +178,17 @@ function assertCsrf(
   } catch {
     throw deny();
   }
+}
+
+/** Cấu hình báo cáo có miền chữ ký riêng, không nhận CSRF từ nghiệp vụ khác. */
+export function issueReportsCsrf(actor: AuthActor): string {
+  requireCan(actor, "reports:settings:write");
+  return issueCsrf(actor, "reports");
+}
+export function assertReportsCsrf(
+  request: NextRequest,
+  actor: AuthActor,
+): void {
+  requireCan(actor, "reports:settings:write");
+  assertCsrf(request, actor, "reports");
 }

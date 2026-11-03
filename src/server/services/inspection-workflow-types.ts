@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { pageInput } from "./access";
+import type { AnomalyMetrics } from "../survey-anomaly-contract";
 import { inspectionViolations } from "./feedback-types";
 import type {
   InspectionCaseDetail,
@@ -47,12 +48,6 @@ export const inspectionTransitionSchema = z
         path: ["conclusion"],
         message: "Chọn kết luận hồ sơ.",
       });
-    if (data.action === "notify" && !data.studentSummary)
-      context.addIssue({
-        code: "custom",
-        path: ["studentSummary"],
-        message: "Nhập tóm tắt kết quả gửi sinh viên.",
-      });
     if (data.action === "return" && !data.returnCategory)
       context.addIssue({
         code: "custom",
@@ -74,6 +69,7 @@ export interface InspectionInternalAttachment {
   downloadUrl: string;
 }
 export interface InspectionWorkflowDetail extends InspectionCaseDetail {
+  anomaly?: { id: string; ruleCode: string; metrics: AnomalyMetrics };
   conclusionReason?: string | null;
   acceptDueAt?: string;
   completeDueAt?: string;

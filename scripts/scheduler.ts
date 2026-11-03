@@ -1,4 +1,5 @@
 import { ensureDueFeedback } from "../src/server/services/feedback-sla";
+import { ensureDueSurveyAnomalies } from "../src/server/services/survey-anomaly-detection";
 import {
   ensureDueImprovements,
   remindDomainWorkflows,
@@ -47,6 +48,7 @@ try {
       const lifecycle = await ensureDueCampaigns(actor, { limit: 100 });
       const reminders = await remindDueSurveyStudents(actor, { limit: 100 });
       const feedback = await ensureDueFeedback(actor, { limit: 100 });
+      const anomalies = await ensureDueSurveyAnomalies(actor, { limit: 10 });
       const improvements = await ensureDueImprovements(actor, { limit: 100 });
       const workflowReminders = await remindDomainWorkflows(actor, {
         limit: 100,
@@ -56,6 +58,7 @@ try {
       console.log(
         JSON.stringify({
           feedback,
+          anomalies,
           improvements,
           workflowReminders,
           domainMail,

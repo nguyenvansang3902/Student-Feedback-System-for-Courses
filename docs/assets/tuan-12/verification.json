@@ -1,0 +1,260 @@
+{
+  "week": 12,
+  "implementedAt": "2026-11-03",
+  "branch": "feat/week12-reports-anomalies",
+  "sourceCommit": null,
+  "ci": {
+    "status": "pending"
+  },
+  "local": {
+    "check": {
+      "passed": 1284,
+      "skipped": 1,
+      "total": 1285,
+      "files": 86,
+      "platform": "Windows",
+      "skipReason": "File-symlink cần quyền Windows riêng"
+    },
+    "build": {
+      "status": "passed",
+      "next": "16.4.3",
+      "tracedFonts": [
+        "NotoSans-Regular.ttf",
+        "OFL.txt"
+      ]
+    },
+    "suites": [
+      {
+        "name": "reports",
+        "passed": 13,
+        "cases": [
+          "mười vai trò nhận dashboard đúng loại, DTO không có canary sinh viên hoặc nội dung riêng tư",
+          "sinh viên chỉ có task/phản hồi của mình, không có điểm khảo sát",
+          "GV/TBM không đọc lớp/đơn vị ngoài scope hoặc dữ liệu trước công bố",
+          "Khảo thí pool 5×5 và 10×3 thành3,67, ngưỡng2GV và công bố, không có lớp/GV/tự luận",
+          "lớp/môn ít mẫu bị che kéo theo tổng bộ môn/khoa bị che, không trừ tổng để suy ra ô nhỏ",
+          "giảng viên có phiếu nhưng mọi câu LIKERT nhóm đánh giá đều NA không được tính vào ngưỡng hai GV",
+          "PĐT chỉ phản hồi tổ chức lớp, readiness không roster; ô nhỏ và tổng suy ngược cùng bị ẩn",
+          "Thanh tra chỉ thống kê hồ sơ đủ mẫu; nhóm một hồ sơ không trả count/kết luận/thời gian",
+          "TT kiêm GV/TBM bị loại hồ sơ xung đột trước khi gộp và đếm",
+          "ADMIN đa vai trò chỉ vận hành tài khoản; ĐBCL chọn GV không lấy quyền toàn trường hoặc trước công bố",
+          "BR67 từ MySQL: prepareReportsExport thật cho PĐT/KT/TT lưu DTO an toàn, có nhãn scope và audit trước trả về",
+          "bốn cập nhật ngưỡng đồng thời chỉ một thành công; không thay ngưỡng công bố của campaign",
+          "thu hồi phiên chặn báo cáo dù actor cũ vẫn còn trong bộ nhớ"
+        ],
+        "cleaned": true,
+        "at": "2026-11-03T01:15:22.994Z"
+      },
+      {
+        "name": "anomalies",
+        "passed": 9,
+        "cases": [
+          "BR-65: sáu job đồng thời chỉ tạo ba cờ theo rule, không nhân bản",
+          "BR-65/67: biên9/10phiếu và6/7phiếuđồngnhất, delta cùngmôn/mẫu2.5, DTO khôngđiểm/danh tính",
+          "BR-61/65/68: TT đa vai trò xung đột404, ADMIN/ĐBCL/LĐ không đọc chỉ số",
+          "BR-65: sáu quyết định đồng thời tạo một lịch sử và duy nhất một hồ sơ BAT_THUONG",
+          "BR-65: retry giữ nguyên biên nhận, requestId thay dữ liệu bị chặn",
+          "BR-60/62/65: hồ sơ khôngfeedback đi hết xác minh→đóng, khôngstudentnotice, LĐchỉsummary",
+          "BR-65: CAN_LUU_Y thông báo generic cho ĐBCL, không cấp quyền chỉ số",
+          "BR-65: cảnh báo/đangxácminh không chặn công bố",
+          "BR-65: cấu hình đúng vai trò, cờ cũ giữ snapshot ngưỡng"
+        ],
+        "cleaned": true,
+        "at": "2026-11-03T01:15:27.717Z"
+      },
+      {
+        "name": "exports",
+        "passed": 10,
+        "cases": [
+          "BR-67 PHONG_DAO_TAO CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+          "BR-67 PHONG_DAO_TAO XLSX đọc lại được, ô che không thay bằng số0",
+          "BR-67 PHONG_DAO_TAO PDF giải mã nội dung thật, không có ô bị che",
+          "BR-67 PHONG_KHAO_THI CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+          "BR-67 PHONG_KHAO_THI XLSX đọc lại được, ô che không thay bằng số0",
+          "BR-67 PHONG_KHAO_THI PDF giải mã nội dung thật, không có ô bị che",
+          "BR-67 THANH_TRA CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+          "BR-67 THANH_TRA XLSX đọc lại được, ô che không thay bằng số0",
+          "BR-67 THANH_TRA PDF giải mã nội dung thật, không có ô bị che",
+          "FR-93 bảng nhiều trang không bỏ dòng cuối, đánh số trang"
+        ],
+        "cleaned": null,
+        "at": "2026-11-03T01:15:31.481Z"
+      }
+    ],
+    "regression": {
+      "week9": 12,
+      "week10": 19,
+      "week11": 43,
+      "database": 16,
+      "demo": 19
+    },
+    "preservation": {
+      "status": "passed",
+      "tables": 43,
+      "oldRowsPreserved": 9451,
+      "at": "2026-11-03T06:00:37.114Z"
+    },
+    "repeatSeed": {
+      "status": "passed",
+      "tables": 45,
+      "oldRowsPreserved": 9519,
+      "at": "2026-11-03T06:00:35.651Z"
+    },
+    "runtimeModels": 45,
+    "designModels": 47,
+    "historicalFilesUnchanged": true
+  },
+  "e2e": {
+    "status": "passed",
+    "tests": 3,
+    "skipped": 0,
+    "tool": "Playwright1.64.1",
+    "durationMs": 65753.201,
+    "fixture": {
+      "purpose": "week12-uc-gold-e2e",
+      "prefix": "G12826a3388",
+      "status": "passed",
+      "users": 21,
+      "fixtureSessionsRevoked": true,
+      "dataRetained": true,
+      "at": "2026-11-03T01:18:06.228Z"
+    },
+    "method": "Bootstrap danh mục/tài khoản, nghiệp vụ HTTP và trình duyệt; không nhận mọi bước là thao tác tay."
+  },
+  "ui": {
+    "screenshots": [
+      {
+        "file": "ui/can_bo_dbcl-desktop.png",
+        "width": 1440,
+        "height": 3055,
+        "bytes": 217165,
+        "sha256": "966e56f46b5052ca3e8e6598ac06243e3b56c4d4f69f89b8d091af9e7e3a9ad3",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/can_bo_dbcl-mobile.png",
+        "width": 375,
+        "height": 5803,
+        "bytes": 194901,
+        "sha256": "49f46c1252f0b7f69a0a8ccc8ee0171bb91b4e91b2b4e2055df6ee7fee103611",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/giang_vien-desktop.png",
+        "width": 1440,
+        "height": 3043,
+        "bytes": 207364,
+        "sha256": "c1fa8805270e7d7881fa404da083d59ac9c291aacb311e8d2aaaa883294e4629",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/giang_vien-mobile.png",
+        "width": 375,
+        "height": 6369,
+        "bytes": 205522,
+        "sha256": "23488fba946604902f96a6ec6b1737f68c18fe441f0b2d4e27ade3f680d0faa8",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/phong_dao_tao-desktop.png",
+        "width": 1440,
+        "height": 1468,
+        "bytes": 80436,
+        "sha256": "dda5d6245cbc3dcac942be680cb64f782acf4e345668a2349a64cce80ef00228",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/phong_dao_tao-mobile.png",
+        "width": 375,
+        "height": 2504,
+        "bytes": 80301,
+        "sha256": "f45df96645b2a4cb5286853df78e512005106610e0daa97593a87c8120cca719",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/phong_khao_thi-desktop.png",
+        "width": 1440,
+        "height": 3123,
+        "bytes": 215899,
+        "sha256": "da089bf7dac234dc09fac7f7b5969499ebf9decd14961320b52d6a37b1ca4be7",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/phong_khao_thi-mobile.png",
+        "width": 375,
+        "height": 6605,
+        "bytes": 216035,
+        "sha256": "df537727c0910c7bd267c752ed0904028c73264068ff9e4d4c17ab0a13a5d5a0",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/sv-da-nop-desktop.png",
+        "width": 1280,
+        "height": 778,
+        "bytes": 38950,
+        "sha256": "e6fb95b559f3075383e4a0c9fd78ff223efdccdac68429347ca46605fd7402ce",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/tbm-xac-nhan-giai-trinh.png",
+        "width": 1280,
+        "height": 1230,
+        "bytes": 77592,
+        "sha256": "73ddbc2df9f4fc4aab6a7c4366df483503c3856bde2579b08bb8d331e65f7499",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh_tra-desktop.png",
+        "width": 1440,
+        "height": 1135,
+        "bytes": 75995,
+        "sha256": "dcd9e9fcfb8eee75294b959dc549b0bb67f4d7d06b990fd25e376d42408487f7",
+        "visuallyReviewed": true
+      },
+      {
+        "file": "ui/thanh_tra-mobile.png",
+        "width": 375,
+        "height": 1689,
+        "bytes": 58488,
+        "sha256": "68e70e8943896641f073f6115b790e2036b492cb8f3998cbf03b10188e207acd",
+        "visuallyReviewed": true
+      }
+    ],
+    "manualStatus": "pending",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 375,
+        "height": 812
+      }
+    ],
+    "roleDashboards": [
+      "CAN_BO_DBCL",
+      "GIANG_VIEN",
+      "PHONG_DAO_TAO",
+      "PHONG_KHAO_THI",
+      "THANH_TRA"
+    ],
+    "pdfPagesVisuallyReviewed": 5,
+    "pdfAdditionalOnePageReviewed": true,
+    "uiUpgradeStarted": false
+  },
+  "progress": {
+    "acceptedBeforeWeek12": 188,
+    "targetAfterAcceptance": 208,
+    "total": 219,
+    "frTarget": 77,
+    "frTotal": 84,
+    "planned": 210,
+    "backlog": [
+      "FR-145"
+    ],
+    "partial": [
+      "FR-160"
+    ]
+  },
+  "measuredAt": "2026-11-03T06:13:48.056Z"
+}

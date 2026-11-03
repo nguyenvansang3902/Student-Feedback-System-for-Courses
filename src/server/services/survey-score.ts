@@ -107,6 +107,43 @@ export interface SurveyAggregateDetails {
   score: SurveyScoreResult;
 }
 
+/** BR-57: phiếu toàn NA/trống không đóng góp điểm của nhóm kiểm tra, đánh giá. */
+export function hasAssessmentContribution(
+  details: SurveyAggregateDetails,
+): boolean {
+  return (
+    details.score.responseCount > 0 &&
+    details.template.groups.some(
+      (group) =>
+        group.isAssessmentGroup &&
+        group.questions.some(
+          (question) =>
+            question.type === "LIKERT" &&
+            details.score.groups
+              .find((candidate) => candidate.groupId === group.id)
+              ?.questions.some(
+                (candidate) =>
+                  candidate.questionId === question.id &&
+                  candidate.type === "LIKERT" &&
+                  candidate.validCount > 0,
+              ),
+        ),
+    )
+  );
+}
+
+/** Chỉ dùng nội bộ để kiểm ngưỡng; không đưa định danh giảng viên vào DTO. */
+export function assessmentContributingTeachers(
+  details: readonly SurveyAggregateDetails[],
+): Set<string> {
+  return new Set(
+    details
+      .filter(hasAssessmentContribution)
+      .flatMap((value) => value.teacherIds)
+      .filter((id) => id.trim().length > 0),
+  );
+}
+
 function invalid(): never {
   throw new Error("Dữ liệu tổng hợp khảo sát không hợp lệ.");
 }

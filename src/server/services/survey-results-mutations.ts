@@ -1,4 +1,5 @@
 import { ensureRequiredImprovements } from "./improvements";
+import { ensureCampaignAnomalies } from "./survey-anomaly-detection";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import type { Prisma } from "../../generated/prisma/client";
@@ -331,6 +332,7 @@ async function mutateResults(
         },
       });
       if (target === "DA_CONG_BO") await ensureRequiredImprovements(tx, key);
+      if (target === "DA_TONG_HOP") await ensureCampaignAnomalies(tx, key);
       return {
         campaignId: key,
         status: target,

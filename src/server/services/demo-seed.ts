@@ -1,4 +1,5 @@
 import { seedWeek11WorkflowData } from "./week11-demo-seed";
+import { seedWeek12AnomalyData } from "./week12-demo-seed";
 import { createHash } from "node:crypto";
 import { fakerVI } from "@faker-js/faker";
 import { hash } from "bcryptjs";
@@ -417,6 +418,7 @@ export async function seedDemo(
           approvedById: demoId("LD2026001"),
         }),
         workflowData: await seedWeek11WorkflowData(actor, tx),
+        anomalyData: await seedWeek12AnomalyData(actor, tx),
         feedbackData: await seedWeek10FeedbackData(actor, tx, {
           id: demoId,
           semesterId: semester.id,

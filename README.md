@@ -1,5 +1,17 @@
 # Website quản lý khảo sát và phản hồi sinh viên về môn học
 
+## Tuần 12: báo cáo và cảnh báo khảo sát
+
+Sau đăng nhập, chọn **Báo cáo** từ trang tài khoản hoặc mở [/bao-cao](http://localhost:3000/bao-cao). Chọn vai trò và bộ lọc, bấm **Xem báo cáo**; các nút **Tải CSV/Excel/PDF** dùng đúng phạm vi đang hiển thị. Dashboard thay đổi theo quyền: sinh viên chỉ công việc của mình, ADMIN chỉ vận hành; PĐT xem độ sẵn sàng và phản hồi tổ chức lớp, Khảo thí chỉ dữ liệu gộp đủ điều kiện, Thanh tra chỉ thống kê không định danh.
+
+Thanh tra mở **Cảnh báo khảo sát** tại [/thanh-tra/bat-thuong](http://localhost:3000/thanh-tra/bat-thuong), xem chỉ số rồi ghi nhận bình thường/cần lưu ý/chuyển xác minh. Cờ không tự kết luận vi phạm hoặc chặn công bố. ĐBCL cấu hình ngưỡng ở **Báo cáo → Cấu hình** và **Phản hồi → Ngưỡng bất thường**. Dữ liệu ít mẫu hiện **Chưa đủ dữ liệu**, tổng có thể suy ngược cũng bị che.
+
+Bundle demo Tuần12 bổ sung một đợt có10phiếu và1cờ chờ xem xét. Sau khi kéo mã mới, dừng web, chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed:week12` rồi mở lại tệp CMD; không dùng reset. Máy mới dùng `npm.cmd run db:seed` để tạo đủ dữ liệu tiền đề. Seed lặp giữ nguyên dữ liệu đã thao tác.
+
+[Nghiệm thu Tuần12](docs/NGHIEM_THU_TUAN_12.md), [công thức/ngưỡng](docs/CONG_THUC_BAO_CAO.md), [UC-GOLD](docs/UC_GOLD_TUAN_12.md), [QA](docs/QA_GIAO_DIEN_TUAN_12.md). Các bước kiểm cuối và CI được chốt theo SHA tại hồ sơ; không suy một ảnh thành kiểm đủ mọi luồng.
+
+Kiểm dành cho phát triển: `npm.cmd run check`, `npm.cmd run test:week12` và `npm.cmd run test:e2e`. Bộ đọc nội dung PDF cần Python với `pip install -r scripts/pdf-test-requirements.txt`; có thể chỉ định executable qua `PDF_TEST_PYTHON`. Playwright cần `npx.cmd playwright install chromium`. Hai công cụ này phục vụ kiểm thử; mở website hằng ngày không cần chạy chúng.
+
 Tuần 11 đã hiện thực SLA/leo thang, hài lòng/mở lại, giải trình cải tiến, kiến nghị rà soát, quy trình Thanh tra và trung tâm thông báo/email. Xem [nghiệm thu](docs/NGHIEM_THU_TUAN_11.md), [bảng SLA](docs/SLA_TUAN_11.md) và [báo cáo](docs/bao-cao-tien-do/tuan-11.md). Tiến độ chức năng 188/219 điểm, 68/84 FR. Kết quả kiểm và CI theo đúng nguồn ghi trong hồ sơ nghiệm thu.
 
 Sau đăng nhập, mở **Giải trình cải tiến**, **Kiến nghị rà soát**, **Thông báo** hoặc **Hồ sơ Thanh tra** từ chức năng tài khoản theo vai trò. ĐBCL cấu hình SLA và giới hạn gửi ở **Phản hồi → Cấu hình**. Sinh viên đánh giá sau trả lời, điểm ≤2 được mở lại một lần trong hạn. Bundle mới có lớp `DEMO-W11-LHP01` điểm thấp và hồ sơ đang xác minh; seed lặp không đặt lại thao tác đã thực hiện.
