@@ -1,6 +1,8 @@
 # UC-GOLD Tuần 12 — bằng chứng E2E
 
-Ngày chạy thực tế: **03/11/2026**. Lượt chốt bắt đầu lúc **08:02:21 giờ Việt Nam**; Playwright ghi **3/3 test passed**, không bỏ qua, thời gian tổng **130,75 giây** (log hiển thị 2,2 phút). Đây là kiểm thử tự động kết hợp thao tác trình duyệt và HTTP. Không xem toàn bộ các bước bên dưới là đã được con người làm bằng tay.
+Ngày chạy thực tế: **03/11/2026**. Lượt E2E hợp lệ đầu tiên bắt đầu lúc **08:02:21 giờ Việt Nam**, qua **3/3 test** trong **130,75 giây** (log hiển thị 2,2 phút). Lượt cục bộ cuối bắt đầu lúc **08:17:00**, qua lại **3/3 test** trong **65,75 giây** (1,1 phút), không bỏ qua hoặc retry. Lượt cuối có bước chờ giao diện xác nhận ổn định trước khi chụp ảnh trưởng bộ môn. Các thời gian là số đo từng lượt, không phải kết luận hiệu năng.
+
+Đây là kiểm thử tự động kết hợp thao tác trình duyệt và HTTP. **Lượt UC-GOLD thủ công trên Chrome ở demo riêng đã thực hiện một phần rồi dừng do công cụ điều khiển không xác định chắc chắn được URL hiện tại; chưa hoàn tất hoặc được nghiệm thu.** Không xem toàn bộ các bước bên dưới là đã được con người làm bằng tay. Các bước thực tế và phần còn chờ được ghi riêng ở Mục 8.
 
 ## 1. Bộ kiểm và môi trường
 
@@ -13,7 +15,7 @@ Lệnh của kho là `npm.cmd run test:e2e` trên Windows, hoặc `npm run test:
 
 Phiên bản đối chiếu trong môi trường chạy: **Node.js v24.21.0**, **Playwright 1.64.1**, **Next.js 16.4.3**, máy chủ phát triển dùng webpack. Project trình duyệt là Chromium do Playwright quản lý; không ghi một số phiên bản Chromium chưa được đo riêng trong lượt chạy.
 
-Kết quả cục bộ nằm ở `.local/week12-e2e.log`, `test-results/week12/results.json`, `.local/week12-e2e-fixture.json` và log máy chủ `.local/week12-e2e-server.log`. Các đường dẫn này là bằng chứng vận hành của lượt chạy, không phải thư mục dữ liệu công khai của website.
+Kết quả lượt hợp lệ đầu tiên nằm ở `.local/week12-e2e.log`; lượt cuối ở `.local/week12-e2e-final.log`, `test-results/week12/results.json`, `.local/week12-e2e-fixture.json` và log máy chủ `.local/week12-e2e-server.log`. Các đường dẫn này là bằng chứng vận hành của lượt chạy, không phải thư mục dữ liệu công khai của website.
 
 ## 2. Tách database và tạo dữ liệu nền
 
@@ -52,15 +54,25 @@ Các giá trị canary là ID, tài khoản, email và tên của **sinh viên g
 
 | Test | Kết quả lượt chốt | Thời gian | Phạm vi |
 | --- | --- | --- | --- |
-| UC-GOLD — quy trình từ lập đợt tới báo cáo và các nhánh bổ sung | Passed | 98,96 giây | Chuỗi trong bảng trên; kết hợp HTTP và trình duyệt, không bỏ qua việc lập và xử lý nghiệp vụ bằng trạng thái hoàn tất seed sẵn |
-| TC-ALL-01 / BR-67 — dashboard mười vai trò, ngưỡng và IDOR | Passed | 1,76 giây | Dashboard của 10 vai trò; ADMIN chỉ vận hành tài khoản, sinh viên chỉ tổng quan cá nhân; Khảo thí không có lớp/giảng viên; Thanh tra không có cột điểm; dữ liệu nhỏ bị che, giả vai trò hoặc phạm vi bị từ chối |
-| FR-90/91 — dashboard desktop/mobile và không tràn trang | Passed | 25,25 giây | ĐBCL, giảng viên, PĐT, Khảo thí, Thanh tra; chọn rõ góc nhìn theo vai trò, lọc học kỳ, kiểm không tràn chiều ngang và chụp ảnh ở hai kích thước |
+| UC-GOLD — quy trình từ lập đợt tới báo cáo và các nhánh bổ sung | Passed | 48,65 giây | Chuỗi trong bảng trên; kết hợp HTTP và trình duyệt, không bỏ qua việc lập và xử lý nghiệp vụ bằng trạng thái hoàn tất seed sẵn |
+| TC-ALL-01 / BR-67 — dashboard mười vai trò, ngưỡng và IDOR | Passed | 1,04 giây | Dashboard của 10 vai trò; ADMIN chỉ vận hành tài khoản, sinh viên chỉ tổng quan cá nhân; Khảo thí không có lớp/giảng viên; Thanh tra không có cột điểm; dữ liệu nhỏ bị che, giả vai trò hoặc phạm vi bị từ chối |
+| FR-90/91 — dashboard desktop/mobile và không tràn trang | Passed | 12,47 giây | ĐBCL, giảng viên, PĐT, Khảo thí, Thanh tra; chọn rõ góc nhìn theo vai trò, lọc học kỳ, kiểm không tràn chiều ngang và chụp ảnh ở hai kích thước |
 
 Test quyền gồm đối chứng bộ môn ngoài phạm vi, sinh viên yêu cầu báo cáo ĐBCL, ADMIN yêu cầu kết quả lớp, cùng các vai trò không được đọc hồ sơ Thanh tra. Đây là phần kiểm tích hợp được nêu cụ thể, không tự hoàn tất toàn bộ ma trận chức năng của FR-160 hoặc thay đợt rà soát bảo mật Tuần 13.
 
 PDF trong E2E được kiểm việc tải tệp và mở tài liệu. Không suy phép kiểm này thành đã đọc toàn bộ văn bản PDF hoặc đã kiểm bố cục mọi trang. Phần kiểm renderer, ngưỡng trong tệp, Unicode, phân trang và rà ảnh phải đối chiếu các bộ kiểm/QA riêng của Tuần 12.
 
-Lượt chạy tạo **12 PNG**: trang xác nhận nộp của sinh viên, hồ sơ trưởng bộ môn đã xác nhận và 10 ảnh dashboard của năm vai trò trên. Dashboard được chụp ở **1440×1000** và **375×812**. Ảnh nằm trong `test-results/week12`; lúc viết tài liệu này chỉ xác nhận đã sinh tệp, **chưa ghi là đã được xem và duyệt bằng mắt**. Việc chọn ảnh đưa vào `docs/assets/tuan-12` và kết luận giao diện thuộc lượt QA của root.
+Lượt cuối tạo **12 PNG**: trang xác nhận nộp của sinh viên, hồ sơ trưởng bộ môn đã xác nhận và 10 ảnh dashboard của năm vai trò trên. Dashboard được chụp ở **1440×1000** và **375×812**. Root đã mở xem đủ 12 ảnh; bản bằng chứng được lưu tại `docs/assets/tuan-12/ui`. [Ảnh sinh viên đã nộp](assets/tuan-12/ui/sv-da-nop-desktop.png) và [ảnh trưởng bộ môn đã xác nhận](assets/tuan-12/ui/tbm-xac-nhan-giai-trinh.png) thuộc bộ cuối; ảnh trưởng bộ môn đã thấy trạng thái xác nhận, không còn chụp giữa lúc tải lại dữ liệu.
+
+| Dashboard đã mở xem | Desktop | Mobile |
+| --- | --- | --- |
+| ĐBCL | [1440×1000](assets/tuan-12/ui/can_bo_dbcl-desktop.png) | [375×812](assets/tuan-12/ui/can_bo_dbcl-mobile.png) |
+| Giảng viên | [1440×1000](assets/tuan-12/ui/giang_vien-desktop.png) | [375×812](assets/tuan-12/ui/giang_vien-mobile.png) |
+| PĐT | [1440×1000](assets/tuan-12/ui/phong_dao_tao-desktop.png) | [375×812](assets/tuan-12/ui/phong_dao_tao-mobile.png) |
+| Khảo thí | [1440×1000](assets/tuan-12/ui/phong_khao_thi-desktop.png) | [375×812](assets/tuan-12/ui/phong_khao_thi-mobile.png) |
+| Thanh tra | [1440×1000](assets/tuan-12/ui/thanh_tra-desktop.png) | [375×812](assets/tuan-12/ui/thanh_tra-mobile.png) |
+
+Việc xem ảnh này xác nhận các màn hình đã chụp; không thay kết quả của lượt thao tác UC-GOLD thủ công còn dang dở trên demo riêng.
 
 Tệp đính kèm của reporter còn có `uc-gold-report.csv`, `.xlsx`, `.pdf`, `dbcl-report.csv` và `uc-gold-steps.json`. Không lưu trace chứa cookie xác thực. Chưa kiểm các trình duyệt khác, thiết bị vật lý, WCAG đầy đủ hoặc kiểm tải trong bộ E2E này.
 
@@ -69,10 +81,36 @@ Tệp đính kèm của reporter còn có `uc-gold-report.csv`, `.xlsx`, `.pdf`,
 1. **Lượt 1:** Playwright từ chối tái sử dụng fixture `{ request }` lấy từ `beforeAll` trong thân test. Lỗi xảy ra trước các bước API nghiệp vụ đầu tiên. Bộ kiểm được sửa để tạo `APIRequestContext` độc lập bằng `requestFactory.newContext()` và `dispose()` trong `afterAll`.
 2. **Lượt 2:** chuỗi đã đi tới hồ sơ nguồn `BAT_THUONG_KHAO_SAT`, nhưng helper thông báo luôn gửi `studentSummary`. Hồ sơ không gắn phản hồi/sinh viên bị dịch vụ từ chối đúng với 400 `INVALID_INPUT`. Helper được sửa để chỉ gửi tóm tắt sinh viên khi hồ sơ có `feedbackId`.
 
-Hai sửa đổi thuộc bộ E2E; kiểm đầu vào và quyền nghiệp vụ của ứng dụng giữ nguyên. **Lượt 3** chạy lại từ fixture mới và qua cả ba test, không bật retry để che lỗi. Không cộng hai lượt lỗi vào số test passed của lượt chốt.
+Hai sửa đổi thuộc bộ E2E; kiểm đầu vào và quyền nghiệp vụ của ứng dụng giữ nguyên. **Lượt 3** chạy lại từ fixture mới và qua cả ba test trong khoảng 2,2 phút, không bật retry để che lỗi. Không cộng hai lượt lỗi vào số test passed.
+
+Sau khi xem bộ ảnh lượt hợp lệ đầu, root phát hiện ảnh trưởng bộ môn được chụp khi vừa lưu nhưng giao diện còn hiển thị **Đang tải giải trình…**. Trạng thái API đã đúng, nhưng ảnh chưa đủ làm bằng chứng giao diện đã xác nhận. Bộ E2E được bổ sung chờ dòng trạng thái **Đã xác nhận** hiện rõ và thông báo tải biến mất trước khi chụp. Lượt cuối 1,1 phút đã qua cả ba test và tạo lại bộ ảnh ổn định nêu trên.
 
 ## 6. Kết thúc và dữ liệu giữ lại
 
-`afterAll` thu hồi mọi phiên và vô hiệu hóa **đúng 21 tài khoản giả của lượt chạy**, rồi đóng kết nối. Runner dừng máy chủ và tiến trình Playwright do nó mở. Marker kết thúc ghi `status = passed`, `fixtureSessionsRevoked = true`, `dataRetained = true` lúc **08:04:31 giờ Việt Nam**.
+`afterAll` thu hồi mọi phiên và vô hiệu hóa **đúng 21 tài khoản giả của lượt chạy**, rồi đóng kết nối. Runner dừng máy chủ và tiến trình Playwright do nó mở. Marker lượt cuối ghi `status = passed`, `fixtureSessionsRevoked = true`, `dataRetained = true` lúc **08:18:06 giờ Việt Nam**; marker lượt hợp lệ đầu từng kết thúc lúc 08:04:31.
 
-Lịch sử, phiếu ẩn danh và các dữ liệu nghiệp vụ fixture vẫn được giữ trong WEEK12 để truy vết. **Không ghi database thử là sạch hoặc trống**, không reset database, không xóa dữ liệu chính và không đổi tài khoản/MFA của chủ dự án. Tính bảo toàn dữ liệu chính, kết quả check/build cuối và CI phải được nghiệm thu riêng; bộ E2E này không tự chứng nhận các phần đó.
+Lịch sử, phiếu ẩn danh và các dữ liệu nghiệp vụ fixture vẫn được giữ trong WEEK12 để truy vết. **Không ghi database thử là sạch hoặc trống**, không reset database, không xóa dữ liệu chính và không đổi tài khoản/MFA của chủ dự án. Tính bảo toàn dữ liệu chính và kết quả check/build phải đối chiếu các bằng chứng riêng; bộ E2E này không tự chứng nhận các phần đó.
+
+## 7. Đối chiếu CI của nguồn chức năng
+
+[GitHub Actions run 41588831428](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428) hoàn tất thành công trên đúng nguồn **`6692854e97088845ce5b263318dfb1f6239fef04`**, nhánh `feat/week12-reports-anomalies`. Ba job `smoke`, `check` và `e2e` đều thành công. Riêng job E2E chạy Chromium trên **Ubuntu 24.04**, qua **3/3 test trong khoảng 1,3 phút**; log có đúng SHA checkout và ba tên test tương ứng ở Mục 4.
+
+Thông tin này được đối chiếu từ `.local/week12-ci-proof.json`, gồm trạng thái run/job và các dòng kết quả đã lọc; không lưu toàn bộ log hoặc biến môi trường trong bằng chứng. Đây là CI của SHA nguồn nêu trên, không phải tuyên bố rằng mọi commit tài liệu hoặc nhánh chính sau đó đã có cùng lượt CI. Lượt Linux vẫn là bộ kiểm kết hợp HTTP/trình duyệt; không cộng thành hoàn tất nghiệm thu thủ công.
+
+## 8. Lượt thao tác GUI riêng ngày 03/11/2026 — chưa hoàn tất
+
+Sau các lượt E2E, đã thử một hành trình riêng trên Chrome bằng công cụ điều khiển giao diện, dùng demo riêng và tài khoản giả. Phần chuẩn bị chỉ tạo khoa, bộ môn, học kỳ, môn, một lớp đồng giảng bởi hai giảng viên, năm sinh viên cùng các tài khoản vai trò; không tạo sẵn mẫu, đợt, phiếu hoàn tất hoặc phản hồi để thay thao tác nghiệp vụ.
+
+| Thao tác thực tế trên GUI | Kết quả đã quan sát |
+| --- | --- |
+| ĐBCL tạo mẫu và đợt khảo sát trong phạm vi khoa giả | Tạo được mẫu và đợt mới để dùng cho chính hành trình này |
+| PĐT kiểm tra và xác nhận dữ liệu | Xác nhận được với cảnh báo RS-04 |
+| Lãnh đạo phê duyệt đợt | Đợt sang `DANG_MO`, chốt năm nhiệm vụ khảo sát |
+| SV1 chọn mức 2 ở cả hai câu Likert, nhập góp ý tự luận và nộp phiếu | Nộp được một phiếu qua giao diện |
+| SV1 gửi phản hồi ẩn danh loại Giảng dạy | Tạo được phản hồi ẩn danh qua giao diện; chưa đi tiếp chuỗi xử lý của giảng viên |
+
+Lượt này **dừng tại đây** vì công cụ điều khiển Windows không xác định đủ chắc chắn URL hiện tại và chặn thao tác tiếp theo theo quy tắc của công cụ. Đây là giới hạn của lượt điều khiển, không phải kết luận website lỗi hoặc đã đạt toàn bộ UC-GOLD. Không tiếp tục giao diện bằng một cách khác để vượt chặn trong cùng lượt.
+
+Đã chuẩn bị helper riêng để bổ sung bốn phiếu bằng HTTP đăng nhập/CSRF/nhiệm vụ/nộp phiếu và helper truyền thời điểm `endsAt + 1 ms` cho lifecycle của đúng đợt giả. **Cả hai chưa được thực thi**: không ghi nhận bốn phiếu đó, không suy năm nhiệm vụ thành năm phiếu trả lời và không ghi rằng đã mô phỏng đóng đợt. Helper không phải thao tác GUI; nếu được chạy ở lượt sau, số phiếu phụ trợ và cách thực hiện phải được tách riêng trong bằng chứng. Không đổi thời gian bắt đầu/kết thúc trong database hoặc đồng hồ hệ thống.
+
+Phần còn chờ của hành trình GUI gồm đủ mẫu, đóng và tổng hợp đợt, kiểm duyệt/công bố, giảng viên xem kết quả và gửi giải trình, trưởng bộ môn xác nhận, xử lý phản hồi ẩn danh rồi sinh viên đánh giá/đóng, cùng các nhánh Khảo thí/Thanh tra và báo cáo/tải tệp của hành trình thủ công. Kết quả tự động ở các mục trước được giữ nguyên; **chưa đánh dấu hoàn tất nghiệm thu thủ công hoặc nghiệm thu toàn bộ Tuần 12**.

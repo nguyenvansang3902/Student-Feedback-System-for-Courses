@@ -8,7 +8,7 @@ Thanh tra mở **Cảnh báo khảo sát** tại [/thanh-tra/bat-thuong](http://
 
 Bundle demo Tuần12 bổ sung một đợt có10phiếu và1cờ chờ xem xét. Sau khi kéo mã mới, dừng web, chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed:week12` rồi mở lại tệp CMD; không dùng reset. Máy mới dùng `npm.cmd run db:seed` để tạo đủ dữ liệu tiền đề. Seed lặp giữ nguyên dữ liệu đã thao tác.
 
-[Nghiệm thu Tuần12](docs/NGHIEM_THU_TUAN_12.md), [công thức/ngưỡng](docs/CONG_THUC_BAO_CAO.md), [UC-GOLD](docs/UC_GOLD_TUAN_12.md), [QA](docs/QA_GIAO_DIEN_TUAN_12.md). Các bước kiểm cuối và CI được chốt theo SHA tại hồ sơ; không suy một ảnh thành kiểm đủ mọi luồng.
+[Hồ sơ Tuần12](docs/NGHIEM_THU_TUAN_12.md), [công thức/ngưỡng](docs/CONG_THUC_BAO_CAO.md), [UC-GOLD](docs/UC_GOLD_TUAN_12.md), [QA](docs/QA_GIAO_DIEN_TUAN_12.md). CI nguồn `6692854` đã qua check/smoke/e2e; kiểm tay toàn luồng đang dừng do công cụ điều khiển không xác định được URL Windows. Tuần12 chưa nghiệm thu và còn trên nhánh `feat/week12-reports-anomalies`; main giữ Tuần11. Không suy ảnh hoặc E2E thành kiểm tay hoàn tất.
 
 Kiểm dành cho phát triển: `npm.cmd run check`, `npm.cmd run test:week12` và `npm.cmd run test:e2e`. Bộ đọc nội dung PDF cần Python với `pip install -r scripts/pdf-test-requirements.txt`; có thể chỉ định executable qua `PDF_TEST_PYTHON`. Playwright cần `npx.cmd playwright install chromium`. Hai công cụ này phục vụ kiểm thử; mở website hằng ngày không cần chạy chúng.
 
@@ -143,7 +143,7 @@ Chạy `db:seed` trước. Tài khoản demo ACTIVE có mật khẩu ban đầu 
 | LD2026001 | ld2026001@seed.demo.invalid | Lãnh đạo, phạm vi toàn trường |
 | PDT2026001 | pdt2026001@seed.demo.invalid | Phòng Đào tạo; dữ liệu đào tạo/import và khóa, mở khóa kỳ |
 | KT2026001 | kt2026001@seed.demo.invalid | Phòng Khảo thí; xem nhóm đánh giá gộp đã công bố; hàng đợi phản hồi thi theo Tuần 10 |
-| TT2026001 | tt2026001@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ nhất, chưa có luồng hồ sơ |
+| TT2026001 | tt2026001@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ nhất, xử lý hồ sơ theo quyền được giao |
 | TT2026002 | tt2026002@seed.demo.invalid | Phòng Thanh tra; tài khoản giả thứ hai phục vụ kiểm quyền theo lộ trình |
 
 Seed chỉ tạo tài khoản demo còn thiếu, không phải công cụ đặt lại mật khẩu hoặc trạng thái đã đổi. Seed bị chặn production; không dùng ADMIN/demo cố định trong môi trường thật. Nếu thử đổi/reset/kích hoạt, giữ lại mật khẩu bạn vừa chọn để đăng nhập lần sau.
@@ -347,4 +347,4 @@ Trước mỗi phần việc: `git switch main`, `git pull --ff-only`, tạo nh�
 - [ERD hiện tại](docs/ERD.md), [kiến trúc](docs/KIEN_TRUC.md), [thiết kế ẩn danh](docs/THIET_KE_AN_DANH.md), [gallery sơ đồ Tuần 2](docs/SO_DO_DA_RENDER.md).
 - [Báo cáo Tuần 1](docs/bao-cao-tien-do/tuan-01.md), [Tuần 2](docs/bao-cao-tien-do/tuan-02.md) giữ nguyên bằng chứng tại thời điểm thực hiện.
 
-AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Phạm vi hiện tại là Tuần 9 theo yêu cầu bắt đầu và tiếp tục trực tiếp; chỉ chốt khi đủ mã/test/nghiệm thu/tài liệu. Ngoại lệ seed cũ không cho phép làm trước workflow mới. Kiểm DTO/log của phiếu hiện có không thay kiểm export CSV/Excel/PDF kết quả ở Tuần 12.
+AI hỗ trợ mã/tài liệu, sinh viên cần đọc, thử và viết lại bản nháp; không tự gán đóng góp cá nhân. Không viết quy trình hiện tại ở trường theo yêu cầu người dùng. Phạm vi hiện tại là Tuần 12 theo yêu cầu tiếp tục trực tiếp; mã và CI đạt, chỉ chốt nghiệm thu khi hoàn tất cả UC-GOLD bằng tay. Ngoại lệ seed cũ không cho phép làm trước workflow mới. Kiểm DTO/log và kiểm bytes CSV/Excel/PDF được ghi riêng trong hồ sơ Tuần12, không thay nghiệm thu thủ công.

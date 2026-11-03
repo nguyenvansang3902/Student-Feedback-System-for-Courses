@@ -26,6 +26,10 @@ Quan sát: nhãn/bộ lọc xuống dòng trên mobile; bảng rộng có khung 
 
 ## Thao tác trực tiếp
 
-Đang tiếp tục kiểm tay UC-GOLD trên dữ liệu giả riêng. Trình duyệt trong ứng dụng từng không kết nối được, nên không nhận kiểm tự động là kiểm tay; kết quả kiểm trực tiếp sẽ ghi ở đây sau khi thực hiện. Không thay thông tin đăng nhập, QR hoặc cấu hình MFA của chủ dự án.
+Đã kiểm trực tiếp trên Chrome với demo và tài khoản giả riêng: tạo mẫu/đợt phạm vi khoa, PĐT xác nhận cảnh báo RS-04, lãnh đạo duyệt mở năm nhiệm vụ, SV1 nộp hai câu Likert cùng góp ý tự luận và gửi phản hồi Giảng dạy ẩn danh. Có **một phiếu đã nộp**, không suy năm nhiệm vụ thành năm phiếu.
+
+Đã xem và lưu [tiến độ năm nhiệm vụ sau mở](assets/tuan-12/ui/manual-dot-da-mo.png), [xác nhận sinh viên đã nộp](assets/tuan-12/ui/manual-sv-da-nop.png). Đây là ảnh viewport kiểm trực tiếp, tách khỏi 12 ảnh E2E ở trên. Không thay tài khoản, QR hoặc MFA của chủ dự án.
+
+**Kiểm tay toàn luồng chưa hoàn tất.** Công cụ điều khiển Windows đã chặn thao tác tiếp vì không xác định đủ chắc chắn URL hiện tại để thực thi chính sách. Không thử vượt chặn trong cùng lượt. Còn chờ các bước sau nộp phiếu: đủ mẫu, đóng/tổng hợp/kiểm duyệt/công bố, giải trình, xử lý/đánh giá phản hồi, nhánh Khảo thí/Thanh tra và báo cáo/tải tệp. Helper bốn phiếu HTTP cùng helper đồng hồ chưa được chạy. [Mục8 UC-GOLD](UC_GOLD_TUAN_12.md) ghi điểm dừng để tiếp tục, không gọi kết quả E2E là hoàn tất kiểm tay.
 
 Chưa chạy axe/Lighthouse/SUS, không chứng nhận WCAG hoặc mọi thiết bị. Bằng chứng dịch vụ, CLI, E2E và kiểm trực tiếp được ghi tách biệt tại [nghiệm thu](NGHIEM_THU_TUAN_12.md), [UC-GOLD](UC_GOLD_TUAN_12.md) và verification.json.

@@ -1,6 +1,6 @@
 # Nghiệm thu kỹ thuật Tuần 12
 
-Thực hiện ngày03/11/2026 theo lệnh người dùng, sau Tuần11. Mốc kế hoạch giả định16–22/12/2026 tính từ30/09; nhóm đối chiếu lịch trường, không ghi lùi ngày. Nhánh `feat/week12-reports-anomalies`. Bản này ghi các kiểm đã chạy; thao tác thủ công và CI bàn giao đang được chốt, chưa tự nhận tất cả đã qua.
+Thực hiện ngày03/11/2026 theo lệnh người dùng, sau Tuần11. Mốc kế hoạch giả định16–22/12/2026 tính từ30/09; nhóm đối chiếu lịch trường, không ghi lùi ngày. Nhánh `feat/week12-reports-anomalies`. Mã chức năng và CI đã đạt; **chưa nghiệm thu toàn bộ Tuần12 vì UC-GOLD bằng tay còn dang dở**. Không tick chín FR hoặc cộng 20 điểm trước khi hoàn tất điều kiện này.
 
 ## Phạm vi đã hiện thực
 
@@ -29,12 +29,18 @@ ADMIN chỉ có dashboard vận hành, kể cả tài khoản đa vai trò. Sinh
 
 Một lượt test cảnh báo sau E2E chọn nhầm kỳ liền trước do lịch fixture; đã sửa lịch thử và assertion, giữ nguyên nghiệp vụ. Lượt lint đầu đọc nhầm thư mục build thử đã được sửa bằng ignore đúng thư mục sinh tự động. Các lượt lỗi không được tính là kết quả qua.
 
+Lượt `check` bàn giao lúc15:47 ngày03/11 tiếp tục qua1284test/1skip trong86tệp. Sau khi dừng preview riêng và đối chiếu hash, đã mở lại web/scheduler chính bằng trình khởi động của kho lúc16:04; trang chủ, đăng nhập và health trả200 lúc16:08. Health vẫn ghi database:not_checked; kiểm MySQL và hash ở trên là bằng chứng riêng. Scheduler tiếp tục công việc đến hạn bình thường sau thời điểm đối chiếu hash.
+
 ## Giao diện, dữ liệu và giới hạn
+
+[CI41588831428](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428) trên đúng nguồn `6692854e97088845ce5b263318dfb1f6239fef04`: `check`, `smoke`, `e2e` đều thành công. Linux qua **1285/1285 test trong86tệp**, không skip; các bộ MySQL/xuất tệp, build và Chromium E2E3/3 cũng qua. Commit hồ sơ sau đó được phân biệt với SHA nguồn này.
+
+Lượt kiểm tay riêng đã tạo mẫu/đợt qua giao diện, PĐT xác nhận RS-04, lãnh đạo duyệt và mở năm nhiệm vụ; một sinh viên nộp phiếu và gửi phản hồi giảng dạy ẩn danh. Công cụ điều khiển Windows sau đó chặn tiếp tục vì không xác định đủ chắc chắn URL để thực thi chính sách. Không vượt chặn bằng cách khác trong cùng lượt. Còn chờ đủ mẫu, đóng/tổng hợp/kiểm duyệt/công bố, giải trình/xác nhận, xử lý/đánh giá phản hồi và các nhánh Khảo thí/Thanh tra, xem/xuất báo cáo bằng tay. Hai ảnh kiểm trực tiếp được lưu riêng; các helper bổ sung bốn phiếu/đồng hồ giả **chưa chạy**. Xem Mục8 của UC-GOLD.
 
 [QA giao diện](QA_GIAO_DIEN_TUAN_12.md) phân biệt ảnh tự động, thao tác trực tiếp và phần chưa kiểm. E2E kết hợp HTTP và trình duyệt, không gọi mọi bước là thao tác tay. Catalog/tài khoản fixture được tạo trước; các bước nghiệp vụ được thực hiện qua ứng dụng. Sau E2E, phiên fixture bị thu hồi/tài khoản bị vô hiệu hóa, lịch sử còn lại trong DB thử; không nhận DB thử hoàn toàn trống.
 
 Tệp xuất không chứa định danh sinh viên hoặc nội dung phản hồi/tự luận. Chưa chứng nhận chống mọi phép suy luận qua nhiều lần đọc và thay đổi tập dữ liệu. Ẩn danh ở mức ứng dụng, không chống DBA/log hạ tầng/tự tiết lộ. Chưa kiểm tải1500request, toàn bộ thiết bị, axe/Lighthouse hoặc chứng nhận WCAG. Hồ sơ Thanh tra chỉ quản lý quy trình, không thay thủ tục chính thức.
 
-Nguồn/CI theo SHA, số đo và hash ảnh ghi tại [verification.json](assets/tuan-12/verification.json). CI và kiểm tay chưa chốt sẽ được ghi rõ tới khi hoàn tất; không dùng runTuần11 để chứng minh mãTuần12. FR-145 vẫn backlog, FR-160 chỉ nghiệm thu toàn bộ ởTuần13. UI-n vẫn chưa bắt đầu; không tự tiếp tục Tuần13.
+Nguồn/CI theo SHA, số đo và hash ảnh ghi tại [verification.json](assets/tuan-12/verification.json). Kiểm tay toàn luồng còn chờ; nhánh chính vẫn giữ mốc Tuần11, mã Tuần12 được lưu trên nhánh tính năng để tiếp tục đúng chỗ. Tiến độ nghiệm thu giữ **188/219,68/84FR**; sau khi đủ điều kiện mới chốt mục tiêu208/219,77/84FR. FR-145 vẫn backlog, FR-160 chỉ nghiệm thu toàn bộ ởTuần13. UI-n vẫn chưa bắt đầu; không tự tiếp tục Tuần13.
 
 [Công thức báo cáo](CONG_THUC_BAO_CAO.md), [cảnh báo bất thường](CANH_BAO_BAT_THUONG_TUAN_12.md), [ADR-012](decisions/ADR-012-bao-cao-va-nguong-du-lieu.md), [báo cáo tuần](bao-cao-tien-do/tuan-12.md), [giải thích](GIAI_THICH/tuan-12.md).

@@ -154,21 +154,21 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-51 | P0 | G1/Tuần6 | Đạt G1: lý do/CAS/audit/thư Mailpit thật; SMTP lỗi có trạng thái rõ |
 | BR-52 | P0 | Tuần7 | Đạt: RS-01–06, snapshot, ghi chú cảnh báo và trả về có lý do; TC-PDT-02 qua unit/HTTP/UI |
 | BR-53 | P0 | Tuần7 | Đạt: drift vẫn chốt hiện tại, audit/queue PĐT-ĐBCL, sau mở task bất biến; TC-PDT-03 qua |
-| BR-54 | P0 | Tuần10–11 | Đạt phần lõi Tuần10: tuyến/hàng đợi PĐT, xử lý/chuyển có lý do; SLA/leo thang Tuần11 chưa nghiệm thu |
+| BR-54 | P0 | Tuần10–11 | Đạt Tuần11: tuyến PĐT, SLA ngày làm việc, quá hạn/leo thang và hồi quy; xem nghiệm thu Tuần11 |
 | BR-55 | P1 | Tuần7 (P1) | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-56 | P0 | Tuần10–11 | Đạt phần lõi Tuần10: tuyến Khảo thí, lời nhắc phúc khảo cấu hình được, quyền/chuyển; SLA/leo thang Tuần11 chưa nghiệm thu |
-| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Đạt Tuần9: projection Khảo thí, nhóm có cờ, ít nhất hai GV/đủ mẫu; TC-KT-01 qua unit/HTTP/UI |
-| BR-58 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-59 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-60 | P0 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
+| BR-56 | P0 | Tuần10–11 | Đạt Tuần11: tuyến Khảo thí, lời nhắc phúc khảo, SLA ngày làm việc/leo thang và hồi quy |
+| BR-57 | P0 | Cờ G1/Tuần6; quyền xem gộp Tuần9 | Đạt Tuần9; Tuần12 bổ sung kiểm hai GV thực sự có đáp án LIKERT hợp lệ, không tính nhóm toàn NA; unit/MySQL/CI qua |
+| BR-58 | P1 | Tuần11 | Đạt Tuần11: kiến nghị rà soát đủ điều kiện, phản hồi TBM/nhắc hạn; MySQL và CI nguồn Tuần11 qua |
+| BR-59 | P1 | Tuần12 | Tuần12 đã hiện thực thống kê phản hồi thi có ngưỡng; MySQL/xuất tệp/CI qua, nghiệm thu toàn tuần chờ UC-GOLD kiểm tay |
+| BR-60 | P0 | Tuần11 | Đạt Tuần11: hồ sơ đi đủ xác minh/kết luận/thông báo/đóng; Tuần12 bổ sung hồ sơ nguồn bất thường không gắn SV |
 | BR-61 | P0 | Tuần10–13 | Đạt lát cắt tiếp nhận: xung đột động GV/TBM/TK kể cả đa vai trò, lọc list/count, 404 và chặn giao; rà đủ luồng tương lai Tuần13 |
-| BR-62 | P0 | Tuần10–13 | Đạt tiếp nhận: TT không xung đột xem nội dung/tệp, lãnh đạo chỉ tóm tắt, ADMIN/ĐBCL bị chặn, audit mở/tải; luồng sau tiếp nhận còn Tuần11 |
+| BR-62 | P0 | Tuần10–13 | Đạt Tuần11: quyền TT, kết luận/thông báo đúng mức tiết lộ, LĐ chỉ tóm tắt; Tuần12 giữ giới hạn trên thống kê/xuất tệp |
 | BR-63 | P0 | Tuần10–13 | Đạt tiếp nhận: mặc định ẩn danh hoàn toàn, danh tính chỉ mở cho TT khi sinh viên chọn, audit; giới hạn ẩn danh mức ứng dụng được ghi rõ |
-| BR-64 | P1 | Tuần11 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-65 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-66 | P1 | Tuần12 | Chưa nhận nghiệm thu mới; đối chiếu TRUY_VET và kết quả chạy thật |
-| BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Tuần10 DTO tóm tắt/queue không định danh theo quyền đã kiểm; dashboard/thống kê/tệp xuất và ngưỡng chưa hiện thực, chưa nghiệm thu toàn bộ |
-| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | ADMIN bị chặn nội dung phản hồi/hồ sơ trong unit/HTTP Tuần10; giữ kết quả Tuần9, còn kiểm đủ thống kê/tệp xuất ở Tuần13 |
+| BR-64 | P1 | Tuần11 | Đạt Tuần11: chuyển hồ sơ một chiều có lý do, kiểm quyền/xung đột động và audit |
+| BR-65 | P1 | Tuần12 | Tuần12 đã hiện thực chỉ số/ngưỡng/xem xét/CAS/hồ sơ bất thường; unit/MySQL/E2E/CI qua, kiểm tay toàn luồng còn chờ |
+| BR-66 | P1 | Tuần12 | Tuần12 đã hiện thực thống kê Thanh tra có ngưỡng, không định danh; MySQL/xuất tệp/CI qua, kiểm tay còn chờ |
+| BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Tuần12 đã kiểm DTO/tệp xuất CSV/XLSX/PDF, ngưỡng và che tổng suy ngược; chưa nhận nghiệm thu đầy đủ TC-ALL-01 Tuần13 |
+| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | ADMIN bị chặn dữ liệu học thuật/phản hồi/hồ sơ và báo cáo nhạy cảm, kể cả đa vai trò; CI Tuần12 qua, kiểm đầy đủ Tuần13 |
 
 ## Nghiệm thu phần chính Tuần 7 — 29/10/2026
 
@@ -212,3 +212,9 @@ Bắt đầu Tuần 11 ngày 02/11 theo lệnh người dùng; đang kiểm và 
 ## Nghiệm thu Tuần 11 — 02–03/11/2026
 
 Hoàn tất FR-66/74/75/80/81/82/152/154/156/157; thêm 23 điểm, tổng188/219=85,8%,68/84FR. Check1140passed/1skipped trong76tệp, buildNext16.4.3, MySQL43nhóm, hồi quy Tuần10=19/Tuần9=12,SQL16,demo18. Hash37bảng/9399bản ghi cũ và seedlặp43bảng/9451bản ghi giữ nguyên. [Nghiệm thu](NGHIEM_THU_TUAN_11.md), [QA](QA_GIAO_DIEN_TUAN_11.md), [bằng chứng](assets/tuan-11/verification.json). FR-145 còn backlog, FR-160 chưa tick toàn bộ. CI nguồn mới phải đối chiếu SHA riêng. Người dùng đã yêu cầu tiếp tục Tuần12 sau khi chốt11; UI vẫn hoãn.
+
+## Hiện thực và kiểm thử Tuần12 — 03/11/2026, chưa nghiệm thu toàn tuần
+
+Chín FR-90/91/92/93/94/147/151/158/159 đã có mã, tài liệu và kiểm tự động. Nguồn6692854e97088845ce5b263318dfb1f6239fef04, [CI41588831428](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428) qua check/smoke/e2e; Linux1285/1285 trong86tệp, E2E3/3; Windows1284passed/1skip, build qua. MySQL báo cáo13+bất thường9, xuất tệp10; hồi quy12/19/43,SQL16,demo19.
+
+Kiểm tay đã tạo mẫu/đợt, xác nhận/phê duyệt, nộp một phiếu và gửi phản hồi ẩn danh. Công cụ điều khiển Windows dừng vì không xác định URL đủ chắc chắn, nên còn các bước cuối UC-GOLD tại [Mục8](UC_GOLD_TUAN_12.md). Không nhận E2E thay kiểm tay. Giữ **188/219=85,8%,68/84FR**, chưa tick chín FR; mục tiêu sau nghiệm thu208/219=95,0%,77/84FR. Main giữ Tuần11; nhánh tính năng lưu toàn bộ công việc Tuần12. Không bắt đầu Tuần13/UI-n.

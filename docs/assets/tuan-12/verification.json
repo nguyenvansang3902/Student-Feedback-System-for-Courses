@@ -2,9 +2,46 @@
   "week": 12,
   "implementedAt": "2026-11-03",
   "branch": "feat/week12-reports-anomalies",
-  "sourceCommit": null,
+  "sourceCommit": "6692854e97088845ce5b263318dfb1f6239fef04",
   "ci": {
-    "status": "pending"
+    "status": "passed",
+    "run": 41588831428,
+    "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428",
+    "sourceCommit": "6692854e97088845ce5b263318dfb1f6239fef04",
+    "branch": "feat/week12-reports-anomalies",
+    "jobs": [
+      {
+        "name": "smoke",
+        "id": 125760546962,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "check",
+        "id": 125760547344,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "e2e",
+        "id": 125760547385,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "platform": "Ubuntu24.04",
+    "check": {
+      "passed": 1285,
+      "total": 1285,
+      "skipped": 0,
+      "files": 86
+    },
+    "e2e": {
+      "passed": 3,
+      "total": 3,
+      "skipped": 0
+    },
+    "scope": "CI nguồn chức năng; commit hồ sơ tiếp theo đối chiếu riêng"
   },
   "local": {
     "check": {
@@ -13,7 +50,9 @@
       "total": 1285,
       "files": 86,
       "platform": "Windows",
-      "skipReason": "File-symlink cần quyền Windows riêng"
+      "skipReason": "File-symlink cần quyền Windows riêng",
+      "repeatedAt": "2026-11-03T08:47:02Z",
+      "log": ".local/week12-check-handoff.log"
     },
     "build": {
       "status": "passed",
@@ -92,13 +131,13 @@
       "status": "passed",
       "tables": 43,
       "oldRowsPreserved": 9451,
-      "at": "2026-11-03T06:00:37.114Z"
+      "at": "2026-11-03T08:46:40.391Z"
     },
     "repeatSeed": {
       "status": "passed",
       "tables": 45,
       "oldRowsPreserved": 9519,
-      "at": "2026-11-03T06:00:35.651Z"
+      "at": "2026-11-03T08:46:41.256Z"
     },
     "runtimeModels": 45,
     "designModels": 47,
@@ -218,9 +257,27 @@
         "bytes": 58488,
         "sha256": "68e70e8943896641f073f6115b790e2036b492cb8f3998cbf03b10188e207acd",
         "visuallyReviewed": true
+      },
+      {
+        "file": "ui/manual-dot-da-mo.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 58688,
+        "sha256": "6fe43fe27fa89d61d2275cc55e866ee48a80c0ca0fcc44a13679e2290ec7f473",
+        "visuallyReviewed": true,
+        "source": "manual-computer-use"
+      },
+      {
+        "file": "ui/manual-sv-da-nop.png",
+        "width": 65536,
+        "height": 4292542531,
+        "bytes": 46526,
+        "sha256": "8e74d5b9c9523d8ba8aa280fe42dbcd02a737e8aaf169a311901520de8a7059f",
+        "visuallyReviewed": true,
+        "source": "manual-computer-use"
       }
     ],
-    "manualStatus": "pending",
+    "manualStatus": "incomplete-tool-url-policy-stop",
     "viewports": [
       {
         "width": 1440,
@@ -240,7 +297,28 @@
     ],
     "pdfPagesVisuallyReviewed": 5,
     "pdfAdditionalOnePageReviewed": true,
-    "uiUpgradeStarted": false
+    "uiUpgradeStarted": false,
+    "manual": {
+      "date": "2026-11-03",
+      "tool": "Computer Use/Chrome",
+      "database": "isolated-demo",
+      "catalogUsersOnlyPreseeded": true,
+      "stepsPassed": [
+        "ĐBCL tạo mẫu mới gồm2LIKERT+1TEXT",
+        "ĐBCL lập đợt phạm vi khoa",
+        "PĐT xác nhận dữ liệu cóRS04",
+        "LĐ phê duyệt, tự mở5nhiệm vụ",
+        "SV1 nộp1phiếu qua giao diện",
+        "SV1 gửi phản hồi Giảng dạy ẩn danh"
+      ],
+      "submittedResponses": 1,
+      "tasks": 5,
+      "auxiliaryHttpResponsesSubmitted": 0,
+      "injectedClockExecuted": false,
+      "blocker": "Công cụ điều khiển Windows chặn tiếp vì không xác định đủ chắc chắn URL hiện tại để thực thi chính sách",
+      "pending": "Các bước sau nộp phiếu tại Mục8 UC_GOLD_TUAN_12.md",
+      "completed": false
+    }
   },
   "progress": {
     "acceptedBeforeWeek12": 188,
@@ -254,7 +332,34 @@
     ],
     "partial": [
       "FR-160"
-    ]
+    ],
+    "acceptedCurrent": 188,
+    "acceptedFrCurrent": 68,
+    "week12Accepted": false
   },
-  "measuredAt": "2026-11-03T06:13:48.056Z"
+  "measuredAt": "2026-11-03T09:08:42.201Z",
+  "runtime": {
+    "at": "2026-11-03T09:08:42.201Z",
+    "url": "http://localhost:3000",
+    "checks": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/dang-nhap",
+        "status": 200
+      },
+      {
+        "path": "/api/health",
+        "status": 200,
+        "health": {
+          "status": "ok",
+          "application": "available",
+          "database": "not_checked"
+        }
+      }
+    ],
+    "schedulerRunning": true
+  }
 }

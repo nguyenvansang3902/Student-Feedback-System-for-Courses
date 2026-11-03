@@ -1,6 +1,6 @@
 # Ma trận quyền 10 vai trò — Điều chỉnh số 01
 
-Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu này gồm quyền của chức năng đã có đến Tuần8 và thiết kế cho các tuần sau. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
+Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_SUNG_01_TAC_NHAN.md). Tài liệu giữ các bảng lịch sử G1/Tuần 7–8 và bổ sung quyền đã hiện thực, kiểm tự động ở Tuần 12 tại mục 6. Bảng thiết kế G1 không phản ánh trạng thái triển khai hiện tại. Bằng chứng chạy thật được ghi ở [TRUY_VET](TRUY_VET.md); các ô quyền không thay cho kết quả test. FR-160/TC-ALL-01 chỉ được nghiệm thu từng phạm vi, chưa thể kết luận toàn hệ thống trước Tuần 13.
 
 ## 1. Vai trò và phạm vi hợp lệ
 
@@ -19,9 +19,9 @@ Nguồn: [đặc tả](DAC_TA_NGHIEP_VU.md), [prompt bổ sung nguyên văn](BO_
 
 Không thêm phạm vi lớp sinh hoạt hoặc vai trò Cố vấn học tập. Grant sai loại phạm vi, thiếu ID, có ID thừa hoặc không còn trong DB phải bị từ chối. Khi một người có nhiều grant, chỉ grant hợp lệ mới cấp quyền; quyền quản trị không tự cấp quyền nghiệp vụ. Có ADMIN thì vẫn phải hoàn thành MFA dù thao tác bằng grant khác. Riêng hồ sơ Thanh tra, xung đột lợi ích luôn ưu tiên từ chối kể cả khi tài khoản có grant TT.
 
-## 2. Chức năng hiện có — phạm vi G1
+## 2. Chức năng tại mốc G1 — bảng lịch sử
 
-Ký hiệu: **R** đọc; **W** tạo/sửa/xóa hoặc thao tác chuyên biệt; **M** quản trị có MFA; **—** từ chối. GLOBAL trong cột scope vẫn chịu giới hạn chức năng; kết quả lớp trong không gian vai trò hiện chỉ là metadata mã/tên môn, kỳ, bộ môn/khoa, chưa có kết quả khảo sát hay danh sách sinh viên.
+Ký hiệu: **R** đọc; **W** tạo/sửa/xóa hoặc thao tác chuyên biệt; **M** quản trị có MFA; **—** từ chối. GLOBAL trong cột scope vẫn chịu giới hạn chức năng. Ở mốc G1, kết quả lớp trong không gian vai trò chỉ là metadata mã/tên môn, kỳ, bộ môn/khoa, chưa có kết quả khảo sát hay danh sách sinh viên.
 
 | Chức năng / phạm vi dữ liệu | SV | GV | TBM | TK | ĐBCL | LĐ | ADMIN | PĐT | KT | TT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -40,7 +40,7 @@ Ký hiệu: **R** đọc; **W** tạo/sửa/xóa hoặc thao tác chuyên biệt
 
 PĐT nhập hồ sơ SV/GV và đăng ký qua luồng import sẵn có; G1 không tự nhận đã có màn CRUD hồ sơ riêng. Import giữ hành vi tạo tài khoản PENDING/thư kích hoạt đã có ở Tuần 5, nhưng actor và audit là PĐT. Tạo/khóa tài khoản đăng nhập trực tiếp vẫn thuộc ADMIN. Mở khóa sổ cần lý do, audit và thông báo ĐBCL; mọi ghi dữ liệu theo kỳ phải giữ guard kỳ khóa.
 
-Mẫu đã khóa, mẫu gắn đợt đã duyệt hoặc có đáp án không được sửa cây cũ để thêm cờ. Cờ mới mặc định false; mẫu mặc định họ mới có đúng một nhóm “Kiểm tra, đánh giá” có cờ true. KT chưa được xem trang kết quả chỉ vì đã có cờ.
+Mẫu đã khóa, mẫu gắn đợt đã duyệt hoặc có đáp án không được sửa cây cũ để thêm cờ. Cờ mới mặc định false; mẫu mặc định họ mới có đúng một nhóm “Kiểm tra, đánh giá” có cờ true. Tại mốc G1, KT chưa được xem trang kết quả chỉ vì đã có cờ; quyền kết quả được triển khai ở tuần sau theo BR-57.
 
 Nguồn thực thi G1: `src/server/policies/can.ts`, `services/access.ts`, `services/workspace.ts`, `services/users.ts`, `services/catalog.ts`, `services/imports.ts`, `services/templates.ts`, `services/template-input.ts`. Service đọc lại actor/grant từ DB trước thao tác; list/count/detail dùng cùng scope. Menu ẩn không thay kiểm quyền API. Test mới và mã nghiệm thu chỉ được ghi hoàn tất sau khi chạy thật.
 
@@ -71,9 +71,9 @@ Dùng GLOBAL hợp lệ cho bốn vai trò trên; ADMIN không có quyền ngầ
 
 Nguồn: `services/student-surveys.ts`, `student-survey-input.ts`, `policies/can.ts`, CSRF mục đích student-surveys và `/api/student-surveys`. HTTP kiểm10vai trò/IDOR/fresh rights; test privacy đi qua route/service để bắt trường cầu nối và sink log/audit/queue. Kết quả cổng cuối và giới hạn nằm tại [nghiệm thu Tuần8](NGHIEM_THU_TUAN_08.md); không suy toàn bộ FR-160 đã xong.
 
-## 3. Chức năng tương lai — thiết kế, chưa nghiệm thu trong G1
+## 3. Thiết kế các tuần sau tại mốc G1 — bảng lịch sử
 
-Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; **G** dữ liệu gộp có ngưỡng; **S** tóm tắt; **I** chỉ số bất thường. Tất cả ô dưới đây là quyền yêu cầu khi tới tuần triển khai, chưa có nghĩa đã mở chức năng.
+Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; **G** dữ liệu gộp có ngưỡng; **S** tóm tắt; **I** chỉ số bất thường. Các ô dưới đây ghi yêu cầu thiết kế tại thời điểm G1, khi các chức năng này chưa được nghiệm thu. Giữ bảng để đối chiếu lịch sử; không hiểu các mốc Tuần 9–12 vẫn chưa có mã nguồn. Phạm vi Tuần 12 đã hiện thực và kiểm tự động được ghi riêng ở mục 6.
 
 | Chức năng / mốc | SV | GV | TBM | TK | ĐBCL | LĐ | ADMIN | PĐT | KT | TT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -95,7 +95,7 @@ Ký hiệu thêm: **Q** xử lý đúng hàng đợi/được định tuyến; *
 
 Không cấp quyền PĐT/KT/TT đọc toàn bộ danh sách lớp, câu trả lời hoặc phản hồi bằng cách tái sử dụng một trang có DTO rộng hơn nhu cầu. PĐT chỉ có dữ liệu đào tạo và hàng đợi của mình; quyền metadata lớp G1 không mở kết quả. Quyền xem góp ý tự luận của các vai trò hiện có vẫn tuân BR-08/09; không dùng ô thiết kế để vượt ngưỡng hoặc trạng thái công bố.
 
-## 4. Điều kiện bắt buộc trên luồng tương lai
+## 4. Điều kiện nghiệp vụ ghi tại mốc G1
 
 - KT: chỉ nhóm isAssessmentGroup, gộp môn/bộ môn/khoa sau DA_CONG_BO, ít nhất 2 giảng viên khác nhau và tổng phiếu ≥ minResponses. Không đủ thì “Chưa đủ dữ liệu gộp”; không lớp/GV/tự luận. Phản hồi thi không lưu điểm hoặc giải quyết phúc khảo; có lời nhắc cấu hình được.
 - TT: kiểm xung đột động từ lớp → giảng viên/bộ môn/khoa trước list/count/detail/giao xử lý/tải tệp. Người bị phản ánh, TBM/TK liên quan bị loại kể cả cùng tài khoản có TT; trả 404 để không lộ sự tồn tại. ADMIN/ĐBCL không xem nội dung hồ sơ, LĐ chỉ DTO tóm tắt. Mỗi lần mở hồ sơ/tải tệp có audit.
@@ -109,3 +109,41 @@ Không cấp quyền PĐT/KT/TT đọc toàn bộ danh sách lớp, câu trả l
 TC-PDT-01 kiểm ADMIN bị chặn tạo/sửa lớp và import, PĐT làm được; bổ sung kiểm ADMIN chỉ ghi tổ chức, ĐBCL chỉ đọc danh mục, kỳ khóa/mở và audit/thông báo. TC-ALL-01 ở G1 kiểm mười vai trò trên API/chức năng hiện có, grant sai, phiên thiếu MFA, danh sách/chi tiết/IDOR và tổ hợp vai trò. Tên file/kết quả chạy được cập nhật trong [TRUY_VET](TRUY_VET.md).
 
 TC-PDT-02/03 ở Tuần 7; TC-KT-01 ở Tuần 9; TC-KT-02 và TC-TT-01/02/03 ở Tuần 10–11. TC-ALL-01 đầy đủ ở Tuần 13 gồm cả kết quả, hồ sơ, thống kê và tệp xuất khi đã hiện thực. Không dùng fixture/seed hoặc phép thử từ chối action chưa tồn tại để tuyên bố các luồng tương lai đã hoàn thành.
+
+## 6. Tuần 12 — quyền đã hiện thực và được kiểm tự động
+
+Ngày đối chiếu: 03/11/2026. Mục này mô tả dashboard, báo cáo, tệp xuất và cảnh báo bất thường đã có mã nguồn; không thay các quyền thao tác nghiệp vụ chi tiết của từng quy trình. CI nguồn [`6692854e97088845ce5b263318dfb1f6239fef04`](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/commit/6692854e97088845ce5b263318dfb1f6239fef04), [run 41588831428](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428), có ba job `check`, `smoke`, `e2e` thành công. Đây là bằng chứng kiểm tự động, chưa phải nghiệm thu toàn bộ Tuần 12.
+
+### 6.1. Dữ liệu dashboard/báo cáo theo 10 vai trò
+
+| Vai trò được chọn | Dữ liệu được đọc và xuất CSV/XLSX/PDF | Giới hạn áp dụng |
+| --- | --- | --- |
+| SV | Số nhiệm vụ, số đã/chưa nộp và số phản hồi chưa đóng/đã đóng của chính tài khoản | Không điểm khảo sát, nội dung/ID phiếu hoặc số liệu sinh viên khác; không suy quyền GLOBAL thành toàn trường |
+| GV | Điểm khảo sát của lớp đang được phân công; thống kê phản hồi thường được giao trong các lớp này | Chỉ kết quả đã công bố/lưu trữ; dữ liệu gộp qua ngưỡng; không mở rộng sang lớp ngoài phân công |
+| TBM | Điểm khảo sát và thống kê phản hồi thường trong bộ môn được gán | Bộ môn/khoa còn hoạt động; kết quả đã công bố/lưu trữ và có ngưỡng; bộ lọc ngoài phạm vi bị chặn |
+| TK | Điểm khảo sát và thống kê phản hồi thường trong khoa được gán | Khoa/bộ môn còn hoạt động; kết quả đã công bố/lưu trữ và có ngưỡng; không đọc khoa khác |
+| ĐBCL | Điểm khảo sát từ tổng hợp; thống kê phản hồi thường; cấu hình ngưỡng báo cáo và cảnh báo bất thường | Không thống kê/nội dung hồ sơ Thanh tra hay chỉ số đầy đủ của cờ bất thường; chỉ nhận thông báo chung khi TT chọn Cần lưu ý |
+| LĐ | Điểm khảo sát từ tổng hợp, thống kê phản hồi thường và thống kê hồ sơ ở mức tóm tắt khi có quyền tương ứng | Không nội dung, danh tính, ghi chú/tệp hoặc lý do kết luận hồ sơ; không quyền đọc/xem xét cờ bất thường chỉ nhờ vai trò LĐ |
+| ADMIN | Số tài khoản, tài khoản hoạt động và phiên còn hiệu lực | Bắt buộc MFA; chỉ dashboard quản trị, kể cả khi tài khoản có thêm vai trò khác; không dữ liệu nghiệp vụ nhạy cảm |
+| PĐT | Số liệu độ sẵn sàng đợt và thống kê phản hồi `TO_CHUC_LOP_HOC` | Không điểm/đáp án/tự luận, roster hoặc hồ sơ Thanh tra; readiness chỉ chiếu số lớp/lỗi/cảnh báo, không danh sách sinh viên |
+| KT | Điểm nhóm kiểm tra, đánh giá gộp theo môn/bộ môn/khoa và thống kê phản hồi `THI_KET_THUC_HOC_PHAN` | BR-57: sau công bố/lưu trữ, đủ mẫu và ít nhất hai giảng viên thực sự đóng góp điểm; không theo lớp/GV, không tự luận hoặc hồ sơ Thanh tra |
+| TT | Thống kê hồ sơ trong phạm vi không xung đột; đọc và xem xét chỉ số cảnh báo qua luồng riêng | Dashboard/tệp xuất chỉ số liệu gộp có ngưỡng; luồng cảnh báo không có điểm tuyệt đối/đáp án/tự luận/danh tính sinh viên; không đọc kết quả khảo sát thường chỉ nhờ vai trò TT |
+
+Mỗi lần đọc/xuất kiểm lại phiên và grant hiện tại trong giao dịch. Vai trò báo cáo được chọn riêng; không lấy quyền của vai trò khác để mở rộng tập dữ liệu. ADMIN luôn bị giới hạn ở dashboard quản trị; ĐBCL ghép TT không được chọn báo cáo hồ sơ hoặc đọc/xem xét chỉ số TT. Với TT ghép GV/TBM/TK, xung đột được loại trước truy vấn danh sách, tổng và thống kê; truy cập ID hồ sơ/cờ xung đột trả 404.
+
+### 6.2. Ngưỡng và dữ liệu được phép chiếu — BR-57/65/67/68
+
+- **BR-57:** ngưỡng hai giảng viên dựa trên ảnh chụp thống kê đã kiểm cấu trúc. Mỗi giảng viên được tính phải thuộc tập có phản hồi và có ít nhất một giá trị LIKERT hợp lệ trong nhóm `isAssessmentGroup`. Nhóm toàn NA/trống, nhóm rỗng hoặc chỉ có câu khác loại không giúp đủ hai giảng viên. Cùng helper được dùng trong báo cáo, đường đọc kết quả và bằng chứng tạo kiến nghị; vẫn phải đạt ngưỡng mẫu của từng luồng.
+- **BR-65:** TT không xung đột xem cờ từ `DA_TONG_HOP`, `DA_CONG_BO` hoặc `LUU_TRU`; kỳ khóa sổ chỉ đọc. Mặc định cần ít nhất 10 phiếu, tỷ lệ đồng nhất từ 70% hoặc chênh lệch tuyệt đối với kỳ trước từ 1,5 điểm. Chỉ TT được xem xét với lý do; chuyển xác minh tạo một hồ sơ duy nhất, không tạo phản hồi giả hoặc thông báo kết luận cho toàn bộ sinh viên. Cờ không tự kết luận vi phạm hay chặn công bố. ĐBCL quản lý ngưỡng và nhận thông báo Cần lưu ý chung, không có quyền đọc chỉ số đầy đủ.
+- **BR-67:** dashboard, biểu đồ và tệp xuất dùng chung DTO đã kiểm quyền/ngưỡng, không xuất tên/tài khoản/email sinh viên, câu trả lời, nội dung phản hồi hoặc ghi chú/tệp Thanh tra. Ô số bị ẩn giữ `null`, không thay bằng 0. Lớp/môn bị ẩn kéo theo tổng cha để tránh suy ngược bằng phép trừ; ô trạng thái/quá hạn/kết luận nhỏ có thể làm ẩn cả hàng. Trung bình và tỷ lệ kiểm riêng số mẫu của chính chỉ số. Xuất có audit và nhãn phạm vi đã kiểm; không có nhánh đọc bảng thô để xuất.
+- **BR-68:** quyền quản trị không tạo quyền nghiệp vụ nhạy cảm. Mọi tổ hợp vai trò vẫn chịu giới hạn ADMIN/ĐBCL và xung đột TT nêu trên; không dựa vào việc ẩn menu để bảo vệ dữ liệu. Cấu hình ngưỡng báo cáo/cảnh báo thuộc ĐBCL hợp lệ, không cấp cho ADMIN chỉ vì có quyền quản trị.
+
+Chi tiết công thức và giới hạn suy ngược: [CONG_THUC_BAO_CAO](CONG_THUC_BAO_CAO.md), [cảnh báo bất thường](CANH_BAO_BAT_THUONG_TUAN_12.md), [ADR-012](decisions/ADR-012-bao-cao-va-nguong-du-lieu.md). Ẩn ngưỡng ở mức ứng dụng không phải cam kết chống mọi phép kết hợp nhiều báo cáo, kiến thức bên ngoài hoặc quyền database/hạ tầng.
+
+### 6.3. Bằng chứng và trạng thái nghiệm thu
+
+CI nguồn nêu trên kiểm **32 nhóm riêng của Tuần 12**: 13 nhóm service/MySQL báo cáo, 9 nhóm service/MySQL bất thường và 10 nhóm renderer xuất CSV/XLSX/PDF bằng DTO giả. Không gọi cả 32 nhóm là kiểm HTTP: 22 nhóm dùng database thử riêng, còn 10 nhóm xuất không truy cập database. Các kiểm gồm 10 vai trò, phạm vi/IDOR, đa vai trò, dữ liệu trước công bố, ngưỡng hai giảng viên/all-NA, ẩn tổng cha, cạnh tranh và thu hồi phiên. E2E có 3/3 bài đạt bằng tổ hợp API/HTTP và trình duyệt Chromium, gồm dashboard 10 vai trò và xuất theo quyền; không tương đương thử tay toàn bộ giao diện.
+
+Nguồn kiểm: `policies/reports.ts`, `policies/survey-anomalies.ts`, `services/reports.ts`, `services/reports-export.ts`, `services/survey-anomalies.ts`, các route `/api/reports` và `/api/survey-anomalies`; bộ riêng tại `scripts/verify-week12-reports.ts`, `scripts/verify-week12-anomalies.ts`, `scripts/verify-week12-exports.ts` và `tests/e2e/uc-gold.spec.ts`.
+
+Kiểm tay mới đi đến lượt sinh viên nộp khảo sát và gửi phản hồi. Bước tiếp theo bị gián đoạn khi công cụ điều khiển trình duyệt trên Windows không xác định đủ chắc chắn URL hiện tại để thực thi chính sách và chặn tiếp tục; chưa đi hết UC-GOLD bằng tay qua các vai trò. Vì vậy **Tuần 12 chưa được nghiệm thu toàn bộ**, không đánh dấu hoàn tất FR chỉ từ kết quả CI. FR-160/TC-ALL-01 toàn hệ thống vẫn thuộc phạm vi nghiệm thu Tuần 13. Đối chiếu [UC-GOLD](UC_GOLD_TUAN_12.md), [QA giao diện](QA_GIAO_DIEN_TUAN_12.md) và [nghiệm thu Tuần 12](NGHIEM_THU_TUAN_12.md) để phân biệt bước đã chạy với phần còn lại.
