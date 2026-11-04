@@ -13,6 +13,7 @@ import {
 } from "../src/server/services/feedback";
 import { updateFeedbackSatisfaction } from "../src/server/services/feedback-satisfaction";
 import { ensureDueFeedback } from "../src/server/services/feedback-sla";
+import { addBusinessDays } from "../src/server/services/feedback-deadlines";
 import {
   updateWorkflowSettings,
   getWorkflowSettings,
@@ -259,6 +260,10 @@ try {
     },
   });
   const now = new Date();
+  const escalationDays = (await getWorkflowSettings(quality)).escalationDays;
+  // SLA dùng ngày làm việc và chỉ leo thang sau hạn, không tính đúng mốc hạn.
+  const afterEscalationDeadline = (processedAt: Date) =>
+    new Date(addBusinessDays(processedAt, escalationDays).getTime() + 1);
   await Promise.all(
     Array.from({ length: 6 }, () =>
       ensureDueFeedback(consoleActor, { now, limit: 100 }),
@@ -278,12 +283,11 @@ try {
   pass(
     "BR-23 sáu job đồng thời chỉ leo thang một cấp, quá hạn là cờ và thu hồi người nhận cũ",
   );
-  for (const [days, expected] of [
-    [4, dean.userId],
-    [9, quality.userId],
-  ] as const) {
+  let escalationAt = now;
+  for (const expected of [dean.userId, quality.userId]) {
+    escalationAt = afterEscalationDeadline(escalationAt);
     await ensureDueFeedback(consoleActor, {
-      now: new Date(now.getTime() + days * 86400000),
+      now: escalationAt,
       limit: 100,
     });
     escalated = await db.feedback.findUniqueOrThrow({
@@ -300,7 +304,7 @@ try {
   });
   await ensureDueFeedback(consoleActor, { now, limit: 100 });
   await ensureDueFeedback(consoleActor, {
-    now: new Date(now.getTime() + 4 * 86400000),
+    now: afterEscalationDeadline(now),
     limit: 100,
   });
   const officeRow = await db.feedback.findUniqueOrThrow({
@@ -347,7 +351,7 @@ try {
   });
   await ensureDueFeedback(consoleActor, { now, limit: 100 });
   await ensureDueFeedback(consoleActor, {
-    now: new Date(now.getTime() + 4 * 86400000),
+    now: afterEscalationDeadline(now),
     limit: 100,
   });
   assert.equal(
