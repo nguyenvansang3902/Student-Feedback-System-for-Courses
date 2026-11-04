@@ -121,6 +121,57 @@ beforeEach(() => {
 });
 
 describe("W9 BR-03/07/09/13/18/57 — ranh giới API kết quả", () => {
+  it.each(["GIANG_VIEN", "CAN_BO_DBCL", "PHONG_KHAO_THI"] as const)(
+    "TC-ALL-01 BR-68: ADMIN+%s không mở API đọc, CSRF hoặc ghi kết quả",
+    async (role) => {
+      const business = actor(role);
+      current = {
+        ...business,
+        mfa: true,
+        roles: ["ADMIN", role],
+        assignments: [
+          ...business.assignments!,
+          {
+            role: "ADMIN",
+            scopeType: "GLOBAL",
+            facultyId: null,
+            departmentId: null,
+          },
+        ],
+      };
+      services.actor.mockResolvedValue(current);
+      for (const path of [
+        [],
+        ["csrf"],
+        [campaignId],
+        [campaignId, "classes", sectionId],
+        [campaignId, "moderation"],
+        [campaignId, "incomplete"],
+      ])
+        expect((await GET(request(path), context(path))).status).toBe(403);
+      expect(
+        (
+          await POST(
+            request(
+              [campaignId, "publish"],
+              { expectedRevision: 1, requestId },
+              { token: "token-tu-phien-cu" },
+            ),
+            context([campaignId, "publish"]),
+          )
+        ).status,
+      ).toBe(403);
+      for (const mock of [
+        services.list,
+        services.detail,
+        services.section,
+        services.moderation,
+        services.incomplete,
+        services.publish,
+      ])
+        expect(mock).not.toHaveBeenCalled();
+    },
+  );
   it("khách và ADMIN không nhận dữ liệu kết quả hoặc CSRF nghiệp vụ", async () => {
     services.actor.mockResolvedValue(null);
     expect((await GET(request([]), context([]))).status).toBe(401);

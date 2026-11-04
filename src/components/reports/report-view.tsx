@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { focusRing } from "../auth/auth-shell";
 import type {
   ReportColumn,
   ReportRow,
@@ -29,7 +30,12 @@ export function formatReportCell(
 }
 export function ReportDataTable({ section }: { section: ReportSection }) {
   return (
-    <div className="mt-5 overflow-x-auto rounded-xl border border-slate-200">
+    <div
+      role="region"
+      aria-label={`Bảng số liệu ${section.title}`}
+      tabIndex={0}
+      className={`mt-5 overflow-x-auto rounded-xl border border-slate-200 ${focusRing}`}
+    >
       <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
         <caption className="sr-only">Số liệu {section.title}</caption>
         <thead className="bg-slate-50 text-slate-600">

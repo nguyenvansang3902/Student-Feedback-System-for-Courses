@@ -142,6 +142,33 @@ describe("FR-11/BR-34 — ma trận vai trò/phạm vi tập trung", () => {
       expect(can(actor("ADMIN"), action)).toBe(false);
     expect(sectionScopeWhere(actor("ADMIN"))).toEqual({ id: { in: [] } });
   });
+  it.each<Role>([
+    "SINH_VIEN",
+    "GIANG_VIEN",
+    "TRUONG_BO_MON",
+    "TRUONG_KHOA",
+    "CAN_BO_DBCL",
+    "LANH_DAO",
+    "PHONG_DAO_TAO",
+    "PHONG_KHAO_THI",
+    "THANH_TRA",
+  ])(
+    "TC-ALL-01 BR-68: ADMIN+%s không dùng vai trò bổ sung để mở kết quả",
+    (role) => {
+      const combined = actor("ADMIN", role);
+      for (const action of [
+        "results:read",
+        "results:assessment",
+        "results:aggregate",
+        "results:publish",
+        "results:moderate",
+        "results:incomplete",
+        "results:remind",
+      ])
+        expect(can(combined, action, own)).toBe(false);
+      expect(can(combined, "users:list")).toBe(true);
+    },
+  );
   it("ADMIN+GV chỉ hưởng gán GV và phạm vi riêng, không mở lớp khác", () => {
     const combined = actor("ADMIN", "GIANG_VIEN");
     expect(can(combined, "sections:read", own)).toBe(true);

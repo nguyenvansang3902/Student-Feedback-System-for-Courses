@@ -29,6 +29,8 @@ import {
 } from "../src/server/services/auth";
 import { hashCampaignCohort } from "../src/server/services/campaign-readiness";
 import { issueCatalogCsrf } from "../src/server/auth/csrf";
+import { getAuthLimits } from "../src/server/auth/limits";
+import { rateKey } from "../src/server/auth/rate-limit";
 
 // Guard phải chạy trước getDb(), mọi ghi, khởi động máy chủ và cleanup.
 const marker = JSON.parse(
@@ -112,6 +114,14 @@ let rollbackResult:
       retrySucceeded: boolean;
     }
   | undefined;
+let submissionRateResult:
+  | {
+      allowed: number;
+      blockedStatus: number;
+      responses: number;
+      rejectedAuthenticationConsumes: boolean;
+    }
+  | undefined;
 type Client = {
   id: string;
   role: Role;
@@ -138,6 +148,7 @@ function save() {
         cases,
         concurrentResult,
         rollbackResult,
+        submissionRateResult,
         cleaned,
         updatedAt: new Date().toISOString(),
       },
@@ -754,8 +765,7 @@ try {
   else {
     const html = await redirect.response.text();
     assert(
-      html.includes(`NEXT_REDIRECT`) &&
-        !html.includes("Đã nộp khảo sát"),
+      html.includes(`NEXT_REDIRECT`) && !html.includes("Đã nộp khảo sát"),
       "Trang PENDING phải chuyển về form, không giả xác nhận",
     );
   }
@@ -859,8 +869,13 @@ try {
         : answer,
     ),
   ];
+  // Tách cơn dữ liệu sai khỏi sinh viên dùng cho luồng thành công/concurrency.
+  // Không nâng ngưỡng production hoặc xóa bộ đếm để làm hồi quy qua.
+  const negativeStudent = await createClient("SINH_VIEN", 12, passwordHash);
+  await csrf(negativeStudent);
+  const negativeFixture = await fixture(negativeStudent, creator, template.id);
   for (const values of invalid) {
-    const reply = await rejected(own, { answers: values });
+    const reply = await rejected(negativeFixture, { answers: values });
     assert.equal(reply.data.code, "INVALID_SURVEY_ANSWERS");
   }
   for (const bridge of [
@@ -871,7 +886,10 @@ try {
     "requestId",
     "ipAddress",
   ])
-    await rejected(own, { answers: answers(), [bridge]: student.id });
+    await rejected(negativeFixture, {
+      answers: answers(),
+      [bridge]: negativeStudent.id,
+    });
   pass(
     "BR-03/04: thiếu/lặp/câu khác mẫu, option khác câu, cả hai thang, mixed-value, NA không cho phép, text quá dài, chọn sai và trường cầu nối đều bị từ chối không echo",
   );
@@ -1031,10 +1049,12 @@ try {
     "BR-04: Không áp dụng hợp lệ thỏa câu bắt buộc, không chép giá trị; câu tùy chọn trống không tạo answer",
   );
 
-  const race = await fixture(student, creator, template.id),
+  const raceStudent = await createClient("SINH_VIEN", 13, passwordHash);
+  await csrf(raceStudent);
+  const race = await fixture(raceStudent, creator, template.id),
     replies = await Promise.all(
       Array.from({ length: 20 }, () =>
-        req(submitPath(race), student, { answers: answers() }),
+        req(submitPath(race), raceStudent, { answers: answers() }),
       ),
     );
   assert.equal(replies.filter((reply) => reply.status === 200).length, 1);
@@ -1283,6 +1303,94 @@ try {
     "BR-02/03: trigger MySQL cưỡng bức lỗi chèn answer rollback taskPENDING/0response/0answer; lỗi HTTP được che, bỏ trigger rồi nộp lại thành công",
   );
 
+  const rateStudent = await createClient("SINH_VIEN", 14, passwordHash);
+  await csrf(rateStudent);
+  const rateFixture = await fixture(rateStudent, creator, template.id);
+  const requestRateKey = rateKey("survey-submit-user", rateStudent.id);
+  secrets.add(requestRateKey);
+  const limits = getAuthLimits();
+  assert.equal(
+    limits.SURVEY_SUBMIT_REQUEST_LIMIT,
+    30,
+    "Bộ kiểm budget thật cần mặc định30, không đổi ngưỡng để bỏ qua kiểm",
+  );
+  assert.equal(limits.SURVEY_SUBMIT_WINDOW_SECONDS, 60);
+  assert.equal(limits.SURVEY_SUBMIT_LOCK_SECONDS, 60);
+  assert.equal(
+    (
+      await req(
+        submitPath(rateFixture),
+        rateStudent,
+        { answers: answers() },
+        { csrf: false },
+      )
+    ).status,
+    403,
+  );
+  assert.equal(
+    (
+      await req(
+        submitPath(rateFixture),
+        rateStudent,
+        { answers: answers() },
+        { origin: "https://untrusted.invalid" },
+      )
+    ).status,
+    403,
+  );
+  assert.equal(
+    await db.rateLimitBucket.findUnique({ where: { keyHash: requestRateKey } }),
+    null,
+  );
+  ok(await req(submitPath(rateFixture), rateStudent, { answers: answers() }));
+  for (let index = 1; index < 30; index++)
+    assert.equal(
+      (await req(submitPath(rateFixture), rateStudent, { answers: answers() }))
+        .status,
+      409,
+    );
+  const allowedBucket = await db.rateLimitBucket.findUniqueOrThrow({
+    where: { keyHash: requestRateKey },
+  });
+  assert.equal(allowedBucket.attempts, 30);
+  assert.equal(allowedBucket.lockedUntil, null);
+  const limited = await req(submitPath(rateFixture), rateStudent, "{", {
+    raw: true,
+  });
+  const unknownLimited = await req(
+    `/api/student-surveys/${randomUUID()}/submit`,
+    rateStudent,
+    { answers: answers() },
+  );
+  for (const reply of [limited, unknownLimited]) {
+    assert.equal(reply.status, 429);
+    assert.equal(reply.data.code, "RATE_LIMITED");
+    assert.equal(reply.response.headers.get("cache-control"), "no-store");
+    noPrivate(reply.data, rateFixture.taskId);
+  }
+  assert.deepEqual(limited.data, unknownLimited.data);
+  const rateCounts = await counts(rateFixture);
+  assert.equal(rateCounts.responses, 1);
+  assert.equal(rateCounts.answers, 6);
+  assert.equal(rateCounts.task?.status, "DONE");
+  assert.equal(
+    (
+      await db.rateLimitBucket.findUniqueOrThrow({
+        where: { keyHash: requestRateKey },
+      })
+    ).attempts,
+    31,
+  );
+  submissionRateResult = {
+    allowed: 30,
+    blockedStatus: 429,
+    responses: rateCounts.responses,
+    rejectedAuthenticationConsumes: false,
+  };
+  pass(
+    "W13 NFR-08/BR-33: MySQL thật đủ30request, từ31trả429 trướcJSON/task; CSRF/Origin sai không tiêu budget, một phiếu/6answer không đổi",
+  );
+
   const responseRows = await db.surveyResponse.findMany({
       where: { campaignId: { in: campaignIds } },
       include: { answers: true },
@@ -1436,6 +1544,13 @@ try {
           });
           await tx.authToken.deleteMany({ where: { userId: { in: userIds } } });
           await tx.user.deleteMany({ where: { id: { in: userIds } } });
+          await tx.rateLimitBucket.deleteMany({
+            where: {
+              keyHash: {
+                in: userIds.map((id) => rateKey("survey-submit-user", id)),
+              },
+            },
+          });
           await tx.department.deleteMany({
             where: { id: { in: departmentIds } },
           });

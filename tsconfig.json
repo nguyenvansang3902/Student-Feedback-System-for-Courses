@@ -53,7 +53,9 @@
     ".next-week10/types/**/*.ts",
     ".next-week10/dev/types/**/*.ts",
     ".next-week12/types/**/*.ts",
-    ".next-week12/dev/types/**/*.ts"
+    ".next-week12/dev/types/**/*.ts",
+    ".next-week13-load/types/**/*.ts",
+    ".next-week13-load/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

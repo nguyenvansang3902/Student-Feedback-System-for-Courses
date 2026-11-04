@@ -19,6 +19,8 @@ export default defineConfig([
     ".next-week9/**",
     ".next-week10/**",
     ".next-week12/**",
+    ".next-week13-load/**",
+    "coverage/**",
     "test-results/**",
     "playwright-report/**",
     ".local/**",

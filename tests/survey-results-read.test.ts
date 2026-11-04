@@ -262,14 +262,15 @@ describe("BR-08/18/34/57 — kết quả theo năng lực và phạm vi riêng",
     );
     expect(db.surveyCampaign.findMany).not.toHaveBeenCalled();
   });
-  it("GV+Khảo thí không mở rộng điều kiện xem lớp; ADMIN+GV cũng giữ đúng phạm vi GV", () => {
-    for (const value of [
-      actor("GIANG_VIEN", "PHONG_KHAO_THI"),
-      actor("GIANG_VIEN", "ADMIN"),
-    ])
-      expect(resultSectionScopeWhere(value)).toEqual({
-        OR: [{ teaching: { some: { teacherId: ids[0] } } }],
-      });
+  it("GV+Khảo thí không mở rộng điều kiện xem lớp; BR-68 loại ADMIN đa vai trò", () => {
+    expect(
+      resultSectionScopeWhere(actor("GIANG_VIEN", "PHONG_KHAO_THI")),
+    ).toEqual({
+      OR: [{ teaching: { some: { teacherId: ids[0] } } }],
+    });
+    expect(resultSectionScopeWhere(actor("GIANG_VIEN", "ADMIN"))).toEqual({
+      id: { in: [] },
+    });
     const capabilities = resultsCapabilities(
       actor("GIANG_VIEN", "PHONG_KHAO_THI"),
     );
@@ -280,6 +281,22 @@ describe("BR-08/18/34/57 — kết quả theo năng lực và phạm vi riêng",
       moderate: false,
     });
   });
+  it.each<Role>(["GIANG_VIEN", "CAN_BO_DBCL", "PHONG_KHAO_THI"])(
+    "TC-ALL-01 BR-68: ADMIN+%s bị từ chối ở service trước truy vấn",
+    async (role) => {
+      const combined = actor("ADMIN", role);
+      for (const operation of [
+        () => listSurveyResults(combined),
+        () => getSurveyResults(combined, ids[6]),
+        () => getSurveyClassResults(combined, ids[6], sample.cohort.sectionId),
+      ])
+        await expect(operation()).rejects.toMatchObject({ status: 403 });
+      expect(db.$transaction).not.toHaveBeenCalled();
+      expect(
+        Object.values(resultsCapabilities(combined)).every((value) => !value),
+      ).toBe(true);
+    },
+  );
   it("list/count chia sẻ cùng điều kiện scope và chỉ công bố cho GV", async () => {
     const value = actor("GIANG_VIEN");
     await listSurveyResults(value, { page: 2, pageSize: 7, search: " giả " });

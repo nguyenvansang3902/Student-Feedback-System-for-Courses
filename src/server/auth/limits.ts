@@ -52,6 +52,25 @@ const schema = z.object({
     .min(1)
     .max(20)
     .default(5),
+  // Một sinh viên có thể nộp nhiều học phần; mặc định30yêu cầu/60giây.
+  SURVEY_SUBMIT_REQUEST_LIMIT: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(1000)
+    .default(30),
+  SURVEY_SUBMIT_WINDOW_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(86400)
+    .default(60),
+  SURVEY_SUBMIT_LOCK_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(86400)
+    .default(60),
 });
 
 /** Các giá trị nghiệp vụ là mặc định cấu hình được theo đặc tả. */

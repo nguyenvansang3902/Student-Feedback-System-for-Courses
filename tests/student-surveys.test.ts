@@ -74,6 +74,7 @@ beforeEach(() => {
     queue = result.then(() => undefined, () => undefined);
     return result;
   });
+  // Mặc định giả lập guard chưa tồn tại để giữ kiểm đầy đủ đường fallback độc quyền.
   db.$executeRaw.mockResolvedValue(1); db.$queryRaw.mockResolvedValue([]);
   db.userSession.findUnique.mockImplementation(async () => stored);
   db.systemSetting.findUnique.mockResolvedValue({ value: ["ADMIN"] });
@@ -145,7 +146,7 @@ describe("BR-01/34 — chính sách và quyền trên task đã chốt", () => {
     await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 403 });
     expect(mocks.advance).toHaveBeenCalledOnce();
     expect(db.surveyResponse.create).not.toHaveBeenCalled();
-    expect(commits).toBe(1);
+    expect(commits).toBe(2); // Probe thiếu guard và lifecycle đã commit; TX nộp bị chặn.
   });
 });
 
@@ -203,12 +204,12 @@ describe("BR-02/03/04/17 — một lần trong cùng giao dịch và ngày Việ
     expect(db.surveyTask.updateMany).not.toHaveBeenCalled(); expect(responses).toHaveLength(0);
     if (state === "after") {
       expect(task.cohort.campaign.status).toBe("DA_DONG");
-      expect(commits).toBe(1); // Chuyển trạng thái đã commit; TX nộp bị từ chối.
+      expect(commits).toBe(2); // Probe thiếu guard và chuyển trạng thái đã commit; TX nộp bị từ chối.
     }
   });
   it("BR-04 payload lỗi không rollback chuyển trạng thái đã commit và không đổi task", async () => {
     await expect(submitStudentSurvey(current, task.id, { answers: [] })).rejects.toMatchObject({ status: 400 });
-    expect(mocks.advance).toHaveBeenCalledOnce(); expect(commits).toBe(1);
+    expect(mocks.advance).toHaveBeenCalledOnce(); expect(commits).toBe(2);
     expect(task.status).toBe("PENDING"); expect(responses).toHaveLength(0);
   });
   it.each(["draft", "no-lock", "invalid"])("BR-04 mẫu %s chặn GET/POST trước CAS", async (state) => {
@@ -234,5 +235,117 @@ describe("BR-02/03/04/17 — một lần trong cùng giao dịch và ngày Việ
     task.cohort.campaign.semester.lockedAt = null; task.cohort.campaign.startsAt = new Date(Date.now() + 1);
     expect(await getStudentSurvey(current, task.id)).toMatchObject({ availability: "NOT_OPEN", canSubmit: false, template: null });
     expect(db.surveyTemplate.findUnique).not.toHaveBeenCalled();
+  });
+});
+
+describe("W13 NFR-02/03/11/16 BR-02/03/04 — khóa chia sẻ khi đợt đang mở ổn định", () => {
+  beforeEach(() => db.$queryRaw.mockResolvedValue([{ key: "ADMIN_MUTATION_LOCK" }]));
+
+  it("nộp đợt đang mở dùng S trước snapshot quyền, không đi lifecycle/X dư thừa", async () => {
+    await expect(submitStudentSurvey(current, task.id, input)).resolves.toMatchObject({ status: "DONE" });
+    expect(db.$queryRaw.mock.calls[0][0].join("")).toContain("FOR SHARE");
+    expect(db.$queryRaw.mock.invocationCallOrder[0]).toBeLessThan(db.userSession.findUnique.mock.invocationCallOrder[0]);
+    expect(db.userSession.findUnique.mock.invocationCallOrder[0]).toBeLessThan(db.surveyTask.findFirst.mock.invocationCallOrder[0]);
+    expect(db.$executeRaw).not.toHaveBeenCalled();
+    expect(mocks.advance).not.toHaveBeenCalled();
+    expect(commits).toBe(1);
+    expect(responses).toHaveLength(1); expect(answers).toHaveLength(2);
+  });
+
+  it("đọc chi tiết đang mở trả mẫu, DONE không đọc mẫu hoặc đáp án", async () => {
+    expect(await getStudentSurvey(current, task.id)).toMatchObject({ canSubmit: true, template: { id: template.id } });
+    task.status = "DONE"; task.doneDate = new Date("2026-10-30T00:00:00Z");
+    db.surveyTemplate.findUnique.mockClear();
+    expect(await getStudentSurvey(current, task.id)).toMatchObject({ status: "DONE", template: null, canSubmit: false });
+    expect(db.surveyTemplate.findUnique).not.toHaveBeenCalled();
+    expect(db.surveyAnswer.findMany).not.toHaveBeenCalled();
+    expect(db.$executeRaw).not.toHaveBeenCalled();
+    expect(mocks.advance).not.toHaveBeenCalled();
+  });
+
+  it("thiếu guard kết thúc probe trước khi X khởi tạo, không nâng S lên X trong cùng TX", async () => {
+    db.$queryRaw.mockResolvedValue([]);
+    db.$executeRaw.mockImplementation(async () => {
+      expect(commits).toBeGreaterThanOrEqual(1);
+      return 1;
+    });
+    await expect(submitStudentSurvey(current, task.id, input)).resolves.toMatchObject({ status: "DONE" });
+    expect(mocks.advance).toHaveBeenCalledOnce();
+    expect(responses).toHaveLength(1);
+  });
+
+  it("quyền thay đổi trong lúc chờ S được đọc lại trước task, actor cũ không cấp quyền", async () => {
+    db.$queryRaw.mockImplementationOnce(async () => {
+      stored = session(actor("GIANG_VIEN"));
+      return [{ key: "ADMIN_MUTATION_LOCK" }];
+    });
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 403 });
+    expect(db.surveyTask.findFirst).not.toHaveBeenCalled();
+    expect(responses).toHaveLength(0);
+    expect(mocks.advance).not.toHaveBeenCalled();
+  });
+
+  it("phiên bị thu hồi và chính sách MFA mới đều chặn trước ghi dưới S", async () => {
+    stored.revokedAt = new Date();
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 401 });
+    stored = session(current);
+    db.systemSetting.findUnique.mockResolvedValue({ value: ["ADMIN", "SINH_VIEN"] });
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ code: "MFA_REQUIRED" });
+    expect(db.surveyTask.updateMany).not.toHaveBeenCalled();
+  });
+
+  it.each(["submit", "read"])("hết hạn khi đọc mẫu trong %s nhả S, commit đóng bằng X rồi mới trả kết quả", async (mode) => {
+    task.cohort.campaign.endsAt = new Date(Date.now() + 1000);
+    db.surveyTemplate.findUnique.mockImplementation(async () => {
+      vi.setSystemTime(new Date(task.cohort.campaign.endsAt.getTime() + 1));
+      return structuredClone(template);
+    });
+    if (mode === "submit") await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 409, code: "STUDENT_SURVEY_UNAVAILABLE" });
+    else expect(await getStudentSurvey(current, task.id)).toMatchObject({ availability: "CLOSED", template: null });
+    expect(task.cohort.campaign.status).toBe("DA_DONG");
+    expect(mocks.advance).toHaveBeenCalledOnce();
+    expect(db.surveyTask.updateMany).not.toHaveBeenCalled();
+    expect(responses).toHaveLength(0);
+    expect(commits).toBe(mode === "submit" ? 2 : 3);
+  });
+
+  it("sau fallback lifecycle vẫn kiểm lại phiên mới; không dùng fresh actor từ S cũ", async () => {
+    task.cohort.campaign.endsAt = new Date(Date.now() - 1);
+    mocks.advance.mockImplementation(async () => {
+      task.cohort.campaign.status = "DA_DONG";
+      stored = session(actor("GIANG_VIEN"));
+    });
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 403 });
+    expect(task.cohort.campaign.status).toBe("DA_DONG");
+    expect(responses).toHaveLength(0);
+  });
+
+  it("CAS thua cuộc dưới S không tạo phiếu, không nới điều kiện PENDING", async () => {
+    db.surveyTask.updateMany.mockResolvedValue({ count: 0 });
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 409, code: "STUDENT_SURVEY_COMPLETED" });
+    expect(responses).toHaveLength(0); expect(answers).toHaveLength(0);
+    expect(db.$executeRaw).not.toHaveBeenCalled();
+  });
+
+  it("lỗi chèn đáp án dưới S rollback task và phiếu, không ghi ngày hoặc nội dung riêng ra ngoài", async () => {
+    db.surveyAnswer.createMany.mockRejectedValue(new Error("SQL fixture riêng"));
+    await expect(submitStudentSurvey(current, task.id, input)).rejects.toMatchObject({ status: 500, code: "STUDENT_SURVEY_FAILED" });
+    expect(task.status).toBe("PENDING"); expect(task.doneDate).toBeNull();
+    expect(responses).toHaveLength(0); expect(answers).toHaveLength(0);
+    expect(mocks.advance).not.toHaveBeenCalled();
+  });
+
+  it.each(["start", "end"])("khóa chia sẻ vẫn nhận đúng biên %s", async (boundary) => {
+    if (boundary === "start") task.cohort.campaign.startsAt = new Date();
+    else task.cohort.campaign.endsAt = new Date();
+    await expect(submitStudentSurvey(current, task.id, input)).resolves.toMatchObject({ status: "DONE" });
+    expect(mocks.advance).not.toHaveBeenCalled();
+  });
+
+  it("danh sách vẫn lấy X trước khi advanceDue toàn bộ, không gọi lifecycle dưới S", async () => {
+    await listStudentSurveys(current);
+    expect(db.$executeRaw).toHaveBeenCalledOnce();
+    expect(db.$queryRaw.mock.calls[0][0].join("")).toContain("FOR UPDATE");
+    expect(mocks.advanceDue).toHaveBeenCalledOnce();
   });
 });

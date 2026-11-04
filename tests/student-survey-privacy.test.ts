@@ -24,6 +24,7 @@ const mocks = vi.hoisted(() => {
       auditLog: delegate(),
       emailOutbox: delegate(),
       notification: delegate(),
+      rateLimitBucket: { update: vi.fn() },
       $transaction: vi.fn(),
       $executeRaw: vi.fn(),
       $queryRaw: vi.fn(),
@@ -204,6 +205,10 @@ beforeEach(() => {
     },
   });
   mocks.db.systemSetting.findUnique.mockResolvedValue(null);
+  mocks.db.$queryRaw.mockResolvedValue([
+    { attempts: 0, windowStart: new Date(), lockedUntil: null },
+  ]);
+  mocks.db.rateLimitBucket.update.mockResolvedValue({});
   mocks.db.surveyTask.findFirst.mockResolvedValue(task());
   mocks.db.surveyTask.updateMany.mockResolvedValue({ count: 1 });
   mocks.db.surveyTemplate.findUnique.mockResolvedValue({

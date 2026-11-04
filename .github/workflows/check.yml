@@ -65,11 +65,13 @@ jobs:
           echo "PDF_TEST_PYTHON=$RUNNER_TEMP/pdf-tests/bin/python" >> "$GITHUB_ENV"
       - name: Kiểm tra dashboard, chỉ số bất thường và tệp xuất Tuần 12
         run: npm run test:week12
+      - name: Kiểm tra khóa chia sẻ, quyền hiện tại và rollback nộp phiếu Tuần 13
+        run: npm run test:survey-locks
       - name: Kiểm tra seed và demo trong database mới riêng
         run: npm run test:demo
       - name: Kiểm tra chuyển TOTP từ 30 sang 60 giây trên database thử riêng
         run: npm run test:totp60
-      - name: Chạy lint, typecheck và test
+      - name: Chạy lint, typecheck, test và ngưỡng độ phủ service
         run: npm run check
       - name: Build ứng dụng
         run: npm run build
@@ -161,8 +163,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: week12-ui-evidence
-          path: test-results/**/*.png
+          name: week13-ui-evidence
+          path: |
+            test-results/**/*.png
+            test-results/**/*.json
           if-no-files-found: ignore
           retention-days: 7
       - name: Dừng dịch vụ thử

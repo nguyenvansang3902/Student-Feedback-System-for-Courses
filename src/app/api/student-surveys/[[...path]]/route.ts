@@ -7,6 +7,8 @@ import {
   issueStudentSurveysCsrf,
 } from "@/server/auth/csrf";
 import { readStudentSurveyBody } from "@/server/auth/student-survey-body";
+import { getAuthLimits } from "@/server/auth/limits";
+import { consumeRateLimit, rateKey } from "@/server/auth/rate-limit";
 import { AuthError } from "@/server/auth/types";
 import { requireCan } from "@/server/policies/can";
 import { getActor } from "@/server/services/auth";
@@ -79,6 +81,15 @@ export async function POST(request: NextRequest, context: Context) {
     empty.parse(Object.fromEntries(request.nextUrl.searchParams));
     const path = (await context.params).path ?? [];
     if (path.length !== 2 || path[1] !== "submit") return missing();
+    const limits = getAuthLimits();
+    // Chung theo user, không theo task/phiên/IP; không lưu nội dung phiếu trong key.
+    // Tiêu budget trước body/service, kể cả body sai hoặc nhiệm vụ không thuộc user.
+    await consumeRateLimit(
+      rateKey("survey-submit-user", actor.userId),
+      limits.SURVEY_SUBMIT_REQUEST_LIMIT,
+      limits.SURVEY_SUBMIT_WINDOW_SECONDS,
+      limits.SURVEY_SUBMIT_LOCK_SECONDS,
+    );
     return authJson({
       ok: true,
       item: await submitStudentSurvey(

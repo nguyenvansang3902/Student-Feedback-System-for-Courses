@@ -11,7 +11,11 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run db:validate && npm run db:generate && npm run design:check && eslint . && tsc --noEmit && vitest run",
+    "test:coverage": "vitest run --coverage",
+    "build:load": "node scripts/build-week13-load.mjs",
+    "test:load": "node scripts/prepare-week13-load.mjs && tsx scripts/verify-week13-load.ts --production",
+    "check": "npm run db:validate && npm run db:generate && npm run design:check && eslint . && tsc --noEmit && vitest run --coverage",
+    "test:survey-locks": "node scripts/prepare-week13-load.mjs && node scripts/prepare-week13-load.mjs --locks && tsx scripts/verify-week13-survey-locks.ts",
     "pretest": "npm run db:generate",
     "test:integration": "node scripts/verify-database.mjs",
     "progress": "node scripts/progress.mjs",
@@ -92,6 +96,7 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@faker-js/faker": "10.6.0",
     "@playwright/test": "1.64.1",
     "@prisma/generator-helper": "7.10.1",
@@ -101,6 +106,7 @@
     "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.0.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.3",
     "eslint-config-prettier": "10.1.8",

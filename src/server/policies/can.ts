@@ -160,6 +160,9 @@ export function can(
   resource?: SectionResource,
 ): boolean {
   if (!hasFullSession(actor)) return false;
+  // BR-68: vai trò quản trị không được đọc/xử lý kết quả qua một gán bổ sung.
+  if (actor.roles.includes("ADMIN") && action.startsWith("results:"))
+    return false;
   const grants = actorGrants(actor);
   if (action.startsWith("reports:")) {
     if (["reports:read", "reports:export"].includes(action))

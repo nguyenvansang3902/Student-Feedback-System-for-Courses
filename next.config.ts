@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
     ".next-week9",
     ".next-week10",
     ".next-week12",
+    ".next-week13-load",
   ].includes(process.env.SFS_TEST_DIST_DIR ?? "")
     ? process.env.SFS_TEST_DIST_DIR
     : ".next",

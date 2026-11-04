@@ -7,7 +7,6 @@ export function Brand() {
   return (
     <Link
       href="/"
-      aria-label="Khảo sát và phản hồi — Trang chủ"
       className={`flex min-w-0 items-center gap-3 rounded-lg ${focusRing}`}
     >
       <span
@@ -20,6 +19,7 @@ export function Brand() {
         <span className="block text-sm font-bold tracking-tight text-slate-900">
           Khảo sát &amp; phản hồi
         </span>
+        <span className="sr-only"> — Trang chủ</span>
       </span>
     </Link>
   );
