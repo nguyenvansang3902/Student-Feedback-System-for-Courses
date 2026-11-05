@@ -1,5 +1,11 @@
 # Nhật ký sử dụng AI
 
+## Vận hành Docker — 05/11/2026
+
+Theo yêu cầu thống nhất dữ liệu khi mở Docker, AI xác định hai kho vật lý do AppData bị chuyển hướng theo ngữ cảnh MSIX. Đã sao lưu ngoại tuyến/SQL/cấu hình, chuyển kho chính bằng giao diện Docker tới `D:\DockerData\DockerDesktopWSL`, rồi đồng bộ duy nhất khóa đường dẫn trong cấu hình riêng khi backend đã dừng. [Hồ sơ và giới hạn](DOCKER_MOT_KHO_DU_LIEU.md), [bằng chứng đã lọc](assets/van-hanh/docker-single-store-20261105.json).
+
+Bốn cách mở đã kiểm cùng dùng kho D:, danh tính engine/volume/MySQL và toàn bộ 46 bảng/9.840 dòng khớp checkpoint mới; 45 bảng ứng dụng/9.827 dòng, 1.575 người dùng. CLI/CUA/Explorer có nhật ký dừng/mở riêng; lần trực tiếp có dấu vết phiên và guard nhưng không lưu cặp nhật ký tiến trình riêng. Kho cũ không phát sinh ghi trong các lượt kiểm, bản sao giữ ngoài Git. Không reset/seed/đổi credential/MFA. Sau sửa đã mở web/scheduler, không có migration cần áp dụng, [ba HTTP 200](assets/van-hanh/docker-runtime-20261105.json); tác vụ bình thường có thể ghi sau checkpoint. Không viết lại mốc 9.709 dòng bên dưới. Chưa kiểm reboot, restore bản SQL mới hoặc toàn bộ DDL/index/FK. Tiến độ giữ 211/219; không làm Tuần 14/UI-n.
+
 ## Tuần 13 — chốt ngày 05/11/2026
 
 AI hỗ trợ mã/rà soát/kiểm thử/tài liệu trong phạm vi chức năng đã có: ma trận quyền/IDOR, bản vá ADMIN đa vai trò, CSP/header, budget nộp, khóa chia sẻ và sửa nhãn/vùng cuộn cho bàn phím. Sinh viên cần kiểm chứng và tự điền đóng góp, không gán công việc agent thành công cá nhân hoặc số giờ.

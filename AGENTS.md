@@ -43,8 +43,9 @@ dev · build · start · lint · typecheck · test · test:e2e · check · db:mi
 
 ## Docker trong môi trường Windows này
 
-- Khởi động Docker Desktop bằng shortcut trong Windows Explorer. Không khởi tạo backend bằng `Start-Process`, `sky.launch_app`, `cua.computer.launch_app` hoặc `docker desktop start` từ tiến trình Codex: AppData có thể bị chuyển hướng sang bản dữ liệu riêng của ứng dụng. CLI được dùng sau khi Docker đã mở đúng từ Windows.
-- Nếu schema hoặc dữ liệu khác checkpoint, đối chiếu ngữ cảnh khởi chạy và bản sao trước khi ghi. Không migrate, seed hoặc reset để xử lý chênh lệch dữ liệu chưa rõ nguyên nhân. Bằng chứng Tuần 13: `docs/assets/tuan-13/main-data-verification.json`; hướng dẫn mở dự án ở README.
+- Kho Docker WSL dùng chung trên máy này là `D:\DockerData\DockerDesktopWSL`, ngoài AppData/MSIX. Đã đối chiếu bốn cách mở trực tiếp từ Codex, CLI, CUA và shortcut Explorer; cả bốn dùng cùng backend, engine/volume/MySQL và checkpoint dữ liệu. [Hướng dẫn và phạm vi đã kiểm](docs/DOCKER_MOT_KHO_DU_LIEU.md).
+- Sau cập nhật Docker Desktop hoặc Codex, kiểm lại hai cấu hình vật lý cùng trỏ tới kho D: và backend thực đang dùng đúng kho trước khi ghi. Nếu identity, schema hoặc dữ liệu khác checkpoint phù hợp thời điểm, dừng để đối chiếu ngữ cảnh/bản sao; không migrate, seed hay reset để che chênh lệch chưa rõ nguyên nhân.
+- Giữ quyền thư mục đích cho tài khoản hiện tại, SYSTEM và Administrators; SQL/VHDX/bản cấu hình riêng không đưa vào Git. [Bằng chứng vận hành mới](docs/assets/van-hanh/docker-single-store-20261105.json) tách khỏi [số liệu Tuần 13 lịch sử](docs/assets/tuan-13/main-data-verification.json).
 
 ## Giai đoạn nâng cấp giao diện
 

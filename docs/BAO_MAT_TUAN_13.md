@@ -81,4 +81,3 @@ Hướng dẫn nonce được đối chiếu với [tài liệu CSP chính thứ
 - Giữ mục tiêu p95 3.000 ms ở trạng thái chưa đạt. Budget nộp và khóa chia sẻ đã có bằng chứng riêng; không tắt bảo vệ để cải thiện số đo tải.
 
 Các giới hạn này được giữ trong báo cáo kiểm thử; không tự ghi tất cả OWASP hoặc WCAG đã đạt.
-

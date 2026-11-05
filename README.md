@@ -8,7 +8,7 @@ Check/build cục bộ ngày 05/11 qua 2.155 passed+1 symlink skipped/2.156 tron
 
 Đã có 801 testquyền/IDOR,227 nhóm/15 bộ+demo 19,E2E 6/6; axe 34 trạng thái 0 vi phạm nhưng còn 7 incomplete/168 node,17 PNG tự động đã xem. Tải 200/200, khôngHTTP 500/lỗi mạng, race 20 một phiếu; **p95 3.595,91 ms chưa đạt 3 giây**. Các giới hạn bảo mật/phụ thuộc/HTTP production giữ trong hồ sơ; không chứng nhận toàn bộOWASP/WCAG.
 
-Database chính đúng ngữ cảnh Docker/Explorer:45 bảng/1.575 người dùng, guard 45 bảng/9.709 bản ghi giữ hash trước mở scheduler. [Runtime](docs/assets/tuan-13/local-runtime-verification.json): web/scheduler đã mở lại,3 HTTP 200, health vẫn database:not_checked; không áp dụng migration mới, không seed/reset/đổi credential/MFA. Scheduler có thể ghi audit/email/trạng thái bình thường sau kiểm. Chưa kiểm reboot. Main mã vẫn Tuần 11, UI-n tạm dừng; không làm Tuần 14. Các mốc dưới đây là bằng chứng lịch sử.
+Docker đã được thống nhất về một kho hoạt động tại `D:\DockerData\DockerDesktopWSL`. Bốn cách mở đã kiểm đều dùng cùng kho; toàn bộ 46 bảng/9.840 dòng gồm migration, 1.575 người dùng khớp checkpoint trước sửa. [Cách sửa và bằng chứng](docs/DOCKER_MOT_KHO_DU_LIEU.md). Web và scheduler đã mở lại, [ba đường dẫn HTTP trả 200](docs/assets/van-hanh/docker-runtime-20261105.json); health vẫn `database:not_checked`, MySQL được kiểm riêng. Không seed/reset hoặc đổi credential/MFA. Scheduler có thể ghi dữ liệu theo nghiệp vụ sau checkpoint. Chưa kiểm reboot. UI-n tạm dừng; không làm Tuần 14. Mốc Tuần 13 trước đó có 9.709 bản ghi ứng dụng vẫn giữ nguyên trong bằng chứng lịch sử.
 
 ## Tuần 12: báo cáo và cảnh báo khảo sát
 
@@ -18,7 +18,7 @@ Thanh tra mở **Cảnh báo khảo sát** tại [/thanh-tra/bat-thuong](http://
 
 Bundle demo Tuần12 bổ sung một đợt có10phiếu và1cờ chờ xem xét. Sau khi kéo mã mới, dừng web, chạy `npm.cmd ci`, `npm.cmd run db:deploy`, `npm.cmd run db:seed:week12` rồi mở lại tệp CMD; không dùng reset. Máy mới dùng `npm.cmd run db:seed` để tạo đủ dữ liệu tiền đề. Seed lặp giữ nguyên dữ liệu đã thao tác.
 
-[Hồ sơ Tuần12](docs/NGHIEM_THU_TUAN_12.md), [công thức/ngưỡng](docs/CONG_THUC_BAO_CAO.md), [UC-GOLD](docs/UC_GOLD_TUAN_12.md), [QA](docs/QA_GIAO_DIEN_TUAN_12.md). CI nguồn `6692854` đã qua check/smoke/e2e; kiểm tay toàn luồng đang dừng do công cụ điều khiển không xác định được URL Windows. Tuần12 chưa nghiệm thu và còn trên nhánh `feat/week12-reports-anomalies`; main giữ Tuần11. Không suy ảnh hoặc E2E thành kiểm tay hoàn tất.
+[Hồ sơ Tuần 12](docs/NGHIEM_THU_TUAN_12.md), [công thức/ngưỡng](docs/CONG_THUC_BAO_CAO.md), [UC-GOLD](docs/UC_GOLD_TUAN_12.md), [QA](docs/QA_GIAO_DIEN_TUAN_12.md). Tuần 12 đã chốt ngày 05/11 sau khi tiếp tục đầy đủ kịch bản kiểm tay trên demo riêng và kiểm CI đúng nguồn. Lượt kiểm tay từng bị gián đoạn là bằng chứng lịch sử; kết quả hoàn tất nằm trong manifest kiểm tay Tuần 13 ở trên.
 
 Kiểm dành cho phát triển: `npm.cmd run check`, `npm.cmd run test:week12` và `npm.cmd run test:e2e`. Bộ đọc nội dung PDF cần Python với `pip install -r scripts/pdf-test-requirements.txt`; có thể chỉ định executable qua `PDF_TEST_PYTHON`. Playwright cần `npx.cmd playwright install chromium`. Hai công cụ này phục vụ kiểm thử; mở website hằng ngày không cần chạy chúng.
 
@@ -32,7 +32,7 @@ Tiểu luận chuyên ngành HK1 2026–2027, kế hoạch 15 tuần từ **30/0
 
 ## Mở lại dự án hằng ngày trên Windows
 
-1. Mở **Docker Desktop**, đợi Docker chạy xong.
+1. Mở **Docker Desktop**, đợi **Engine running**. Kho dữ liệu trên máy hiện tại là `D:\DockerData\DockerDesktopWSL`; xem [hướng dẫn Docker](docs/DOCKER_MOT_KHO_DU_LIEU.md) nếu dữ liệu hiển thị khác dự kiến.
 2. Mở thư mục dự án và bấm đúp [KHOI_DONG_DU_AN.cmd](KHOI_DONG_DU_AN.cmd).
 3. Đợi cửa sổ báo **Website đã sẵn sàng: http://localhost:3000**, rồi mở [website](http://localhost:3000).
 

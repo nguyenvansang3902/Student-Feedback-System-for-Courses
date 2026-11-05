@@ -1,0 +1,32 @@
+{
+  "webAndSchedulerReady": true,
+  "startup": "scripts/start-local.mjs",
+  "checkedAtUtc": "2026-11-05T01:23:12.0979590Z",
+  "databaseGuard": "docker-single-store-20261105.json",
+  "normalSchedulerWritesMayOccurAfterCheckpoint": true,
+  "guardPredatesSchedulerRestart": true,
+  "requests": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/dang-nhap",
+      "status": 200
+    },
+    {
+      "status": 200,
+      "path": "/api/health",
+      "body": {
+        "status": "ok",
+        "application": "available",
+        "database": "not_checked"
+      }
+    }
+  ],
+  "pendingMigrationsApplied": 0,
+  "rebootTested": false,
+  "url": "http://localhost:3000",
+  "prismaGeneratedBeforeWeb": true,
+  "seedResetOrCredentialChanges": false
+}

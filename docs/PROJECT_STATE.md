@@ -1,7 +1,7 @@
 # Trạng thái dự án
 
 - Tuần hiện tại: Tuần 13 — theo lệnh ngày 03/11; thực hiện từ 03–05/11/2026. Mốc kế hoạch giả định 23–29/12, không ghi lùi ngày.
-- Nguồn chức năng đã đẩy: `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`, nhánh `feat/week13-testing-security-performance`. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn. Main mã vẫn Tuần 11 đến khi phiên chính commit hồ sơ cuối và fast-forward; không ghi đã gộp trước khi thực hiện.
+- Nguồn chức năng đã đẩy: `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn. Bản chốt hồ sơ `571fadf` cũng có [CI 41946083006](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41946083006) qua cả ba job; sửa vận hành Docker sau đó không thay mã ứng dụng.
 - **Đã chốt Tuần 12–13 ngày 05/11: 211/219=96,3%,78/84 FR.** Chín FR Tuần 12 thêm 20 điểm, FR-160 thêm 3 điểm. Check/build và UC-GOLD kiểm tay đủ các bước đã qua; giữ đầy đủ các giới hạn bên dưới.
 - UI-n vẫn tạm dừng, chỉ kích hoạt bằng lệnh giai đoạn riêng sau 15 tuần. Không bắt đầu Tuần 14.
 
@@ -21,12 +21,16 @@
 
 ## Database và vận hành
 
+- **Sửa lâu dài ngày 05/11:** kho WSL được chuyển bằng giao diện Docker tới `D:\DockerData\DockerDesktopWSL`, đồng bộ hai cấu hình vật lý ngoài ảnh hưởng chuyển hướng AppData của MSIX. Bốn cách mở trực tiếp/CLI/CUA/shortcut Explorer cùng dùng kho D:, giữ engine/container/volume/MySQL; toàn bộ **46 bảng/9.840 dòng** gồm 13 dòng Prisma khớp checkpoint mới, **45 bảng/9.827 dòng ứng dụng và 1.575 người dùng**. Ba lần mở có nhật ký riêng chứng minh dừng hoàn toàn và tiến trình mới; lần trực tiếp có dấu vết phiên và guard, không lưu cặp nhật ký tiến trình riêng. [Hồ sơ sửa](DOCKER_MOT_KHO_DU_LIEU.md), [bằng chứng](assets/van-hanh/docker-single-store-20261105.json).
+- Checkpoint mới tách khỏi mốc 9.709 dòng dưới đây: runtime trước khi sửa đã thêm 118 dòng, cập nhật tám hàng, không xóa hàng. Các bản sao SQL/VHDX giữ ngoài Git; không reset/seed/đổi credential/MFA. Bản SQL mới chưa restore thử; kết quả restore dưới đây chỉ áp dụng cho bản xuất lịch sử. Chưa kiểm reboot hoặc toàn bộ DDL/index/FK.
+- Sau sửa đã mở lại web/scheduler bằng launcher, không có migration cần áp dụng. [Kiểm runtime mới](assets/van-hanh/docker-runtime-20261105.json) có ba HTTP 200; health vẫn `database:not_checked`, tách khỏi guard MySQL. Scheduler có thể ghi nghiệp vụ bình thường sau checkpoint.
+- Các đoạn tiếp theo giữ bằng chứng trước lần sửa thống nhất kho:
 - Sau bản sao ngoại tuyến/mở độc quyền/đối chiếu hash cả hai Docker VHDX, mở shortcut Docker Desktop qua Windows Explorer đã chọn đúng ngữ cảnh AppData. Compose `db`/`mailpit` healthy; đọc được **45 bảng ứng dụng, 1.575 người dùng**, migration mới nhất Tuần 12 và chủ dự án tồn tại.
 - [Bằng chứng main](assets/tuan-13/main-data-verification.json): 45 bảng/**9.709 bản ghi cũ** giữ hash; dump single-transaction và restore database mới độc lập khớp chính xác 46 bảng/9.722 dòng gồm Prisma. SQL/VHDX giữ riêng. Số 9.451/9.519 trong hồ sơ Tuần 12 là lịch sử.
 - Guard sau toàn bộ GUI qua lúc 03:01:13 ngày 05/11, trước mở scheduler. Sau check/build mới, web/scheduler đã mở lại; [kiểm HTTP 03:16:32](assets/tuan-13/local-runtime-verification.json) có trang chủ/đăng nhập/health 200, health vẫn `database:not_checked`, tách khỏi SQL. Launcher gọi migration deploy nhưng không có migration cần áp dụng; không áp dụng migration mới, không seed/reset hoặc đổi credential/MFA. Runtime bình thường có thể ghi audit/email/trạng thái đến hạn, không nhận hash sau scheduler vẫn bất biến. Chưa kiểm reboot.
 
 ## Tiến độ đã chốt
 
-Đã chốt **211/219=96,3%,78/84 FR**: chín FR Tuần 12 và FR-160 đã tick; kế hoạch 213/219, chênh 2 điểm FR-145 giữ backlog. Sáu FR 09/103/110/111/112/145 chưa hoàn tất; không tự cắt hoặc bắt đầuTuần 14/UI-n. Nhóm tự điền đóng góp/GVHD/ngày yêu cầu. Thống nhất một kho Docker lâu dài cho mọi cách mở là công việc vận hành riêng đang tiếp tục; chưa ghi đã hoàn tất.
+Đã chốt **211/219=96,3%,78/84 FR**: chín FR Tuần 12 và FR-160 đã tick; kế hoạch 213/219, chênh 2 điểm FR-145 giữ backlog. Sáu FR 09/103/110/111/112/145 chưa hoàn tất; không tự cắt hoặc bắt đầu Tuần 14/UI-n. Nhóm tự điền đóng góp/GVHD/ngày yêu cầu. Công việc vận hành thống nhất kho Docker đã hoàn tất trong phạm vi bốn cách mở được kiểm; không cộng thêm FR hoặc điểm.
 
 [Hồ sơ nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-13.md), [chương kiểm thử](CHUONG_KIEM_THU_VA_DANH_GIA_TUAN_13.md), [QA](QA_GIAO_DIEN_TUAN_13.md).

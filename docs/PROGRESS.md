@@ -6,7 +6,9 @@
 
 Giữ p95 3.595,91 ms chưa đạt 3 giây, audit 24 moderate/tám production, axe 7 incomplete/168 node và giới hạn quét nguồn partial. HTTPproduction 7/7 trước đó là bằng chứng riêng; không chạy lại đúng build cuối không phải gate bổ sung để trì hoãn chốtFR. [Nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-13.md).
 
-Còn 6 FR chưa hoàn tất: FR-09/103/110/111/112/145. Không tự bắt đầuTuần 14/UI-n hoặc tự cắt backlog. Các checkbox dưới đây là trạng thái hiện tại; các đoạn mốc/ngày nghiệm thu cũ giữ bằng chứng lịch sử, không đổi số tại thời điểm cũ.
+Còn 6 FR chưa hoàn tất: FR-09/103/110/111/112/145. Không tự bắt đầu Tuần 14/UI-n hoặc tự cắt backlog. Các checkbox dưới đây là trạng thái hiện tại; các đoạn mốc/ngày nghiệm thu cũ giữ bằng chứng lịch sử, không đổi số tại thời điểm cũ.
+
+Vận hành ngày 05/11: [Docker dùng chung kho D:](DOCKER_MOT_KHO_DU_LIEU.md) đã qua bốn cách mở, toàn bộ 46 bảng/9.840 dòng kể cả Prisma khớp checkpoint mới, 1.575 người dùng được giữ nguyên. Web/scheduler đã mở lại, ba HTTP 200; chưa kiểm reboot. Công việc này không thêm tính năng, FR hoặc điểm; mốc 9.709 dòng ứng dụng trong bằng chứng Tuần 13 trước đó giữ nguyên.
 
 Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 

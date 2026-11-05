@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "operationDate": "2026-11-05",
+  "timeZone": "Asia/Saigon",
+  "verifiedAtUtc": "2026-11-05T01:19:31.222Z",
+  "repair": {
+    "desktopVersion": "4.97.0",
+    "engineVersion": "29.9.2",
+    "installation": "all-users",
+    "backend": "wsl2",
+    "sameInstalledDesktopUsedAcrossLaunchContexts": true,
+    "cause": "AppData filesystem redirection selected distinct managed data disks according to the launching process context",
+    "canonicalWslRoot": "D:\\DockerData\\DockerDesktopWSL",
+    "outsideAppData": true,
+    "nativeUiMove": {
+      "used": true,
+      "actualUiPath": "Settings > VM resources > Disk image location"
+    },
+    "settings": {
+      "key": "CustomWslDistroDir",
+      "bothPhysicalSettingsAligned": true,
+      "packageRootOnlyChanged": true,
+      "unrelatedSettingsPreserved": true,
+      "backendStoppedDuringAlignment": true
+    },
+    "wslMainRegistrationUnderCanonicalRoot": true,
+    "permissions": {
+      "onlyCurrentUserSystemAdministratorsFullControl": true,
+      "wideDriveRootInheritanceRemoved": true,
+      "rootSubdirectoriesAndDataDiskChecked": true
+    }
+  },
+  "preservation": {
+    "historicalOfflineCopiesOfBothStoresRetained": true,
+    "newestPreMoveOfflineCopy": {
+      "bytes": 5926551552,
+      "sha256": "2eb9b7d4f7857e6949d40da9e7ae6254a31a882c920670a40508a73d2fb079cb",
+      "exclusiveOfflineRead": true,
+      "sourceAndBackupMatched": true
+    },
+    "currentLogicalDump": {
+      "bytes": 1768166,
+      "sha256": "6b886e5944505338625ea96c57a033b802ae679224151e4287f6c11920134897",
+      "consistentSingleTransaction": true,
+      "allSourceTablesInnoDb": true,
+      "sourceBeforeAfterSnapshotEqual": true,
+      "restoredForTest": false
+    },
+    "historicalCheckpointOverwritten": false,
+    "historicalIndependentRestoreEvidence": "../tuan-13/main-data-verification.json",
+    "applicationDatabaseReset": false,
+    "credentialsChanged": false,
+    "databaseSchemaMigratedOrSeededForRepair": false
+  },
+  "checkpoint": {
+    "applicationTables": 45,
+    "allTablesIncludingPrisma": 46,
+    "users": 1575,
+    "applicationRows": 9827,
+    "prismaMigrationRows": 13,
+    "allRowsIncludingPrisma": 9840,
+    "allTablePrimaryKeyAndRowHashSnapshotSha256": "d748fb62d799cfc26bb41cabb1d99ffddf9c61ef4ea1b9aa4edfd39b1c3664d4",
+    "comparisonWithHistoricalCheckpoint": {
+      "historicalApplicationRows": 9709,
+      "addedRows": 118,
+      "updatedExistingRows": 8,
+      "removedRows": 0,
+      "changesOccurredBeforeRepairCheckpoint": true
+    },
+    "snapshotHashEncoding": "SHA-256 of compact JSON.stringify snapshot; BigInt values serialized as decimal strings"
+  },
+  "launchVerification": [
+    {
+      "method": "direct-launch",
+      "verifiedAtUtc": "2026-11-05T01:12:29.085Z",
+      "status": "passed",
+      "strictBothPhysicalSettings": true,
+      "liveBackendCanonicalRootVerified": true,
+      "engineContainerVolumeAndMySqlIdentityMatched": true,
+      "all46TablePrimaryKeyRowHashesEqual": true,
+      "localAndUncCanonicalDiskIdentityMatched": true,
+      "coldStartEvidence": {
+        "dedicatedStartAndReadyArtifacts": false,
+        "zeroPreStartDockerProcessesSaved": false,
+        "newProcessAfterStartSaved": false,
+        "source": "session trace and strict guard; dedicated before/ready process artifacts were not saved"
+      },
+      "rawIdentifiersPublished": false
+    },
+    {
+      "method": "cli-launch",
+      "verifiedAtUtc": "2026-11-05T01:14:10.531Z",
+      "status": "passed",
+      "strictBothPhysicalSettings": true,
+      "liveBackendCanonicalRootVerified": true,
+      "engineContainerVolumeAndMySqlIdentityMatched": true,
+      "all46TablePrimaryKeyRowHashesEqual": true,
+      "localAndUncCanonicalDiskIdentityMatched": true,
+      "coldStartEvidence": {
+        "dedicatedStartAndReadyArtifacts": true,
+        "zeroPreStartDockerProcessesSaved": true,
+        "newProcessAfterStartSaved": true,
+        "source": "private start and ready process artifacts"
+      },
+      "rawIdentifiersPublished": false
+    },
+    {
+      "method": "cua-launch",
+      "verifiedAtUtc": "2026-11-05T01:15:51.617Z",
+      "status": "passed",
+      "strictBothPhysicalSettings": true,
+      "liveBackendCanonicalRootVerified": true,
+      "engineContainerVolumeAndMySqlIdentityMatched": true,
+      "all46TablePrimaryKeyRowHashesEqual": true,
+      "localAndUncCanonicalDiskIdentityMatched": true,
+      "coldStartEvidence": {
+        "dedicatedStartAndReadyArtifacts": true,
+        "zeroPreStartDockerProcessesSaved": true,
+        "newProcessAfterStartSaved": true,
+        "source": "private start and ready process artifacts"
+      },
+      "rawIdentifiersPublished": false
+    },
+    {
+      "method": "explorer-launch",
+      "verifiedAtUtc": "2026-11-05T01:19:31.222Z",
+      "status": "passed",
+      "strictBothPhysicalSettings": true,
+      "liveBackendCanonicalRootVerified": true,
+      "engineContainerVolumeAndMySqlIdentityMatched": true,
+      "all46TablePrimaryKeyRowHashesEqual": true,
+      "localAndUncCanonicalDiskIdentityMatched": true,
+      "coldStartEvidence": {
+        "dedicatedStartAndReadyArtifacts": true,
+        "zeroPreStartDockerProcessesSaved": true,
+        "newProcessAfterStartSaved": true,
+        "source": "private start and ready process artifacts"
+      },
+      "rawIdentifiersPublished": false
+    }
+  ],
+  "crossLaunchChecks": {
+    "canonicalDataDiskSamePhysicalIdentity": true,
+    "historicalPackageDataDiskMetadataUnchanged": true,
+    "oldRealAppDataDataDiskAbsentInEveryObservation": true,
+    "observationsCompared": 5,
+    "strictLaunchContextsCompared": 4,
+    "cliCuaExplorerDistinctNewRootAndBackendProcesses": true,
+    "documentedColdLaunches": 3,
+    "additionalStrictPostLaunchVerification": 1
+  },
+  "finalUi": {
+    "context": "explorer",
+    "canonicalRootDisplayed": true,
+    "noUnsavedChanges": true,
+    "engineRunning": true,
+    "screenshot": {
+      "file": "docker-single-store.png",
+      "bytes": 116579,
+      "sha256": "81b524326c07446ebb07cfd6bd89d9756f68a6e01c63b8dad3edf75a8ea1b90f",
+      "reviewedForSecrets": true
+    }
+  },
+  "limits": {
+    "windowsRebootTested": false,
+    "windowsSignInRetested": false,
+    "futureAppUpdatesOrOtherWindowsAccountsCovered": false,
+    "latestLogicalDumpRestoredForTest": false,
+    "completeDdlIndexAndForeignKeyEqualityTested": false,
+    "physicalVhdxAttachmentHandlesDirectlyEnumerated": false,
+    "directLaunchDedicatedColdStartProcessArtifactsSaved": false,
+    "rowEqualityAppliesToQuiescentCheckpointBeforeWebAndSchedulerRestart": true
+  },
+  "publication": {
+    "sqlVhdxAndEnvironmentExcluded": true,
+    "rawIdentifiersUserProfilePathsAndSidsExcluded": true,
+    "individualRowKeysAndHashesExcluded": true,
+    "rawLogsAndFullSettingsExcluded": true
+  }
+}
