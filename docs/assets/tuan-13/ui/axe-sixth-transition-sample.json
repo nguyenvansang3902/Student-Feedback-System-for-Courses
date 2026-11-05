@@ -1,0 +1,85 @@
+{
+  "tool": {
+    "name": "axe-core",
+    "version": "4.14.0"
+  },
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+    "windowWidth": 1440,
+    "windowHeight": 1000,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "url": "http://127.0.0.1:3007/quen-mat-khau",
+  "timestamp": "2026-11-04T09:52:33.583Z",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "passedRules": 23,
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#dadde2",
+                "bgColor": "#30726e",
+                "contrastRatio": 4.1,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<button type=\"submit\" class=\"w-full rounded-xl bg-teal-800 px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-900 disabled:cursor-wait disabled:bg-slate-300 disabled:text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700\">",
+                  "target": [
+                    ".px-4"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 4.1 (foreground color: #dadde2, background color: #30726e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button type=\"submit\" class=\"w-full rounded-xl bg-teal-800 px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-900 disabled:cursor-wait disabled:bg-slate-300 disabled:text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700\">",
+          "target": [
+            ".px-4"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.1 (foreground color: #dadde2, background color: #30726e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    }
+  ],
+  "incomplete": [],
+  "note": "Lượt thất bại thứ sáu trước khi bộ kiểm chờ CSS transition hữu hạn kết thúc. Ảnh chụp sau đo có thể đã ổn định; không tự coi đây là màu cuối của nút. Chờ lượt đo lại xác minh."
+}

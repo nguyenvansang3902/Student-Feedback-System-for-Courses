@@ -1,4 +1,18 @@
-# Bảng truy vết yêu cầu — checkpoint Tuần 12 sau Điều chỉnh số 01
+# Bảng truy vết yêu cầu — Tuần 13 sau Điều chỉnh số 01
+
+Cập nhật 05/11/2026. Nguồn chức năng `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`; [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn đã sửa harness lịch. Đã chốt FR/điểm ngày 05/11; các mốc dưới bảng là lịch sử.
+
+| Yêu cầu | Bằng chứng hiện có | Giới hạn |
+| --- | --- | --- |
+| FR-160, TC-ALL-01; BR-61/62/67/68 |801/801 test:700 ô 70 action×10 vai trò+41 tình huống+60 tài nguyên; [runtime](assets/tuan-13/runtime-regression.json)227 nhóm/15 bộ+demo 19,9 mã Mục F | Manifest giữ các lượt kế thừa, không nhận cùng snapshot bất biến; FR-160 đã nghiệm thu 05/11 |
+| NFR kiểm thử/build | [Check/build 05/11](assets/tuan-13/check-build-after-calendar.json):2.155 passed+1 Windows symlink skipped/2.156 trong 93 tệp; coverage 78,49/73,48/82,22/79,69%; build 101 route động, ID `Q1SY2ZcIAr3Do--HbL1SZ` | Check cục bộ và CI nguồn mới đều qua; lỗi harness lượt trước giữ là lịch sử |
+| UC-GOLD; 9 FR Tuần 12 | [Kiểm tay đủ các bước](assets/tuan-13/manual-uc-gold.json) đã qua,8 PNG đã xem; [CSV Lãnh đạo/ĐBCL](assets/tuan-13/manual-export-verification.json)3.745/3.011 byte có BOM, đúng vai trò/phạm vi/5 phiếu/100%/mean số 2 | Chỉ CUA browser UI trên demo giả; không helper HTTP/đồng hồ giả/ghi database chính. Chờ hết SLA kiểm runtime riêng; FR đã nghiệm thu sau CI đúng nguồn |
+| NFR-15 | E2E 6/6, axe 34 trạng thái 0 vi phạm,17 PNG tự động đã xem |7 incomplete/168 node cần kiểm tay khả năng tiếp cận; không chứng nhận WCAG |
+| NFR-16; BR-04/33 | Khóa MySQL 8/8, tải 200/200,0 HTTP 500/lỗi mạng, race 20 một phiếu | **p95 3.595,91 ms>3.000 ms**, chưa đạt toàn bộ |
+| BR-68; bảo mật | Bản vá policy ADMIN đa vai trò, nonce CSP/header, budget nộp 30 request/60 giây | Scan partial 40 tệp/8 bề mặt, audit 24 moderate/tám production, HTTP productionbuild mới chưa xác minh |
+| Database/vận hành | [Main](assets/tuan-13/main-data-verification.json)45 bảng/1.575 người dùng,9.709 bản ghi cũ giữ hash; restore độc lập 46 bảng/9.722 dòng khớp | Guard trước mở scheduler; [runtime](assets/tuan-13/local-runtime-verification.json)3 HTTP 200, không áp dụng migration mới/seed/reset/đổi credential; không nhận hash bất biến sau công việc runtime bình thường |
+
+Đã chốt 211/219=96,3%,78/84 FR; chín FR Tuần 12 và FR-160 hoàn tất. FR-145 backlog, sáu FR 09/103/110/111/112/145 chưa xong. [Nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo](bao-cao-tien-do/tuan-13.md); không làmTuần 14/UI-n.
 
 Chỉnh giao diện 30/10/2026 theo yêu cầu người dùng, liên quan FR-01/50/54: bỏ slogan thừa và ví dụ trong ô đăng nhập, dùng tiêu đề chức năng; không đổi chính sách hay luồng nộp. Check 646/646, QA 5 nhóm/8 bố cục qua. [Bằng chứng và ảnh mới](CHINH_SUA_GIAO_DIEN_2026_10_30.md); kiểm HTTP và CI smoke dùng tiêu đề mới, bằng chứng Tuần 8 cũ giữ nguyên.
 

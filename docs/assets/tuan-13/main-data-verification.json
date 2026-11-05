@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-11-04T15:50:20.964Z",
+  "source": {
+    "applicationTables": 45,
+    "users": 1575,
+    "latestMigration": "20261103010000_week12_reports_anomalies",
+    "ownerPresent": true,
+    "originalRowsPreserved": 9709,
+    "baselineTablesVerified": 45,
+    "allTablesIncludingPrisma": 46,
+    "allRowsIncludingPrisma": 9722,
+    "prismaMigrationRows": 13,
+    "mainUnchangedDuringExportAndRestore": true
+  },
+  "backup": {
+    "consistentLogicalDump": true,
+    "transaction": "single-transaction",
+    "allSourceTablesInnoDb": true,
+    "encoding": "UTF-8 bytes streamed directly from process",
+    "bytes": 1734124,
+    "sha256": "348c7eda7af265d90e44057ade3024a01a2c6115ac5758ad256305cc1a8df84d",
+    "privateArtifact": true
+  },
+  "isolatedRestore": {
+    "status": "passed",
+    "newUniqueDatabase": true,
+    "mainExcludedByExplicitGuards": true,
+    "tableKeyRowHashesExactlyEqual": true,
+    "allTablesComparedIncludingPrisma": 46,
+    "restoredSnapshotSha256": "5abda85ac4a9355f343fcdb87c5a8a8eb1fff9e06f20459c1e79f37134dc8895",
+    "retainedForVerification": true
+  },
+  "environment": {
+    "twoDistinctDockerStoresConfirmed": true,
+    "correctStoreSelectedThroughExplorerShortcut": true,
+    "offlineCopiesOfBothStoresVerifiedBeforeSwitch": true,
+    "noOriginalVhdxOverwritten": true
+  },
+  "limits": {
+    "sourceDatabaseWrites": false,
+    "credentialsChanged": false,
+    "mainRestored": false,
+    "manualBusinessAcceptanceNotImplied": true
+  }
+}

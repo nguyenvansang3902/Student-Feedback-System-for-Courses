@@ -1,0 +1,70 @@
+{
+  "run": "K132fcb2eb362",
+  "startedAt": "2026-11-04T08:51:28.664Z",
+  "status": "passed",
+  "method": "Real MySQL interactive transactions/services; controlled transaction-delegate delay/failure injection only for boundary/rollback; no browser/HTTP claim",
+  "fixtureRetention": "Separate marker-guarded proof database; fixture retained, sessions revoked and accounts disabled",
+  "finishedAt": "2026-11-04T08:51:31.588Z",
+  "cases": [
+    {
+      "name": "Guard ban đầu/fallback không nâng S thành X",
+      "guardAbsentAtStart": true,
+      "coldStartMeasured": true,
+      "note": "Lượt đầu tạo guard qua fallback độc quyền rồi nộp đúng một phiếu"
+    },
+    {
+      "name": "S/S tương thích và S đang giữ chặn X",
+      "sharedReadersOverlapped": true,
+      "writerBlockedWhileSharedHeld": true,
+      "writerProgressedAfterRelease": true
+    },
+    {
+      "name": "Hai nhiệm vụ riêng cùng tiến tới đọc mẫu dưới S",
+      "concurrentTemplateReaders": 2,
+      "responses": 2,
+      "answers": 2,
+      "done": 2
+    },
+    {
+      "name": "Đọc mới sau X thay đổi roles",
+      "staleActorDenied": true,
+      "expectedStatus": 403,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    },
+    {
+      "name": "Đọc mới sau X thay đổi session",
+      "staleActorDenied": true,
+      "expectedStatus": 401,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    },
+    {
+      "name": "BR-02 hai mươi lần cùng task chỉ một CAS thắng",
+      "fulfilled": 1,
+      "rejected409": 19,
+      "responses": 1,
+      "answers": 1,
+      "done": 1
+    },
+    {
+      "name": "BR-02 lỗi insert answer rollback MySQL và thử lại thành công",
+      "pendingAndEmptyAfterFailure": true,
+      "responses": 1,
+      "answers": 1,
+      "done": 1
+    },
+    {
+      "name": "BR-04 hết hạn sau đọc mẫu nhả S rồi commit AUTO_CLOSE bằng X",
+      "delayedTemplateRead": true,
+      "autoCloseEvents": 1,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    }
+  ],
+  "sessionsRevokedAndUsersDisabled": true,
+  "updatedAt": "2026-11-04T08:51:31.588Z"
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-04T20:12:27.740Z",
+  "status": "passed",
+  "repairCommit": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248",
+  "failedBaseCommit": "d952d61ed2d8adc7f59d4388745c2cfb1b6ce800",
+  "fileChanged": "scripts/verify-week11-feedback.ts",
+  "method": "Four existing Week11 TSX verification scripts invoked directly, sequentially on their existing marker-validated isolated MySQL fixture. No npm pretest hook or Prisma generation.",
+  "change": "Derive each next check from the configured business-day escalation deadline plus1millisecond; keep exact assignee assertions and application strict-after-deadline semantics.",
+  "applicationSourceChanged": false,
+  "roleAssertionsRelaxed": false,
+  "calendarCase": {
+    "vietnamDate": "2026-11-05",
+    "weekday": "Thursday",
+    "historicalFailure": "Fourcalendar days from Thursday reaches exactly the default two-business-day Monday deadline; equality must not escalate."
+  },
+  "command": {
+    "suites": [
+      {
+        "startedAt": "2026-11-04T20:10:44.5429799Z",
+        "exitCode": 0,
+        "finishedAt": "2026-11-04T20:10:50.2897157Z",
+        "script": "scripts/verify-week11-feedback.ts"
+      },
+      {
+        "startedAt": "2026-11-04T20:10:50.2920881Z",
+        "exitCode": 0,
+        "finishedAt": "2026-11-04T20:10:53.6396476Z",
+        "script": "scripts/verify-week11-inspection.ts"
+      },
+      {
+        "startedAt": "2026-11-04T20:10:53.6397987Z",
+        "exitCode": 0,
+        "finishedAt": "2026-11-04T20:10:56.7162110Z",
+        "script": "scripts/verify-week11-workflows.ts"
+      },
+      {
+        "startedAt": "2026-11-04T20:10:56.7163772Z",
+        "exitCode": 0,
+        "finishedAt": "2026-11-04T20:10:58.7009155Z",
+        "script": "scripts/verify-week11-notifications.ts"
+      }
+    ],
+    "startedAt": "2026-11-04T20:10:44.5240218Z",
+    "mainWebStopRequired": false,
+    "prismaGenerateRun": false,
+    "finishedAt": "2026-11-04T20:10:58.7010965Z",
+    "exitCode": 0
+  },
+  "suites": [
+    {
+      "id": "feedback",
+      "groups": 14,
+      "cleaned": true,
+      "privateResult": ".local/week11-feedback-result.json",
+      "resultSha256": "5c8a408f22775071a142f127b699067b40b8972d34273c050d73352f03929f42"
+    },
+    {
+      "id": "inspection",
+      "groups": 7,
+      "cleaned": true,
+      "privateResult": ".local/week11-inspection-result.json",
+      "resultSha256": "1ff1e1bbeec7f83b4b614ebeb2b92aa60a704c8959401a4f7413782633d8f48f"
+    },
+    {
+      "id": "workflows",
+      "groups": 12,
+      "cleaned": true,
+      "privateResult": ".local/week11-workflows-result.json",
+      "resultSha256": "a25db787f4530a7b9652fd9793ebae639bb9827a686ba44853b2ca0953a35ee0"
+    },
+    {
+      "id": "notifications",
+      "groups": 10,
+      "cleaned": true,
+      "privateResult": ".local/week11-notifications-result.json",
+      "resultSha256": "cb1b53f6a7c893a59f453cd0651b0afe226bb411b64823e7842c0bc57256d72e"
+    }
+  ],
+  "totalGroups": 43,
+  "countingRule": "Rerun of the existing43Week11 groups; not43new distinct regression cases.",
+  "eslint": {
+    "file": "scripts/verify-week11-feedback.ts",
+    "exitCode": 0
+  },
+  "log": {
+    "privatePath": "logs.local/week13-week11-business-deadline-fix.log",
+    "sha256": "9ed6fd06caca3525cb7a37c3e6935054b8ba77914c28ee30bb15ab69739e89a2"
+  },
+  "sourceFileSha256": "fc424d8c653b1e8a07bc4f8e31f6c82ba3c5a8ab9a3a5de475e7487dc5a87458",
+  "boundaries": {
+    "mainWebStopped": false,
+    "prismaGenerateRun": false,
+    "fullCheckOrBuildRun": false,
+    "mainWrites": false,
+    "databaseResetOrDrop": false
+  },
+  "limits": [
+    "This direct isolated proof does not replace the repaired-commit CI run.",
+    "Failed CI evidence remains ci-source-d952d61.json."
+  ]
+}

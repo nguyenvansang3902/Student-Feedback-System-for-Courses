@@ -1,5 +1,17 @@
 # Nhật ký sử dụng AI
 
+## Tuần 13 — chốt ngày 05/11/2026
+
+AI hỗ trợ mã/rà soát/kiểm thử/tài liệu trong phạm vi chức năng đã có: ma trận quyền/IDOR, bản vá ADMIN đa vai trò, CSP/header, budget nộp, khóa chia sẻ và sửa nhãn/vùng cuộn cho bàn phím. Sinh viên cần kiểm chứng và tự điền đóng góp, không gán công việc agent thành công cá nhân hoặc số giờ.
+
+Check/build cục bộ 05/11 qua 2.155 passed+1 symlink skipped/2.156 trong 93 tệp, coverage 78,49/73,48/82,22/79,69%, buildID `Q1SY2ZcIAr3Do--HbL1SZ`; [manifest](assets/tuan-13/check-build-after-calendar.json). Quyền/IDOR 801 test, runtime 227 nhóm/15 bộ+demo 19,E2E 6/6; bằng chứng từng lớp giữ riêng, không cộng nhóm/assertion/request thành tổngtest.
+
+[UC-GOLD kiểm tay](assets/tuan-13/manual-uc-gold.json) đã qua đủ các bước trên CUA browser UI của demo giả, tám PNG đã xem; không helper HTTP/đồng hồ giả/ghi database chính. HaiCSV Lãnh đạo/ĐBCL 3.745/3.011 byte có BOM, đúng vai trò/phạm vi/5 phiếu/100%/mean số 2, không định danh tài khoản; [kiểm byte](assets/tuan-13/manual-export-verification.json). Không nhận chờ hếtSLA bằng tay. Các lượt công cụ dừng 03–04/11 là lịch sử đã tiếp tục đủ bước.
+
+Main đúng ngữ cảnh Explorer/Docker,45 bảng/1.575 người dùng; guard 45 bảng/9.709 bản ghi giữ hash trước mở scheduler. Bản saoVHDX/SQL giữ riêng, restore độc lập đã qua. Trình khởi động gọi migrationdeploy không có thayđổi cần áp dụng; không áp dụng migration mới, không seed/reset/đổi credential/MFA. [Runtime](assets/tuan-13/local-runtime-verification.json) có 3 HTTP 200, healthdatabase:not_checked. Không nhận hash bất biến sau tác vụ runtime bình thường hoặc đã kiểm reboot.
+
+Giữ p95 3.595,91 ms chưa đạt 3 giây, audit 24 moderate/tám production, scan partial, axe 7 incomplete/168 node; 8 ảnh kiểmtay không thay 17 PNG tự động hoặc việc xửlýaxe. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn 831d14d đã qua check/e2e/smoke; [proof](assets/tuan-13/ci-source-831d14d.json) giữLinux 2.156/2.156, khôngskip. Đã chốt 10 FR theo chỉ đạo phiên chính, thêm 23 điểm:211/219,78/84 FR. Không làmTuần 14/UI-n; sinh viên tự xác minh và điền đóng góp.
+
 ## Chỉnh câu chữ giao diện — 30/10/2026
 
 Theo yêu cầu trực tiếp của người dùng, AI bỏ slogan lặp ở trang chủ, Brand/AuthShell, tài khoản và khảo sát; đổi câu dẫn thành tên chức năng/hướng dẫn cụ thể và bỏ placeholder ví dụ ở ô đăng nhập. Trang chủ dẫn tới khảo sát/tài khoản đã có, chỉ phản hồi còn chưa mở. Không đổi service, schema hoặc quy tắc nghiệp vụ. Cập nhật chuỗi đối chiếu của CI smoke và HTTP xác nhận theo tiêu đề mới. `npm run check` qua 646/646 trong 39 tệp; QA Chrome đăng nhập thật bằng tài khoản demo, 5 nhóm/8 bố cục/8 PNG đã xem, không lỗi JavaScript/tràn ngang/thiếu nhãn trong phép đo, không nộp phiếu. [Chi tiết](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tiến độ giữ 117/219; ghi nhận sở thích câu chữ trong PROJECT_STATE cho các lần làm tiếp.

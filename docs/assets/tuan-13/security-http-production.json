@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-11-04T09:28:12.733Z",
+  "origin": "http://127.0.0.1:3013",
+  "expectedEnvironment": "production",
+  "method": "Read-only HTTP; HTML script nonce checked from server response bytes, not browser execution.",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "document": true,
+      "scriptCount": 11,
+      "matchingNonce": true,
+      "csp": "default-src 'self'; script-src 'self' 'nonce-[per-request]'  'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/dang-nhap",
+      "status": 200,
+      "document": true,
+      "scriptCount": 11,
+      "matchingNonce": true,
+      "csp": "default-src 'self'; script-src 'self' 'nonce-[per-request]'  'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/kich-hoat",
+      "status": 200,
+      "document": true,
+      "scriptCount": 11,
+      "matchingNonce": true,
+      "csp": "default-src 'self'; script-src 'self' 'nonce-[per-request]'  'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/duong-dan-khong-ton-tai-tuan13",
+      "status": 404,
+      "document": true,
+      "scriptCount": 10,
+      "matchingNonce": true,
+      "csp": "default-src 'self'; script-src 'self' 'nonce-[per-request]'  'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "document": false,
+      "scriptCount": 0,
+      "matchingNonce": null,
+      "csp": null,
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/api/auth/me",
+      "status": 401,
+      "document": false,
+      "scriptCount": 0,
+      "matchingNonce": null,
+      "csp": null,
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    },
+    {
+      "path": "/api/reports",
+      "status": 401,
+      "document": false,
+      "scriptCount": 0,
+      "matchingNonce": null,
+      "csp": null,
+      "hsts": "max-age=31536000",
+      "securityHeaders": "passed"
+    }
+  ]
+}

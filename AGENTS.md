@@ -41,6 +41,11 @@ dev · build · start · lint · typecheck · test · test:e2e · check · db:mi
 - Điều chỉnh số01 và phạm vi việc bù G1: [docs/BO_SUNG_01_TAC_NHAN.md](docs/BO_SUNG_01_TAC_NHAN.md); chưa làm Tuần7 khi chưa có lệnh BẮT ĐẦU TUẦN 7.
 - ADMIN không xem dữ liệu nghiệp vụ nhạy cảm/hồ sơ Thanh tra.
 
+## Docker trong môi trường Windows này
+
+- Khởi động Docker Desktop bằng shortcut trong Windows Explorer. Không khởi tạo backend bằng `Start-Process`, `sky.launch_app`, `cua.computer.launch_app` hoặc `docker desktop start` từ tiến trình Codex: AppData có thể bị chuyển hướng sang bản dữ liệu riêng của ứng dụng. CLI được dùng sau khi Docker đã mở đúng từ Windows.
+- Nếu schema hoặc dữ liệu khác checkpoint, đối chiếu ngữ cảnh khởi chạy và bản sao trước khi ghi. Không migrate, seed hoặc reset để xử lý chênh lệch dữ liệu chưa rõ nguyên nhân. Bằng chứng Tuần 13: `docs/assets/tuan-13/main-data-verification.json`; hướng dẫn mở dự án ở README.
+
 ## Giai đoạn nâng cấp giao diện
 
 - Trạng thái UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Prompt được giữ nguyên tại [docs/UI_NANG_CAP_PROMPT.md](docs/UI_NANG_CAP_PROMPT.md) để dùng sau khi hoàn thành 15 tuần và có lệnh riêng.

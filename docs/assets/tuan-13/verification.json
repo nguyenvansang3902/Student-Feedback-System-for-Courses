@@ -1,0 +1,850 @@
+{
+  "schemaVersion": 1,
+  "assembledAt": "2026-11-05T01:05:21.565Z",
+  "status": "week13_completed_with_documented_limits",
+  "scope": "Final evidence index. Separate counts for local check, CI, E2E, runtime, load and manual UI. Historical failures remain retained.",
+  "countingRule": "Vitest tests, runtime groups, mandatory codes, HTTP paths, requests, axe rule instances, and database rows are distinct units and are not summed.",
+  "source": {
+    "branch": "feat/week13-testing-security-performance",
+    "applicationSourceCommit": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248",
+    "precedingSourceCommit": "d952d61ed2d8adc7f59d4388745c2cfb1b6ce800",
+    "checkAndBuildProof": "check-build-after-calendar.json",
+    "sourceFilesCount": 472,
+    "sourceManifestSha256": "d04d3c88366004df857e3a6bac679813dfa136edfdd794775abb3a978635523e",
+    "hashesCapturedAfterCheckOnly": true,
+    "currentCheckedCodeHashesMatch": true,
+    "documentationCommitsTrackedSeparately": true,
+    "headAtAssembly": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248"
+  },
+  "quality": {
+    "status": "passed",
+    "check": {
+      "command": "npm run check",
+      "exitCode": 0,
+      "files": 93,
+      "passed": 2155,
+      "skipped": 1,
+      "total": 2156,
+      "skipReason": "Windows file-symlink EPERM",
+      "coverage": {
+        "lines": {
+          "total": 5122,
+          "covered": 4082,
+          "skipped": 0,
+          "pct": 79.69
+        },
+        "statements": {
+          "total": 5789,
+          "covered": 4544,
+          "skipped": 0,
+          "pct": 78.49
+        },
+        "functions": {
+          "total": 1198,
+          "covered": 985,
+          "skipped": 0,
+          "pct": 82.22
+        },
+        "branches": {
+          "total": 4541,
+          "covered": 3337,
+          "skipped": 0,
+          "pct": 73.48
+        },
+        "branchesTrue": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "logSha256": "ccb97c6168c28647d98a137df54d766c10202d6164cb990e7f1284167dd4b89c",
+      "logLastWriteUtc": "2026-11-04T20:12:28.302Z"
+    },
+    "build": {
+      "command": "npm run build",
+      "exitCode": 0,
+      "distDir": ".next",
+      "buildId": "Q1SY2ZcIAr3Do--HbL1SZ",
+      "routes": 101,
+      "logSha256": "3e8f0eaecd023f453b6d25cadd702a6e215cc67a681b6b9043d8dfe84aed4fc6",
+      "logLastWriteUtc": "2026-11-04T20:13:33.085Z"
+    },
+    "thresholds": {
+      "statements": 75,
+      "branches": 70,
+      "functions": 75,
+      "lines": 75
+    },
+    "allCoverageThresholdsPassed": true,
+    "proof": "check-build-after-calendar.json"
+  },
+  "e2e": {
+    "status": "passed",
+    "capturedAt": "2026-11-04T14:27:12.003Z",
+    "command": "node scripts/run-week12-e2e.mjs",
+    "method": "Playwright Chromium E2E; fixture qua database/HTTP riêng. Không phải kiểm trực tiếp bằng tay.",
+    "testCounts": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "timedOut": 0,
+      "interrupted": 0
+    },
+    "accessibility": {
+      "states": 34,
+      "violationRuleInstances": 0,
+      "violationNodes": 0,
+      "incompleteRuleInstances": 7,
+      "incompleteNodes": 168,
+      "status": "no_automated_violations; incomplete_requires_manual_review; no_whole_system_wcag_certification"
+    },
+    "screenshotsListed": 17,
+    "screenshotsOpened": 17,
+    "manualUcGoldImplied": false
+  },
+  "runtimeRegression": {
+    "status": "runtime_mandatory_nine_passed; broader_week13_acceptance_tracked_separately",
+    "summary": {
+      "successfulSuiteCount": 15,
+      "runtimeAndExportGroups": 227,
+      "mysqlHttpServiceGroups": 217,
+      "syntheticDtoFileParserGroups": 10,
+      "seededDemoGroups": 19,
+      "policyAndResourceMatrixUnitTests": 801,
+      "mandatoryCodes": 9,
+      "mandatoryCodesPassed": 9,
+      "allDatabaseFixtureSuitesCleaned": true,
+      "countNote": "Groups, Vitest tests, HTTP requests and mandatory requirement codes are separate units and are not added into a single test total."
+    },
+    "suites": [
+      {
+        "id": "week4",
+        "status": "passed",
+        "passedGroups": 29,
+        "layer": "mysql_http"
+      },
+      {
+        "id": "week5",
+        "status": "passed",
+        "passedGroups": 23,
+        "layer": "mysql_http_mailpit"
+      },
+      {
+        "id": "week6",
+        "status": "passed",
+        "passedGroups": 20,
+        "layer": "mysql_http"
+      },
+      {
+        "id": "week7",
+        "status": "passed",
+        "passedGroups": 19,
+        "layer": "mysql_http_mailpit"
+      },
+      {
+        "id": "week7-settings",
+        "status": "passed",
+        "passedGroups": 13,
+        "layer": "mysql_http_mailpit"
+      },
+      {
+        "id": "week8",
+        "status": "passed",
+        "passedGroups": 17,
+        "layer": "mysql_http"
+      },
+      {
+        "id": "week9",
+        "status": "passed",
+        "passedGroups": 12,
+        "layer": "mysql_http"
+      },
+      {
+        "id": "week10",
+        "status": "passed",
+        "passedGroups": 19,
+        "layer": "mysql_http"
+      },
+      {
+        "id": "week11-feedback",
+        "status": "passed",
+        "passedGroups": 14,
+        "layer": "mysql_service"
+      },
+      {
+        "id": "week11-inspection",
+        "status": "passed",
+        "passedGroups": 7,
+        "layer": "mysql_service"
+      },
+      {
+        "id": "week11-workflows",
+        "status": "passed",
+        "passedGroups": 12,
+        "layer": "mysql_service"
+      },
+      {
+        "id": "week11-notifications",
+        "status": "passed",
+        "passedGroups": 10,
+        "layer": "mysql_service_mailpit"
+      },
+      {
+        "id": "week12-reports",
+        "status": "passed",
+        "passedGroups": 13,
+        "layer": "mysql_service_real_dto"
+      },
+      {
+        "id": "week12-anomalies",
+        "status": "passed",
+        "passedGroups": 9,
+        "layer": "mysql_service"
+      },
+      {
+        "id": "week12-exports",
+        "status": "passed",
+        "passedGroups": 10,
+        "layer": "synthetic_dto_real_file_parsers"
+      }
+    ],
+    "mandatoryCodes": [
+      {
+        "id": "TC-PDT-01",
+        "status": "passed"
+      },
+      {
+        "id": "TC-PDT-02",
+        "status": "passed"
+      },
+      {
+        "id": "TC-PDT-03",
+        "status": "passed"
+      },
+      {
+        "id": "TC-KT-01",
+        "status": "passed"
+      },
+      {
+        "id": "TC-KT-02",
+        "status": "passed"
+      },
+      {
+        "id": "TC-TT-01",
+        "status": "passed"
+      },
+      {
+        "id": "TC-TT-02",
+        "status": "passed"
+      },
+      {
+        "id": "TC-TT-03",
+        "status": "passed"
+      },
+      {
+        "id": "TC-ALL-01",
+        "status": "passed"
+      }
+    ],
+    "fingerprintLimitation": "Earlier successful suites were retained and reconciled, not rerun unnecessarily. Week4–7 predate the final student-survey shared-lock fast path; Week8 and later prove that changed runtime path. The assembly fingerprint must not be claimed as the exact bytes of every inherited run.",
+    "manualAcceptanceImplied": false
+  },
+  "transactionLocks": {
+    "status": "passed",
+    "cases": 8,
+    "method": "Real MySQL interactive transactions/services; controlled transaction-delegate delay/failure injection only for boundary/rollback; no browser/HTTP claim",
+    "sessionsRevokedAndUsersDisabled": true,
+    "standaloneCommandReproduction": {
+      "status": "passed",
+      "run": "K13887a9f0f47",
+      "command": "npm run test:survey-locks",
+      "exitCode": 0,
+      "cases": 8,
+      "loadMarkerAbsentAtCommandStart": true,
+      "lockDatabaseAbsentAtCommandStart": true,
+      "coldStartMeasured": true,
+      "sessionsRevokedAndUsersDisabled": true,
+      "proof": "docs/assets/tuan-13/survey-lock-standalone-result.json",
+      "countingRule": "Repeat proof of the same eight cases; not eight additional distinct cases."
+    }
+  },
+  "load": {
+    "status": "completed_measurements; local_latency_target_not_met",
+    "baseline": {
+      "run": "L13f7b02ad4e8",
+      "startedAt": "2026-11-03T16:01:36.675Z",
+      "finishedAt": "2026-11-03T16:02:01.821Z",
+      "status": "measured-target-not-met",
+      "stage": "completed",
+      "mode": "next-start-production",
+      "buildId": "N6kgSBsV5iD1AiWnNk9tH",
+      "sourceHead": "e05985625849818ce0aaabe41db6aecc80ca0e1f",
+      "workingTreeDirty": true,
+      "harnessSha256": "a612cccc5d8455b21ad1ae8a5771aafd4c4cb27c6b96af64b8bfb1e4f4fb99de",
+      "uniqueBurst": {
+        "requests": 200,
+        "elapsedMs": 12419.96,
+        "throughputPerSecond": 16.1,
+        "latencyMs": {
+          "p50": 7338.21,
+          "p95": 12092.56,
+          "p99": 12311.97,
+          "max": 12398.4372
+        },
+        "statuses": {
+          "200": 196,
+          "500": 4
+        },
+        "transportErrors": 0,
+        "serverErrors": 4,
+        "configuredConcurrency": 200,
+        "successfulUnique": 196,
+        "unexpectedUnique": 4,
+        "unexpectedErrorRate": 0.02,
+        "databaseCountsIncludingWarmup": {
+          "responses": 197,
+          "answers": 985,
+          "tasksDone": 197
+        },
+        "p95TargetMs": 3000,
+        "errorRateTargetBelow": 0.01,
+        "timingTargetMet": false,
+        "errorTargetMet": false
+      },
+      "sameTaskRace": {
+        "requests": 20,
+        "elapsedMs": 894.85,
+        "throughputPerSecond": 22.35,
+        "latencyMs": {
+          "p50": 646.59,
+          "p95": 877.62,
+          "p99": 891.96,
+          "max": 891.9575000000004
+        },
+        "statuses": {
+          "200": 1,
+          "409": 19
+        },
+        "transportErrors": 0,
+        "serverErrors": 0,
+        "configuredConcurrency": 20,
+        "databaseDelta": {
+          "responseIncrease": 1,
+          "answerIncrease": 5,
+          "taskStatus": "DONE"
+        }
+      },
+      "correctnessPassed": true,
+      "performanceTargetsMet": false,
+      "sessionsRevokedAndUsersDisabled": true
+    },
+    "afterSharedGuard": {
+      "run": "L136954f82e58",
+      "startedAt": "2026-11-04T09:17:18.557Z",
+      "finishedAt": "2026-11-04T09:17:35.427Z",
+      "status": "measured-target-not-met",
+      "stage": "completed",
+      "mode": "next-start-production",
+      "buildId": "U4gfXxiSSrhNoZev0uDYX",
+      "sourceHead": "e05985625849818ce0aaabe41db6aecc80ca0e1f",
+      "workingTreeDirty": true,
+      "harnessSha256": "a612cccc5d8455b21ad1ae8a5771aafd4c4cb27c6b96af64b8bfb1e4f4fb99de",
+      "uniqueBurst": {
+        "requests": 200,
+        "elapsedMs": 3693.75,
+        "throughputPerSecond": 54.15,
+        "latencyMs": {
+          "p50": 2735.16,
+          "p95": 3595.91,
+          "p99": 3675.08,
+          "max": 3678.458499999999
+        },
+        "statuses": {
+          "200": 200
+        },
+        "transportErrors": 0,
+        "serverErrors": 0,
+        "configuredConcurrency": 200,
+        "successfulUnique": 200,
+        "unexpectedUnique": 0,
+        "unexpectedErrorRate": 0,
+        "databaseCountsIncludingWarmup": {
+          "responses": 201,
+          "answers": 1005,
+          "tasksDone": 201
+        },
+        "p95TargetMs": 3000,
+        "errorRateTargetBelow": 0.01,
+        "timingTargetMet": false,
+        "errorTargetMet": true
+      },
+      "sameTaskRace": {
+        "requests": 20,
+        "elapsedMs": 389.92,
+        "throughputPerSecond": 51.29,
+        "latencyMs": {
+          "p50": 354.52,
+          "p95": 388.31,
+          "p99": 389.56,
+          "max": 389.5639999999985
+        },
+        "statuses": {
+          "200": 1,
+          "409": 19
+        },
+        "transportErrors": 0,
+        "serverErrors": 0,
+        "configuredConcurrency": 20,
+        "databaseDelta": {
+          "responseIncrease": 1,
+          "answerIncrease": 5,
+          "taskStatus": "DONE"
+        }
+      },
+      "correctnessPassed": true,
+      "performanceTargetsMet": false,
+      "sessionsRevokedAndUsersDisabled": true
+    },
+    "comparison": {
+      "sameHostSamePoolObserved": true,
+      "p95ImprovementPercent": 70.26,
+      "latencyTargetMs": 3000,
+      "afterP95Ms": 3595.91,
+      "overTargetMs": 595.91,
+      "errorRateTargetMet": true,
+      "latencyTargetMet": false
+    },
+    "excludedReadinessAttempt": {
+      "run": "L131dde70c310",
+      "status": "excluded_pre_measurement_readiness_failure",
+      "stage": "verify-database-identity",
+      "failureCode": "P2010",
+      "requestsMeasured": 0,
+      "explanation": "Database identity/readiness failed before fixture burst. It is not a measured request failure rate or a performance sample."
+    },
+    "limitations": [
+      "HTTP loopback, no TLS timing; client/server share host.",
+      "Only the recorded200unique-task burst and20same-task race; no1500request or maximum-capacity claim.",
+      "Login and fixture preparation excluded from latency.",
+      "Measurements used their own recorded production build IDs, not the final .next build."
+    ]
+  },
+  "httpSecurity": {
+    "development": {
+      "status": "passed_recorded_sample",
+      "checkedAt": "2026-11-03T15:53:36.157Z",
+      "pathsPassed": 7,
+      "pathsTotal": 7,
+      "matchingSsrScripts": 30
+    },
+    "earlierProduction": {
+      "status": "passed_recorded_sample",
+      "checkedAt": "2026-11-04T09:28:12.733Z",
+      "pathsPassed": 7,
+      "pathsTotal": 7,
+      "matchingSsrScripts": 43,
+      "proofOfFinalBuild": false
+    },
+    "finalBuild": {
+      "status": "pending; prior_environment_failure_and_rejected_retry_preserved_historically",
+      "buildId": "Z_40IdGxygOpDqQD9KrMq",
+      "verifiedPaths": 0,
+      "plannedPaths": 7,
+      "codeFailureEstablished": false,
+      "initialFailureClassification": "production_configuration_guard_rejected_http_APP_URL_before_security_route_checks",
+      "retry": {
+        "action": "Start loopback production server with process-only APP_URL=https://localhost:3013",
+        "status": "rejected_by_automatic_command_policy",
+        "statedReason": "No reason provided by tool."
+      },
+      "reason": "No HTTP attempt on the latest build. The previous initial500 belongs to the prior build/environment; earlier7/7 remains separate dated evidence.",
+      "initialFailureBuildId": "E_Aaik_tdfjPrXqkqyWKQ",
+      "retryAfterPolicyRejectionAttempted": false
+    },
+    "coverageLimit": "Read-only HTTP/SSR bytes on loopback; no TLS/reverse-proxy/WAN or browser Secure-cookie certification."
+  },
+  "mainData": {
+    "status": "passed",
+    "verifiedAt": "2026-11-04T15:50:20.964Z",
+    "source": {
+      "applicationTables": 45,
+      "users": 1575,
+      "latestMigration": "20261103010000_week12_reports_anomalies",
+      "ownerPresent": true,
+      "originalRowsPreserved": 9709,
+      "baselineTablesVerified": 45,
+      "allTablesIncludingPrisma": 46,
+      "allRowsIncludingPrisma": 9722,
+      "prismaMigrationRows": 13,
+      "mainUnchangedDuringExportAndRestore": true
+    },
+    "backup": {
+      "consistentLogicalDump": true,
+      "transaction": "single-transaction",
+      "allSourceTablesInnoDb": true,
+      "encoding": "UTF-8 bytes streamed directly from process",
+      "bytes": 1734124,
+      "sha256": "348c7eda7af265d90e44057ade3024a01a2c6115ac5758ad256305cc1a8df84d",
+      "privateArtifact": true
+    },
+    "isolatedRestore": {
+      "status": "passed",
+      "newUniqueDatabase": true,
+      "mainExcludedByExplicitGuards": true,
+      "tableKeyRowHashesExactlyEqual": true,
+      "allTablesComparedIncludingPrisma": 46,
+      "restoredSnapshotSha256": "5abda85ac4a9355f343fcdb87c5a8a8eb1fff9e06f20459c1e79f37134dc8895",
+      "retainedForVerification": true
+    },
+    "environment": {
+      "twoDistinctDockerStoresConfirmed": true,
+      "correctStoreSelectedThroughExplorerShortcut": true,
+      "offlineCopiesOfBothStoresVerifiedBeforeSwitch": true,
+      "noOriginalVhdxOverwritten": true
+    },
+    "limits": {
+      "sourceDatabaseWrites": false,
+      "credentialsChanged": false,
+      "mainRestored": false,
+      "manualBusinessAcceptanceNotImplied": true
+    },
+    "scopeNote": "Preservation/export/restore snapshot at its recorded time. Ongoing authorized synthetic manual business actions are separate and do not turn this into a manual acceptance result."
+  },
+  "manualUcGold": {
+    "status": "passed",
+    "fullScenarioAccepted": true,
+    "method": "CUA browser UI on isolated synthetic demo",
+    "proof": "manual-uc-gold.json",
+    "exportBytesProof": "manual-export-verification.json",
+    "screenshotsViewed": 8,
+    "deadlineBranchLimit": "SLA expiry evaluated in automated runtime tests; no claim that the manual run waited for SLA deadlines.",
+    "applicationSourceUnchangedByCalendarHarnessFix": true
+  },
+  "ci": {
+    "status": "success",
+    "sourceCommit": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248",
+    "runId": 41904262769,
+    "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769",
+    "jobs": [
+      {
+        "name": "e2e",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "smoke",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "proof": "ci-source.json",
+    "previousFailedProof": "ci-source-d952d61.json",
+    "firstFailure": "Week11 harness assumed four calendar days instead of configured business deadline; application strict-after rule retained."
+  },
+  "review": {
+    "method": "Read-only source/workflow inspection; not a full repository security scan.",
+    "clearAdditionalRuntimeIssueFound": false,
+    "standaloneSurveyLockPreparation": {
+      "status": "fixed_and_verified_on_real_isolated_mysql",
+      "packageFile": "package.json:18",
+      "reader": "scripts/verify-week13-survey-locks.ts:28",
+      "description": "Standalone npm command now prepares load marker first, then lock marker, then verifier; CI invokes that command without duplicate prep. Reproduced with absent load marker and absent lock fixture database.",
+      "ciHandlesDependency": true,
+      "ciLocation": ".github/workflows/check.yml:69",
+      "proof": "docs/assets/tuan-13/survey-lock-standalone-result.json",
+      "realCommandExitCode": 0,
+      "groupsPassed": 8,
+      "guardsWeakened": false,
+      "mainWrites": false,
+      "databaseDrops": false,
+      "generatedClientsChanged": false
+    },
+    "generatedNextEnv": "normal local dev output; not included in functional source fingerprint",
+    "generatedPdfNoise": {
+      "status": "recommend_omit_unless_intended",
+      "files": [
+        {
+          "path": "output/pdf/bao-cao-nhieu-trang-demo.pdf",
+          "bytes": 19331
+        },
+        {
+          "path": "output/pdf/bao-cao-thanh-tra-demo.pdf",
+          "bytes": 12139
+        }
+      ],
+      "description": "Two pre-existing demo PDF file sizes increased by1–2bytes. Binary content was not independently inspected in this review; omit unless intentionally refreshed."
+    },
+    "newWeek13ArtifactBytesBeforeThisIndex": 2721200,
+    "bulkyPrivateArtifactsIncluded": false,
+    "licenseSnapshot": {
+      "status": "dated_license_snapshot_with_current_manifest_fingerprint_reconciliation",
+      "inventoryPackageHashMatchesCurrent": false,
+      "inventoryLockHashMatchesCurrent": true,
+      "currentReconciledPackageHashMatches": true,
+      "currentReconciledLockHashMatches": true,
+      "directDeclarationsMatch": true,
+      "description": "Original packageSha256/retrieval timestamp and license lists retained. New manifestFingerprintReconciliation records current package/lock hashes and confirms all36direct name/version/kind declarations and unchanged lockfile; no repeated license-content or advisory audit claimed."
+    },
+    "textSecretScan": {
+      "scannedAt": "2026-11-04T16:53:30.112Z",
+      "scope": "New/changed docs text and textual week13 evidence, excluding this generated index; no secret values emitted.",
+      "textFiles": 30,
+      "knownLocalSecretFieldsCompared": 2,
+      "patternCategories": [
+        "jwt",
+        "private-key",
+        "otp-provisioning-uri",
+        "credential-bearing-dsn",
+        "github-token"
+      ],
+      "findings": [],
+      "limitations": [
+        "No OCR or independent secret review of binary screenshots in this subtask.",
+        "No proof that every possible credential format is covered."
+      ]
+    },
+    "standaloneLockCommand": "fixed_and_verified8of8",
+    "calendarHarness": "fixed_and_verified43groups_then_full_CI",
+    "generatedPdfRerunNoise": "restored_to_existing_tracked_versions",
+    "noCommittedSecrets": true
+  },
+  "acceptance": {
+    "overall": "completed_week13_with_documented_limits",
+    "technicalCheckBuildE2eRuntime": "passed",
+    "mandatoryNineRuntimeCodes": "passed",
+    "manualUcGold": "passed",
+    "ci": "passed",
+    "finalBuildHttpSecurity": "not_retested; previous7of7proof_retained; automatic_retry_rejected_without_reason",
+    "loadLatencyTarget": "not_met_3595.91ms_vs_proposed3000ms",
+    "axeIncomplete": "7_rule_instances_168_nodes_pending_manual_accessibility_review",
+    "mainPreservationAndIsolatedRestore": "passed",
+    "progress": {
+      "points": 211,
+      "totalPoints": 219,
+      "acceptedFr": 78,
+      "totalFr": 84
+    },
+    "noAdvanceToWeek14OrUiStage": true
+  },
+  "artifactHashesCapturedAtAssemblyOnly": true,
+  "evidence": [
+    {
+      "id": "check-build",
+      "path": "docs/assets/tuan-13/check-build.json",
+      "sha256": "f363b50af325b475280b6a6eb966ef43949d26b0cf2a0618fc70696ed2e3dcf5",
+      "bytes": 115381,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "e2e-accessibility",
+      "path": "docs/assets/tuan-13/ui/e2e-accessibility-summary.json",
+      "sha256": "04a8f6083e100195f043f583e8ab4f79987c5accf61fa678b198617a64b9999f",
+      "bytes": 15296,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "runtime-regression",
+      "path": "docs/assets/tuan-13/runtime-regression.json",
+      "sha256": "0b6864d2c977d3aba5c677fbc30373f30c1559ae62f88246c4ccee99a7cc42b5",
+      "bytes": 52470,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "survey-locks",
+      "path": "docs/assets/tuan-13/survey-lock-result.json",
+      "sha256": "f34d99e2a888273493851c7f433657f91e83881105af69c2cfd12a266f5e77a4",
+      "bytes": 2170,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "load-baseline",
+      "path": "docs/assets/tuan-13/load-baseline.json",
+      "sha256": "be7eae7daa33e74328885f2f986c1263cca5216e26d3e55a60cc762aa9086753",
+      "bytes": 19818,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "load-after-shared-guard",
+      "path": "docs/assets/tuan-13/load-after-shared-guard.json",
+      "sha256": "724bfbc745d50d2800e74419e5a99f133b2b608993b9ebf29e8a644c96a60462",
+      "bytes": 20143,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "load-readiness-excluded-attempt",
+      "path": "docs/assets/tuan-13/load-readiness-failure.json",
+      "sha256": "06ebc6eccfc170e3e93174501c60983c11c294c96fb3f00d18a18ae81c900bfe",
+      "bytes": 1180,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "security-http-production-earlier",
+      "path": "docs/assets/tuan-13/security-http-production.json",
+      "sha256": "c14d19fecb9c268f91c5461e726587f805475dfcce195baacad5c12fe98337e4",
+      "bytes": 3050,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "security-http-development",
+      "path": "docs/assets/tuan-13/security-http-development.json",
+      "sha256": "69e44684b29093d489695ec4c955cc998a6eb33c5d8a5e478151ad14d5a543a4",
+      "bytes": 2933,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "main-data",
+      "path": "docs/assets/tuan-13/main-data-verification.json",
+      "sha256": "dd55bff883cda8373e67cc3ec635672b20789868565cb4f6b2233259c6abcbda",
+      "bytes": 1503,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "license-inventory",
+      "path": "docs/assets/tuan-13/license-inventory.json",
+      "sha256": "bed70f60d5b7f554055aa33bf55e52f4c46172a64d53f550acef3c2c72e36ee7",
+      "bytes": 277056,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "dependency-registry-metadata",
+      "path": "docs/assets/tuan-13/registry-metadata.json",
+      "sha256": "8f53a1ff7ac8426662a5602a0ac60c91a26f4821671eb178d2e54182b4d62c1a",
+      "bytes": 4765,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "manual-published-screenshot",
+      "path": "docs/assets/tuan-13/ui/uc-gold-da-cong-bo.png",
+      "sha256": "828783ee4e87f7ddc53305b7e270739507e770ed8808704d8c62b81e579c3c40",
+      "bytes": 51126,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "ci-workflow",
+      "path": ".github/workflows/check.yml",
+      "sha256": "d067640bb983a613e35129d1f43206ef0e3db8199aeebe19e8f89e111ac684a4",
+      "bytes": 6748,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "security-report",
+      "path": "docs/BAO_MAT_TUAN_13.md",
+      "sha256": "935e9dc36bbac1f616ba294e46dd9607589af967cc591d7b388a27dcd968e725",
+      "bytes": 17658,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "performance-report",
+      "path": "docs/HIEU_NANG_TUAN_13.md",
+      "sha256": "46ef4983600b1be46950753744c99a31da68f4e362e1b8e28d235a0c5e6ae943",
+      "bytes": 16911,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "manual-qa-report",
+      "path": "docs/QA_GIAO_DIEN_TUAN_13.md",
+      "sha256": "a90d66e90fb75864348530158cb4fcc2981261e21b71b9ff2f060c0b966e0425",
+      "bytes": 9585,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "survey-lock-standalone",
+      "path": "docs/assets/tuan-13/survey-lock-standalone-result.json",
+      "sha256": "0390d4a9b35a7c9e773c30aa4399316c843530770a6d425a0ec90f7e2dbd8585",
+      "bytes": 4030,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "current-package-manifest",
+      "path": "package.json",
+      "sha256": "46d100613a56ea5d6b37f8e4537e1bd19baf4ac95ba64e834f283bdfb936364d",
+      "bytes": 5839,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "current-package-lock",
+      "path": "package-lock.json",
+      "sha256": "6970f434863fff1aec256a57c1c4686296b14cb308b73baf7c4b7c3cebd2f525",
+      "bytes": 409325,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "latest-check-build",
+      "path": "docs/assets/tuan-13/check-build-after-calendar.json",
+      "sha256": "7f4761d1d702d7b030d9589d802db03fa9d92f05172218a56f98cd75cb9d6dc1",
+      "bytes": 54577,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "ci-source",
+      "path": "docs/assets/tuan-13/ci-source.json",
+      "sha256": "be4d6f982e71524554d7a1a8c43f8f3c8e4f4b8afb0c41769d60ca6edbf00866",
+      "bytes": 13473,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "ci-source-initial-failure",
+      "path": "docs/assets/tuan-13/ci-source-d952d61.json",
+      "sha256": "a4c0c4bced743a16a52754030e69f2cbf7b8685bed030cdbce4cdc41e40bed3c",
+      "bytes": 12006,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "calendar-harness-fix",
+      "path": "docs/assets/tuan-13/ci-business-deadline-fix.json",
+      "sha256": "fe18758febc2e8923349d8207aded58b2df64c62e19a1a621a6dac65c7d79eed",
+      "bytes": 3743,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "manual-uc-gold",
+      "path": "docs/assets/tuan-13/manual-uc-gold.json",
+      "sha256": "0bb1947dcc22424211c831e38c87b32ae1b49de43d5295971f8a8021a3814dab",
+      "bytes": 8661,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "manual-csv-exports",
+      "path": "docs/assets/tuan-13/manual-export-verification.json",
+      "sha256": "96249699e98dcd909dc7ad39cd41c6b0c22069528bab0d2eeec54a36aa191cf9",
+      "bytes": 899,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    },
+    {
+      "id": "local-runtime",
+      "path": "docs/assets/tuan-13/local-runtime-verification.json",
+      "sha256": "2570849b073796d6105ae3ea87e8ed624f1c846e6c10954993db3b4f6cdf2d58",
+      "bytes": 1046,
+      "fingerprintCapturedAt": "2026-11-05T01:05:21.565Z"
+    }
+  ],
+  "lastReconciledAt": "2026-11-05T01:05:21.565Z",
+  "followupFix": {
+    "completedAt": "2026-11-04T19:50:09.415Z",
+    "scope": [
+      "package.json standalone command",
+      ".github/workflows/check.yml duplicate-prep removal",
+      "docs/HIEU_NANG_TUAN_13.md rerun instructions and real proof",
+      "license inventory fingerprint reconciliation",
+      "standalone proof and this verification index"
+    ],
+    "applicationSourceChanged": false,
+    "uiChanged": false,
+    "fullCheckRun": false,
+    "buildRun": false,
+    "prismaClientGenerateRun": false,
+    "mainResetOrDrop": false,
+    "commit": false,
+    "finalVerificationCompletedAt": "2026-11-04T19:56:37.674Z",
+    "finalCheckRun": true,
+    "finalBuildRun": true,
+    "finalPrismaGenerateRun": true,
+    "validationNote": "Original isolated-fix fields describe that phase only. Latest full check/build ran after GUI dev stopped and are now passed."
+  }
+}

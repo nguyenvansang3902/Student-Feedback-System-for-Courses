@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-04T20:09:12.903Z",
+  "status": "failed_source_run_retained",
+  "source": {
+    "commit": "d952d61ed2d8adc7f59d4388745c2cfb1b6ce800",
+    "branch": "feat/week13-testing-security-performance",
+    "event": "push"
+  },
+  "run": {
+    "id": 41901861781,
+    "name": "Kiểm tra chất lượng",
+    "event": "push",
+    "headSha": "d952d61ed2d8adc7f59d4388745c2cfb1b6ce800",
+    "branch": "feat/week13-testing-security-performance",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41901861781",
+    "runNumber": 55,
+    "runAttempt": 1,
+    "workflowPath": ".github/workflows/check.yml",
+    "createdAt": "2026-11-04T19:57:01Z",
+    "runStartedAt": "2026-11-04T19:57:01Z",
+    "updatedAt": "2026-11-04T20:07:25Z"
+  },
+  "jobs": [
+    {
+      "id": 126826106661,
+      "name": "smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Cài Node.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Cài thư viện từ lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Dùng cấu hình giả cho môi trường thử",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Khởi động MySQL và Mailpit",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Kiểm tra trang trên máy chủ dev",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Dừng dịch vụ thử",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Post Cài Node.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Post Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126826107228,
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Cài Node.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Cài thư viện từ lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Cài Chromium cho Playwright",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Chuẩn bị cấu hình và dịch vụ thử",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Chạy UC-GOLD trên database riêng",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Lưu ảnh kiểm tra giao diện giả",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Dừng dịch vụ thử",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Post Cài Node.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Post Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126826107309,
+      "name": "check",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Cài Node.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Cài thư viện từ lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Dùng cấu hình giả và khởi động dịch vụ",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Chuẩn bị database shadow riêng",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Áp dụng migration đã duyệt và kiểm tra đồng bộ schema",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Kiểm tra ràng buộc trên MySQL thật",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Kiểm tra xác thực qua HTTP, MySQL và Mailpit",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Kiểm tra TOTP, phân quyền và CLI trên database thử riêng",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Kiểm tra danh mục, khóa sổ, CSV/XLSX và kích hoạt qua HTTP",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Kiểm tra mẫu phiếu, phiên bản, khóa và preview không ghi dữ liệu",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Kiểm tra đợt, readiness, lịch mở đóng và cấu hình ngưỡng qua HTTP",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Kiểm tra nộp ẩn danh, 20 request đồng thời và rollback trên MySQL",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Kiểm tra tổng hợp, kiểm duyệt, công bố và quyền xem kết quả",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Kiểm tra phản hồi, tệp riêng tư và tiếp nhận Thanh tra",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Kiểm tra SLA, giải trình, Thanh tra và thông báo Tuần 11",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 18,
+          "name": "Chuẩn bị bộ đọc PDF thử nghiệm",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 19,
+          "name": "Kiểm tra dashboard, chỉ số bất thường và tệp xuất Tuần 12",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 20,
+          "name": "Kiểm tra khóa chia sẻ, quyền hiện tại và rollback nộp phiếu Tuần 13",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 21,
+          "name": "Kiểm tra seed và demo trong database mới riêng",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 22,
+          "name": "Kiểm tra chuyển TOTP từ 30 sang 60 giây trên database thử riêng",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 23,
+          "name": "Chạy lint, typecheck, test và ngưỡng độ phủ service",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 24,
+          "name": "Build ứng dụng",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 25,
+          "name": "Dừng dịch vụ thử, giữ volume",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Cài Node.js",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 50,
+          "name": "Post Lấy mã nguồn",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "results": {
+    "smoke": "passed",
+    "e2e": {
+      "status": "passed",
+      "testsPassed": 6,
+      "duration": "2.1m",
+      "countsFrom": "GitHub Actions E2E job log"
+    },
+    "unitAndCoverage": {
+      "status": "not_run",
+      "counts": null,
+      "reason": "Unit/coverage step skipped because earlier Week11 regression step failed."
+    },
+    "build": {
+      "status": "not_run",
+      "reason": "Earlier Week11 runtime regression step failed."
+    },
+    "week11Feedback": {
+      "completedGroups": 5,
+      "failedGroup": "BR-23 escalation chain to faculty head/quality office"
+    }
+  },
+  "failure": {
+    "job": "check",
+    "step": "Kiểm tra SLA, giải trình, Thanh tra và thông báo Tuần 11",
+    "kind": "AssertionError/ERR_ASSERTION",
+    "file": "scripts/verify-week11-feedback.ts",
+    "line": 292,
+    "sanitizedMessage": "Escalated assignee did not match the next expected stage.",
+    "diagnosis": "Harness advances4calendar days, while escalation waits strictly after2business days. From Thursday05Nov2026 Asia/Ho_Chi_Minh, the4calendar-day instant is exactly the Monday business deadline; the app correctly does not advance at equality.",
+    "runtimeApplicationBugEstablished": false,
+    "repairScope": "Week11 test harness timing only; keep application strict deadline and role assertions."
+  },
+  "retrieval": {
+    "runDiscovery": "Public GitHub REST exact head_sha; no authentication in script.",
+    "jobStepsAndLogs": "Connected GitHub tools after run ID discovery.",
+    "rawLogsEmbedded": false,
+    "identifiersAndEnvironmentSecretsOmitted": true
+  },
+  "limits": [
+    "This failed run is preserved even if a subsequent source commit succeeds.",
+    "E2E passed6tests; unit/coverage and build were skipped, so no CI unit/build pass is claimed.",
+    "Automated CI does not replace direct manual business acceptance or final production HTTP verification."
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "status": "manual_walkthrough_passed",
+  "timezone": "Asia/Saigon",
+  "observationDates": [
+    "2026-11-04",
+    "2026-11-05"
+  ],
+  "evidenceOrigin": "Root agent observed application browser UI through CUA; documentation task hashes retained screenshots. No result inferred from an API-only helper.",
+  "method": {
+    "applicationActions": "CUA browser UI only",
+    "database": "existing isolated synthetic demo used for the manual journey",
+    "fakeClockUsed": false,
+    "helperHttpUsed": false,
+    "mainDatabaseWrites": false,
+    "credentialsChanged": false
+  },
+  "steps": {
+    "campaign": {
+      "status": "passed",
+      "closedAtNaturalDeadline": true,
+      "tasks": 5,
+      "completedTasks": 5,
+      "responses": 5,
+      "completionPercent": 100,
+      "average": 2,
+      "publishBlockedWithPendingEssay": true,
+      "pendingEssayBeforeModeration": 1,
+      "moderationReasonEntered": true,
+      "pendingEssayAfterModeration": 0,
+      "published": true
+    },
+    "improvement": {
+      "status": "passed",
+      "teacherSubmitted": true,
+      "departmentHeadConfirmed": true,
+      "confirmedAtLocal": "2026-11-04 23:56"
+    },
+    "normalFeedback": {
+      "status": "passed",
+      "teacherAcceptedStartedAndAnswered": true,
+      "studentSatisfaction": 4,
+      "autoClosed": true,
+      "observedAtLocal": "2026-11-05 02:45"
+    },
+    "examFeedbackAndAssessment": {
+      "status": "passed",
+      "examQueueOnly": true,
+      "acceptedStartedAndAnswered": true,
+      "groupedAssessmentResponses": 5,
+      "completionPercent": 100,
+      "average": 2,
+      "atLeastTwoValidContributingTeachers": true
+    },
+    "inspection": {
+      "status": "passed",
+      "selfAssigned": true,
+      "verifiedWithInternalSyntheticNote": true,
+      "conclusionCode": "KHONG_DU_THONG_TIN",
+      "syntheticConclusion": true,
+      "notified": true,
+      "closed": true,
+      "observedAtLocal": "2026-11-05 02:51"
+    },
+    "leadershipReport": {
+      "status": "passed",
+      "selectedCampaignFilter": true,
+      "dashboardObserved": true,
+      "csvDownloaded": true,
+      "csvBytes": 3745,
+      "csvHeaderRoleAndFilterVerified": true,
+      "observedAtLocal": "2026-11-05 02:52"
+    },
+    "teacherOwnClassResults": {
+      "status": "passed",
+      "ownClassResultsViewed": true,
+      "responses": 5,
+      "tasks": 5,
+      "completionPercent": 100,
+      "average": 2,
+      "criterionAnswers": 5,
+      "criterionValue": 2,
+      "moderatedEssayVisible": true,
+      "identitiesVisible": false,
+      "observedAtLocal": "2026-11-05 02:58–02:59"
+    },
+    "qualityAssuranceDashboard": {
+      "status": "passed",
+      "selectedCampaignFilter": true,
+      "responses": 5,
+      "completionPercent": 100,
+      "average": 2,
+      "departmentAndFacultyRowsPresent": true,
+      "observedAtLocal": "2026-11-05 02:58–02:59"
+    },
+    "qualityAssuranceExport": {
+      "status": "passed",
+      "csvDownloadedThroughUi": true,
+      "bytes": 3011,
+      "contentReview": "passed_root_read_bytes",
+      "bom": true,
+      "selectedCampaign": true,
+      "csvMeanNumeric": 2,
+      "noAccountIdentifiersInFile": true,
+      "observedAtLocal": "2026-11-05 02:58–02:59"
+    }
+  },
+  "strictAcceptance": {
+    "status": "passed",
+    "remaining": [],
+    "slaDeadlineBranch": "Covered by runtime regression; not claimed as manually waiting for an SLA deadline.",
+    "frCheckboxesChanged": true,
+    "progressPointsChanged": true
+  },
+  "screenshots": [
+    {
+      "path": "ui/uc-gold-da-cong-bo.png",
+      "bytes": 51126,
+      "sha256": "828783ee4e87f7ddc53305b7e270739507e770ed8808704d8c62b81e579c3c40",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-tbm-xac-nhan.png",
+      "bytes": 65071,
+      "sha256": "103bd6df1d03c963f3e91307c9b608909a4f2df0a15786d1e201b810892dd119",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-sv-danh-gia.png",
+      "bytes": 49288,
+      "sha256": "6056c223cce7a957e4ec3793b799649e318d4dca773b7f1b273bd9a3b06cfb0d",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-khao-thi-bao-cao.png",
+      "bytes": 47888,
+      "sha256": "3707511cd206dd9e5ed95aca41710e947f65e66070fc48068811a906a7cdbedc",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-thanh-tra-dong.png",
+      "bytes": 52850,
+      "sha256": "6e74de9ea30793df981d1c108fa18045608cdf72689519f8f2131906013628c6",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-lanh-dao-bao-cao.png",
+      "bytes": 49552,
+      "sha256": "aa57b8f95a0483efa5d57ec6daacf08e28a7946d4073c67c0445024f0adae601",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-dbcl-bao-cao.png",
+      "bytes": 60827,
+      "sha256": "850e48fb1d0ad381708a8bd7f88c20d221c3e1da8615691df2e6a64f43b93ca8",
+      "viewedByRoot": true
+    },
+    {
+      "path": "ui/uc-gold-gv-ket-qua-lop.png",
+      "bytes": 54310,
+      "sha256": "669b3a124dcdd67580bdff9e41f76956b13d74a9b7f91a4b04eb9d64b9353751",
+      "viewedByRoot": true
+    }
+  ],
+  "privacy": {
+    "resourceIdentifiersOmitted": true,
+    "credentialsOmitted": true,
+    "privateContentOmitted": true
+  },
+  "limits": [
+    "Manual walkthrough does not replace the independent runtime/IDOR suite.",
+    "Axe incomplete items are not resolved by completion of this business walkthrough.",
+    "Final repaired-source CI41904262769 passed check,e2e,smoke; documented test limits remain.",
+    "Eight manual PNGs have been visually reviewed by root; separate from the17 automated final PNGs."
+  ],
+  "browserTroubleshooting": {
+    "staleStoppedTabRecovered": true,
+    "method": "Opened a new tab within the already selected allowed localhost browser context.",
+    "httpsGuardBypassed": false,
+    "applicationDataChangedForRecovery": false
+  },
+  "finalSource": {
+    "publishedCommit": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248",
+    "ciRun": 41904262769,
+    "ciStatus": "check_e2e_smoke_success",
+    "localCheckAndBuild": "after_calendar_check_and_build_passed",
+    "buildId": "Q1SY2ZcIAr3Do--HbL1SZ",
+    "note": "Source hashes in the latest check/build evidence were captured at assembly after runs; no immutable pre-run snapshot claimed. Published repaired commit CI tracked separately.",
+    "ciFailure": {
+      "run": 41901861781,
+      "scope": "test_harness_only",
+      "cause": "Fixed4calendar-day deadline assumption reached exact business-day due time on Thursday2026-11-05; service strict overdue comparison was correct.",
+      "repair": "Construct observation time with configured business days plus1ms; no application change or manual rerun implied.",
+      "repairApplied": true,
+      "applicationSourceChanged": false
+    },
+    "calendarRepairEvidence": "ci-business-deadline-fix.json",
+    "checkBuildEvidence": "check-build-after-calendar.json",
+    "ciEvidence": "ci-source-831d14d.json",
+    "linuxTests": {
+      "passed": 2156,
+      "skipped": 0,
+      "total": 2156,
+      "files": 93
+    },
+    "e2eTests": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "exports": [
+    {
+      "role": "LANH_DAO",
+      "passed": true,
+      "bytes": 3745,
+      "sha256": "4199b33005000ede5fe388aafcd52a7b7b46841ea997613cd84726efc9bfe392",
+      "bom": true,
+      "selectedCampaign": true,
+      "expectedSurveyRow": {
+        "responses": 5,
+        "participation": "100%",
+        "mean": 2
+      },
+      "noAccountIdentifiersInFile": true
+    },
+    {
+      "role": "CAN_BO_DBCL",
+      "passed": true,
+      "bytes": 3011,
+      "sha256": "f745c6e65698d266420017d268aafc35b30b837ecb740d1674223c171a3c6cb8",
+      "bom": true,
+      "selectedCampaign": true,
+      "expectedSurveyRow": {
+        "responses": 5,
+        "participation": "100%",
+        "mean": 2
+      },
+      "noAccountIdentifiersInFile": true
+    }
+  ],
+  "exportVerification": "manual-export-verification.json",
+  "finalMainGuard": {
+    "verifiedAt": "2026-11-04T20:01:13Z",
+    "tables": 45,
+    "originalRowsPreserved": 9709,
+    "hashesUnchanged": true,
+    "beforeSchedulerStart": true
+  },
+  "localRuntimeEvidence": "local-runtime-verification.json",
+  "acceptance": {
+    "acceptedAtLocalDate": "2026-11-05",
+    "week12Frs": [
+      90,
+      91,
+      92,
+      93,
+      94,
+      147,
+      151,
+      158,
+      159
+    ],
+    "week13Frs": [
+      160
+    ],
+    "addedPoints": 23,
+    "totalPoints": 211,
+    "possiblePoints": 219,
+    "completedFrs": 78,
+    "totalFrs": 84,
+    "plannedPointsAtWeek13": 213,
+    "remainingFrs": [
+      9,
+      103,
+      110,
+      111,
+      112,
+      145
+    ],
+    "documentedPerformanceGoalMiss": true
+  }
+}

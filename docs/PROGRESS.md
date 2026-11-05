@@ -1,6 +1,12 @@
 # Tiến độ yêu cầu chức năng
 
-**Hiện tại sau nghiệm thu chức năng Tuần11: 188/219=85,8%, 68/84 FR**. Chốt khởi động/tài liệu và CI commit giao cuối được ghi tại NGHIEM_THU_TUAN_10.md; sửa câu chữ/TOTP không cộng điểm.
+**Đã nghiệm thu Tuần 12–13 ngày 05/11/2026: 211/219 = 96,3%, 78/84 FR.** Tuần 12 chốt FR-90/91/92/93/94/147/151/158/159, thêm 20 điểm; Tuần 13 chốt FR-160, thêm 3 điểm. Kế hoạch lũy kế Tuần 13 là 213/219; chênh 2 điểm FR-145 giữ backlog, không tự cắt.
+
+[CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248` đã qua check/e2e/smoke. [Check/build sau sửa harness](assets/tuan-13/check-build-after-calendar.json):2.155 passed+1 symlinkskipped/2.156 trong 93 tệp; coverage 78,49/73,48/82,22/79,69%; buildID `Q1SY2ZcIAr3Do--HbL1SZ`. [UC-GOLD kiểm tay](assets/tuan-13/manual-uc-gold.json) đã đủ các bước,8 PNG đã xem; [haiCSV](assets/tuan-13/manual-export-verification.json) đúng vai trò/phạm vi.
+
+Giữ p95 3.595,91 ms chưa đạt 3 giây, audit 24 moderate/tám production, axe 7 incomplete/168 node và giới hạn quét nguồn partial. HTTPproduction 7/7 trước đó là bằng chứng riêng; không chạy lại đúng build cuối không phải gate bổ sung để trì hoãn chốtFR. [Nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-13.md).
+
+Còn 6 FR chưa hoàn tất: FR-09/103/110/111/112/145. Không tự bắt đầuTuần 14/UI-n hoặc tự cắt backlog. Các checkbox dưới đây là trạng thái hiện tại; các đoạn mốc/ngày nghiệm thu cũ giữ bằng chứng lịch sử, không đổi số tại thời điểm cũ.
 
 Mốc sửa câu chữ sau Tuần8, trước Tuần9 ngày 30/10/2026: [chi tiết và ảnh](CHINH_SUA_GIAO_DIEN_2026_10_30.md). Tại mốc đó không thêm FR hoặc điểm, giữ 117/219, 41/84 FR.
 
@@ -94,11 +100,11 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 
 ## M10 Báo cáo
 
-- [ ] FR-90 [P0] dashboard theo vai trò (Tuần 12)
-- [ ] FR-91 [P1] biểu đồ (Tuần 12)
-- [ ] FR-92 [P0] xuất Excel/CSV (Tuần 12)
-- [ ] FR-93 [P1] xuất PDF (Tuần 12)
-- [ ] FR-94 [P1] báo cáo xử lý phản hồi (số lượng, thời gian xử lý, quá hạn, hài lòng) (Tuần 12)
+- [x] FR-90 [P0] dashboard theo vai trò (Tuần 12)
+- [x] FR-91 [P1] biểu đồ (Tuần 12)
+- [x] FR-92 [P0] xuất Excel/CSV (Tuần 12)
+- [x] FR-93 [P1] xuất PDF (Tuần 12)
+- [x] FR-94 [P1] báo cáo xử lý phản hồi (số lượng, thời gian xử lý, quá hạn, hài lòng) (Tuần 12)
 
 ## M11 Hệ thống
 
@@ -122,14 +128,14 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-144 [P0] cảnh báo lệch dữ liệu khi mở đợt, chốt theo dữ liệu hiện tại (Tuần 7)
 - [ ] FR-145 [P1] lô nhập ImportBatch và hoàn tác khi chưa bị đợt chốt dùng — tùy thời gian, không tự cắt (Tuần 7)
 - [x] FR-146 [P0] hàng đợi phản hồi TO_CHUC_LOP_HOC của PĐT (Tuần 10)
-- [ ] FR-147 [P1] dashboard PĐT: độ sẵn sàng, lớp lỗi, phản hồi đang chờ (Tuần 12)
+- [x] FR-147 [P1] dashboard PĐT: độ sẵn sàng, lớp lỗi, phản hồi đang chờ (Tuần 12)
 
 ## M14 Phòng Khảo thí
 
 - [x] FR-148 [P0] cờ isAssessmentGroup trong trình soạn/xem trước và một nhóm mặc định Kiểm tra, đánh giá — việc bù G1 (Tuần 6)
 - [x] FR-149 [P0] hàng đợi THI_KET_THUC_HOC_PHAN và lời nhắc không thay phúc khảo (Tuần 10)
 - [x] FR-150 [P0] Khảo thí xem điểm nhóm kiểm tra–đánh giá gộp theo BR-57 (Tuần 9)
-- [ ] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
+- [x] FR-151 [P1] thống kê phản hồi thi không định danh, có ngưỡng (Tuần 12)
 - [x] FR-152 [P1] kiến nghị rà soát của Khảo thí và phản hồi trưởng bộ môn (Tuần 11)
 
 ## M15 Phòng Thanh tra
@@ -139,12 +145,12 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-155 [P0] loại người xung đột lợi ích khỏi hàng đợi, quyền xem và giao hồ sơ (Tuần 10)
 - [x] FR-156 [P0] kết luận hồ sơ Thanh tra và thông báo đúng mức tiết lộ (Tuần 11)
 - [x] FR-157 [P1] chuyển hồ sơ một chiều từ vai trò được phép sang Thanh tra (Tuần 11)
-- [ ] FR-158 [P1] cảnh báo bất thường khảo sát và màn hình xem xét chỉ số (Tuần 12)
-- [ ] FR-159 [P1] thống kê Thanh tra không định danh, có ngưỡng (Tuần 12)
+- [x] FR-158 [P1] cảnh báo bất thường khảo sát và màn hình xem xét chỉ số (Tuần 12)
+- [x] FR-159 [P1] thống kê Thanh tra không định danh, có ngưỡng (Tuần 12)
 
 ## M16 Ma trận quyền mở rộng
 
-- [ ] FR-160 [P0] ma trận quyền 10 vai trò và IDOR; G1 chỉ phần chức năng hiện có — hoàn thiện toàn bộ TC-ALL-01 ở Tuần 13 (Tuần 13)
+- [x] FR-160 [P0] ma trận quyền 10 vai trò và IDOR; G1 chỉ phần chức năng hiện có — hoàn thiện toàn bộ TC-ALL-01 ở Tuần 13 (Tuần 13)
 
 ## Theo dõi BR bổ sung (không cộng vào mẫu số FR)
 
@@ -161,14 +167,14 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 | BR-58 | P1 | Tuần11 | Đạt Tuần11: kiến nghị rà soát đủ điều kiện, phản hồi TBM/nhắc hạn; MySQL và CI nguồn Tuần11 qua |
 | BR-59 | P1 | Tuần12 | Tuần12 đã hiện thực thống kê phản hồi thi có ngưỡng; MySQL/xuất tệp/CI qua, nghiệm thu toàn tuần chờ UC-GOLD kiểm tay |
 | BR-60 | P0 | Tuần11 | Đạt Tuần11: hồ sơ đi đủ xác minh/kết luận/thông báo/đóng; Tuần12 bổ sung hồ sơ nguồn bất thường không gắn SV |
-| BR-61 | P0 | Tuần10–13 | Đạt lát cắt tiếp nhận: xung đột động GV/TBM/TK kể cả đa vai trò, lọc list/count, 404 và chặn giao; rà đủ luồng tương lai Tuần13 |
+| BR-61 | P0 | Tuần10–13 | Tuần13 đã đối chiếu xung đột động GV/TBM/TK kể cả đa vai trò trên đọc/list/count/giao/tải/thống kê/thông báo; runtime và CI đúng nguồn qua. Không nhận mọi tổ hợp dữ liệu đều đã thử |
 | BR-62 | P0 | Tuần10–13 | Đạt Tuần11: quyền TT, kết luận/thông báo đúng mức tiết lộ, LĐ chỉ tóm tắt; Tuần12 giữ giới hạn trên thống kê/xuất tệp |
 | BR-63 | P0 | Tuần10–13 | Đạt tiếp nhận: mặc định ẩn danh hoàn toàn, danh tính chỉ mở cho TT khi sinh viên chọn, audit; giới hạn ẩn danh mức ứng dụng được ghi rõ |
 | BR-64 | P1 | Tuần11 | Đạt Tuần11: chuyển hồ sơ một chiều có lý do, kiểm quyền/xung đột động và audit |
 | BR-65 | P1 | Tuần12 | Tuần12 đã hiện thực chỉ số/ngưỡng/xem xét/CAS/hồ sơ bất thường; unit/MySQL/E2E/CI qua, kiểm tay toàn luồng còn chờ |
 | BR-66 | P1 | Tuần12 | Tuần12 đã hiện thực thống kê Thanh tra có ngưỡng, không định danh; MySQL/xuất tệp/CI qua, kiểm tay còn chờ |
-| BR-67 | P0 | Theo luồng; kiểm đầy đủ Tuần13 | Tuần12 đã kiểm DTO/tệp xuất CSV/XLSX/PDF, ngưỡng và che tổng suy ngược; chưa nhận nghiệm thu đầy đủ TC-ALL-01 Tuần13 |
-| BR-68 | P0 | G1 từ chối mặc định; kiểm đủ luồng Tuần13 | ADMIN bị chặn dữ liệu học thuật/phản hồi/hồ sơ và báo cáo nhạy cảm, kể cả đa vai trò; CI Tuần12 qua, kiểm đầy đủ Tuần13 |
+| BR-67 | P0 | Theo luồng; Tuần13 đã chốt | DTO/tệp CSV/XLSX/PDF, ngưỡng và che tổng suy ngược đã đối chiếu; TC-ALL-01/FR-160 nghiệm thu Tuần13 qua runtime/E2E/GUI và CI. Giữ giới hạn ẩn danh ứng dụng, không chứng nhận chống mọi phép suy luận |
+| BR-68 | P0 | G1 từ chối mặc định; Tuần13 đã chốt | Đã vá ADMIN đa vai trò ở miền results:*, giữ chặn dữ liệu phản hồi/hồ sơ/báo cáo nhạy cảm; tái hiện trước sửa và hồi quy sau sửa, CI nguồn831d14d qua |
 
 ## Nghiệm thu phần chính Tuần 7 — 29/10/2026
 

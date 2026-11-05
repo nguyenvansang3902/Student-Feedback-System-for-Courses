@@ -1,0 +1,822 @@
+{
+  "schemaVersion": 1,
+  "assembledAt": "2026-11-04T14:28:03.171Z",
+  "status": "runtime_mandatory_nine_passed; broader_week13_acceptance_tracked_separately",
+  "scope": "Week13 regression of implemented Weeks4–12 and Amendment01 sectionF; synthetic isolated fixtures only.",
+  "source": {
+    "branch": "feat/week13-testing-security-performance",
+    "headCommit": "e05985625849818ce0aaabe41db6aecc80ca0e1f",
+    "dirty": true,
+    "fingerprintCapturedAtAssemblyOnly": true,
+    "currentSourceManifestSha256": "a6dcbff64a1dee0e50186071f382a0c30a18aa21699c643d964bb2823ef37928",
+    "sourceFilesCount": 472,
+    "perSuiteImmutableFingerprintCaptured": false,
+    "caveat": "Earlier successful suites were retained and reconciled, not rerun unnecessarily. Week4–7 predate the final student-survey shared-lock fast path; Week8 and later prove that changed runtime path. The assembly fingerprint must not be claimed as the exact bytes of every inherited run."
+  },
+  "summary": {
+    "successfulSuiteCount": 15,
+    "runtimeAndExportGroups": 227,
+    "mysqlHttpServiceGroups": 217,
+    "syntheticDtoFileParserGroups": 10,
+    "seededDemoGroups": 19,
+    "policyAndResourceMatrixUnitTests": 801,
+    "mandatoryCodes": 9,
+    "mandatoryCodesPassed": 9,
+    "allDatabaseFixtureSuitesCleaned": true,
+    "countNote": "Groups, Vitest tests, HTTP requests and mandatory requirement codes are separate units and are not added into a single test total."
+  },
+  "suites": [
+    {
+      "id": "week4",
+      "status": "passed",
+      "layer": "mysql_http",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week4.ts",
+      "passedGroups": 29,
+      "passLineCount": 29,
+      "cases": [
+        "ADMIN mật khẩu đúng chỉ có phiên MFA_SETUP 5 phút, không refresh",
+        "Token tạm bị chặn trên mọi route quản trị và không đổi mục đích bằng refresh",
+        "Phiên MFA tạm hết hạn bị từ chối thật trong MySQL",
+        "QR tối đa60giây/cắt theo phiên, gọi lại không gia hạn, hết hạn403 riêng và đổi đồng thời đúng một lần",
+        "QR/secret mã hóa; xác nhận mới bật MFA, 10 mã lưu hash và cấp FULL",
+        "Quản trị viên thứ hai đăng ký TOTP và mã khôi phục riêng",
+        "Mã khôi phục không thể lấy lại bằng xác nhận ở phiên FULL",
+        "OTP sai, quá cửa sổ và dùng lại đều bị từ chối",
+        "Hai phiên dùng cùng mã khôi phục đồng thời: đúng 1 thành công",
+        "Hai phiên nhập cùng TOTP đồng thời: khóa hàng và lastUsedStep chỉ cho 1 thành công",
+        "Sinh viên không vào được danh sách, chi tiết, nhật ký, cấu hình hoặc hành động ADMIN",
+        "CSRF thiếu, sai, khác phiên và Origin lạ bị chặn trên POST quản trị",
+        "Refresh giữ MFA từ DB, access cha bị vô hiệu và CSRF mới gắn phiên mới",
+        "Đăng xuất thu hồi phiên MFA đầy đủ",
+        "6 vai trò: list/count/detail lọc đúng lớp ghi danh, giảng dạy, khoa, bộ môn, toàn trường",
+        "ADMIN không tự có quyền xem lớp nếu chưa được gán vai trò nghiệp vụ",
+        "Server Component chặn URL không gian của vai trò khác",
+        "ADMIN tạo tài khoản chờ kích hoạt bằng step-up TOTP mới, không cấp mật khẩu",
+        "Gán phạm vi khoa không tồn tại bị từ chối, không ghi vai trò rác",
+        "Gán vai trò và bộ môn hợp lệ thành công qua HTTP và step-up",
+        "Cấu hình không cho tắt MFA bắt buộc ADMIN",
+        "G1: cấu hình đủ 10 vai trò MFA; thu hồi phiên cũ và buộc setup khi đăng nhập mới",
+        "Sai OTP 5 lần khóa 15 phút; mã đúng ở lần 6 vẫn bị chặn",
+        "ADMIN không tự đặt lại 2FA qua web",
+        "ADMIN khác reset 2FA bằng step-up: thu hồi tất cả phiên, mã khôi phục và buộc đăng ký lại",
+        "Đăng ký lại 2FA tạo secret và mã khôi phục mới",
+        "Audit lọc/phân trang đúng; DB và DTO không chứa secret, mật khẩu, token, recovery hoặc lý do thô",
+        "Hai ADMIN khóa chéo đồng thời giữ đúng 1 ADMIN hoạt động; tự khóa bị chặn",
+        "Log server riêng không in mật khẩu, token, OTP, secret QR, recovery hoặc CSRF"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-03T16:12:01.663Z",
+      "privateResultPath": ".local/week13-regression-week4-result.json",
+      "resultSha256": "be8db74b84f4fac74d3e1fff5e9597709c929f624d6644e5778f0771bb81d5c6",
+      "privateLogPath": ".local/week13-regression-week4-fresh.log",
+      "logSha256": "10a4c4b287880a59b464872d4a3651b7fdfcca2fc49c81dccd906793899019fd",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week5",
+      "status": "passed",
+      "layer": "mysql_http_mailpit",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week5.ts",
+      "passedGroups": 23,
+      "passLineCount": 23,
+      "cases": [
+        "TC-PDT-01: khách và vai trò không quản lý danh mục bị chặn; ADMIN chỉ quản lý tổ chức",
+        "CSRF thiếu/sai phiên và Origin khác bị chặn trước khi ghi",
+        "FR-20: tạo đủ sáu danh mục theo quan hệ, gồm phân công giảng viên",
+        "TC-ALL-01 một phần: ma trận 10 vai trò trên route ID đọc/sửa/xóa; ĐBCL chỉ đọc, ADMIN chỉ tổ chức, PĐT chỉ dữ liệu đào tạo",
+        "FR-20: cập nhật thật, từ chối ngày/tín chỉ sai và xóa bản ghi đang được tham chiếu",
+        "BR-34: tìm kiếm/list/count dùng cùng điều kiện và phân trang có giới hạn",
+        "FR-22: tải và đọc lại đủ 8 mẫu CSV/XLSX; mẫu lớp/đăng ký chỉ rõ mã tham chiếu cần thay",
+        "FR-21: CSV tiếng Việt/dấu phẩy trong ngoặc kép chạy thử thành công và không ghi bất kỳ bảng nào",
+        "BR-34: xác nhận chạy thử ràng buộc tệp, người/phiên và hạn dùng; sửa nội dung hoặc token hết hạn bị chặn",
+        "FR-21/8.3: hai commit đồng thời đúng một thắng, tài khoản chờ kích hoạt/mật khẩu null/quyền SV cố định và gửi 2 thư",
+        "Mailpit thật nhận thư kích hoạt của tài khoản nhập, token không xuất trong DTO/log",
+        "FR-21: nhập XLSX giảng viên thật, cấp đúng quyền giảng viên chờ kích hoạt",
+        "FR-21: tệp cố tình sai báo lỗi đúng dòng 2/3, không cấp xác nhận và không ghi dòng hợp lệ riêng lẻ",
+        "Nhập file: từ chối công thức Excel, XLSX giả và tệp vượt 2 MiB",
+        "FR-21: nhập lớp học phần và đăng ký học phần qua mã tham chiếu thật",
+        "FR-21: báo lỗi từng dòng khi trùng đăng ký hoặc mã môn tham chiếu không tồn tại",
+        "BR-17: học kỳ khóa sau preview khiến commit từ chối toàn bộ và trả lỗi dòng có cấu trúc",
+        "BR-17: sáu loại danh mục liên quan học kỳ khóa chỉ đọc, kể cả đổi khoa/bộ môn/môn gián tiếp",
+        "TC-PDT-01/FR-141: chỉ PĐT mở khóa với lý do, CAS chống lặp; audit thật và Mailpit nhận thông báo ĐBCL",
+        "BR-17/8.7: khóa học kỳ và commit đồng thời tuần tự hóa trên MySQL thật, không ghi sau khóa",
+        "FR-20: xóa thật bản ghi chưa dùng, truy vấn lại trả 404",
+        "BR-34: quyền PĐT bị thu hồi có hiệu lực với phiên đang mở và đường tải mẫu",
+        "BR-30: audit và log không chứa nội dung file, email nhập, mật khẩu, token hoặc CSRF"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T08:48:16.366Z",
+      "privateResultPath": ".local/week13-regression-week5-result.json",
+      "resultSha256": "2db3d1e6d775fefce639c3abfe05e8f07b3547643c288fb55122d8ce26b102b5",
+      "privateLogPath": ".local/week13-regression-week5-final.log",
+      "logSha256": "45c773c4210d97106e7cfc81988716264288c465ba66bc55ca653041a1223624",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week6",
+      "status": "passed",
+      "layer": "mysql_http",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week6.ts",
+      "passedGroups": 20,
+      "passLineCount": 20,
+      "cases": [
+        "TC-ALL-01 / BR-34: đủ mười vai trò, phạm vi trưởng khoa/bộ môn hợp lệ, chỉ ĐBCL được list/CSRF; ADMIN đã MFA không có quyền ngầm",
+        "CSRF thiếu/sai phiên/sai miền catalog-admin và Origin thiếu/ngoại lai đều 403 trước ghi",
+        "Giới hạn 256 KiB theo Content-Length lẫn stream không có độ dài; JSON lỗi/Content-Type sai không ghi",
+        "TC-FR148-01/02 / FR-30/31: cờ kiểm tra, đánh giá lưu DB/DTO đúng nhóm sau sắp thứ tự, form ĐBCL có ô chọn; đủ năm loại và hai thang Likert",
+        "TC-ALL-01 / BR-34: mọi đường ID đọc/sửa/khóa/nhân bản/phiên bản/mặc định và SSR xem trước đều chặn chín vai trò khác",
+        "Mọi ID không tồn tại trả 404, UUID sai trả 400, SSR 404 và query phân trang/bộ lọc sai bị từ chối",
+        "FR-30/31: dữ liệu vượt giới hạn, trùng thứ tự, trọng số/thang sai và chèn quyền đều 400, không ghi một phần",
+        "Danh sách phân trang/tìm kiếm trả số tổng và metadata gọn, không có nội dung câu hỏi hoặc định danh người tạo",
+        "CAS revision tăng sau lưu, phiên cũ không ghi đè dữ liệu mới",
+        "MySQL thật: hai request lưu đồng thời cùng revision chỉ có một bên thắng, không mất cập nhật",
+        "BR-05/MySQL thật: khóa và sửa cùng revision chỉ một bên thắng, trạng thái cuối khớp thao tác thắng",
+        "TC-FR148-05 / BR-05: mẫu khóa hiển thị cờ, không cho đổi cờ/nội dung/UUID hoặc mở khóa lại",
+        "BR-05/MySQL thật: hai phiên bản mới đồng thời nhận số 2/3 cùng họ, cây UUID mới và bản khóa cũ không đổi",
+        "FR-34: nhân bản sang họ mới v1 với UUID mới; sửa bản nhân không thay đổi mẫu nguồn",
+        "BR-05: đợt có approvedAt khóa cả mẫu metadata NHAP; tạo phiên bản giữ nguyên câu cũ và phiếu/đáp án ẩn danh cũ",
+        "BR-05: trạng thái DA_DUYET vẫn bảo vệ mẫu khi timestamp approvedAt thiếu",
+        "FR-33: SSR xem trước đủ câu và Không áp dụng; ba lần mở không ghi task/response/answer/audit",
+        "FR-35/MySQL thật: hai chọn mặc định đồng thời còn đúng một; revision cũ bị chặn, nội dung khóa bất biến, dùng mẫu qua nhân bản",
+        "BR-34: thu hồi quyền ĐBCL có hiệu lực ngay với phiên cũ ở list/detail/mutation",
+        "BR-30: đủ audit cho sáu loại thay đổi, không có tên/nội dung phiếu/câu/lựa chọn/mật khẩu/JWT/CSRF trong audit và log máy chủ"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T08:51:09.591Z",
+      "privateResultPath": ".local/week13-regression-week6-result.json",
+      "resultSha256": "4e07cc3fe59f2ed2145800e9176955304f3ac2be2d523c6b6c3020d42c2becda",
+      "privateLogPath": ".local/week13-regression-week6.log",
+      "logSha256": "df95434cd18091ca9afe0e5d025279709f1d3da811343a38215adaad3c31c194",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week7",
+      "status": "passed",
+      "layer": "mysql_http_mailpit",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week7.ts",
+      "passedGroups": 19,
+      "passLineCount": 19,
+      "cases": [
+        "Fixture riêng đủ10vai trò, hai khoa/bộ môn, năm lớp và SV pending/disabled; server đúng DB có marker",
+        "TC-ALL-01: ma trận10vai trò đọc/tạo, ADMIN MFA không được quyền nghiệp vụ; khách bị401",
+        "BR-34: Origin/CSRF phân phiên, UUID/query/JSON/content-type và256KiB byte thật kể cả stream không Content-Length",
+        "FR-40/41: bốn phạm vi đúng số lớp hiện tại, paging list/options; không lấy lớp khác kỳ hay payload sai scope",
+        "TC-PDT-02: RS01/02 chặn, RS04/05/06 cảnh báo; PĐT trả về có lý do và bản chụp bất biến",
+        "TC-PDT-02/BR-17: RS03 cho học kỳ khóa; chỉ đọc và không tạo/trình đợt khi khóa",
+        "FR-42/BR-05/52: ĐBCL→PĐT xác nhận cảnh báo có note→lãnh đạo duyệt; khóa mẫu và cấm khóa kỳ có đợt đã duyệt",
+        "TC-PDT-03/FR-43/44:20ensure đồng thời chỉ mở/chốt/audit một lần; drift vẫn mở theo4SV hiện tại, queue PĐT/ĐBCL, giữ snapshot",
+        "BR-01: đổi đăng ký/thêm lớp sau mở không resync nhiệm vụ/nhân cảnh báo; cấm khóa kỳ đang mở",
+        "FR-46: tiến độ4task/1DONE=25%, paging lớp; không định danh SV/phiếu/đáp án/tổng hợp, PĐT không xem tiến độ",
+        "FR-45: gia hạn tăng hạn và queue đúng cohort4SV; retry không nhân đôi, reuse key khác payload409; cấm hủy sau mở, đóng sớm giữ task",
+        "FR-44/45/144: scheduler CLI --once gửi4SMTP thật vàoMailpit,2địa chỉ/tài khoản không nhận FAILED rõ; retry không gửi lại, lease dọn và log không định danh",
+        "FR-42/45: từ chối→nháp/hủy; rút phê duyệt giữ mẫu khóa và bắt buộc vòng PĐT xác nhận mới trước duyệt lại",
+        "FR-40/BR-06: hai sửa nháp cùng revision chỉ một thắng, bên còn lại409 và không có history ghi đè",
+        "FR-44/BR-06: không cần daemon, GET đầu tiên tự mở; bỏ lỡ cả cửa sổ thì OPEN→CLOSE đúng chuỗi/giờ thật, scheduler lặp không nhân đôi",
+        "FR-44: lãnh đạo duyệt trễ sau startsAt thì mở ngay trong cùng transaction, không chờ lần đọc kế",
+        "BR-17/51 và quyết định29/10: race khóa kỳ/duyệt dùng chung mutex; không tồn tại kỳ khóa với đợt đã duyệt/đang mở",
+        "BR-32/34: thu hồi role hoặc phiên có hiệu lực ngay dù access JWT cũ còn hạn",
+        "BR-30/34: audit đủ tạo/trình/xác nhận/duyệt/mở/drift/gia hạn/đóng; không lý do thô, nội dung phiếu hay JWT/CSRF/mật khẩu trong audit/log"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T08:54:51.542Z",
+      "privateResultPath": ".local/week13-regression-week7-result.json",
+      "resultSha256": "1c1b5ce551d1a9b7c6f263661229523d2c01ad3f07a3b526362cd860cd249b6f",
+      "privateLogPath": ".local/week13-regression-week7.log",
+      "logSha256": "428a17454b92f8c66ee6e04560d748e30a82bb2168791a740ff3e6c1af57fedf",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week7-settings",
+      "status": "passed",
+      "layer": "mysql_http_mailpit",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week7-settings.ts",
+      "passedGroups": 13,
+      "passLineCount": 13,
+      "cases": [
+        "TC-ALL-01/FR-100: mười vai trò, chỉ ADMIN/ĐBCL/PĐT/lãnh đạo đọc; chỉ ADMIN đã MFA có quyền ghi, DTO ngưỡng không cache",
+        "BR-32: phiên ADMIN còn MFA_VERIFY không đọc/ghi cấu hình; query lạ bị từ chối",
+        "BR-34: Origin thiếu/sai và CSRF thiếu/sai/khác miền bị chặn trước tiêu thụ OTP hoặc ghi DB",
+        "FR-100/BR-52: biên ngưỡng, số nguyên, field thừa, JSON/Content-Type/8KiB; không cho tắt lỗi chặn, không ghi khi sai",
+        "BR-32/FR-100: HTTP lưu bằng TOTP thật từ secret mã hóa, lastUsedStep đã tiêu thụ; replay cùng mã không ghi cấu hình",
+        "FR-100: hai phiên service cùng version chỉ một thắng CAS, timestamp tăng, lượt thua/stale không thêm audit",
+        "FR-100/142: đợt mới dùng ngưỡng đã lưu, đổi mặc định không sửa đợt cũ; RS-04 dùng ngưỡng3 với DB thật",
+        "BR-30: audit DB và API chỉ có trước/sau năm ngưỡng, không secret/TOTP/JWT/CSRF hoặc nội dung khảo sát",
+        "BR-34: actor/JWT cũ mất quyền ngay khi role ADMIN hoặc phiên bị thu hồi; service không tin mfa/roles đối số",
+        "FR-45/144: queue DB thật dedupe hai người/sự kiện, worker gửi Mailpit gồm pending và bỏ qua loại khác; chạy lại không gửi thêm",
+        "Queue thật: SMTP hỏng ghi FAILED và backoff, chưa đến hạn không thử; đến hạn gửi lại thành công, không báo SENT giả",
+        "Queue thật: hai worker chỉ một claim lease hết hạn, hết5lần không kẹt PROCESSING, disabled/email sai kết thúc FAILED",
+        "BR-30: log HTTP/audit không có mật khẩu, secret, OTP, token hoặc nội dung thông báo"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T14:19:12.045Z",
+      "privateResultPath": ".local/week13-regression-week7-settings-result.json",
+      "resultSha256": "c1755e5f7247775c618cae6af7dd443684cbc44df86cf5a43032cc9f82392675",
+      "privateLogPath": ".local/week13-regression-week7-settings.log",
+      "logSha256": "958895964171ca70fee564bc55dd751621ff07d02b44a8de9f2138a2712b96ab",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week8",
+      "status": "passed",
+      "layer": "mysql_http",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week8.ts",
+      "passedGroups": 17,
+      "passLineCount": 17,
+      "cases": [
+        "Fixture riêng/đúng marker + UUID máy chủ; 10 vai trò; phiên FULL/MFA do service phát; hai mẫu có đủ 5 loại câu, Likert 1–4/1–5",
+        "BR-34: khách401; 9 vai trò ngoài SINH_VIEN bị403 ở list/CSRF/detail/submit, kể cả ADMIN MFA",
+        "BR-01/34: list/count/pagination chỉ task của actor; foreign/unknown đều404 cả đọc/nộp; form đúng mẫu đã khóa",
+        "FR-54: truy cập thẳng trang đã nộp khi task PENDING phải chuyển về form",
+        "BR-03/34: Origin/CSRF khác phiên/khác chức năng bị chặn; UUID/query/JSON/content-type nghiêm; 256KiB byte thực kể cả stream không Content-Length",
+        "BR-03/04: thiếu/lặp/câu khác mẫu, option khác câu, cả hai thang, mixed-value, NA không cho phép, text quá dài, chọn sai và trường cầu nối đều bị từ chối không echo",
+        "BR-02/03/04: nộp đủ5loại, BOOLEAN=false và bỏ câu tùy chọn; UUIDv4/DATE cùng ngày Việt Nam; DONE/phiếu/6answers nguyên tử, không audit/queue nộp",
+        "5.6(b)/FR-54: lần2 bị409, phiếu không đổi; DONE detail template=null/không answers hoặc ID; trang xác nhận chỉ trạng thái và ngày",
+        "BR-04: Không áp dụng hợp lệ thỏa câu bắt buộc, không chép giá trị; câu tùy chọn trống không tạo answer",
+        "5.6(c)/BR-02: 20 HTTP POST đồng thời trên MySQL thật chỉ1thành công/19bị409, đúng1response+6answers và taskDONE",
+        "BR-01/34: rút Enrollment sau chốt vẫn nộp được theo task; thêm Enrollment sau chốt không sinh quyền đọc/nộp hoặc tự tạo task",
+        "BR-04/17: trước giờ/đã đóng/kỳ khóa/mẫu chưa khóa đều409; hết hạn tự đóng và commit lifecycle dù giao dịch nộp bị từ chối",
+        "BR-01: truy cập SVlist đầu tiên tự mở đợt đã duyệt đến hạn, confirmationrevision/hash đúng, tạo đủ task một lần không cần daemon",
+        "BR-34: khóa tài khoản/thu hồi phiên/grant có hiệu lực ngay; purpose hạn chế bị401; thêm ADMIN làm phiên SV thiếuMFA bị chặn, phiênMFA mới được phép",
+        "BR-02/03: trigger MySQL cưỡng bức lỗi chèn answer rollback taskPENDING/0response/0answer; lỗi HTTP được che, bỏ trigger rồi nộp lại thành công",
+        "W13 NFR-08/BR-33: MySQL thật đủ30request, từ31trả429 trướcJSON/task; CSRF/Origin sai không tiêu budget, một phiếu/6answer không đổi",
+        "5.6(d)/BR-03/30: DTO/xác nhận/log/audit/queue không nội dung/ID phiếu hoặc cầu nối; audit chỉ lifecycle hệ thống; hash phiếu/answer cũ giữ nguyên (export Tuần12 chưa có)"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:28:30.935Z",
+      "privateResultPath": ".local/week13-regression-week8-result.json",
+      "resultSha256": "a38620a4af7462fa26f57486e8c31695d1427827c07819b2b814bc0f9f4424e2",
+      "privateLogPath": ".local/week13-regression-week8.log",
+      "logSha256": "ae419a616104f8bc03deb2266bd8362314ebab259ea8f7d2a72f2e5963ea5e1c",
+      "sourceFingerprintAtRun": null,
+      "details": {
+        "concurrentResult": {
+          "requests": 20,
+          "succeeded": 1,
+          "rejected": 19,
+          "responses": 1,
+          "answers": 6
+        },
+        "rollbackResult": {
+          "forcedFailureStatus": 500,
+          "task": "PENDING",
+          "responses": 0,
+          "answers": 0,
+          "retrySucceeded": true
+        },
+        "submissionRateResult": {
+          "allowed": 30,
+          "blockedStatus": 429,
+          "responses": 1,
+          "rejectedAuthenticationConsumes": false
+        }
+      }
+    },
+    {
+      "id": "week9",
+      "status": "passed",
+      "layer": "mysql_http",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week9.ts",
+      "passedGroups": 12,
+      "passLineCount": 12,
+      "cases": [
+        "BR-08/13/18/34: ma trận vai trò, metadata nhắc trước công bố; GV/trưởng đơn vị chưa nhận điểm, KT không có route lớp",
+        "BR-30/34: CSRF đúng miền/phiên, nguồn gửi và giới hạn body chặn trước thay đổi dữ liệu",
+        "BR-11/30: lỗi dữ liệu giả ở lớp tổng hợp cuối rollback toàn giao dịch, giữ DA_DONG/revision1/0 kết quả/0 history/0 audit; HTTP che chi tiết",
+        "TC-AGG-01/BR-07/11/12: tính tay4,11 và40% đúng biên;10 tổng hợp đồng thời1 thành công/9x409, replay không nhân bản; snapshot không cầu nối danh tính",
+        "BR-09/18: công bố bị chặn bởiTEXT chưa duyệt; lý do bắt buộc, CAS/idempotent quyết định; nonTEXT mặc định chờ không chặn công bố",
+        "BR-03/07/08/34/FR-64: GV chỉ lớp mình, TBM/TK đúng đơn vị, IDOR404; lớp thiếu mẫu ẩnđiểm/TEXT, so sánh gộp toànphiếu4,64",
+        "TC-KT-01/BR-57:≥2 GV snapshot cùngmôn; điểm nhóm4,68, không lớp/GV/TEXT; thiếu mẫuẩn; union KT+GV không nới quyền lớp",
+        "BR-13: chỉ trạng thái pending, scope riêng, mỗi lầnxem kểcảtrangrỗng cóaudit; nhắc2lớp/2vai trò vẫn1lần/ngày/SV/đợt",
+        "BR-17/51: chặn khóa khi đangmở; sauđóng khóa kỳ tựlưu trữ đợt côngbố, vẫnđọc; cấmghi vàmởkhóa khônglùi trạngthái",
+        "BR-34: thu hồi phiên hoặc vai trò có hiệu lực trên request tiếp theo, không tin JWT cũ",
+        "BR-09/11/32/34: ADMIN lưu cấu hình mức và từ khóa bằng TOTP thật; chặn CSRF thiếu/sai phiên, sai mã/replay; ADMIN thứ hai gặp CAS409, ba góp ý được gắn cờ, chỉ một audit cấu hình",
+        "BR-03/30: log/audit/notification không chứa nội dungphiếu hoặcresponseID, auditmoderation chỉscalaranswer; hashdữliệucũgiữnguyên"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:31:17.910Z",
+      "privateResultPath": ".local/week13-regression-week9-result.json",
+      "resultSha256": "6353bbaf5355fb813ca8dbc7565aaa9745c20de185035ec655b9272e4ca57ea5",
+      "privateLogPath": ".local/week13-regression-week9.log",
+      "logSha256": "33ce5d1ea7dffdc6770697c1a9206ca51f290a59b194ccf0f6a826879f0045bb",
+      "sourceFingerprintAtRun": null,
+      "details": {
+        "concurrency": {
+          "requests": 10,
+          "succeeded": 1,
+          "rejected": 9,
+          "resultRows": 3
+        },
+        "rollback": {
+          "failedStatus": 409,
+          "status": "DA_DONG",
+          "revision": 1,
+          "resultRows": 0,
+          "historyRows": 0,
+          "auditRows": 0,
+          "retrySucceeded": true
+        },
+        "configuration": {
+          "saved": true,
+          "replayRejected": true,
+          "staleRejected": true,
+          "keywordsFlagged": 3,
+          "restored": true
+        }
+      }
+    },
+    {
+      "id": "week10",
+      "status": "passed",
+      "layer": "mysql_http",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week10.ts",
+      "passedGroups": 19,
+      "passLineCount": 19,
+      "cases": [
+        "BR-18/30/34: phiên, Origin, CSRF, tham số và ADMIN bị chặn",
+        "BR-20/24/34: đúng đăng ký, IDOR404 và DTO ẩn danh không chứa danh tính",
+        "BR-22/30: retry tạo phản hồi trả cùng ID, đổi nội dung cùng requestId bị chặn",
+        "FR-70/BR-34: nội dung 10.000 ký tự tiếng Việt đi qua HTTP; từ chối quá dài và khóa lạ",
+        "BR-21/54/56: đủ bảy tuyến thường và khiếu nại đồng gửi trưởng bộ môn",
+        "BR-24/34: hàng đợi năm vai trò không chứa định danh; không đổi view để vượt quyền",
+        "BR-22: tám lệnh đồng thời một chuyển; trao đổi retry, trả lời, đóng và chặn sai trạng thái",
+        "BR-21/22: chuyển tiếp về MỚI, thu hồi quyền người nhận cũ; chuyển và từ chối bắt buộc lý do",
+        "BR-17/20: học kỳ hiện hành/liền trước và khóa kỳ được kiểm ở máy chủ",
+        "BR-20/56: ĐBCL cấu hình lời nhắc phúc khảo và cửa sổ học kỳ; vai trò khác không sửa",
+        "TC-TT-01/02/03: hồ sơ tiếp nhận, ba xung đột đa vai trò, summary và audit, mặc định ẩn danh",
+        "BR-61/62/67: truy vấn danh sách và total lọc xung đột; lãnh đạo chỉ nhận tóm tắt",
+        "BR-61/63: chỉ Thanh tra không xung đột thấy danh tính khi được chọn; chặn giao người xung đột",
+        "BR-61: xung đột mới có hiệu lực ngay trên phiên cũ, bỏ xung đột đọc lại đúng quyền",
+        "BR-28: đuôi giả, tổng số tệp, quá dung lượng, tải đúng byte, tên trung tính và IDOR",
+        "BR-61/62: chứng cứ Thanh tra chỉ người không xung đột tải, mỗi lần tải có audit",
+        "BR-34: thu hồi vai trò có hiệu lực ngay trên access token cũ",
+        "FR-153/BR-26: sáu yêu cầu nghiêm trọng đồng thời không vượt tổng năm phản hồi/ngày",
+        "BR-30/34: phiên bị thu hồi mất quyền ngay"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:35:55.616Z",
+      "privateResultPath": ".local/week13-regression-week10-result.json",
+      "resultSha256": "7f9f73ee52cf846cd220b4b289459b52dbd35c6a98057af45e4944bd489a110e",
+      "privateLogPath": ".local/week13-regression-week10.log",
+      "logSha256": "8255a795b4ea6a8fe588b8b0b097534a81c7c1d1490027281ba6aade18ac6128",
+      "sourceFingerprintAtRun": null,
+      "details": {
+        "concurrent": {
+          "requests": 8,
+          "succeeded": 1,
+          "conflicts": 7
+        }
+      }
+    },
+    {
+      "id": "week11-feedback",
+      "status": "passed",
+      "layer": "mysql_service",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week11-feedback.ts",
+      "passedGroups": 14,
+      "passLineCount": 14,
+      "cases": [
+        "BR-26/30 sáu yêu cầu tạo cùng requestId chỉ có một phản hồi",
+        "BR-26 giới hạn5/ngày cho phản hồi thường, cảnh báo nội dung trùng24giờ",
+        "BR-25 đánh giá đồng thời một lần, tự đóng và chặn sinh viên khác",
+        "BR-25 mở lại tối đa một lần, retry không tăng số lần",
+        "BR-23 sáu job đồng thời chỉ leo thang một cấp, quá hạn là cờ và thu hồi người nhận cũ",
+        "BR-23 chuỗi GV→TBM→TK→ĐBCL đúng theo thời hạn giữa các cấp",
+        "BR-54 PĐT→ĐBCL→Lãnh đạo; LĐ chỉ đọc phản hồi được giao",
+        "BR-60/61 hồ sơ3/30 ngày, quá hạn báo LĐ ở mức generic và không gửi người xung đột",
+        "BR-56 Khảo thí→ĐBCL→Lãnh đạo theo cùng SLA",
+        "BR-25 đánh giá sau cửa sổ7ngày bị chặn ở service",
+        "BR-23 cursor đi hết nhiều lô, hồ sơ cuối hàng không bị bỏ đói",
+        "BR-23/34 không giao người có phạm vi ngừng hoạt động; giữ người cũ và thử lại khi phạm vi hợp lệ",
+        "BR-26 SLA/giới hạn cấu hình được bằng đúng vai trò, CAS cấu hình",
+        "BR-17 học kỳ khóa sổ chặn ghi phản hồi"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": null,
+      "statusValidation": "case_count_cleanup_and_log_count; raw JSON omits status",
+      "recordedAt": "2026-11-04T09:39:51.290Z",
+      "privateResultPath": ".local/week13-regression-week11-feedback-result.json",
+      "resultSha256": "e8ab9d37c2cd09cd4cf448466c93cc508fe27c7b085628e136fb7b7c50042510",
+      "privateLogPath": ".local/week13-regression-week11-feedback.log",
+      "logSha256": "730db63f1e15daf4f5cfff7366c427facc12cb017ffa05fc6e6495dd35a678f0",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week11-inspection",
+      "status": "passed",
+      "layer": "mysql_service",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week11-inspection.ts",
+      "passedGroups": 7,
+      "passLineCount": 7,
+      "cases": [
+        "BR-61/62: GV và TBM đa vai trò bị loại động; ADMIN/ĐBCL không đọc hồ sơ",
+        "FR-154/BR-22: sáu lệnh tiếp nhận đồng thời tạo đúng một bước xác minh",
+        "BR-28/62: ghi chú và PDF nội bộ đúng quyền, hash, retry không trùng, giả mạo bị chặn",
+        "FR-156/BR-62/63: kết luận→thông báo→đóng, sinh viên chỉ nhận tóm tắt, LĐ không nhận nội dung",
+        "FR-154: CHUYEN_LAI về luồng thường giữ ẩn danh, không lộ lý do hoặc ghi chú hồ sơ",
+        "FR-157/BR-64: sáu lệnh chuyển chỉ tạo một hồ sơ, người chuyển chỉ còn trạng thái/kết luận",
+        "BR-34/61: phân công giảng viên và thu hồi phiên có hiệu lực ngay với hồ sơ hiện có"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:43:50.425Z",
+      "privateResultPath": ".local/week13-regression-week11-inspection-result.json",
+      "resultSha256": "d5db5cb8a9cb78e2ff80a567c9519e852430cb0aee4dcdf3687b47c4e93ea133",
+      "privateLogPath": ".local/week13-regression-week11-inspection.log",
+      "logSha256": "fee6f4eb6ead67e705112a2931405d4b2f9060f15319b4d0ebbf762beef26a98",
+      "sourceFingerprintAtRun": null,
+      "details": {
+        "concurrent": {
+          "requests": 6,
+          "succeeded": 1,
+          "conflicts": 5
+        }
+      }
+    },
+    {
+      "id": "week11-workflows",
+      "status": "passed",
+      "layer": "mysql_service",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week11-workflows.ts",
+      "passedGroups": 12,
+      "passLineCount": 12,
+      "cases": [
+        "BR-10: bốn job đồng thời chỉ tạo hai giải trình, hạn 14 ngày từ công bố",
+        "BR-18/34: IDOR và vai trò ngoài phạm vi, không suy quyền giải trình từ ADMIN",
+        "BR-10: gửi lặp/đồng thời chỉ thêm một lịch sử, requestId khác nội dung bị chặn",
+        "BR-10: gửi → bổ sung có lý do → gửi lại → xác nhận, lịch sử bất biến",
+        "BR-17: học kỳ khóa sổ chặn gửi giải trình",
+        "FR-82: truy cập đầu tiên nhắc quá hạn, scheduler lặp không tạo trùng trong ngày",
+        "BR-57/58: kiến nghị từ môn đủ dữ liệu gộp, hạn 14 ngày, đồng thời chỉ một hồ sơ",
+        "BR-58/34: chọn đúng trưởng bộ môn, người ngoài phạm vi và ADMIN bị chặn",
+        "BR-58/FR-82: quá hạn nhắc trưởng bộ môn và báo trưởng khoa, không nhân đôi",
+        "BR-58: tiếp thu/không tiếp thu có lý do, retry cùng nội dung và CAS đúng",
+        "BR-34: thu hồi vai trò hoặc phiên có hiệu lực ngay ở tầng service",
+        "FR-80/81: thông báo và outbox cùng giao dịch, không sao chép nội dung hồ sơ"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:45:31.047Z",
+      "privateResultPath": ".local/week13-regression-week11-workflows-result.json",
+      "resultSha256": "4ad210d0c375f83d40c1e3587a7e2f6fe773e81256f0566a18b419bc8094fffd",
+      "privateLogPath": ".local/week13-regression-week11-workflows.log",
+      "logSha256": "a43daf743930d963d4686a92f816a90d04895ea720a864a8657fb5e5a1a4c143",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week11-notifications",
+      "status": "passed",
+      "layer": "mysql_service_mailpit",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week11-notifications.ts",
+      "passedGroups": 10,
+      "passLineCount": 10,
+      "cases": [
+        "8 transaction xếp cùng sự kiện chỉ tạo 2 notification/outbox cho 2 người nhận",
+        "SV chỉ đọc và đánh dấu thông báo của mình, không có nội dung phản hồi trong payload",
+        "6 thao tác đánh dấu đồng thời chỉ đổi readAt một lần",
+        "thu hồi người nhận ẩn cả nội dung, tổng số và bộ đếm chưa đọc",
+        "Thanh tra không xung đột đọc được; GV kiêm Thanh tra và ADMIN không thấy notification hồ sơ",
+        "hai worker song song gửi một thư/người đủ quyền, chặn 3 người đã mất quyền hoặc xung đột",
+        "Mailpit nhận email generic không có nội dung phản hồi, tài khoản hoặc danh tính sinh viên",
+        "worker chạy lại không gửi thêm những thư đã SENT hoặc bị từ chối vĩnh viễn",
+        "cùng UUID yêu cầu/người nhận ở hai phản hồi vẫn giữ hai notification/outbox riêng, retry không nhân đôi",
+        "phiên đã thu hồi không truy cập hộp thông báo"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T09:46:53.242Z",
+      "privateResultPath": ".local/week13-regression-week11-notifications-result.json",
+      "resultSha256": "0c6ba21e9495833e5793824ffa1ce85326d5fb2c22a66ce1cb6fe2dcd6840752",
+      "privateLogPath": ".local/week13-regression-week11-notifications.log",
+      "logSha256": "db747598ade3bb08d6a5352f7b69b73e08d0b2c767371cb80d649a5464839b4a",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week12-reports",
+      "status": "passed",
+      "layer": "mysql_service_real_dto",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week12-reports.ts",
+      "passedGroups": 13,
+      "passLineCount": 13,
+      "cases": [
+        "mười vai trò nhận dashboard đúng loại, DTO không có canary sinh viên hoặc nội dung riêng tư",
+        "sinh viên chỉ có task/phản hồi của mình, không có điểm khảo sát",
+        "GV/TBM không đọc lớp/đơn vị ngoài scope hoặc dữ liệu trước công bố",
+        "Khảo thí pool 5×5 và 10×3 thành3,67, ngưỡng2GV và công bố, không có lớp/GV/tự luận",
+        "lớp/môn ít mẫu bị che kéo theo tổng bộ môn/khoa bị che, không trừ tổng để suy ra ô nhỏ",
+        "giảng viên có phiếu nhưng mọi câu LIKERT nhóm đánh giá đều NA không được tính vào ngưỡng hai GV",
+        "PĐT chỉ phản hồi tổ chức lớp, readiness không roster; ô nhỏ và tổng suy ngược cùng bị ẩn",
+        "Thanh tra chỉ thống kê hồ sơ đủ mẫu; nhóm một hồ sơ không trả count/kết luận/thời gian",
+        "TT kiêm GV/TBM bị loại hồ sơ xung đột trước khi gộp và đếm",
+        "ADMIN đa vai trò chỉ vận hành tài khoản; ĐBCL chọn GV không lấy quyền toàn trường hoặc trước công bố",
+        "BR67 từ MySQL: prepareReportsExport thật cho PĐT/KT/TT lưu DTO an toàn, có nhãn scope và audit trước trả về",
+        "bốn cập nhật ngưỡng đồng thời chỉ một thành công; không thay ngưỡng công bố của campaign",
+        "thu hồi phiên chặn báo cáo dù actor cũ vẫn còn trong bộ nhớ"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T14:20:06.609Z",
+      "privateResultPath": ".local/week13-regression-week12-reports-result.json",
+      "resultSha256": "4cfd4cbfd40d36b56bff300041522a1531b7ae1c7fe828a7a78b816b96d1a504",
+      "privateLogPath": ".local/week13-regression-week12-reports.log",
+      "logSha256": "04154386f5eee94d47d59dbef7683fae9c6193246bc4f2b3b823fe6f445bcab9",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week12-anomalies",
+      "status": "passed",
+      "layer": "mysql_service",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week12-anomalies.ts",
+      "passedGroups": 9,
+      "passLineCount": 9,
+      "cases": [
+        "BR-65: sáu job đồng thời chỉ tạo ba cờ theo rule, không nhân bản",
+        "BR-65/67: biên9/10phiếu và6/7phiếuđồngnhất, delta cùngmôn/mẫu2.5, DTO khôngđiểm/danh tính",
+        "BR-61/65/68: TT đa vai trò xung đột404, ADMIN/ĐBCL/LĐ không đọc chỉ số",
+        "BR-65: sáu quyết định đồng thời tạo một lịch sử và duy nhất một hồ sơ BAT_THUONG",
+        "BR-65: retry giữ nguyên biên nhận, requestId thay dữ liệu bị chặn",
+        "BR-60/62/65: hồ sơ khôngfeedback đi hết xác minh→đóng, khôngstudentnotice, LĐchỉsummary",
+        "BR-65: CAN_LUU_Y thông báo generic cho ĐBCL, không cấp quyền chỉ số",
+        "BR-65: cảnh báo/đangxácminh không chặn công bố",
+        "BR-65: cấu hình đúng vai trò, cờ cũ giữ snapshot ngưỡng"
+      ],
+      "cleanup": "verified_by_suite",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T14:20:17.407Z",
+      "privateResultPath": ".local/week13-regression-week12-anomalies-result.json",
+      "resultSha256": "845737c80adc2df3f47ca00b7e9ab19c4ec791180acf2570c3ac738724194212",
+      "privateLogPath": ".local/week13-regression-week12-anomalies.log",
+      "logSha256": "bef07a6f2483ef978342a5b5f1ea9337bd6ae7b25d931f9736293f704a2cff02",
+      "sourceFingerprintAtRun": null,
+      "details": {}
+    },
+    {
+      "id": "week12-exports",
+      "status": "passed",
+      "layer": "synthetic_dto_real_file_parsers",
+      "command": "node node_modules/tsx/dist/cli.mjs scripts/verify-week12-exports.ts",
+      "environment": {
+        "PDF_TEST_PYTHON": "bundled Python with pypdf; configured without credentials"
+      },
+      "passedGroups": 10,
+      "passLineCount": 10,
+      "cases": [
+        "BR-67 PHONG_DAO_TAO CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+        "BR-67 PHONG_DAO_TAO XLSX đọc lại được, ô che không thay bằng số0",
+        "BR-67 PHONG_DAO_TAO PDF giải mã nội dung thật, không có ô bị che",
+        "BR-67 PHONG_KHAO_THI CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+        "BR-67 PHONG_KHAO_THI XLSX đọc lại được, ô che không thay bằng số0",
+        "BR-67 PHONG_KHAO_THI PDF giải mã nội dung thật, không có ô bị che",
+        "BR-67 THANH_TRA CSV giữ tiếng Việt, che dữ liệu không đủ mẫu",
+        "BR-67 THANH_TRA XLSX đọc lại được, ô che không thay bằng số0",
+        "BR-67 THANH_TRA PDF giải mã nội dung thật, không có ô bị che",
+        "FR-93 bảng nhiều trang không bỏ dòng cuối, đánh số trang"
+      ],
+      "cleanup": "not_applicable_no_database",
+      "rawResultStatus": "passed",
+      "statusValidation": "raw_result_and_log_count",
+      "recordedAt": "2026-11-04T14:17:23.132Z",
+      "privateResultPath": ".local/week13-regression-week12-exports-result.json",
+      "resultSha256": "e0c8e2154fe873f4f149c0965ad82c0f11b02b316d02c70553faa9cfe01b77eb",
+      "privateLogPath": ".local/week13-regression-week12-exports.log",
+      "logSha256": "33275795d91b159b15d27f174331b8bd094166f26690248b6b87b0b7a0047a60",
+      "sourceFingerprintAtRun": null,
+      "details": {
+        "pdfPages": 5
+      }
+    }
+  ],
+  "seededDemo": {
+    "status": "passed",
+    "passedGroups": 19,
+    "command": "node scripts/test-demo.mjs (isolated working directory; no npm pretest/generate)",
+    "cases": [
+      "medium: 3/8/40/120/60/1500/4501",
+      "Tuần10: bundle riêng8lớp/9phản hồi đủ8loại, hai sinh viên4/5phản hồi và2hồ sơ TIEP_NHAN vớihai mức danh tính; định tuyến/đồnggửi/lịch sử ban đầu đúng",
+      "TC-PDT-02 phần seed: bundle W7 riêng đủ RS-01–06; cảnh báo cần ghi chú, lỗi chặn không xác nhận; chỉ đọc readiness, không task/SMTP",
+      "G1: bốn tài khoản mới đúng vai trò GLOBAL; hai tài khoản Thanh tra hỗ trợ xem/phân công hồ sơ tiếp nhận Tuần10, chưa xác minh/kết luận Tuần11",
+      "Đợt mở/đã đóng, task/phiếu ẩn danh, điểm trọng số và 6 trạng thái phản hồi khớp dữ liệu thật",
+      "TC-FR148-06/07: họ mẫu mới 3 nhóm/7 câu, đúng 1 nhóm Kiểm tra, đánh giá; giữ nguyên UUID/cây hai họ cũ và phiếu/kết quả",
+      "FR-35/BR-05: seed lại giữ lựa chọn mặc định đã đổi và không ghi lại cây câu hỏi cũ",
+      "Chạy lại không nhân đôi hoặc đặt lại mật khẩu",
+      "small: bổ sung an toàn, không xóa dữ liệu/mở lại tài khoản",
+      "large: 3/8/80/240/120/3000/9001",
+      "Tăng size giữ nguyên danh sách đã chốt, UUID phiếu/đáp án và kết quả đã có",
+      "Tăng size không tạo hai giảng viên chính trong một lớp",
+      "Seed lại/tăng size giữ bundle W7 và mật khẩu/trạng thái đã đổi; không viết lại lịch sử hoặc dữ liệu khảo sát cũ",
+      "E8 Tuần 9: cùng môn hai giảng viên, nhóm đánh giá, hai lớp đủ mẫu/một lớp thiếu, kỳ trước; 18 phiếu/40 nhiệm vụ, seed lại giữ nguyên hash",
+      "Tuần10: seedlặp/medium→small→large giữ nguyên hash9phản hồi,8lớp/ghi danh,recipient/history vàhai case/event; sáu phản hồi lịch sử được đối chiếu riêng theoUUID, không gộp với bundle mới",
+      "Tuần11: hồ sơ XAC_MINH/ghi chú, lớp2điểm/5phiếu và yêu cầu giải trình đúng ngưỡng; seed lặp đổi size giữ nguyên hash bundle mới",
+      "E8 Tuần12: 10phiếu/20đápán/10task độc lập, một cờ đồng nhất70% CHO_XEM_XET; seed lặp medium→small→large giữ nguyên hash, không công bố lại hoặc sửa dữ liệu cũ",
+      "Từ chối production, actor không hợp lệ và size sai trước khi ghi",
+      "Seed từ chối học kỳ khóa và không thêm tài khoản"
+    ],
+    "recordedAt": "2026-11-04T14:27:17.632Z",
+    "cleanup": "isolated_demo_database_retained; no database dropped",
+    "privateResultPath": ".local/week13-regression-demo-result.json",
+    "resultSha256": "7ed10ee15b091cf959821ff50a81e5fac4f1767615ef7e8067664a12c1b95859",
+    "privateLogPath": ".local/week13-regression-demo.log",
+    "logSha256": "07162645572b82d3844b8b54e36020b508cd8f883588279be6626d726e93ad37",
+    "isolation": {
+      "status": "passed",
+      "completedAt": "2026-11-04T14:28:02.628Z",
+      "sharedEnvUnchanged": true,
+      "sharedDemoMarkerUnchanged": true,
+      "sharedWeek4MarkerUnchanged": true,
+      "separateWorkingDirectory": true,
+      "newIsolatedDemoDatabaseRetained": true,
+      "databasesDropped": 0,
+      "sourceHarnessModified": false
+    }
+  },
+  "matrixAndIdor": {
+    "status": "passed",
+    "command": "node node_modules/vitest/vitest.mjs run tests/week13-role-matrix.test.ts tests/week13-resource-idor.test.ts",
+    "files": 2,
+    "passedTests": 801,
+    "durationMsReportedByVitest": 323,
+    "privateLogPath": ".local/week13-regression-matrix-idor.log",
+    "logSha256": "03cbd7f24597fb6b528a194e6176aaf1a09f34f3af768ebedbe4da9d3983b706"
+  },
+  "mandatoryCodes": [
+    {
+      "id": "TC-PDT-01",
+      "status": "passed",
+      "evidence": [
+        "week5:01,03,04,05,10,15",
+        "week6"
+      ],
+      "assertion": "ADMIN denied training CRUD/import; PĐT succeeds; 10-role route scopes remain enforced."
+    },
+    {
+      "id": "TC-PDT-02",
+      "status": "passed",
+      "evidence": [
+        "week7:05,06",
+        "week7-settings:07",
+        "demo:seeded readiness RS-01–06"
+      ],
+      "assertion": "RS-01–06 readiness and blocking confirmation; seeded-readiness proof required."
+    },
+    {
+      "id": "TC-PDT-03",
+      "status": "passed",
+      "evidence": [
+        "week7:08,09",
+        "week7-settings:10,11,12"
+      ],
+      "assertion": "Confirmation then enrollment change triggers drift; 20 ensure calls yield one snapshot/task cohort, later enrollment changes do not resync tasks."
+    },
+    {
+      "id": "TC-KT-01",
+      "status": "passed",
+      "evidence": [
+        "week9:07",
+        "week12-reports:04,05,06,11"
+      ],
+      "assertion": "Assessment groups require published data, enough samples and at least two teachers with valid LIKERT; single-teacher data hidden; no class/teacher/TEXT identifiers."
+    },
+    {
+      "id": "TC-KT-02",
+      "status": "passed",
+      "evidence": [
+        "week10:05,06",
+        "week11-feedback:09"
+      ],
+      "assertion": "Final-exam feedback routes to Khảo thí, queue DTOs hide student identity, SLA follows Khảo thí→ĐBCL→Lãnh đạo."
+    },
+    {
+      "id": "TC-TT-01",
+      "status": "passed",
+      "evidence": [
+        "week10:11,12,13,14,16",
+        "week11-inspection:01,07",
+        "week12-reports:09",
+        "week12-anomalies:03"
+      ],
+      "assertion": "Teacher, department/faculty conflicts and multi-role inspectors are excluded dynamically; forbidden object access is 404 and conflicting assignees are rejected."
+    },
+    {
+      "id": "TC-TT-02",
+      "status": "passed",
+      "evidence": [
+        "week10:11,12,16",
+        "week11-inspection:03,04"
+      ],
+      "assertion": "ADMIN/ĐBCL denied; leaders receive summary only; permitted case/document access creates audit records."
+    },
+    {
+      "id": "TC-TT-03",
+      "status": "passed",
+      "evidence": [
+        "week10:11,13"
+      ],
+      "assertion": "Fully anonymous case hides identity; identity consent reveals it only to an authorized non-conflicting inspector and is audited."
+    },
+    {
+      "id": "TC-ALL-01",
+      "status": "passed",
+      "evidence": [
+        "week5:04",
+        "week7:02",
+        "matrix-idor:801",
+        "week12-reports:01,07,08,09,10,11",
+        "week12-exports:01–10"
+      ],
+      "assertion": "10-role policy/resource matrix; real MySQL dashboard/export DTOs omit canaries; CSV/XLSX/PDF parser checks independently verify serializer suppression for three new roles."
+    }
+  ],
+  "restoration": {
+    "status": "passed",
+    "restoredAt": "2026-11-04T14:21:02.398Z",
+    "originalMarkerRestoredByteForByte": true,
+    "originalWeek4UrlRestored": true,
+    "freshDatabaseRetained": true,
+    "databasesDropped": 0,
+    "retainedFreshMarker": "private local marker retained; no database dropped",
+    "originalMarkerSha256": "25c940ab94245ab30e8d627653d911477bdf4e08f8e186f2973f1df0455c4dc8"
+  },
+  "optionalSqlIntegration": {
+    "status": "failed_guard_before_fixture",
+    "command": "node scripts/verify-database.mjs",
+    "privateLogPath": ".local/week13-regression-sql.log",
+    "logSha256": "49444a1b165a4734ce00bdbc67af3f54473281eb491e8e3c975d671888e831a7",
+    "reason": "Expected45 runtime-table guard failed; parent performs read-only diagnosis. No guard change, main migration, reset or fixture writes authorized by this result."
+  },
+  "excludedAttempts": [
+    {
+      "privateLogPath": ".local/week13-regression-week4.log",
+      "status": "failed_before_successful_fresh_database_run"
+    },
+    {
+      "privateLogPath": ".local/week13-regression-week5.log",
+      "status": "failed_attempt; not counted"
+    },
+    {
+      "privateLogPath": ".local/week13-regression-week5-retry.log",
+      "status": "failed_attempt; final successful log counted instead"
+    },
+    {
+      "publicProofPath": "docs/assets/tuan-13/load-readiness-failure.json",
+      "status": "load_server_readiness_failure; not runtime regression success"
+    }
+  ],
+  "broaderAcceptanceGates": {
+    "finalNpmCheck": "Parent-owned final check evidence required; this artifact does not substitute for it.",
+    "e2e": {
+      "status": "passed",
+      "publicProofPath": "docs/assets/tuan-13/ui/e2e-accessibility-summary.json",
+      "proofSha256": "9d09733c10fa67c3c24b4225d6e8d73707d70c11b07b05e7bf19b528df0ff661",
+      "command": "node scripts/run-week12-e2e.mjs",
+      "testCounts": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "timedOut": 0,
+        "interrupted": 0
+      },
+      "accessibilityStateCount": 34,
+      "violationRuleInstances": 0,
+      "incompleteRuleInstances": 7,
+      "incompleteNodes": 168,
+      "method": "Automated Playwright Chromium; does not replace manual UC-GOLD. Axe incomplete findings remain explicit."
+    },
+    "week12ManualUcGold": "Manual acceptance tracked separately; runtime/E2E is not manual verification.",
+    "securityAndLoad": "See separate security-http-production, survey-lock-result and load-after-shared-guard artifacts; not included in runtime group count."
+  },
+  "limits": [
+    "No claim of every data/grant/timing/device combination or every inference attack.",
+    "Real-DB DTO evidence and synthetic serializer evidence remain distinct.",
+    "Private local logs/results may contain operational information and are referenced by path/hash rather than copied wholesale into public artifacts.",
+    "No user credentials/MFA changed, no deployment, no database reset/drop, no guard bypass, no source-test-harness edits by the finishing runtime agent."
+  ]
+}

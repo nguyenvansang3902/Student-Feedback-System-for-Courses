@@ -1,0 +1,585 @@
+{
+  "capturedAt": "2026-11-04T14:27:12.003Z",
+  "sourceHead": "e05985625849818ce0aaabe41db6aecc80ca0e1f",
+  "sourceFiles": {
+    "tests/e2e/accessibility.spec.ts": "755ef656e277c02484e692a4f654269130db37058c0a19481823be7f41468080",
+    "tests/e2e/uc-gold.spec.ts": "e5a3583fedf0fc2203670712bb8b85e2188d59d36f84ef82971cb1bec161646b",
+    "src/components/auth/auth-shell.tsx": "6d1a056afddf594b312b1bc466ae3f6df1609f645814c43c7ce71cdefaf81a48",
+    "src/components/reports/report-view.tsx": "68208df04b36c4df11eef08f9c27b2f1cd20e937c5ac0a636e26347d1bed20d7"
+  },
+  "method": "Playwright Chromium E2E; fixture qua database/HTTP riêng. Không phải kiểm trực tiếp bằng tay.",
+  "command": "node scripts/run-week12-e2e.mjs",
+  "expectedTests": 6,
+  "expectedAccessibilityStates": 34,
+  "testCounts": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "timedOut": 0,
+    "interrupted": 0
+  },
+  "accessibilityStateCount": 34,
+  "violationRuleInstances": 0,
+  "violationNodes": 0,
+  "incompleteRuleInstances": 7,
+  "incompleteNodes": 168,
+  "screenshots": [
+    "student-survey-mobile360.png",
+    "admin-mobile360.png",
+    "thanh_tra-mobile360.png",
+    "login-keyboard-desktop.png",
+    "login-keyboard-mobile360.png",
+    "can_bo_dbcl-desktop.png",
+    "can_bo_dbcl-mobile.png",
+    "giang_vien-desktop.png",
+    "giang_vien-mobile.png",
+    "phong_dao_tao-desktop.png",
+    "phong_dao_tao-mobile.png",
+    "phong_khao_thi-desktop.png",
+    "phong_khao_thi-mobile.png",
+    "thanh_tra-desktop.png",
+    "thanh_tra-mobile.png",
+    "sv-da-nop-desktop.png",
+    "tbm-xac-nhan-giai-trinh.png"
+  ],
+  "note": "Chỉ các trạng thái và kích thước đã đo. Axe incomplete cần kiểm tay; không chứng nhận WCAG toàn hệ thống. SHA HEAD có thể đi kèm thay đổi chưa commit; hash các tệp kiểm được ghi riêng.",
+  "tests": [
+    {
+      "title": "W13 NFR-15 — trang tài khoản công khai, bàn phím và axe ở desktop/360px",
+      "status": "passed",
+      "durationMs": 12274
+    },
+    {
+      "title": "W13 FR-90/160 NFR-15 — dashboard mười vai trò với axe, bàn phím và 360px",
+      "status": "passed",
+      "durationMs": 42059
+    },
+    {
+      "title": "W13 FR-50/70/153 NFR-15 — khảo sát và phản hồi sinh viên, đủ nhãn và thao tác bàn phím",
+      "status": "passed",
+      "durationMs": 10970
+    },
+    {
+      "title": "UC-GOLD — quy trình từ lập đợt tới báo cáo và các nhánh bổ sung",
+      "status": "passed",
+      "durationMs": 54638
+    },
+    {
+      "title": "TC-ALL-01 / BR-67 — dashboard mười vai trò, ngưỡng và IDOR",
+      "status": "passed",
+      "durationMs": 1466
+    },
+    {
+      "title": "FR-90/91 — dashboard desktop/mobile và không tràn trang",
+      "status": "passed",
+      "durationMs": 16364
+    }
+  ],
+  "scans": [
+    {
+      "name": "public-dang-nhap-desktop",
+      "timestamp": "2026-11-04T14:23:40.168Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-login-error-desktop",
+      "timestamp": "2026-11-04T14:23:40.749Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-kich-hoat-desktop",
+      "timestamp": "2026-11-04T14:23:42.203Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-quen-mat-khau-desktop",
+      "timestamp": "2026-11-04T14:23:43.686Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-dang-nhap-mobile360",
+      "timestamp": "2026-11-04T14:23:44.986Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-login-error-mobile360",
+      "timestamp": "2026-11-04T14:23:45.545Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-kich-hoat-mobile360",
+      "timestamp": "2026-11-04T14:23:46.533Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "public-quen-mat-khau-mobile360",
+      "timestamp": "2026-11-04T14:23:47.675Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "sinh_vien-desktop",
+      "timestamp": "2026-11-04T14:23:53.381Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 26,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "sinh_vien-mobile360",
+      "timestamp": "2026-11-04T14:23:55.567Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 27,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 5,
+          "reasons": [
+            "shortTextContent"
+          ],
+          "sampleTargets": [
+            [
+              "tr:nth-child(1) > td"
+            ],
+            [
+              "tr:nth-child(2) > td"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "giang_vien-desktop",
+      "timestamp": "2026-11-04T14:23:57.046Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "giang_vien-mobile360",
+      "timestamp": "2026-11-04T14:23:58.643Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "truong_bo_mon-desktop",
+      "timestamp": "2026-11-04T14:24:00.232Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "truong_bo_mon-mobile360",
+      "timestamp": "2026-11-04T14:24:01.734Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "truong_khoa-desktop",
+      "timestamp": "2026-11-04T14:24:03.319Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "truong_khoa-mobile360",
+      "timestamp": "2026-11-04T14:24:04.801Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "can_bo_dbcl-desktop",
+      "timestamp": "2026-11-04T14:24:06.278Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 26,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "can_bo_dbcl-mobile360",
+      "timestamp": "2026-11-04T14:24:08.460Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 27,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 34,
+          "reasons": [
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+            ],
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lanh_dao-desktop",
+      "timestamp": "2026-11-04T14:24:10.106Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 26,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "lanh_dao-mobile360",
+      "timestamp": "2026-11-04T14:24:13.263Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 27,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 54,
+          "reasons": [
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+            ],
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin-desktop",
+      "timestamp": "2026-11-04T14:24:14.789Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 26,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "admin-mobile360",
+      "timestamp": "2026-11-04T14:24:16.840Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 27,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 3,
+          "reasons": [
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "tr:nth-child(1) > td"
+            ],
+            [
+              "tr:nth-child(2) > td"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "phong_dao_tao-desktop",
+      "timestamp": "2026-11-04T14:24:18.979Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "phong_dao_tao-mobile360",
+      "timestamp": "2026-11-04T14:24:21.746Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 25,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 28,
+          "reasons": [
+            "shortTextContent",
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "tr:nth-child(1) > td:nth-child(4)"
+            ],
+            [
+              "tr:nth-child(1) > td:nth-child(5)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "phong_khao_thi-desktop",
+      "timestamp": "2026-11-04T14:24:23.541Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 26,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "phong_khao_thi-mobile360",
+      "timestamp": "2026-11-04T14:24:25.795Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 27,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 24,
+          "reasons": [
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+            ],
+            [
+              "section:nth-child(1) > .overflow-x-auto.mt-5[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "thanh_tra-desktop",
+      "timestamp": "2026-11-04T14:24:27.379Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 24,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "thanh_tra-mobile360",
+      "timestamp": "2026-11-04T14:24:29.658Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 25,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 20,
+          "reasons": [
+            "elmPartiallyObscured"
+          ],
+          "sampleTargets": [
+            [
+              "tr:nth-child(1) > td:nth-child(5)"
+            ],
+            [
+              "tr:nth-child(1) > td:nth-child(6)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "student-survey-desktop",
+      "timestamp": "2026-11-04T14:24:34.120Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 25,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "student-feedback-desktop",
+      "timestamp": "2026-11-04T14:24:37.232Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "student-serious-feedback-desktop",
+      "timestamp": "2026-11-04T14:24:37.651Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "student-survey-mobile360",
+      "timestamp": "2026-11-04T14:24:39.097Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 25,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "student-feedback-mobile360",
+      "timestamp": "2026-11-04T14:24:40.384Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "student-serious-feedback-mobile360",
+      "timestamp": "2026-11-04T14:24:40.778Z",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "passedRules": 23,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshotInspection": {
+    "inspectedAt": "2026-11-04T14:29:07.121Z",
+    "method": "Mở và xem từng ảnh E2E bằng view_image; không phải thao tác trực tiếp GUI.",
+    "inspectedCount": 17,
+    "notes": [
+      "Đã xem đủ17PNG được liệt kê; không phát hiện tràn ngang toàn trang hoặc mất điều khiển trong ảnh.",
+      "Bảng rộng được cắt trong vùng cuộn riêng ở mobile; bài kiểm chứng minh focus hiển thị và ArrowRight/ArrowLeft làm cuộn vùng.",
+      "Nội dung cột nằm ngoài vùng nhìn thấy vẫn có7mục color-contrast incomplete/168node; cần rà bằng cuộn trực tiếp và đo màu trước khi tuyên bố đầy đủ.",
+      "Ảnh PĐT có ô trạng thái DA_CONG_BO chưa Việt hóa; giữ nguyên và báo phiên chính như lỗi microcopy tồn đọng."
+    ]
+  }
+}

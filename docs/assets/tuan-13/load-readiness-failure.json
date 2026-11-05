@@ -1,0 +1,27 @@
+{
+  "run": "L131dde70c310",
+  "startedAt": "2026-11-04T09:06:34.068Z",
+  "status": "failed",
+  "mode": "next-start-production",
+  "buildId": "U4gfXxiSSrhNoZev0uDYX",
+  "transport": "HTTP loopback; production canonical HTTPS origin simulates internal proxy hop; no TLS timing",
+  "authentication": "Real fixture sessions/access JWT and CSRF pre-issued by services; login and fixture setup excluded",
+  "requestShape": "5 required Likert1–5 answers per response; distinct student/task for unique burst",
+  "target": "guarded isolated local MySQL database; no main/shadow reset or copying",
+  "fixtureRetention": "Fake fixture retained for evidence; sessions revoked and users disabled in finally",
+  "environment": {
+    "node": "v24.21.0",
+    "os": "win32 10.0.26200 x64",
+    "logicalCpus": 16,
+    "cpuModel": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "hostMemoryGiB": 15.73,
+    "serverAndClientSameHost": true,
+    "prismaPoolConnections": 5
+  },
+  "stage": "verify-database-identity",
+  "failureKind": "runtime",
+  "failureCode": "P2010",
+  "finishedAt": "2026-11-04T09:06:54.290Z",
+  "updatedAt": "2026-11-04T09:06:54.290Z",
+  "sessionsRevokedAndUsersDisabled": false
+}

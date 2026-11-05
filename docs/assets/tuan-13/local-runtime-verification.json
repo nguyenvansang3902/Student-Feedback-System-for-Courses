@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-11-04T20:16:32.567Z",
+  "sourceCommit": "831d14decd9d6a562a1f9ecc0a53f6a4fadc8248",
+  "url": "http://localhost:3000",
+  "method": "Existing local launcher; no pending migrations to apply; Prisma generation completed before server startup",
+  "webAndSchedulerReady": true,
+  "requests": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/dang-nhap",
+      "status": 200
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "application": "available",
+        "database": "not_checked"
+      }
+    }
+  ],
+  "databaseEvidence": "main-data-verification.json",
+  "baselineCheckBeforeScheduler": {
+    "status": "passed",
+    "tables": 45,
+    "oldRowsPreserved": 9709,
+    "at": "2026-11-04T20:01:13.116Z"
+  },
+  "note": "HTTP health deliberately reports database:not_checked. MySQL verified separately. Scheduler may perform its normal due work after startup; preservation check predates scheduler.",
+  "restartAfterLatestCheckAndBuild": true
+}

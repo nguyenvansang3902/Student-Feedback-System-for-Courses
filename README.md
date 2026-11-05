@@ -1,5 +1,15 @@
 # Website quản lý khảo sát và phản hồi sinh viên về môn học
 
+## Trạng thái hiện tại — Tuần 13
+
+Cập nhật 05/11/2026: **UC-GOLD kiểm tay đã qua đủ các bước trong kịch bản**, tám PNG đã xem; cả Lãnh đạo/ĐBCL xem và xuất báo cáo. CSV 3.745/3.011 byte có BOM, đúng vai trò/bộ lọc/5 phiếu/100%/mean số 2, không định danh tài khoản. [Kiểm tay](docs/assets/tuan-13/manual-uc-gold.json), [CSV](docs/assets/tuan-13/manual-export-verification.json).
+
+Check/build cục bộ ngày 05/11 qua 2.155 passed+1 symlink skipped/2.156 trong 93 tệp, coverage 78,49/73,48/82,22/79,69%,101 route động, buildID `Q1SY2ZcIAr3Do--HbL1SZ`. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248` đã qua check/e2e/smoke đúng nguồn đã sửa harness lịch. Đã chốt 211/219 điểm,78/84 FR; sáu FR 09/103/110/111/112/145 còn lại, không tự cắt. [Hồ sơ kỹ thuật](docs/NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](docs/bao-cao-tien-do/tuan-13.md).
+
+Đã có 801 testquyền/IDOR,227 nhóm/15 bộ+demo 19,E2E 6/6; axe 34 trạng thái 0 vi phạm nhưng còn 7 incomplete/168 node,17 PNG tự động đã xem. Tải 200/200, khôngHTTP 500/lỗi mạng, race 20 một phiếu; **p95 3.595,91 ms chưa đạt 3 giây**. Các giới hạn bảo mật/phụ thuộc/HTTP production giữ trong hồ sơ; không chứng nhận toàn bộOWASP/WCAG.
+
+Database chính đúng ngữ cảnh Docker/Explorer:45 bảng/1.575 người dùng, guard 45 bảng/9.709 bản ghi giữ hash trước mở scheduler. [Runtime](docs/assets/tuan-13/local-runtime-verification.json): web/scheduler đã mở lại,3 HTTP 200, health vẫn database:not_checked; không áp dụng migration mới, không seed/reset/đổi credential/MFA. Scheduler có thể ghi audit/email/trạng thái bình thường sau kiểm. Chưa kiểm reboot. Main mã vẫn Tuần 11, UI-n tạm dừng; không làm Tuần 14. Các mốc dưới đây là bằng chứng lịch sử.
+
 ## Tuần 12: báo cáo và cảnh báo khảo sát
 
 Sau đăng nhập, chọn **Báo cáo** từ trang tài khoản hoặc mở [/bao-cao](http://localhost:3000/bao-cao). Chọn vai trò và bộ lọc, bấm **Xem báo cáo**; các nút **Tải CSV/Excel/PDF** dùng đúng phạm vi đang hiển thị. Dashboard thay đổi theo quyền: sinh viên chỉ công việc của mình, ADMIN chỉ vận hành; PĐT xem độ sẵn sàng và phản hồi tổ chức lớp, Khảo thí chỉ dữ liệu gộp đủ điều kiện, Thanh tra chỉ thống kê không định danh.

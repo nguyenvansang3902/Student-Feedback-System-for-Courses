@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "run": "K13887a9f0f47",
+  "startedAt": "2026-11-04T19:48:17.040Z",
+  "status": "passed",
+  "method": "Real MySQL interactive transactions/services; controlled transaction-delegate delay/failure injection only for boundary/rollback; no browser/HTTP claim",
+  "fixtureRetention": "Separate marker-guarded proof database; fixture retained, sessions revoked and accounts disabled",
+  "finishedAt": "2026-11-04T19:48:19.705Z",
+  "cases": [
+    {
+      "name": "Guard ban đầu/fallback không nâng S thành X",
+      "guardAbsentAtStart": true,
+      "coldStartMeasured": true,
+      "note": "Lượt đầu tạo guard qua fallback độc quyền rồi nộp đúng một phiếu"
+    },
+    {
+      "name": "S/S tương thích và S đang giữ chặn X",
+      "sharedReadersOverlapped": true,
+      "writerBlockedWhileSharedHeld": true,
+      "writerProgressedAfterRelease": true
+    },
+    {
+      "name": "Hai nhiệm vụ riêng cùng tiến tới đọc mẫu dưới S",
+      "concurrentTemplateReaders": 2,
+      "responses": 2,
+      "answers": 2,
+      "done": 2
+    },
+    {
+      "name": "Đọc mới sau X thay đổi roles",
+      "staleActorDenied": true,
+      "expectedStatus": 403,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    },
+    {
+      "name": "Đọc mới sau X thay đổi session",
+      "staleActorDenied": true,
+      "expectedStatus": 401,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    },
+    {
+      "name": "BR-02 hai mươi lần cùng task chỉ một CAS thắng",
+      "fulfilled": 1,
+      "rejected409": 19,
+      "responses": 1,
+      "answers": 1,
+      "done": 1
+    },
+    {
+      "name": "BR-02 lỗi insert answer rollback MySQL và thử lại thành công",
+      "pendingAndEmptyAfterFailure": true,
+      "responses": 1,
+      "answers": 1,
+      "done": 1
+    },
+    {
+      "name": "BR-04 hết hạn sau đọc mẫu nhả S rồi commit AUTO_CLOSE bằng X",
+      "delayedTemplateRead": true,
+      "autoCloseEvents": 1,
+      "responses": 0,
+      "answers": 0,
+      "done": 0
+    }
+  ],
+  "sessionsRevokedAndUsersDisabled": true,
+  "updatedAt": "2026-11-04T19:48:19.705Z",
+  "command": "npm run test:survey-locks",
+  "commandStartedAt": "2026-11-04T19:47:32.7238077Z",
+  "commandFinishedAt": "2026-11-04T19:48:19.7733188Z",
+  "exitCode": 0,
+  "preparation": {
+    "loadMarkerAbsentAtCommandStart": true,
+    "previousLoadMarkerArchived": true,
+    "previousLoadDatabaseRetained": true,
+    "lockDatabaseAbsentAtCommandStart": true,
+    "preparedLoadThenLockMarkers": true,
+    "distinctGuardedFixtureDatabases": true,
+    "markersMatchCurrentServer": true,
+    "mainApplicationTablesBefore": 45,
+    "mainApplicationTablesAfter": 45,
+    "mainDatabaseWritesByCommand": false,
+    "databaseReset": false,
+    "databaseDrop": false,
+    "prismaClientRegenerated": false,
+    "applicationBuildOrFullCheckRun": false
+  },
+  "source": {
+    "packageSha256": "46d100613a56ea5d6b37f8e4537e1bd19baf4ac95ba64e834f283bdfb936364d",
+    "lockSha256": "6970f434863fff1aec256a57c1c4686296b14cb308b73baf7c4b7c3cebd2f525",
+    "workflowSha256": "d067640bb983a613e35129d1f43206ef0e3db8199aeebe19e8f89e111ac684a4",
+    "verifierSha256": "ffa8cc475fe68b631529f705bae92a18292722620a3f62ff7f283f72ca03d18c",
+    "preparerSha256": "6b030e650a54a5d0677af0d05c0855a9e41e13449c221d3239633f689a59c2fb",
+    "safetySha256": "31305fb7ee2731a61f90e0f312d881acc7458be0324e4a3022067dde5256f665"
+  },
+  "log": {
+    "path": "logs.local/week13-survey-lock-standalone.log",
+    "sha256": "3e40992ea74fe2fafd95721bb2efb1e982523144fde97c5b62ccb2987d483d21"
+  },
+  "limits": [
+    "Synthetic isolated MySQL fixture/service proof; no HTTP/browser/manual acceptance claim.",
+    "Source change affects package command and CI workflow only; full npm run check and build remain pending after GUI dev server stops.",
+    "45-table identity is a scope check, not a fresh logical row-preservation audit; authorized GUI actions may continue on main."
+  ]
+}

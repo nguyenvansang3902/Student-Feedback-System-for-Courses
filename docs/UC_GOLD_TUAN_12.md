@@ -1,25 +1,25 @@
-# UC-GOLD Tuần 12 — bằng chứng E2E
+# UC-GOLD Tuần 12 — E2E và kiểm tay
 
 Ngày chạy thực tế: **03/11/2026**. Lượt E2E hợp lệ đầu tiên bắt đầu lúc **08:02:21 giờ Việt Nam**, qua **3/3 test** trong **130,75 giây** (log hiển thị 2,2 phút). Lượt cục bộ cuối bắt đầu lúc **08:17:00**, qua lại **3/3 test** trong **65,75 giây** (1,1 phút), không bỏ qua hoặc retry. Lượt cuối có bước chờ giao diện xác nhận ổn định trước khi chụp ảnh trưởng bộ môn. Các thời gian là số đo từng lượt, không phải kết luận hiệu năng.
 
-Đây là kiểm thử tự động kết hợp thao tác trình duyệt và HTTP. **Lượt UC-GOLD thủ công trên Chrome ở demo riêng đã thực hiện một phần rồi dừng do công cụ điều khiển không xác định chắc chắn được URL hiện tại; chưa hoàn tất hoặc được nghiệm thu.** Không xem toàn bộ các bước bên dưới là đã được con người làm bằng tay. Các bước thực tế và phần còn chờ được ghi riêng ở Mục 8.
+Các mục 1–7 ghi lượt tự động kết hợp trình duyệt/HTTP 03/11; không gọi toàn bộ là kiểm tay. Cập nhật 05/11: UC-GOLD kiểm tay đã qua đủ các bước, gồmGV xem lớp mình và cảLãnh đạo/ĐBCL xem, xuất báo cáo. Mục 8 là checkpoint lịch sử; mục 9/[manifest](assets/tuan-13/manual-uc-gold.json) là kết quả mới. Check/build và CI nguồn 831d14d đều qua, chín FR Tuần 12/FR-160 đã chốt, tổng 211/219 điểm,78/84 FR.
 
 ## 1. Bộ kiểm và môi trường
 
 - [uc-gold.spec.ts](../tests/e2e/uc-gold.spec.ts): ba test chạy tuần tự, một worker, `retries = 0`.
 - [fixtures.ts](../tests/e2e/fixtures.ts): kiểm đích database thử, tạo dữ liệu nền và phiên giả; gửi yêu cầu HTTP và chuyển tài khoản trên trình duyệt.
 - [playwright.config.ts](../playwright.config.ts): project Chromium, không quay video hoặc lưu trace xác thực; chụp ảnh theo các điểm đã định và khi lỗi.
-- [run-week12-e2e.mjs](../scripts/run-week12-e2e.mjs): mở máy chủ thử riêng tại `http://127.0.0.1:3007`, dùng thư mục dựng `.next-week12`, chạy Playwright rồi dừng các tiến trình do runner mở.
+- [run-week 12-e2e.mjs](../scripts/run-week12-e2e.mjs): mở máy chủ thử riêng tại `http://127.0.0.1:3007`, dùng thư mục dựng `.next-week12`, chạy Playwright rồi dừng các tiến trình do runner mở.
 
-Lệnh của kho là `npm.cmd run test:e2e` trên Windows, hoặc `npm run test:e2e` trên môi trường phù hợp. Lệnh này chuẩn bị WEEK12, sinh Prisma client qua `pretest:e2e` rồi gọi runner. Khi database và client đã được chuẩn bị trong lượt kiểm đang điều phối, có thể gọi trực tiếp `node scripts/run-week12-e2e.mjs`.
+Lệnh của kho là `npm.cmd run test:e2e` trên Windows, hoặc `npm run test:e2e` trên môi trường phù hợp. Lệnh này chuẩn bị WEEK 12, sinh Prisma client qua `pretest:e2e` rồi gọi runner. Khi database và client đã được chuẩn bị trong lượt kiểm đang điều phối, có thể gọi trực tiếp `node scripts/run-week12-e2e.mjs`.
 
-Phiên bản đối chiếu trong môi trường chạy: **Node.js v24.21.0**, **Playwright 1.64.1**, **Next.js 16.4.3**, máy chủ phát triển dùng webpack. Project trình duyệt là Chromium do Playwright quản lý; không ghi một số phiên bản Chromium chưa được đo riêng trong lượt chạy.
+Phiên bản đối chiếu trong môi trường chạy: **Node.js v 24.21.0**, **Playwright 1.64.1**, **Next.js 16.4.3**, máy chủ phát triển dùng webpack. Project trình duyệt là Chromium do Playwright quản lý; không ghi một số phiên bản Chromium chưa được đo riêng trong lượt chạy.
 
 Kết quả lượt hợp lệ đầu tiên nằm ở `.local/week12-e2e.log`; lượt cuối ở `.local/week12-e2e-final.log`, `test-results/week12/results.json`, `.local/week12-e2e-fixture.json` và log máy chủ `.local/week12-e2e-server.log`. Các đường dẫn này là bằng chứng vận hành của lượt chạy, không phải thư mục dữ liệu công khai của website.
 
 ## 2. Tách database và tạo dữ liệu nền
 
-Trước khi gọi `getDb()` hoặc ghi fixture, bộ kiểm đối chiếu `.local/week12-test-database.json`, mục đích `isolated-week12-tests`, tên main, tiền tố database WEEK12, host/cổng/tài khoản kết nối và việc khác main, shadow cùng các database thử tuần trước. Sau khi đổi kết nối sang WEEK12, bộ kiểm đọc lại `@@server_uuid` và `DATABASE()` để xác nhận đích. Runner từ chối dùng cổng 3007 nếu cổng đã bị tiến trình khác chiếm.
+Trước khi gọi `getDb()` hoặc ghi fixture, bộ kiểm đối chiếu `.local/week12-test-database.json`, mục đích `isolated-week12-tests`, tên main, tiền tố database WEEK 12, host/cổng/tài khoản kết nối và việc khác main, shadow cùng các database thử tuần trước. Sau khi đổi kết nối sang WEEK 12, bộ kiểm đọc lại `@@server_uuid` và `DATABASE()` để xác nhận đích. Runner từ chối dùng cổng 3007 nếu cổng đã bị tiến trình khác chiếm.
 
 Phần **bootstrap trực tiếp bằng database/dịch vụ xác thực** gồm khoa, bộ môn, học kỳ, môn học, lớp, phân công, đăng ký học phần, 21 tài khoản giả và phiên đăng nhập của các tài khoản này. Một giảng viên được gán thêm Thanh tra để đối chứng xung đột lợi ích. Có bộ môn ngoài phạm vi để kiểm IDOR. Không có đợt, phiếu đã nộp, phản hồi đã xử lý hoặc kết quả công bố được seed sẵn thay cho các bước nghiệp vụ của UC-GOLD.
 
@@ -89,7 +89,7 @@ Sau khi xem bộ ảnh lượt hợp lệ đầu, root phát hiện ảnh trư�
 
 `afterAll` thu hồi mọi phiên và vô hiệu hóa **đúng 21 tài khoản giả của lượt chạy**, rồi đóng kết nối. Runner dừng máy chủ và tiến trình Playwright do nó mở. Marker lượt cuối ghi `status = passed`, `fixtureSessionsRevoked = true`, `dataRetained = true` lúc **08:18:06 giờ Việt Nam**; marker lượt hợp lệ đầu từng kết thúc lúc 08:04:31.
 
-Lịch sử, phiếu ẩn danh và các dữ liệu nghiệp vụ fixture vẫn được giữ trong WEEK12 để truy vết. **Không ghi database thử là sạch hoặc trống**, không reset database, không xóa dữ liệu chính và không đổi tài khoản/MFA của chủ dự án. Tính bảo toàn dữ liệu chính và kết quả check/build phải đối chiếu các bằng chứng riêng; bộ E2E này không tự chứng nhận các phần đó.
+Lịch sử, phiếu ẩn danh và các dữ liệu nghiệp vụ fixture vẫn được giữ trong WEEK 12 để truy vết. **Không ghi database thử là sạch hoặc trống**, không reset database, không xóa dữ liệu chính và không đổi tài khoản/MFA của chủ dự án. Tính bảo toàn dữ liệu chính và kết quả check/build phải đối chiếu các bằng chứng riêng; bộ E2E này không tự chứng nhận các phần đó.
 
 ## 7. Đối chiếu CI của nguồn chức năng
 
@@ -99,6 +99,8 @@ Thông tin này được đối chiếu từ `.local/week12-ci-proof.json`, gồ
 
 ## 8. Lượt thao tác GUI riêng ngày 03/11/2026 — chưa hoàn tất
 
+**Lịch sử checkpoint 03/11, không phải trạng thái hiện tại.** Phần tiếp tục ngày 04–05/11 ở mục 9 đã hoàn tất các nhánh nghiệp vụ và ba phép kiểm đủ các bước trong kịch bản cuối; nội dung dừng trong mục 8 chỉ giữ dấu vết lượt cũ.
+
 Sau các lượt E2E, đã thử một hành trình riêng trên Chrome bằng công cụ điều khiển giao diện, dùng demo riêng và tài khoản giả. Phần chuẩn bị chỉ tạo khoa, bộ môn, học kỳ, môn, một lớp đồng giảng bởi hai giảng viên, năm sinh viên cùng các tài khoản vai trò; không tạo sẵn mẫu, đợt, phiếu hoàn tất hoặc phản hồi để thay thao tác nghiệp vụ.
 
 | Thao tác thực tế trên GUI | Kết quả đã quan sát |
@@ -106,11 +108,34 @@ Sau các lượt E2E, đã thử một hành trình riêng trên Chrome bằng c
 | ĐBCL tạo mẫu và đợt khảo sát trong phạm vi khoa giả | Tạo được mẫu và đợt mới để dùng cho chính hành trình này |
 | PĐT kiểm tra và xác nhận dữ liệu | Xác nhận được với cảnh báo RS-04 |
 | Lãnh đạo phê duyệt đợt | Đợt sang `DANG_MO`, chốt năm nhiệm vụ khảo sát |
-| SV1 chọn mức 2 ở cả hai câu Likert, nhập góp ý tự luận và nộp phiếu | Nộp được một phiếu qua giao diện |
-| SV1 gửi phản hồi ẩn danh loại Giảng dạy | Tạo được phản hồi ẩn danh qua giao diện; chưa đi tiếp chuỗi xử lý của giảng viên |
+| SV 1 chọn mức 2 ở cả hai câu Likert, nhập góp ý tự luận và nộp phiếu | Nộp được một phiếu qua giao diện |
+| SV 1 gửi phản hồi ẩn danh loại Giảng dạy | Tạo được phản hồi ẩn danh qua giao diện; chưa đi tiếp chuỗi xử lý của giảng viên |
 
 Lượt này **dừng tại đây** vì công cụ điều khiển Windows không xác định đủ chắc chắn URL hiện tại và chặn thao tác tiếp theo theo quy tắc của công cụ. Đây là giới hạn của lượt điều khiển, không phải kết luận website lỗi hoặc đã đạt toàn bộ UC-GOLD. Không tiếp tục giao diện bằng một cách khác để vượt chặn trong cùng lượt.
 
 Đã chuẩn bị helper riêng để bổ sung bốn phiếu bằng HTTP đăng nhập/CSRF/nhiệm vụ/nộp phiếu và helper truyền thời điểm `endsAt + 1 ms` cho lifecycle của đúng đợt giả. **Cả hai chưa được thực thi**: không ghi nhận bốn phiếu đó, không suy năm nhiệm vụ thành năm phiếu trả lời và không ghi rằng đã mô phỏng đóng đợt. Helper không phải thao tác GUI; nếu được chạy ở lượt sau, số phiếu phụ trợ và cách thực hiện phải được tách riêng trong bằng chứng. Không đổi thời gian bắt đầu/kết thúc trong database hoặc đồng hồ hệ thống.
 
 Phần còn chờ của hành trình GUI gồm đủ mẫu, đóng và tổng hợp đợt, kiểm duyệt/công bố, giảng viên xem kết quả và gửi giải trình, trưởng bộ môn xác nhận, xử lý phản hồi ẩn danh rồi sinh viên đánh giá/đóng, cùng các nhánh Khảo thí/Thanh tra và báo cáo/tải tệp của hành trình thủ công. Kết quả tự động ở các mục trước được giữ nguyên; **chưa đánh dấu hoàn tất nghiệm thu thủ công hoặc nghiệm thu toàn bộ Tuần 12**.
+
+## 9. Tiếp tục GUI ngày 04–05/11/2026 — UC-GOLD kiểm tay đã qua
+
+Phiên chính quan sát và thao tác hoàn toàn bằng trình duyệt CUA trên demo giả riêng của cùng hành trình. Không gọi helper HTTP, không chỉnh đồng hồ/hạn trong database, không ghi vào database chính hoặc đổi credential/MFA. Đợt đóng theo hạn tự nhiên; năm sinh viên đã nộp đủ năm phiếu qua GUI. [Manifest kiểm tay](assets/tuan-13/manual-uc-gold.json) giữ dữ kiện gộp và hash tám PNG, bỏ ID tài nguyên, credential và nội dung riêng.
+
+| Nhánh GUI đã chạy | Kết quả quan sát |
+| --- | --- |
+| ĐBCL đóng/tổng hợp/kiểm duyệt/công bố |5/5 nhiệm vụ DONE,5 phiếu,100%, điểm 2,00. Một tự luận chờ duyệt chặn công bố; nhập lý do kiểm duyệt rồi công bố được,0 tự luận chờ |
+| Giảng viên gửi giải trình; TBM xác nhận | Giải trình được gửi và xác nhận trên GUI lúc 23:56 ngày 04/11 |
+| Phản hồi giảng dạy | Giảng viên tiếp nhận/bắt đầu/trả lời; sinh viên đánh giá 4/5, phản hồi tự đóng lúc 02:45 ngày 05/11 |
+| Khảo thí | Chỉ hàng đợi phản hồi thi; tiếp nhận/bắt đầu/trả lời. Báo cáo chỉ nhóm đánh giá gộp,5 phiếu/100%/2,00, có ít nhất 2 giảng viên góp LIKERT hợp lệ |
+| Thanh tra | Tự nhận hồ sơ, xác minh/ghi chú nội bộ giả, kết luận giả `KHONG_DU_THONG_TIN`, thông báo và đóng lúc 02:51 ngày 05/11; không gọi đây là kết luận về vụ việc thật |
+| Lãnh đạo | Chọn đúng bộ lọc đợt, xem dashboard và tải CSV lúc 02:52 ngày 05/11. Tệp 3.745 byte đã đọc lại; header vai trò/bộ lọc khớp Lãnh đạo và đợt đã chọn |
+
+| Ba phép kiểm đủ các bước trong kịch bản cuối | Trạng thái |
+| --- | --- |
+| Giảng viên xem kết quả lớp mình | Đã qua lúc 02:58–02:59 ngày 05/11:5 phiếu/5 nhiệm vụ/100%/2,00; phân bố tiêu chí có 5 đáp án mức 2; tự luận đã kiểm duyệt hiện, không định danh |
+| ĐBCL xem dashboard | Đã qua cùng khoảng giờ: đúng đợt đã chọn,5 phiếu/100%/2,00, có hàng bộ môn/khoa |
+| ĐBCL tải báo cáo | Đã tải CSV qua nút giao diện sau áp dụng bộ lọc; tách khỏi lượt Lãnh đạo |
+
+Tám PNG đã được phiên chính mở xem: [công bố](assets/tuan-13/ui/uc-gold-da-cong-bo.png), [TBM xác nhận](assets/tuan-13/ui/uc-gold-tbm-xac-nhan.png), [sinh viên đánh giá](assets/tuan-13/ui/uc-gold-sv-danh-gia.png), [Khảo thí báo cáo](assets/tuan-13/ui/uc-gold-khao-thi-bao-cao.png), [Thanh tra đóng](assets/tuan-13/ui/uc-gold-thanh-tra-dong.png), [Lãnh đạo báo cáo](assets/tuan-13/ui/uc-gold-lanh-dao-bao-cao.png), [ĐBCL báo cáo](assets/tuan-13/ui/uc-gold-dbcl-bao-cao.png), [GV kết quả lớp](assets/tuan-13/ui/uc-gold-gv-ket-qua-lop.png). Tám ảnh kiểm tay tách khỏi 17 PNG E2E; hash trong manifest. [Kiểm byte CSV](assets/tuan-13/manual-export-verification.json) xác nhận Lãnh đạo 3.745 byte, ĐBCL 3.011 byte, UTF-8 BOM, đúng vai trò/bộ lọc/5 phiếu/100%/mean số 2, không định danh tài khoản; không ghi rằng CSV dùng chuỗi hiển thị 2,00 của UI.
+
+Tab cũ sau dừng server đã phục hồi bằng tab mới trong đúng trình duyệt localhost, không đổi dữ liệu hoặc vượt guardHTTPS. Nhánh chờ hếtSLA kiểm runtime, không nhận đã chờ bằng tay. [Check/build mới](assets/tuan-13/check-build-after-calendar.json) và [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn 831d14d đã qua. Đã chốt 10 FR, tổng 211/219 điểm,78/84 FR; không bắt đầu Tuần 14/UI-n.

@@ -1,0 +1,975 @@
+{
+  "run": "L13f7b02ad4e8",
+  "startedAt": "2026-11-03T16:01:36.675Z",
+  "status": "measured-target-not-met",
+  "mode": "next-start-production",
+  "buildId": "N6kgSBsV5iD1AiWnNk9tH",
+  "transport": "HTTP loopback; production canonical HTTPS origin simulates internal proxy hop; no TLS timing",
+  "authentication": "Real fixture sessions/access JWT and CSRF pre-issued by services; login and fixture setup excluded",
+  "requestShape": "5 required Likert1–5 answers per response; distinct student/task for unique burst",
+  "target": "guarded isolated local MySQL database; no main/shadow reset or copying",
+  "fixtureRetention": "Fake fixture retained for evidence; sessions revoked and users disabled in finally",
+  "environment": {
+    "node": "v24.21.0",
+    "os": "win32 10.0.26200 x64",
+    "logicalCpus": 16,
+    "cpuModel": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "hostMemoryGiB": 15.73,
+    "serverAndClientSameHost": true,
+    "prismaPoolConnections": 5,
+    "mysql": "8.4.11",
+    "dockerEngineResources": {
+      "logicalCpus": 16,
+      "memoryGiB": 7.62
+    }
+  },
+  "stage": "completed",
+  "sourceHead": "e05985625849818ce0aaabe41db6aecc80ca0e1f",
+  "workingTreeDirty": true,
+  "harnessSha256": "a612cccc5d8455b21ad1ae8a5771aafd4c4cb27c6b96af64b8bfb1e4f4fb99de",
+  "warmupStatus": 200,
+  "uniqueBurst": {
+    "requests": 200,
+    "elapsedMs": 12419.96,
+    "throughputPerSecond": 16.1,
+    "latencyMs": {
+      "p50": 7338.21,
+      "p95": 12092.56,
+      "p99": 12311.97,
+      "max": 12398.4372
+    },
+    "statuses": {
+      "200": 196,
+      "500": 4
+    },
+    "transportErrors": 0,
+    "serverErrors": 4,
+    "configuredConcurrency": 200,
+    "successfulUnique": 196,
+    "unexpectedUnique": 4,
+    "unexpectedErrorRate": 0.02,
+    "databaseCountsIncludingWarmup": {
+      "responses": 197,
+      "answers": 985,
+      "tasksDone": 197
+    },
+    "p95TargetMs": 3000,
+    "errorRateTargetBelow": 0.01,
+    "timingTargetMet": false,
+    "errorTargetMet": false
+  },
+  "rawSamples": {
+    "unique": [
+      {
+        "status": 200,
+        "durationMs": 2414.2294999999995
+      },
+      {
+        "status": 200,
+        "durationMs": 2334.6072999999997
+      },
+      {
+        "status": 200,
+        "durationMs": 2600.7169999999987
+      },
+      {
+        "status": 200,
+        "durationMs": 2455.0846999999994
+      },
+      {
+        "status": 200,
+        "durationMs": 2374.7065000000002
+      },
+      {
+        "status": 200,
+        "durationMs": 2497.5550000000003
+      },
+      {
+        "status": 200,
+        "durationMs": 2690.2960999999996
+      },
+      {
+        "status": 200,
+        "durationMs": 2777.9030000000002
+      },
+      {
+        "status": 200,
+        "durationMs": 2737.8161
+      },
+      {
+        "status": 200,
+        "durationMs": 2648.6373000000003
+      },
+      {
+        "status": 200,
+        "durationMs": 2889.9069
+      },
+      {
+        "status": 200,
+        "durationMs": 2928.4645
+      },
+      {
+        "status": 200,
+        "durationMs": 3005.2800000000007
+      },
+      {
+        "status": 200,
+        "durationMs": 2966.5822000000007
+      },
+      {
+        "status": 200,
+        "durationMs": 3293.9634000000005
+      },
+      {
+        "status": 200,
+        "durationMs": 3143.3348000000005
+      },
+      {
+        "status": 200,
+        "durationMs": 3219.0046
+      },
+      {
+        "status": 200,
+        "durationMs": 3041.7218999999986
+      },
+      {
+        "status": 200,
+        "durationMs": 3256.6018999999997
+      },
+      {
+        "status": 200,
+        "durationMs": 3178.5596000000005
+      },
+      {
+        "status": 200,
+        "durationMs": 3408.7634
+      },
+      {
+        "status": 200,
+        "durationMs": 3445.4770000000008
+      },
+      {
+        "status": 200,
+        "durationMs": 3529.2299999999996
+      },
+      {
+        "status": 200,
+        "durationMs": 3491.7639
+      },
+      {
+        "status": 200,
+        "durationMs": 3726.1389
+      },
+      {
+        "status": 200,
+        "durationMs": 3672.8848
+      },
+      {
+        "status": 200,
+        "durationMs": 3841.4673999999995
+      },
+      {
+        "status": 200,
+        "durationMs": 3566.1486999999997
+      },
+      {
+        "status": 200,
+        "durationMs": 3801.9015
+      },
+      {
+        "status": 200,
+        "durationMs": 4053.5242
+      },
+      {
+        "status": 200,
+        "durationMs": 3761.696
+      },
+      {
+        "status": 200,
+        "durationMs": 4012.1095000000005
+      },
+      {
+        "status": 200,
+        "durationMs": 3941.0974000000006
+      },
+      {
+        "status": 200,
+        "durationMs": 3975.9706000000006
+      },
+      {
+        "status": 200,
+        "durationMs": 4191.0669
+      },
+      {
+        "status": 200,
+        "durationMs": 4267.8627
+      },
+      {
+        "status": 200,
+        "durationMs": 4088.2910999999986
+      },
+      {
+        "status": 200,
+        "durationMs": 4302.2143
+      },
+      {
+        "status": 200,
+        "durationMs": 4229.557500000001
+      },
+      {
+        "status": 200,
+        "durationMs": 4533.5079000000005
+      },
+      {
+        "status": 200,
+        "durationMs": 4570.165899999998
+      },
+      {
+        "status": 200,
+        "durationMs": 4497.498099999999
+      },
+      {
+        "status": 200,
+        "durationMs": 4350.8629
+      },
+      {
+        "status": 200,
+        "durationMs": 4451.0923
+      },
+      {
+        "status": 200,
+        "durationMs": 4711.113600000002
+      },
+      {
+        "status": 200,
+        "durationMs": 4614.712799999999
+      },
+      {
+        "status": 200,
+        "durationMs": 4786.796700000001
+      },
+      {
+        "status": 200,
+        "durationMs": 4822.229299999999
+      },
+      {
+        "status": 200,
+        "durationMs": 4751.0425
+      },
+      {
+        "status": 200,
+        "durationMs": 4959.272399999998
+      },
+      {
+        "status": 200,
+        "durationMs": 5046.787900000001
+      },
+      {
+        "status": 200,
+        "durationMs": 4858.5725999999995
+      },
+      {
+        "status": 200,
+        "durationMs": 5087.151599999999
+      },
+      {
+        "status": 200,
+        "durationMs": 5010.8264
+      },
+      {
+        "status": 200,
+        "durationMs": 5297.125000000002
+      },
+      {
+        "status": 200,
+        "durationMs": 5122.1181000000015
+      },
+      {
+        "status": 200,
+        "durationMs": 5225.801700000002
+      },
+      {
+        "status": 200,
+        "durationMs": 5261.196100000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5331.3387
+      },
+      {
+        "status": 200,
+        "durationMs": 5370.763000000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5471.5533
+      },
+      {
+        "status": 200,
+        "durationMs": 5542.287100000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5577.6711
+      },
+      {
+        "status": 200,
+        "durationMs": 5504.779499999999
+      },
+      {
+        "status": 200,
+        "durationMs": 5710.956299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 5611.218700000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5819.267299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 5745.595300000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5785.8063
+      },
+      {
+        "status": 200,
+        "durationMs": 5855.120800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 5985.357200000002
+      },
+      {
+        "status": 200,
+        "durationMs": 5951.059100000002
+      },
+      {
+        "status": 200,
+        "durationMs": 6021.787200000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6093.513499999999
+      },
+      {
+        "status": 200,
+        "durationMs": 6056.044300000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6191.575200000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6236.791800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6306.987000000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6272.9586
+      },
+      {
+        "status": 200,
+        "durationMs": 6589.417800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6340.870800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6439.218599999998
+      },
+      {
+        "status": 200,
+        "durationMs": 6511.579299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 6477.6985
+      },
+      {
+        "status": 200,
+        "durationMs": 6685.287099999998
+      },
+      {
+        "status": 200,
+        "durationMs": 6718.089899999999
+      },
+      {
+        "status": 200,
+        "durationMs": 6770.738600000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6544.876200000001
+      },
+      {
+        "status": 200,
+        "durationMs": 6807.106899999999
+      },
+      {
+        "status": 200,
+        "durationMs": 6970.758500000002
+      },
+      {
+        "status": 200,
+        "durationMs": 7003.7557000000015
+      },
+      {
+        "status": 200,
+        "durationMs": 6936.565100000002
+      },
+      {
+        "status": 200,
+        "durationMs": 6842.252299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 7038.0805
+      },
+      {
+        "status": 200,
+        "durationMs": 7180.638200000001
+      },
+      {
+        "status": 200,
+        "durationMs": 7216.6268
+      },
+      {
+        "status": 200,
+        "durationMs": 7291.9133
+      },
+      {
+        "status": 200,
+        "durationMs": 7079.0815
+      },
+      {
+        "status": 200,
+        "durationMs": 7256.26
+      },
+      {
+        "status": 200,
+        "durationMs": 7544.667500000001
+      },
+      {
+        "status": 200,
+        "durationMs": 7507.635000000002
+      },
+      {
+        "status": 200,
+        "durationMs": 7338.209399999998
+      },
+      {
+        "status": 200,
+        "durationMs": 7471.7973999999995
+      },
+      {
+        "status": 200,
+        "durationMs": 7435.784
+      },
+      {
+        "status": 200,
+        "durationMs": 7735.279400000001
+      },
+      {
+        "status": 200,
+        "durationMs": 7772.837799999999
+      },
+      {
+        "status": 200,
+        "durationMs": 7844.408199999998
+      },
+      {
+        "status": 200,
+        "durationMs": 7584.3710999999985
+      },
+      {
+        "status": 200,
+        "durationMs": 7808.746800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8096.463599999999
+      },
+      {
+        "status": 200,
+        "durationMs": 7898.101400000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8056.2508
+      },
+      {
+        "status": 200,
+        "durationMs": 8015.267600000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8131.040900000002
+      },
+      {
+        "status": 200,
+        "durationMs": 8168.851700000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8272.533
+      },
+      {
+        "status": 200,
+        "durationMs": 8309.963299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 8348.286900000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8384.885800000002
+      },
+      {
+        "status": 200,
+        "durationMs": 8610.523
+      },
+      {
+        "status": 200,
+        "durationMs": 8530.155
+      },
+      {
+        "status": 200,
+        "durationMs": 8419.2063
+      },
+      {
+        "status": 200,
+        "durationMs": 8655.2538
+      },
+      {
+        "status": 200,
+        "durationMs": 8571.3688
+      },
+      {
+        "status": 200,
+        "durationMs": 8710.737400000002
+      },
+      {
+        "status": 200,
+        "durationMs": 8826.0102
+      },
+      {
+        "status": 200,
+        "durationMs": 8901.889400000002
+      },
+      {
+        "status": 200,
+        "durationMs": 8949.046400000001
+      },
+      {
+        "status": 200,
+        "durationMs": 8864.2598
+      },
+      {
+        "status": 200,
+        "durationMs": 9002.340499999998
+      },
+      {
+        "status": 200,
+        "durationMs": 9125.019799999998
+      },
+      {
+        "status": 200,
+        "durationMs": 9166.780999999999
+      },
+      {
+        "status": 200,
+        "durationMs": 9211.3011
+      },
+      {
+        "status": 200,
+        "durationMs": 9295.924700000001
+      },
+      {
+        "status": 200,
+        "durationMs": 9403.8816
+      },
+      {
+        "status": 200,
+        "durationMs": 9444.4279
+      },
+      {
+        "status": 200,
+        "durationMs": 9253.080199999999
+      },
+      {
+        "status": 200,
+        "durationMs": 9540.612399999998
+      },
+      {
+        "status": 200,
+        "durationMs": 9581.8843
+      },
+      {
+        "status": 200,
+        "durationMs": 9486.985200000001
+      },
+      {
+        "status": 200,
+        "durationMs": 9769.932
+      },
+      {
+        "status": 200,
+        "durationMs": 9682.069800000001
+      },
+      {
+        "status": 200,
+        "durationMs": 9805.2108
+      },
+      {
+        "status": 200,
+        "durationMs": 9732.742199999999
+      },
+      {
+        "status": 200,
+        "durationMs": 9978.3085
+      },
+      {
+        "status": 200,
+        "durationMs": 9944.636300000002
+      },
+      {
+        "status": 200,
+        "durationMs": 10021.964399999999
+      },
+      {
+        "status": 200,
+        "durationMs": 9846.1153
+      },
+      {
+        "status": 200,
+        "durationMs": 10067.0753
+      },
+      {
+        "status": 200,
+        "durationMs": 10111.599699999999
+      },
+      {
+        "status": 200,
+        "durationMs": 10240.543399999999
+      },
+      {
+        "status": 200,
+        "durationMs": 10206.5122
+      },
+      {
+        "status": 200,
+        "durationMs": 10308.995199999998
+      },
+      {
+        "status": 200,
+        "durationMs": 10514.887900000002
+      },
+      {
+        "status": 200,
+        "durationMs": 10344.3538
+      },
+      {
+        "status": 200,
+        "durationMs": 10275.529299999998
+      },
+      {
+        "status": 200,
+        "durationMs": 10445.8307
+      },
+      {
+        "status": 200,
+        "durationMs": 10480.2829
+      },
+      {
+        "status": 200,
+        "durationMs": 10588.9071
+      },
+      {
+        "status": 200,
+        "durationMs": 10685.4331
+      },
+      {
+        "status": 200,
+        "durationMs": 10722.7111
+      },
+      {
+        "status": 200,
+        "durationMs": 10552.5184
+      },
+      {
+        "status": 200,
+        "durationMs": 10756.8565
+      },
+      {
+        "status": 200,
+        "durationMs": 10921.7775
+      },
+      {
+        "status": 200,
+        "durationMs": 10793.512499999999
+      },
+      {
+        "status": 200,
+        "durationMs": 10827.421099999998
+      },
+      {
+        "status": 200,
+        "durationMs": 10997.3369
+      },
+      {
+        "status": 200,
+        "durationMs": 10963.239000000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11203.3657
+      },
+      {
+        "status": 200,
+        "durationMs": 11030.1748
+      },
+      {
+        "status": 200,
+        "durationMs": 11249.200700000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11065.410899999999
+      },
+      {
+        "status": 200,
+        "durationMs": 11169.024300000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11297.787699999999
+      },
+      {
+        "status": 200,
+        "durationMs": 11435.638299999999
+      },
+      {
+        "status": 200,
+        "durationMs": 11512.9491
+      },
+      {
+        "status": 200,
+        "durationMs": 11338.076500000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11471.198900000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11546.9156
+      },
+      {
+        "status": 200,
+        "durationMs": 11798.509600000001
+      },
+      {
+        "status": 200,
+        "durationMs": 11723.7169
+      },
+      {
+        "status": 200,
+        "durationMs": 11685.684299999999
+      },
+      {
+        "status": 200,
+        "durationMs": 11580.975899999998
+      },
+      {
+        "status": 200,
+        "durationMs": 11760.8771
+      },
+      {
+        "status": 200,
+        "durationMs": 12053.0336
+      },
+      {
+        "status": 200,
+        "durationMs": 11834.346199999998
+      },
+      {
+        "status": 200,
+        "durationMs": 11978.2034
+      },
+      {
+        "status": 200,
+        "durationMs": 11941.508100000001
+      },
+      {
+        "status": 200,
+        "durationMs": 12015.9108
+      },
+      {
+        "status": 200,
+        "durationMs": 12201.9692
+      },
+      {
+        "status": 200,
+        "durationMs": 12348.867199999999
+      },
+      {
+        "status": 200,
+        "durationMs": 12092.5582
+      },
+      {
+        "status": 200,
+        "durationMs": 12238.047399999998
+      },
+      {
+        "status": 500,
+        "durationMs": 12191.680199999999
+      },
+      {
+        "status": 200,
+        "durationMs": 12311.965499999998
+      },
+      {
+        "status": 200,
+        "durationMs": 12398.4372
+      },
+      {
+        "status": 200,
+        "durationMs": 12276.3635
+      },
+      {
+        "status": 500,
+        "durationMs": 12205.4966
+      },
+      {
+        "status": 500,
+        "durationMs": 12217.463899999999
+      },
+      {
+        "status": 500,
+        "durationMs": 12213.674099999998
+      }
+    ],
+    "sameTask": [
+      {
+        "status": 409,
+        "durationMs": 415.3803000000007
+      },
+      {
+        "status": 409,
+        "durationMs": 504.6906999999992
+      },
+      {
+        "status": 409,
+        "durationMs": 464.6186000000016
+      },
+      {
+        "status": 200,
+        "durationMs": 387.20360000000073
+      },
+      {
+        "status": 409,
+        "durationMs": 489.8964999999989
+      },
+      {
+        "status": 409,
+        "durationMs": 521.5184999999983
+      },
+      {
+        "status": 409,
+        "durationMs": 546.7946000000011
+      },
+      {
+        "status": 409,
+        "durationMs": 597.5570000000007
+      },
+      {
+        "status": 409,
+        "durationMs": 646.5943000000007
+      },
+      {
+        "status": 409,
+        "durationMs": 632.7985999999983
+      },
+      {
+        "status": 409,
+        "durationMs": 737.3019999999997
+      },
+      {
+        "status": 409,
+        "durationMs": 688.5907999999981
+      },
+      {
+        "status": 409,
+        "durationMs": 762.8608999999997
+      },
+      {
+        "status": 409,
+        "durationMs": 778.5599000000002
+      },
+      {
+        "status": 409,
+        "durationMs": 660.3034999999982
+      },
+      {
+        "status": 409,
+        "durationMs": 877.6150999999991
+      },
+      {
+        "status": 409,
+        "durationMs": 792.0223000000005
+      },
+      {
+        "status": 409,
+        "durationMs": 821.2265999999981
+      },
+      {
+        "status": 409,
+        "durationMs": 861.5311999999976
+      },
+      {
+        "status": 409,
+        "durationMs": 891.9575000000004
+      }
+    ]
+  },
+  "sameTaskRace": {
+    "requests": 20,
+    "elapsedMs": 894.85,
+    "throughputPerSecond": 22.35,
+    "latencyMs": {
+      "p50": 646.59,
+      "p95": 877.62,
+      "p99": 891.96,
+      "max": 891.9575000000004
+    },
+    "statuses": {
+      "200": 1,
+      "409": 19
+    },
+    "transportErrors": 0,
+    "serverErrors": 0,
+    "configuredConcurrency": 20,
+    "databaseDelta": {
+      "responseIncrease": 1,
+      "answerIncrease": 5,
+      "taskStatus": "DONE"
+    }
+  },
+  "correctnessPassed": true,
+  "performanceTargetsMet": false,
+  "finishedAt": "2026-11-03T16:02:01.821Z",
+  "updatedAt": "2026-11-03T16:02:01.821Z",
+  "sessionsRevokedAndUsersDisabled": true
+}

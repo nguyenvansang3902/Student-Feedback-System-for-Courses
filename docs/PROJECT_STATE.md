@@ -1,33 +1,32 @@
 # Trạng thái dự án
 
-- Đề tài khảo sát và phản hồi sinh viên về môn học; 15 tuần từ30/09/2026, khởi động thực tế02/10.
-- Tuần hiện tại: Tuần 12 — **chưa nghiệm thu toàn bộ**. Mã chức năng/CI đạt; UC-GOLD kiểm tay còn dang dở.
-- Thực hiện03/11/2026 theo lệnh người dùng; mốc kế hoạch giả định16–22/12. Không ghi lùi ngày.
-- Nhánh feat/week12-reports-anomalies; main giữ mốc Tuần11 d18565d trong khi chờ kiểm tay.
-- UI: **chưa bắt đầu, chờ nghiệm thu tuần 11**. Giữ nguyên UI_NANG_CAP_PROMPT.md; chỉ bật theo BẮT ĐẦU GIAI ĐOẠN UI-n sau15tuần.
+- Tuần hiện tại: Tuần 13 — theo lệnh ngày 03/11; thực hiện từ 03–05/11/2026. Mốc kế hoạch giả định 23–29/12, không ghi lùi ngày.
+- Nguồn chức năng đã đẩy: `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`, nhánh `feat/week13-testing-security-performance`. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn. Main mã vẫn Tuần 11 đến khi phiên chính commit hồ sơ cuối và fast-forward; không ghi đã gộp trước khi thực hiện.
+- **Đã chốt Tuần 12–13 ngày 05/11: 211/219=96,3%,78/84 FR.** Chín FR Tuần 12 thêm 20 điểm, FR-160 thêm 3 điểm. Check/build và UC-GOLD kiểm tay đủ các bước đã qua; giữ đầy đủ các giới hạn bên dưới.
+- UI-n vẫn tạm dừng, chỉ kích hoạt bằng lệnh giai đoạn riêng sau 15 tuần. Không bắt đầu Tuần 14.
 
-## Kết quả và điểm dừng
+## Kết quả kiểm thử hiện có
 
-- Tuần1–11/G1 đã chốt; giữ báo cáo/ảnh/migration lịch sử. Tiến độ nghiệm thu **188/219=85,8%,68/84FR**.
-- Tuần12 hiện thực FR-90/91/92/93/94/147/151/158/159: dashboard10vai trò, biểu đồ, CSV/XLSX/PDF, xử lý phản hồi và chỉ số bất thường.
-- ADMIN chỉ vận hành; SV chỉ tổng quan cá nhân; Khảo thí gộp đủ mẫu/≥2GV có LIKERT hợp lệ; TT kiểm xung đột trước gộp; che cả tổng có thể suy ngược.
-- Cảnh báo từ10phiếu, TT xem xét/khởi tạo hồ sơ; không tự kết luận đúng sai hoặc chặn công bố.
-- Nguồn6692854e97088845ce5b263318dfb1f6239fef04, CI41588831428: check/smoke/e2e thành công.
-- Linux1285/1285 trong86tệp; Windows1284passed/1skip do quyền tạo symlink; lint/typecheck/schema/design/buildNext16.4.3 qua.
-- Tuần12 MySQL13+9 và xuất tệp10=32nhóm; hồi quy Tuần9=12,Tuần10=19,Tuần11=43; SQL16,demo19. E2EChromium3/3.
-- Main migration/seed đã áp dụng: runtime45/design47,2model chỉ thiết kế. Hash43bảng/9451bản ghi cũ và seedlặp45bảng/9519bản ghi giữ nguyên lúc15:46 ngày03/11.
-- Đã xem12PNG E2E và2PNG kiểm tay; PDF dài5trang cùng mẫu TT1trang đã render/xem.
-- Kiểm tay: ĐBCL tạo mẫu/đợt phạm vi khoa, PĐT xác nhậnRS04, LĐ duyệt mở5task; SV1 nộp1phiếu và gửi phản hồi Giảng dạy ẩn danh.
-- Công cụ điều khiển Windows dừng vì không xác định URL đủ chắc chắn. Không vượt chặn; helper4phiếuHTTP/đồng hồ giả chưa chạy.
-- Còn kiểm tay: đủ mẫu→đóng/tổng hợp/kiểm duyệt/công bố→giải trình/xác nhận→xử lý/đánh giá phản hồi→Khảo thí/Thanh tra→báo cáo/xuất tệp.
-- Chưa tick9FR Tuần12. Mục tiêu sau nghiệm thu208/219,77/84FR; kế hoạch210, chênh2điểm FR-145 còn backlog. FR-160 chốt đầy đủ ởTuần13.
+- Check Windows ngày05/11: **2.155 passed,1 skipped/2.156 trong93 tệp**, exit0; skipped là symlink bị hệ điều hành từ chối. Lint, TypeScript, runtime/design Prisma và ERD qua. [CI Linux đúng nguồn](assets/tuan-13/ci-source-831d14d.json) qua **2.156/2.156 trong93 tệp**, khôngskip, E2E 6/6; không biến skipped của Windows thành passed.
+- Coverage service/policy/auth: statements **78,49%**, branches **73,48%**, functions **82,22%**, lines **79,69%**; vượt ngưỡng 75/70/75/75. Build Next.js 16.4.3 exit 0, 101 route động, ID `Q1SY2ZcIAr3Do--HbL1SZ`. [Manifest check/build](assets/tuan-13/check-build-after-calendar.json) giữ mẫu số, fingerprint và log; hash được ghi khi tổng hợp sau check/build; không có snapshot bất biến trước chạy.
+- Ma trận quyền/IDOR **801/801 Vitest**. Hồi quy **227 nhóm trong 15 bộ**, gồm 217 nhóm MySQL/HTTP/service và 10 nhóm parser; demo **19/19** đếm riêng. Chín mã Mục F có bằng chứng runtime. [Manifest](assets/tuan-13/runtime-regression.json) giữ giới hạn các lượt kế thừa, không nhận mọi bộ chạy cùng snapshot bất biến.
+- E2E Chromium **6/6**; axe **34 trạng thái**, 0 vi phạm tự động, còn **7 incomplete / 168 node** cần kiểm tay riêng. **17 PNG tự động đã xem**, tách khỏi **8 PNG kiểm tay**.
+- Tải sau sửa: **200/200**, 0 HTTP 500/lỗi mạng; race 20 đúng một phiếu. **p95 3.595,91 ms > 3.000 ms** nên NFR-16 chưa đạt toàn bộ. Không nới ngưỡng/pool/timeout để ghi đạt.
+- Đã sửa quyền ADMIN đa vai trò đọc kết quả, nonce CSP/header, budget nộp 30 request/60 giây và khóa chia sẻ cho đường nộp ổn định. Scan nguồn partial 40 tệp/8 bề mặt; audit còn 24 moderate tổng/tám production, 0 high/critical. [Bảo mật](BAO_MAT_TUAN_13.md), [phụ thuộc](PHU_THUOC_TUAN_13.md), [tồn tại](LOI_CON_TON_TUAN_13.md).
+- HTTP production 7/7 trước đó là bằng chứng riêng. Build mới chưa có lượt HTTP production được xác minh; lỗi APP_URL HTTP/guard HTTPS và lần thử lại bị automatic approval review từ chối không nêu lý do được giữ là lịch sử, không kết luận mã hiện tại lỗi CSP.
 
-## Vận hành và tiếp theo
+## UC-GOLD kiểm tay đã qua
 
-- Mở Docker Desktop, đợi engine, bấm đúp KHOI_DONG_DU_AN.cmd, đợi Website đã sẵn sàng rồi vào http://localhost:3000; giữ cửa sổ chạy mở.
-- Đã mở lại web/scheduler lúc16:04 ngày03/11; HTTP trang chủ/đăng nhập/health đều200 lúc16:08. Health vẫn database:not_checked, không thay bằng chứng MySQL riêng.
-- Docker riêng chưa mở máy chủ web; Ctrl+C dừng web/scheduler do cửa sổ mở, không xóa dữ liệu. Không chạy build/generate song song webdev.
-- Không đổi mật khẩu/MFA chủ dự án; chuyển TOTP60 cá nhân còn chờ chủ tài khoản. Chỉ dữ liệu giả, không reset hoặc deploy công khai.
-- Không placeholder/slogan; trang chung dùng ngữ cảnh trung tính, không xưng bạn. Chưa chứng nhận WCAG/tải1500request/chống DBA hoặc tự tiết lộ.
-- Tiếp tục đúng Mục8 UC_GOLD_TUAN_12.md khi công cụ điều khiển hoạt động lại; chưa bắt đầu Tuần13 hoặc UI-n.
-- Hồ sơ: NGHIEM_THU_TUAN_12.md,QA_GIAO_DIEN_TUAN_12.md,assets/tuan-12/verification.json,bao-cao-tien-do/tuan-12.md. Nhóm tự điền đóng góp/GVHD/ngày yêu cầu.
+[Bằng chứng kiểm tay](assets/tuan-13/manual-uc-gold.json) ghi các thao tác CUA browser UI trên demo giả riêng, không helper HTTP, đồng hồ giả hoặc ghi database chính: 5 phiếu/100%/2,00; kiểm duyệt rồi công bố 0 tự luận chờ; GV xem kết quả lớp mình và gửi giải trình/TBM xác nhận; xử lý phản hồi, sinh viên đánh giá 4/5 và tự đóng; Khảo thí xử lý thi/xem nhóm đánh giá gộp; Thanh tra thông báo/đóng sau kết luận giả; cả Lãnh đạo và ĐBCL xem/xuất báo cáo. Tám PNG đã mở xem. CSV Lãnh đạo **3.745 byte**, ĐBCL **3.011 byte** có BOM, đúng vai trò/bộ lọc/5 phiếu/100%/mean số **2**, không định danh tài khoản; [kiểm byte CSV](assets/tuan-13/manual-export-verification.json). Nhánh chờ hết SLA kiểm bằng runtime, không nhận đã chờ bằng tay. Các lượt công cụ dừng 03–04/11 là lịch sử đã được tiếp tục.
+
+## Database và vận hành
+
+- Sau bản sao ngoại tuyến/mở độc quyền/đối chiếu hash cả hai Docker VHDX, mở shortcut Docker Desktop qua Windows Explorer đã chọn đúng ngữ cảnh AppData. Compose `db`/`mailpit` healthy; đọc được **45 bảng ứng dụng, 1.575 người dùng**, migration mới nhất Tuần 12 và chủ dự án tồn tại.
+- [Bằng chứng main](assets/tuan-13/main-data-verification.json): 45 bảng/**9.709 bản ghi cũ** giữ hash; dump single-transaction và restore database mới độc lập khớp chính xác 46 bảng/9.722 dòng gồm Prisma. SQL/VHDX giữ riêng. Số 9.451/9.519 trong hồ sơ Tuần 12 là lịch sử.
+- Guard sau toàn bộ GUI qua lúc 03:01:13 ngày 05/11, trước mở scheduler. Sau check/build mới, web/scheduler đã mở lại; [kiểm HTTP 03:16:32](assets/tuan-13/local-runtime-verification.json) có trang chủ/đăng nhập/health 200, health vẫn `database:not_checked`, tách khỏi SQL. Launcher gọi migration deploy nhưng không có migration cần áp dụng; không áp dụng migration mới, không seed/reset hoặc đổi credential/MFA. Runtime bình thường có thể ghi audit/email/trạng thái đến hạn, không nhận hash sau scheduler vẫn bất biến. Chưa kiểm reboot.
+
+## Tiến độ đã chốt
+
+Đã chốt **211/219=96,3%,78/84 FR**: chín FR Tuần 12 và FR-160 đã tick; kế hoạch 213/219, chênh 2 điểm FR-145 giữ backlog. Sáu FR 09/103/110/111/112/145 chưa hoàn tất; không tự cắt hoặc bắt đầuTuần 14/UI-n. Nhóm tự điền đóng góp/GVHD/ngày yêu cầu. Thống nhất một kho Docker lâu dài cho mọi cách mở là công việc vận hành riêng đang tiếp tục; chưa ghi đã hoàn tất.
+
+[Hồ sơ nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-13.md), [chương kiểm thử](CHUONG_KIEM_THU_VA_DANH_GIA_TUAN_13.md), [QA](QA_GIAO_DIEN_TUAN_13.md).
