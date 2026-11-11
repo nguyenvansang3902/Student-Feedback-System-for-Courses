@@ -1,0 +1,31 @@
+# Chỉ gửi đầu vào cần cho build. Không đưa .env, .git, bản sao dữ liệu,
+# tệp tải lên, log, ảnh demo, node_modules hoặc .next từ máy cá nhân vào image.
+**
+!package.json
+!package-lock.json
+!next.config.ts
+!postcss.config.mjs
+!tsconfig.json
+!prisma.config.ts
+!prisma/
+!prisma/*.prisma
+!prisma/database-urls.ts
+!prisma/migrations/
+!prisma/migrations/**
+!src/
+!src/**
+src/generated/
+src/**/.env*
+!resources/
+!resources/fonts/
+!resources/fonts/NotoSans-Regular.ttf
+!resources/fonts/OFL.txt
+!scripts/
+!scripts/admin-console.ts
+!scripts/generate-dmmf.mjs
+!scripts/scheduler.ts
+!scripts/seed-auth.ts
+!scripts/seed-demo.ts
+!scripts/seed-week12-demo.ts
+!deploy/
+!deploy/migrate.ts

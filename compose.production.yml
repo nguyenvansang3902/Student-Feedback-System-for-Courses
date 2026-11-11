@@ -1,0 +1,94 @@
+name: sfs-production
+
+x-production-env: &production-env
+  NODE_ENV: production
+  APP_URL: ${SFS_PROD_APP_URL:?Set SFS_PROD_APP_URL to the HTTPS origin}
+  DATABASE_URL: mysql://${SFS_PROD_DB_USER:?Set SFS_PROD_DB_USER}:${SFS_PROD_DB_PASSWORD:?Set SFS_PROD_DB_PASSWORD}@db:3306/${SFS_PROD_DB_NAME:?Set SFS_PROD_DB_NAME}
+  JWT_SECRET: ${SFS_PROD_JWT_SECRET:?Set SFS_PROD_JWT_SECRET}
+  MFA_ENCRYPTION_KEY: ${SFS_PROD_MFA_KEY:?Set SFS_PROD_MFA_KEY}
+  MFA_KEY_VERSION: ${SFS_PROD_MFA_KEY_VERSION:-v1}
+  AUTH_TRUST_PROXY: ${SFS_PROD_TRUST_PROXY:-false}
+  SMTP_HOST: ${SFS_PROD_SMTP_HOST:?Set SFS_PROD_SMTP_HOST}
+  SMTP_PORT: ${SFS_PROD_SMTP_PORT:-587}
+  SMTP_FROM: ${SFS_PROD_SMTP_FROM:?Set SFS_PROD_SMTP_FROM}
+  SMTP_USER: ${SFS_PROD_SMTP_USER:-}
+  SMTP_PASSWORD: ${SFS_PROD_SMTP_PASSWORD:-}
+  FEEDBACK_STORAGE_DIR: /var/lib/sfs/feedback
+  TZ: Asia/Ho_Chi_Minh
+
+x-tooling: &tooling
+  image: sfs-production-tooling:local
+  build:
+    context: .
+    target: tooling
+  init: true
+  environment: *production-env
+
+services:
+  db:
+    image: mysql:8.4.11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SFS_PROD_DB_ROOT_PASSWORD:?Set SFS_PROD_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${SFS_PROD_DB_NAME}
+      MYSQL_USER: ${SFS_PROD_DB_USER}
+      MYSQL_PASSWORD: ${SFS_PROD_DB_PASSWORD}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_vi_0900_ai_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'MYSQL_PWD="$$MYSQL_PASSWORD" mysql --protocol=tcp -h 127.0.0.1 -u"$$MYSQL_USER" "$$MYSQL_DATABASE" -Nse "SELECT 1" > /dev/null 2>&1'
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 30s
+
+  migrate:
+    <<: *tooling
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "deploy/migrate.ts"]
+
+  web:
+    image: sfs-production-web:local
+    build:
+      context: .
+      target: production
+    init: true
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment: *production-env
+    ports:
+      # Reverse proxy TLS trên cùng máy chuyển tiếp tới cổng loopback này.
+      - "127.0.0.1:${SFS_PROD_LOCAL_PORT:-3016}:3000"
+    volumes:
+      - feedback_attachments:/var/lib/sfs/feedback
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  scheduler:
+    <<: *tooling
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/scheduler.ts"]
+    stop_grace_period: 75s
+
+volumes:
+  mysql_data:
+  feedback_attachments:

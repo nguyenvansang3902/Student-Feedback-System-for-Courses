@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  ...(process.env.SFS_STANDALONE === "1" ? { output: "standalone" } : {}),
+  ...(process.env.NODE_ENV === "development" &&
+  process.env.SFS_DOCKER_DEMO === "1"
+    ? { allowedDevOrigins: ["127.0.0.1"] }
+    : {}),
   // Giữ AGENTS.md đúng nguyên văn yêu cầu của đề tài.
   agentRules: false,
   // Máy chủ kiểm thử auth tách output để không dừng phiên dev của người dùng.

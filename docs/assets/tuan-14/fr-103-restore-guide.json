@@ -1,0 +1,13 @@
+{
+  "testedAt": "2026-11-11T02:40:22.670Z",
+  "databaseDifferentFromSource": true,
+  "sourceAndTargetFixtureOnly": true,
+  "compose": "compose.production.yml",
+  "bootedOnlyDatabase": true,
+  "builtWebImage": true,
+  "writableVolumeByWebUser": true,
+  "checkedAttachmentSha256InWebImage": true,
+  "migrations": 11,
+  "tables": 46,
+  "attachments": 1
+}

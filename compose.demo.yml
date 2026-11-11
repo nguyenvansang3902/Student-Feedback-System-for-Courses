@@ -1,0 +1,107 @@
+name: sfs-week14-demo
+
+x-app: &app
+  image: sfs-week14-demo-tooling:local
+  build:
+    context: .
+    target: tooling
+  init: true
+
+x-demo-env: &demo-env
+  NODE_ENV: development
+  APP_URL: http://127.0.0.1:3014
+  JWT_SECRET: ${SFS_DEMO_JWT_SECRET:?Run node scripts/start-demo-compose.mjs}
+  MFA_ENCRYPTION_KEY: ${SFS_DEMO_MFA_KEY:?Run node scripts/start-demo-compose.mjs}
+  AUTH_TRUST_PROXY: "false"
+  SMTP_HOST: mailpit
+  SMTP_PORT: "1025"
+  SMTP_FROM: no-reply@demo.invalid
+  FEEDBACK_STORAGE_DIR: /var/lib/sfs/feedback
+  TZ: Asia/Ho_Chi_Minh
+
+services:
+  db:
+    image: mysql:8.4.11
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SFS_DEMO_DB_ROOT_PASSWORD:?Run node scripts/start-demo-compose.mjs}
+      MYSQL_DATABASE: sfs_demo
+      MYSQL_USER: sfs_demo
+      MYSQL_PASSWORD: ${SFS_DEMO_DB_PASSWORD:?Run node scripts/start-demo-compose.mjs}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_vi_0900_ai_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'MYSQL_PWD="$$MYSQL_PASSWORD" mysql --protocol=tcp -h 127.0.0.1 -u"$$MYSQL_USER" "$$MYSQL_DATABASE" -Nse "SELECT 1" > /dev/null 2>&1'
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 30s
+
+  mailpit:
+    image: ghcr.io/axllent/mailpit:v1.31.3
+    ports:
+      - "127.0.0.1:8034:8025"
+
+  seed:
+    <<: *app
+    # Giữ điều kiện seed chỉ kết nối MySQL loopback; mạng của db này tách khỏi db chính.
+    network_mode: service:db
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *demo-env
+      DATABASE_URL: mysql://sfs_demo:${SFS_DEMO_DB_PASSWORD}@127.0.0.1:3306/sfs_demo
+      DEMO_SIZE: medium
+    command:
+      - sh
+      - -ec
+      - >-
+        node node_modules/prisma/build/index.js migrate deploy &&
+        node node_modules/tsx/dist/cli.mjs scripts/seed-auth.ts &&
+        node node_modules/tsx/dist/cli.mjs scripts/seed-demo.ts &&
+        node node_modules/tsx/dist/cli.mjs scripts/seed-week12-demo.ts
+
+  web:
+    <<: *app
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_started
+    environment:
+      <<: *demo-env
+      SFS_DOCKER_DEMO: "1"
+      DATABASE_URL: mysql://sfs_demo:${SFS_DEMO_DB_PASSWORD}@db:3306/sfs_demo
+    ports:
+      - "127.0.0.1:3014:3000"
+    volumes:
+      - feedback_attachments:/var/lib/sfs/feedback
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 5s
+      timeout: 8s
+      retries: 24
+      start_period: 35s
+
+  scheduler:
+    <<: *app
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      <<: *demo-env
+      DATABASE_URL: mysql://sfs_demo:${SFS_DEMO_DB_PASSWORD}@db:3306/sfs_demo
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/scheduler.ts"]
+
+volumes:
+  mysql_data:
+  feedback_attachments:

@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-11",
+  "status": "passed",
+  "scope": "Loopback only. Synthetic QA data. Local TLS certificate explicitly trusted by the test client. No external SMTP test.",
+  "checks": [
+    {
+      "name": "isolated storage and services",
+      "demo": {
+        "project": "sfs-week14-demo",
+        "mysqlPortPublished": false,
+        "migrations": 11,
+        "users": 1573,
+        "seedExit": 0,
+        "schedulerTickObserved": true,
+        "localEnvAbsentFromImage": true
+      },
+      "production": {
+        "project": "sfs-week14-prod-qa",
+        "mysqlPortPublished": false,
+        "migrations": 11,
+        "migrateExit": 0,
+        "runtimeUid": 1000,
+        "feedbackVolumeWritable": true,
+        "pdfFontPresent": true,
+        "schedulerTickObserved": true,
+        "localEnvAbsentFromImage": true
+      }
+    },
+    {
+      "name": "demo HTTP home, login, CSS, health",
+      "status": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "databaseInHealth": "not_checked"
+    },
+    {
+      "name": "demo student login, own surveys, logout, Mailpit",
+      "status": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "role": "SINH_VIEN"
+    },
+    {
+      "name": "production HTTPS home, login, CSS, health",
+      "status": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "databaseInHealth": "not_checked"
+    },
+    {
+      "name": "production TLS auth, MFA, admin page and logout",
+      "trustedLocalCertificate": true,
+      "cspNonce": true,
+      "hsts": true,
+      "secureHttpOnlyCookies": true,
+      "invalidOriginStatus": 403,
+      "authenticatedStatus": 200,
+      "mfaPeriodSeconds": 60,
+      "adminPageStatus": 200
+    }
+  ],
+  "rebuiltInputs": {
+    ".dockerignore": "93aa3cd1a6f43f0acd42a5226e7def425238db2ef59346065476332de9d51dd8",
+    "Dockerfile": "1c527460b3fd7fab1916d9289f5c0b0817a0f0471939b22494fe76ddedf7919f",
+    "compose.demo.yml": "4245e0dace702ddb4f70a96106ab120caa2556f2fc117cda73d69f3da69c4c61",
+    "compose.production.yml": "ddeaca49ab65c276e552c43335ab1c6a751aba8d5540af024c435828ccfdabf6",
+    "deploy/.env.example": "3ab31c24c1bc6f9ce97243682c1284389a17502157719b2bc9edb4095ed3cc8a",
+    "deploy/migrate.ts": "60cf5b3d8ff0a40a4b0c93acc3ba5d57ed08c9fe148d32249a245f85cce2e42d",
+    "scripts/start-demo-compose.mjs": "a82af6f5b677961730e7450f275e3fe0ead60ab5a533ea6c602b78e85108058a",
+    "next.config.ts": "000c3f4e6fe0b95756ffc90c422b0754be401a225457133db12c3ccef1127c0b"
+  },
+  "demoLauncher": {
+    "command": "node scripts/start-demo-compose.mjs",
+    "coldLaunchDate": "2026-11-10",
+    "cleanSourceReplayDate": "2026-11-11",
+    "cleanSourceReplay": "git archive cộng tệp triển khai cuối, không có .env gốc hoặc node_modules trên host, giữ cấu hình riêng của demo hiện có",
+    "orphanVolumeWithoutConfigRefused": true,
+    "existingDemoEnvHashPreserved": true,
+    "demoPort": 3014,
+    "mailpitPort": 8034
+  },
+  "browser": {
+    "date": "2026-11-11",
+    "origin": "http://127.0.0.1:3014",
+    "browser": "157.0.8103.40",
+    "evidence": [
+      {
+        "role": "SINH_VIEN",
+        "route": "/khao-sat",
+        "status": "passed"
+      },
+      {
+        "role": "CAN_BO_DBCL",
+        "route": "/dot-khao-sat",
+        "status": "passed"
+      }
+    ]
+  },
+  "demoDevOriginFix": {
+    "symptom": "Trình duyệt không bật ô nhập vì Next dev chặn HMR từ 127.0.0.1",
+    "resolution": "Chỉ cho phép 127.0.0.1 trong Next dev khi Compose demo đặt SFS_DOCKER_DEMO=1",
+    "reference": "https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "suite": "FR-103 full application schema roundtrip",
+  "testedAt": "2026-11-11T02:41:26.146Z",
+  "sourceAndTargetFixtureOnly": true,
+  "databaseVersion": "8.4.11",
+  "collation": "utf8mb4_vi_0900_ai_ci",
+  "tables": 46,
+  "rows": 811,
+  "migrations": 11,
+  "attachments": 1,
+  "attachmentStorage": "private fixture directories on Windows",
+  "dumpBytes": 225648,
+  "dumpSha256": "d559eaea5b109161dcc112ef7c5dd05d5101b88508b40308fe16372cbd8e1489",
+  "sortedRowsSha256": "adff548990a7badea69ae3c8818f2909bc28a82b32f82c85bd3aa6f0ecc09d4b",
+  "normalizedDdlSha256": "8da8868f4ee41707a2674b9d26419e90f5875e12c48315385b0e077c3a19d6a0",
+  "ddlNormalization": "Compare ordered DDL after removing explicit utf8mb4 where it precedes the same utf8mb4 collation. Also compare column metadata including actual charset and collation.",
+  "checks": [
+    "distinct MySQL servers and empty target before import",
+    "all Prisma migrations and synthetic seed",
+    "full application backup and restore CLI",
+    "all sorted row data",
+    "normalized table definitions and exact column metadata",
+    "attachment byte hash",
+    "repeat restore refused without target change"
+  ]
+}

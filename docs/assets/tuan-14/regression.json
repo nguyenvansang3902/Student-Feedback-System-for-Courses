@@ -1,0 +1,65 @@
+{
+  "check": {
+    "date": "2026-11-11",
+    "command": "npm run check",
+    "environment": "Windows, Node 24.21.0",
+    "exitCode": 0,
+    "fileCounts": [
+      93,
+      93
+    ],
+    "tests": {
+      "passed": 2155,
+      "skipped": 1,
+      "total": 2156
+    },
+    "coveragePercent": {
+      "statements": 78.49,
+      "branches": 73.48,
+      "functions": 82.22,
+      "lines": 79.69
+    },
+    "note": "Một ca symlink không chạy vì quyền trên Windows."
+  },
+  "e2e": {
+    "date": "2026-11-10",
+    "source": "a2954a670a52709eed67b8e626d5ccae26d6874c",
+    "command": "node scripts/run-week12-e2e.mjs",
+    "environment": "Bản trích xuất độc lập với MySQL và Mailpit riêng, trình duyệt Chromium",
+    "stats": {
+      "startTime": "2026-11-10T01:21:18.731Z",
+      "duration": 284212.589,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "W13 NFR-15 — trang tài khoản công khai, bàn phím và axe ở desktop/360px",
+        "status": "expected"
+      },
+      {
+        "title": "W13 FR-90/160 NFR-15 — dashboard mười vai trò với axe, bàn phím và 360px",
+        "status": "expected"
+      },
+      {
+        "title": "W13 FR-50/70/153 NFR-15 — khảo sát và phản hồi sinh viên, đủ nhãn và thao tác bàn phím",
+        "status": "expected"
+      },
+      {
+        "title": "UC-GOLD — quy trình từ lập đợt tới báo cáo và các nhánh bổ sung",
+        "status": "expected"
+      },
+      {
+        "title": "TC-ALL-01 / BR-67 — dashboard mười vai trò, ngưỡng và IDOR",
+        "status": "expected"
+      },
+      {
+        "title": "FR-90/91 — dashboard desktop/mobile và không tràn trang",
+        "status": "expected"
+      }
+    ],
+    "note": "Bộ hồi quy nghiệp vụ trên nguồn nền trước thay đổi đóng gói. Phép kiểm Compose/HTTPS được ghi riêng."
+  }
+}

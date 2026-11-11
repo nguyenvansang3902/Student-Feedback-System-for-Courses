@@ -1,14 +1,31 @@
 # Website quản lý khảo sát và phản hồi sinh viên về môn học
 
-## Trạng thái hiện tại — Tuần 13
+## Chạy bản demo trên máy mới
 
-Cập nhật 05/11/2026: **UC-GOLD kiểm tay đã qua đủ các bước trong kịch bản**, tám PNG đã xem; cả Lãnh đạo/ĐBCL xem và xuất báo cáo. CSV 3.745/3.011 byte có BOM, đúng vai trò/bộ lọc/5 phiếu/100%/mean số 2, không định danh tài khoản. [Kiểm tay](docs/assets/tuan-13/manual-uc-gold.json), [CSV](docs/assets/tuan-13/manual-export-verification.json).
+1. Tải mã nguồn, mở **Docker Desktop** ở chế độ Linux containers và đợi engine chạy. Cần **Node.js 24** và Docker Compose. Mở terminal tại thư mục dự án.
+2. Chạy một lệnh:
 
-Check/build cục bộ ngày 05/11 qua 2.155 passed+1 symlink skipped/2.156 trong 93 tệp, coverage 78,49/73,48/82,22/79,69%,101 route động, buildID `Q1SY2ZcIAr3Do--HbL1SZ`. [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248` đã qua check/e2e/smoke đúng nguồn đã sửa harness lịch. Đã chốt 211/219 điểm,78/84 FR; sáu FR 09/103/110/111/112/145 còn lại, không tự cắt. [Hồ sơ kỹ thuật](docs/NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](docs/bao-cao-tien-do/tuan-13.md).
+   ```powershell
+   node scripts/start-demo-compose.mjs
+   ```
 
-Đã có 801 testquyền/IDOR,227 nhóm/15 bộ+demo 19,E2E 6/6; axe 34 trạng thái 0 vi phạm nhưng còn 7 incomplete/168 node,17 PNG tự động đã xem. Tải 200/200, khôngHTTP 500/lỗi mạng, race 20 một phiếu; **p95 3.595,91 ms chưa đạt 3 giây**. Các giới hạn bảo mật/phụ thuộc/HTTP production giữ trong hồ sơ; không chứng nhận toàn bộOWASP/WCAG.
+3. Khi lệnh in địa chỉ, mở [website demo](http://127.0.0.1:3014/dang-nhap). Lần đầu cần Internet để lấy image và thư viện theo lockfile. MySQL, dữ liệu giả và tệp đính kèm nằm trong các volume của project `sfs-week14-demo`. Lệnh tự tạo tệp cấu hình riêng, cài migration và dữ liệu minh họa. Lần sau chạy lại cùng lệnh để mở tiếp dữ liệu đã có.
 
-Docker đã được thống nhất về một kho hoạt động tại `D:\DockerData\DockerDesktopWSL`. Bốn cách mở đã kiểm đều dùng cùng kho; toàn bộ 46 bảng/9.840 dòng gồm migration, 1.575 người dùng khớp checkpoint trước sửa. [Cách sửa và bằng chứng](docs/DOCKER_MOT_KHO_DU_LIEU.md). Web và scheduler đã mở lại, [ba đường dẫn HTTP trả 200](docs/assets/van-hanh/docker-runtime-20261105.json); health vẫn `database:not_checked`, MySQL được kiểm riêng. Không seed/reset hoặc đổi credential/MFA. Scheduler có thể ghi dữ liệu theo nghiệp vụ sau checkpoint. Chưa kiểm reboot. UI-n tạm dừng; không làm Tuần 14. Mốc Tuần 13 trước đó có 9.709 bản ghi ứng dụng vẫn giữ nguyên trong bằng chứng lịch sử.
+Đăng nhập **`DEMO-SV00001`** để xem khảo sát hoặc **`DBCL2026001`** để xem đợt khảo sát. Mật khẩu ban đầu của các tài khoản demo là **`Demo2026!HocTap`**. [Hộp thư Mailpit](http://127.0.0.1:8034) nhận email thử. ADMIN tạo riêng theo hướng dẫn vận hành và đăng ký TOTP.
+
+Để dừng demo và giữ volume:
+
+```powershell
+docker compose --env-file .local/week14-demo/.env -f compose.demo.yml -p sfs-week14-demo stop
+```
+
+[Cài đặt và vận hành](docs/VAN_HANH_TUAN_14.md) · [Hướng dẫn theo 10 vai trò](docs/HUONG_DAN_SU_DUNG.md) · [Kịch bản và video demo](docs/KICH_BAN_DEMO.md)
+
+Máy đã có dữ liệu dự án tiếp tục dùng [tệp khởi động Windows](#mở-lại-dự-án-hằng-ngày-trên-windows) và cổng 3000. Bản demo dùng cổng 3014 để có thể chạy riêng.
+
+## Mốc nghiệm thu Tuần 13
+
+Ngày 05/11/2026, nhóm có bằng chứng UC-GOLD kiểm tay, kiểm thử bảo mật và hiệu năng. Đã chốt 211/219 điểm, 78/84 FR tại mốc đó. Lượt tải 200/200 trả về thành công, p95 **3.595,91 ms** vẫn vượt mục tiêu 3 giây. Xem [hồ sơ nghiệm thu](docs/NGHIEM_THU_TUAN_13.md) và [cách khôi phục ngữ cảnh Docker trên máy hiện tại](docs/DOCKER_MOT_KHO_DU_LIEU.md).
 
 ## Tuần 12: báo cáo và cảnh báo khảo sát
 
@@ -44,7 +61,7 @@ Lỗi tệp CMD vừa mở đã tự đóng được sửa ngày02/11: [nguyên 
 
 Lần đầu tải dự án từ GitHub vẫn cần thiết lập Node.js, Docker và `.env` theo phần cài đặt bên dưới. Tệp khởi động giữ nguyên `.env`, cập nhật migration và chuẩn bị bộ kết nối trước khi mở web; không tự seed hoặc reset database. Tệp đính kèm riêng nằm ở `FEEDBACK_STORAGE_DIR` (mặc định `.local/private-feedback-attachments`), không đưa lên GitHub.
 
-## Phạm vi hiện tại — Tuần 10: phản hồi môn học
+## Mốc Tuần 10: phản hồi môn học
 
 Thực hiện **01–02/11/2026** theo yêu cầu: gửi phản hồi với tám loại, định tuyến, hàng đợi xử lý, trao đổi, chuyển tiếp/từ chối có lý do, lịch sử và đính kèm riêng tư. Có hàng đợi PĐT/Khảo thí và lời nhắc phúc khảo; khiếu nại nghiêm trọng tạo hồ sơ **TIEP_NHAN**, kiểm xung đột và mức tiết lộ danh tính. Quy trình xác minh/kết luận, SLA, hài lòng/mở lại theo Tuần 11. Tiến độ **165/219 = 75,3%, 58/84 FR**; xem [nghiệm thu Tuần 10](docs/NGHIEM_THU_TUAN_10.md), [báo cáo](docs/bao-cao-tien-do/tuan-10.md), [QA](docs/QA_GIAO_DIEN_TUAN_10.md) và [bằng chứng](docs/assets/tuan-10/verification.json).
 

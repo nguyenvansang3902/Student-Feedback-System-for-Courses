@@ -1,0 +1,34 @@
+{
+  "suite": "FR-103 offline roundtrip",
+  "source": "isolated Compose MySQL 8.4.11 fixture",
+  "target": "separate Compose MySQL 8.4.11 project",
+  "sourceAndTargetFixtureOnly": true,
+  "tables": 4,
+  "rows": 5,
+  "attachments": 1,
+  "bytes": 3751,
+  "dumpSha256": "82635749dd6bd79b7e5d10db246c078f1c312d62496ebffc3fc846b5c1e3fc63",
+  "comparison": [
+    "table and row counts",
+    "all fixture row values",
+    "table engine and collation",
+    "foreign key",
+    "attachment SHA-256"
+  ],
+  "testedAt": "2026-11-10T01:25:17.246Z",
+  "checks": [
+    "wrong-context",
+    "wrong-schema",
+    "missing-source-attachments",
+    "backup-four-tables-five-rows-one-attachment",
+    "preserve-existing-bundle",
+    "refuse-main-like-target-project",
+    "missing-target-attachments",
+    "reject-sql-checksum-mismatch",
+    "reject-attachment-checksum-mismatch",
+    "target-empty-after-rejections",
+    "restore-data-utf8-binary-foreign-key-attachment",
+    "reject-second-restore-into-existing-target",
+    "preserve-target-after-second-restore-rejected"
+  ]
+}

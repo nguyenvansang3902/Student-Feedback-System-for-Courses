@@ -1,12 +1,14 @@
 # Tiến độ yêu cầu chức năng
 
+**Tuần 14 ngày 11/11/2026:** FR-103 thêm 2 điểm, tổng **213/219 = 97,3%, 79/84 FR**. Đã đối chiếu bản phục hồi thử 46 bảng, 811 dòng và một tệp đính kèm. Kế hoạch lũy kế là 215/219 điểm. Còn chênh 2 điểm của FR-145. [Nghiệm thu Tuần 14](NGHIEM_THU_TUAN_14.md)
+
 **Đã nghiệm thu Tuần 12–13 ngày 05/11/2026: 211/219 = 96,3%, 78/84 FR.** Tuần 12 chốt FR-90/91/92/93/94/147/151/158/159, thêm 20 điểm; Tuần 13 chốt FR-160, thêm 3 điểm. Kế hoạch lũy kế Tuần 13 là 213/219; chênh 2 điểm FR-145 giữ backlog, không tự cắt.
 
 [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) của nguồn `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248` đã qua check/e2e/smoke. [Check/build sau sửa harness](assets/tuan-13/check-build-after-calendar.json):2.155 passed+1 symlinkskipped/2.156 trong 93 tệp; coverage 78,49/73,48/82,22/79,69%; buildID `Q1SY2ZcIAr3Do--HbL1SZ`. [UC-GOLD kiểm tay](assets/tuan-13/manual-uc-gold.json) đã đủ các bước,8 PNG đã xem; [haiCSV](assets/tuan-13/manual-export-verification.json) đúng vai trò/phạm vi.
 
 Giữ p95 3.595,91 ms chưa đạt 3 giây, audit 24 moderate/tám production, axe 7 incomplete/168 node và giới hạn quét nguồn partial. HTTPproduction 7/7 trước đó là bằng chứng riêng; không chạy lại đúng build cuối không phải gate bổ sung để trì hoãn chốtFR. [Nghiệm thu](NGHIEM_THU_TUAN_13.md), [báo cáo 10 mục](bao-cao-tien-do/tuan-13.md).
 
-Còn 6 FR chưa hoàn tất: FR-09/103/110/111/112/145. Không tự bắt đầu Tuần 14/UI-n hoặc tự cắt backlog. Các checkbox dưới đây là trạng thái hiện tại; các đoạn mốc/ngày nghiệm thu cũ giữ bằng chứng lịch sử, không đổi số tại thời điểm cũ.
+Còn 5 FR chưa hoàn tất: FR-09, FR-110, FR-111, FR-112 và FR-145. Các checkbox dưới đây ghi trạng thái hiện tại. Các mốc nghiệm thu theo ngày ghi kết quả tại thời điểm kiểm.
 
 Vận hành ngày 05/11: [Docker dùng chung kho D:](DOCKER_MOT_KHO_DU_LIEU.md) đã qua bốn cách mở, toàn bộ 46 bảng/9.840 dòng kể cả Prisma khớp checkpoint mới, 1.575 người dùng được giữ nguyên. Web/scheduler đã mở lại, ba HTTP 200; chưa kiểm reboot. Công việc này không thêm tính năng, FR hoặc điểm; mốc 9.709 dòng ứng dụng trong bằng chứng Tuần 13 trước đó giữ nguyên.
 
@@ -113,7 +115,7 @@ Bằng chứng: [nghiệm thu Tuần6](NGHIEM_THU_TUAN_06.md), [báo cáo](bao-c
 - [x] FR-100 [P0] cấu hình ngưỡng (Tuần 7)
 - [x] FR-101 [P0] dữ liệu demo (seed) (Tuần 5)
 - [x] FR-102 [P0] health check (Tuần 1)
-- [ ] FR-103 [P1] script sao lưu/khôi phục (Tuần 14)
+- [x] FR-103 [P1] script sao lưu/khôi phục (Tuần 14)
 
 ## M12 Mở rộng
 

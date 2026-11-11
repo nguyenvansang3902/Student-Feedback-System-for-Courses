@@ -1,0 +1,115 @@
+{
+  "source": "a2954a670a52709eed67b8e626d5ccae26d6874c",
+  "dates": [
+    "2026-11-10",
+    "2026-11-11"
+  ],
+  "evidence": "Playwright dùng trình duyệt Chrome với dữ liệu giả, đăng nhập qua giao diện. Ảnh minh họa từng vai trò, không thay kết quả kiểm thử UC-GOLD.",
+  "isolation": "MySQL riêng, source từ git archive, kho đính kèm riêng và loopback.",
+  "viewport": {
+    "width": 1360,
+    "height": 1000
+  },
+  "captures": [
+    {
+      "role": "SINH_VIEN",
+      "route": "/khao-sat/[id]",
+      "heading": "Môn học minh họa 1",
+      "observed": "Mở phiếu từ danh sách và thấy nút nộp.",
+      "file": "01-sinh-vien.png",
+      "date": "2026-11-11",
+      "browser": "Chrome 157.0.8103.40",
+      "sha256": "b26b4ae68bb931b25fa56c41ad64ecdc2816dc4fd067894cc40a3f66ebd9e567"
+    },
+    {
+      "role": "GIANG_VIEN",
+      "route": "/ket-qua/[id]",
+      "heading": "DEMO — Đợt có yêu cầu giải trình",
+      "observed": "Mở kết quả đợt đã công bố và thấy dòng kết quả lớp được phân công.",
+      "file": "02-giang-vien.png",
+      "sha256": "969ef93c6f0e35b1e515ca4840f5077325e665e447ac9ee3ae81dc75a4e3fcb0",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "TRUONG_BO_MON",
+      "route": "/bao-cao",
+      "heading": "Báo cáo",
+      "observed": "Mở báo cáo với góc nhìn Trưởng bộ môn để xem số liệu trong phạm vi phụ trách.",
+      "file": "03-truong-bo-mon.png",
+      "date": "2026-11-11",
+      "browser": "Chrome 157.0.8103.40",
+      "sha256": "48ed0f77bd9455c22c4603c4da521c5486a4eb790d1ff58727ed65ea705193df"
+    },
+    {
+      "role": "TRUONG_KHOA",
+      "route": "/bao-cao",
+      "heading": "Báo cáo",
+      "observed": "Mở báo cáo đúng góc nhìn Trưởng khoa.",
+      "file": "04-truong-khoa.png",
+      "sha256": "75aba0dcd1cebfd40c143b0cc8dce0c8460bedc1deaa1bf333c7831f68facc8d",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "CAN_BO_DBCL",
+      "route": "/dot-khao-sat",
+      "heading": "Đợt khảo sát môn học",
+      "observed": "Mở danh sách đợt khảo sát và thấy liên kết chi tiết.",
+      "file": "05-can-bo-dbcl.png",
+      "sha256": "93bd53e1345ec08ef2b195fed2e30bf9f0f8ce55f18b50700b6672b4576e2dbe",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "LANH_DAO",
+      "route": "/bao-cao",
+      "heading": "Báo cáo",
+      "observed": "Mở báo cáo đúng góc nhìn Lãnh đạo.",
+      "file": "06-lanh-dao.png",
+      "sha256": "8b2873ce3b3554c3b720a9b521d3d01776d6932cb7663c2b95d0b6266ca95b30",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "ADMIN",
+      "route": "/quan-tri/cau-hinh-khao-sat",
+      "heading": "Cấu hình ngưỡng khảo sát",
+      "observed": "Vào trang ngưỡng mặc định sau khi hoàn tất TOTP của tài khoản giả mới.",
+      "file": "07-quan-tri.png",
+      "date": "2026-11-11",
+      "browser": "Chrome 157.0.8103.40",
+      "sha256": "6ae4483fabff59cf3aaf568b7d3bd2badd7fc305f309f2ff2017c6837fb2278a"
+    },
+    {
+      "role": "PHONG_DAO_TAO",
+      "route": "/danh-muc/nhap-lieu",
+      "heading": "Nhập dữ liệu từ tệp",
+      "observed": "Mở màn nhập dữ liệu, thấy thao tác chạy thử.",
+      "file": "08-phong-dao-tao.png",
+      "sha256": "25a203772617a488127571f9619a005f0d6c0f22d36feb34edfc0dc4a84f4b1a",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "PHONG_KHAO_THI",
+      "route": "/ket-qua/[id]",
+      "heading": "DEMO — Đợt có yêu cầu giải trình",
+      "observed": "Mở kết quả nhóm đánh giá gộp; màn hình không có liên kết chi tiết lớp.",
+      "file": "09-phong-khao-thi.png",
+      "sha256": "258d1081f1fe5687e9798be21c4c74771c085ee6da6a9bae6d34eef6a257000c",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    },
+    {
+      "role": "THANH_TRA",
+      "route": "/thanh-tra",
+      "heading": "Hồ sơ Thanh tra",
+      "observed": "Mở danh sách hồ sơ nghiêm trọng giả và thấy liên kết mở hồ sơ.",
+      "file": "10-phong-thanh-tra.png",
+      "sha256": "6678c61c24a924d2c7e32301d53fb8acef78cca54a090a6abde9d94d76555a49",
+      "date": "2026-11-10",
+      "browser": "Chrome 157.0.8103.40"
+    }
+  ]
+}

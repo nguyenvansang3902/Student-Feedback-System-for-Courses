@@ -331,3 +331,13 @@ Migration/seed lên **database chính** đã áp dụng, runtime **45model**, th
 Nguồn `6692854e97088845ce5b263318dfb1f6239fef04` trên nhánh `feat/week12-reports-anomalies` có [CI41588831428](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41588831428) ngày03/11/2026 **smoke/check/e2e thành công**, Linux **1285/1285 trong86/86tệp**, không skipped. CI chỉ chứng minh SHA đó; tài liệu và nguồn sửa tiếp cần đối chiếu riêng. Các số tại máy và Linux được ghi riêng, không biến skipped của Windows thành passed.
 
 Đây vẫn là checkpoint: **Tuần12 chưa nghiệm thu toàn bộ vì UC-GOLD thủ công chưa hoàn tất**, chín FR mới chưa tick, tiến độ giữ **188/219=85,8%,68/84FR**; **208/219=95,0%,77/84FR** chỉ là mục tiêu chốt. Nhánh tính năng đã đẩy GitHub và CI nguồn qua; nhánh mã `main` vẫn Tuần11, chưa gộp Tuần12. [Nghiệm thu kỹ thuật](NGHIEM_THU_TUAN_12.md), [báo cáo tuần](bao-cao-tien-do/tuan-12.md), [truy vết](TRUY_VET.md) và [bằng chứng](assets/tuan-12/verification.json) ghi kết quả/giới hạn. Giữ FR-145 backlog, FR-160 chỉ một phần đến khi kiểm đầy đủ Tuần13; chưa chứng nhận mọi thiết bị, WCAG hoặc tải1.500request. Không tự bắt đầu Tuần13, deploy công khai hoặc kích hoạt UI-n đã hoãn; các nhật ký và báo cáo lịch sử giữ nguyên.
+
+## Tuần 14 — đóng gói, phục hồi và hướng dẫn, 10–11/11/2026
+
+AI đã chuẩn bị Dockerfile nhiều giai đoạn, Compose demo và triển khai, mẫu biến môi trường và lệnh mở demo. Lượt dựng lại từ bản trích xuất mã nguồn tìm ra một đầu vào sinh metadata Prisma còn thiếu trong `.dockerignore`. Lượt trình duyệt phát hiện origin loopback của bản demo bị Next.js từ chối khi nạp tài nguyên phát triển. Đã bổ sung đầu vào build và chỉ bật cấu hình origin cho chế độ demo Docker.
+
+AI đã hiện thực FR-103, chạy sao lưu và khôi phục trên MySQL riêng, đối chiếu 46 bảng, 811 dòng và một tệp giả. Đã thử các trường hợp từ chối đích có dữ liệu hoặc gói sai checksum. Lượt theo hướng dẫn Compose production xác nhận tệp có thể đọc bằng tài khoản Linux chạy web. Sinh viên tự kiểm thêm đăng nhập và mở tệp ở bản khôi phục khi dùng cho vận hành.
+
+AI đã soạn tài liệu 10 vai trò, chụp 10 ảnh trên dữ liệu giả, viết kịch bản và ghi video 33,12 giây có tải CSV. Lượt quay đầu có đoạn chờ kéo dài, nên đã ghi lại sau khi làm nóng các tuyến. Đã xem bảy cảnh bản cuối. Tài khoản dùng cho ảnh Quản trị thực hiện TOTP trước khi chụp.
+
+`npm run check` trên Windows qua 2.155 ca, một ca symlink skipped. Playwright trên nguồn nền qua 6/6 ca, tách khỏi kiểm thử Docker. Kết quả và các giới hạn nằm trong [hồ sơ Tuần 14](NGHIEM_THU_TUAN_14.md). Sinh viên tự điền đóng góp và xác nhận lượt nghiệm thu của người ngoài nhóm.

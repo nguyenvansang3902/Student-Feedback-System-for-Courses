@@ -1,4 +1,4 @@
-# Bảng truy vết yêu cầu — Tuần 13 sau Điều chỉnh số 01
+# Bảng truy vết yêu cầu đến Tuần 14
 
 Cập nhật 05/11/2026. Nguồn chức năng `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`; [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn đã sửa harness lịch. Đã chốt FR/điểm ngày 05/11; các mốc dưới bảng là lịch sử.
 
@@ -150,7 +150,7 @@ FR đã nghiệm thu trước điều chỉnh được ghi ở mục2. FR-20–2
 | FR-93 | 12 | /api/reports/export, PDF tiếng Việt | reports-export.ts, Noto Sans cục bộ có giấy phép, phân trang | Đã hiện thực; parser PDF/bytes cùng bộ10nhóm qua, PDF5trang đã mở xem; CI nguồn qua, không suy mọi bố cục đã kiểm |
 | FR-94 | 12 | /bao-cao, thống kê xử lý phản hồi | reports-metrics.ts, reports.ts; số lượng/thời gian/quá hạn/hài lòng, ngưỡng từng mẫu số | Đã hiện thực; metrics unit và MySQL13nhóm qua, tỷ lệ có mẫu số, giữ mốc lịch sử, CI nguồn qua; chờ chốt tuần |
 | FR-100 | 7 | /quan-tri/cau-hinh-khao-sat | survey-settings.ts, API survey-settings, ADMIN MFA/TOTP/CSRF/Origin | W7-SETTINGS01–09:10roles, biên ngưỡng, actual TOTP/replay, CAS, mặc định đợt, audit, fresh revoke |
-| FR-103 | 14           | CLI sao lưu/phục hồi; chưa có script                                           | backup / restore; chưa triển khai                            | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
+| FR-103 | 14 | [scripts/database-backup.mjs](../scripts/database-backup.mjs) và [hướng dẫn](SAO_LUU_KHOI_PHUC.md) | CLI sao lưu SQL InnoDB và tệp tham chiếu, xác minh checksum, phục hồi vào dự án riêng có schema và kho tệp rỗng | Hoàn thành kỹ thuật. [13 tình huống](assets/tuan-14/fr-103-roundtrip.json), [46 bảng/811 dòng/1 tệp](assets/tuan-14/fr-103-full-app.json), [quy trình đích Compose production](assets/tuan-14/fr-103-restore-guide.json). |
 | FR-110 | P2, chưa xếp | Chưa có màn riêng; AI tắt mặc định                                             | mở rộng AI, cần người dùng đồng ý; chưa triển khai           | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-111 | P2, chưa xếp | [WF-08](wireframes/tuan-02.html#wf-08)                                         | API trạng thái hoàn thành; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |
 | FR-112 | P2, chưa xếp | [WF-10](wireframes/tuan-02.html#wf-10)                                         | đánh giá riêng giảng viên; chưa triển khai                   | Chưa có; triển khai đúng tuần nêu bên trái                                                         |

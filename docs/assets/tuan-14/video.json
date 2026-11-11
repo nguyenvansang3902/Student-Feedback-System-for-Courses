@@ -1,0 +1,57 @@
+{
+  "status": "verified",
+  "fixture": "Demo giả riêng, ảnh ghi từ thao tác trình duyệt thật, đăng nhập trước khi ghi",
+  "date": "2026-11-11",
+  "appSource": "a2954a670a52709eed67b8e626d5ccae26d6874c",
+  "width": 1440,
+  "height": 1000,
+  "videoBytes": 4116631,
+  "sha256": "d3001a22235dc584625dc41d143015ec366847e3580fac1bdfafbcd4ec1b7092",
+  "scenes": [
+    {
+      "title": "Website khảo sát và phản hồi môn học",
+      "path": "/",
+      "titleOnScreen": "Khảo sát và phản hồi về môn học",
+      "sampleSecond": 3
+    },
+    {
+      "title": "1. Sinh viên",
+      "path": "/khao-sat",
+      "titleOnScreen": "Khảo sát của tôi",
+      "sampleSecond": 7
+    },
+    {
+      "title": "Phiếu khảo sát",
+      "path": "/khao-sat/<id-demo>",
+      "titleOnScreen": "Môn học minh họa 1",
+      "sampleSecond": 10
+    },
+    {
+      "title": "2. Giảng viên",
+      "path": "/ket-qua/<id-demo>",
+      "titleOnScreen": "DEMO — Đợt có yêu cầu giải trình",
+      "sampleSecond": 15
+    },
+    {
+      "title": "3. Lãnh đạo",
+      "path": "/bao-cao",
+      "titleOnScreen": "Báo cáo",
+      "sampleSecond": 20
+    },
+    {
+      "title": "Tải báo cáo",
+      "path": "/bao-cao",
+      "titleOnScreen": "Báo cáo",
+      "sampleSecond": 24,
+      "downloadBytes": 6311
+    },
+    {
+      "title": "4. Phòng Thanh tra",
+      "path": "/thanh-tra",
+      "titleOnScreen": "Hồ sơ Thanh tra",
+      "sampleSecond": 29
+    }
+  ],
+  "durationSeconds": 33.12,
+  "reviewedScenes": 7
+}
