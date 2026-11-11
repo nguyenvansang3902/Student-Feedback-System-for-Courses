@@ -15,7 +15,7 @@ Dockerfile nhiều giai đoạn và hai cấu hình Compose cho demo và triển
 | Công việc | Kết quả |
 | --- | --- |
 | Đóng gói, biến môi trường, cài đặt và vận hành | Demo đã chạy bằng lệnh README. Image production đã qua thử HTTPS và ADMIN TOTP cục bộ. |
-| Sao lưu và khôi phục | Đã đối chiếu 46 bảng, 811 dòng và một tệp trên bản khôi phục thử. |
+| Sao lưu và khôi phục | Đã đối chiếu 46 bảng, 811 dòng và một tệp trên bản khôi phục thử. Sinh viên giả đăng nhập vào bản khôi phục và tải tệp khớp SHA-256. |
 | Hướng dẫn theo vai trò | Đã có đủ 10 vai trò và 10 ảnh giao diện chạy thật với dữ liệu giả. |
 | Kịch bản và video dự phòng | Có kịch bản thao tác và video WebM 33,12 giây. |
 | Người ngoài nhóm chạy theo README | Chờ người thực hiện xác nhận. |
@@ -45,7 +45,7 @@ Theo kế hoạch, hoàn thiện báo cáo, slide, câu hỏi phản biện, k�
 
 ## 9. Bản rút gọn để nộp tiến độ
 
-Tuần 14, nhóm chuẩn bị bộ chạy Docker cho demo và triển khai. Bản demo dùng một lệnh, kèm MySQL và dữ liệu giả. Nhóm bổ sung lệnh sao lưu và khôi phục SQL cùng tệp đính kèm trên database riêng. Hướng dẫn có ảnh cho mười vai trò và video dự phòng minh họa khảo sát, kết quả lớp, tải CSV và hồ sơ Thanh tra. Check qua 2.155 ca, một ca symlink được bỏ qua trên Windows. Playwright qua sáu ca hồi quy. Người ngoài nhóm còn cần xác nhận lượt chạy theo README.
+Tuần 14, nhóm chuẩn bị bộ chạy Docker cho demo và triển khai. Bản demo dùng một lệnh, kèm MySQL và dữ liệu giả. Nhóm đã thử sao lưu và khôi phục SQL cùng tệp đính kèm trên database riêng. Hướng dẫn có ảnh cho mười vai trò và video dự phòng minh họa khảo sát, kết quả lớp, tải CSV và hồ sơ Thanh tra. CI qua check, e2e và smoke. Người ngoài nhóm còn cần xác nhận lượt chạy theo README.
 
 ## 10. Điều chỉnh so với kế hoạch
 

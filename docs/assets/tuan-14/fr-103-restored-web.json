@@ -1,0 +1,22 @@
+{
+  "testedAt": "2026-11-11T02:50:29.242Z",
+  "status": "passed",
+  "restoredSyntheticDatabase": true,
+  "isolatedCompose": true,
+  "productionWebImage": true,
+  "transport": "HTTPS through reverse proxy on loopback with certificate-specific trust",
+  "loginHttpStatus": 200,
+  "loginViaBrowserForm": true,
+  "authenticatedRole": "SINH_VIEN",
+  "feedbackLinkOpenedFromOwnList": true,
+  "attachmentLinkClicked": true,
+  "secureHttpOnlyCookieObserved": true,
+  "downloadedBytes": 68,
+  "matchingAttachmentSha256": "b3b30633bf85517f5ecdb694f603bb4bfcaaf772b70e8a209e912c89082d69c0",
+  "matchingOriginalRestoreManifest": true,
+  "downloadAuditAdded": 1,
+  "ranMigrationsOrSeedDuringWebTest": false,
+  "sourceFixtureFormat": "PNG signature present; IDAT chunk CRC invalid in the synthetic source file",
+  "imageRenderVerified": false,
+  "scope": "Verified browser login, authorized link navigation, byte-exact download and corresponding audit event"
+}

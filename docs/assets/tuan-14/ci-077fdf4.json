@@ -1,0 +1,26 @@
+{
+  "sha": "077fdf461882a4de617c858af6ee93ac3db5b9de",
+  "runId": 42948405304,
+  "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/42948405304",
+  "workflow": "Kiểm tra chất lượng",
+  "branch": "feat/week14-deployment-operations",
+  "status": "success",
+  "startedAt": "2026-11-11T02:47:30Z",
+  "jobs": [
+    {
+      "name": "e2e",
+      "status": "success",
+      "completedAt": "2026-11-11T02:51:38Z"
+    },
+    {
+      "name": "check",
+      "status": "success",
+      "completedAt": "2026-11-11T02:59:13Z"
+    },
+    {
+      "name": "smoke",
+      "status": "success",
+      "completedAt": "2026-11-11T02:49:15Z"
+    }
+  ]
+}
