@@ -1,18 +1,20 @@
 # Trạng thái dự án
 
-- Tuần hiện tại: Tuần 14, thực hiện 10–11/11/2026 theo yêu cầu tiếp tục đề tài.
-- Phạm vi: đóng gói demo và triển khai, sao lưu và khôi phục FR-103, hướng dẫn sử dụng có ảnh và demo dự phòng. Chi tiết ở [hồ sơ nghiệm thu](NGHIEM_THU_TUAN_14.md) và [báo cáo tuần](bao-cao-tien-do/tuan-14.md).
-- FR-103 đã qua sao lưu và phục hồi thử 46 bảng, 811 dòng, một tệp đính kèm. Tiến độ hiện tại **213/219 điểm (97,3%), 79/84 FR**. [Danh sách FR](PROGRESS.md)
+- Tuần hiện tại: Tuần 15, thực hiện 11/11/2026.
+- Bản bảo vệ dùng mốc Git `v1.0` và phiên bản gói `1.0.0`. [Hồ sơ nghiệm thu](NGHIEM_THU_TUAN_15.md) · [Báo cáo tuần](bao-cao-tien-do/tuan-15.md)
+- Tiến độ **213/219 điểm (97,3%), 79/84 FR**. Kế hoạch lũy kế 215/219. FR-145 và bốn FR P2 còn mở. [Ma trận FR](PROGRESS.md)
 
 ## Chạy và kiểm tra
 
-- Demo trên máy mới: bật Docker Linux containers, cài Node.js 24 và chạy `node scripts/start-demo-compose.mjs`. Website ở `http://127.0.0.1:3014`, Mailpit ở `http://127.0.0.1:8034`. Demo có volume MySQL và kho đính kèm riêng. [README](../README.md)
-- Máy đang dùng dữ liệu dự án: mở Docker và chạy `KHOI_DONG_DU_AN.cmd` ở thư mục dự án. Website cục bộ ở `http://localhost:3000`. Máy này dùng kho Docker WSL `D:\DockerData\DockerDesktopWSL`. [Hồ sơ Docker](DOCKER_MOT_KHO_DU_LIEU.md)
-- [Vận hành Compose và biến production](VAN_HANH_TUAN_14.md), [sao lưu và khôi phục FR-103](SAO_LUU_KHOI_PHUC.md), [hướng dẫn 10 vai trò](HUONG_DAN_SU_DUNG.md), [kịch bản và video](KICH_BAN_DEMO.md).
-- Check Windows qua 93 tệp, 2.155 passed và 1 skipped trên 2.156. Hồi quy Playwright qua 6/6 trên nguồn nền và database thử riêng. GitHub Actions của commit triển khai `077fdf4` qua check, e2e và smoke. [Số liệu tại máy](assets/tuan-14/regression.json) · [CI](assets/tuan-14/ci-077fdf4.json)
+- Bản demo dùng Docker Linux containers và Node.js 24. Chạy `node scripts/start-demo-compose.mjs`. Website ở `http://127.0.0.1:3014`, Mailpit ở `http://127.0.0.1:8034`. [README](../README.md)
+- Dữ liệu dự án trên máy hiện tại dùng launcher `KHOI_DONG_DU_AN.cmd` và cổng 3000. Kho Docker WSL trên máy ở `D:\DockerData\DockerDesktopWSL`. [Hồ sơ Docker](DOCKER_MOT_KHO_DU_LIEU.md)
+- Check Windows trên gói 1.0.0 qua 93 tệp, 2.155 passed và 1 skipped do quyền symlink. [Kết quả](assets/tuan-15/check.json)
+- CI trên commit ứng dụng `e53d083` qua cả check, smoke và e2e. [GitHub Actions](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/42982583192) · [Kết quả](assets/tuan-15/ci-e53d083.json)
+- Hồi quy UC-GOLD qua 6/6 ca ngày 11/11 trên mã ứng dụng nền `d39d4cc`. Lượt kiểm tay trọn chuỗi ngày 04–05/11 lưu riêng. [UC-GOLD Tuần 15](UC_GOLD_TUAN_15.md)
+- [Sơ đồ 10 tác nhân](SO_DO_CA_SU_DUNG_TUAN_15.md), [kịch bản bảo vệ](KICH_BAN_BAO_VE_TUAN_15.md), [câu hỏi phản biện](CAU_HOI_PHAN_BIEN_TUAN_15.md) và [hướng dẫn sử dụng](HUONG_DAN_SU_DUNG.md).
 
-## Việc cần xác nhận
+## Việc nhóm cần xác nhận
 
-- Môi trường triển khai được kiểm cục bộ. Mốc người ngoài nhóm tự chạy theo README cần người thực hiện xác nhận.
-- Tải Tuần 13 có p95 3.595,91 ms, cao hơn mục tiêu 3.000 ms. Báo cáo giữ các giới hạn bảo mật, kiểm thử và khả năng tiếp cận. [Các mục còn tồn tại](LOI_CON_TON_TUAN_13.md)
-- Tiếp tục theo lệnh bắt đầu Tuần 15 để làm báo cáo, slide và bảo vệ. Nâng cấp giao diện cần lệnh giai đoạn riêng theo AGENTS.md.
+- Điền thông tin học vụ và đóng góp thực tế. Mỗi thành viên tập giải thích phần mình đã thực hiện. Lượt người ngoài nhóm tự cài theo README cần người thực hiện xác nhận. [Bảng thành viên](TEAM.md)
+- Lượt đo Tuần 13 có p95 3.595,91 ms, cao hơn mục tiêu 3.000 ms. Ẩn danh áp dụng ở mức ứng dụng. Các giới hạn kiểm thử, quét nguồn, khả năng tiếp cận và vận hành được ghi trong hồ sơ. [Giới hạn Tuần 13](LOI_CON_TON_TUAN_13.md)
+- Nâng cấp giao diện thực hiện theo lệnh giai đoạn riêng khi người dùng yêu cầu. [AGENTS.md](../AGENTS.md)

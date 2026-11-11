@@ -1,5 +1,11 @@
 # Website quản lý khảo sát và phản hồi sinh viên về môn học
 
+## Hồ sơ bảo vệ phiên bản 1.0
+
+[Báo cáo tiểu luận](docs/bao-cao-tieu-luan/bao-cao-tong-hop-tuan-15.md) · [Sơ đồ 10 tác nhân](docs/SO_DO_CA_SU_DUNG_TUAN_15.md) · [Kịch bản bảo vệ 9 phút 15 giây](docs/KICH_BAN_BAO_VE_TUAN_15.md) · [20 câu hỏi phản biện](docs/CAU_HOI_PHAN_BIEN_TUAN_15.md) · [Hồ sơ nghiệm thu](docs/NGHIEM_THU_TUAN_15.md)
+
+Tiến độ theo ma trận yêu cầu là **213/219 điểm (97,3%), 79/84 FR**. Lượt đo 200 nhiệm vụ nộp phiếu đạt 200/200, p95 **3.595,91 ms** so với mục tiêu 3.000 ms. [Tiến độ](docs/PROGRESS.md) · [Điều kiện đo](docs/HIEU_NANG_TUAN_13.md)
+
 ## Chạy bản demo trên máy mới
 
 1. Tải mã nguồn, mở **Docker Desktop** ở chế độ Linux containers và đợi engine chạy. Cần **Node.js 24** và Docker Compose. Mở terminal tại thư mục dự án.

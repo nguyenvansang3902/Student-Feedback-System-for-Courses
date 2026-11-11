@@ -341,3 +341,11 @@ AI đã hiện thực FR-103, chạy sao lưu và khôi phục trên MySQL riên
 AI đã soạn tài liệu 10 vai trò, chụp 10 ảnh trên dữ liệu giả, viết kịch bản và ghi video 33,12 giây có tải CSV. Lượt quay đầu có đoạn chờ kéo dài, nên đã ghi lại sau khi làm nóng các tuyến. Đã xem bảy cảnh bản cuối. Tài khoản dùng cho ảnh Quản trị thực hiện TOTP trước khi chụp.
 
 `npm run check` trên Windows qua 2.155 ca, một ca symlink skipped. Playwright trên nguồn nền qua 6/6 ca, tách khỏi kiểm thử Docker. Kết quả và các giới hạn nằm trong [hồ sơ Tuần 14](NGHIEM_THU_TUAN_14.md). Sinh viên tự điền đóng góp và xác nhận lượt nghiệm thu của người ngoài nhóm.
+
+## Tuần 15 — hoàn thiện hồ sơ bảo vệ, 11/11/2026
+
+AI tổng hợp báo cáo sáu chương và phụ lục từ tài liệu dự án, chuẩn bị slide PowerPoint, dựng sơ đồ ca sử dụng 10 tác nhân, kịch bản bảo vệ 9 phút 15 giây và 20 câu phản biện. Nội dung dùng ảnh chạy thật với dữ liệu giả. Nhóm tự xác nhận tên trường, GVHD, thông tin thành viên, đóng góp và phần trình bày.
+
+AI chạy lại Playwright 6/6 trên bản trích xuất `d39d4cc` và MySQL thử riêng. Ca UC-GOLD qua tám chặng, tải CSV, XLSX và PDF. Bằng chứng ghi rõ bước dùng trình duyệt, HTTP hoặc fixture MySQL. Lượt kiểm tay 04–05/11 của Tuần 13 giữ mốc riêng. [UC-GOLD](UC_GOLD_TUAN_15.md)
+
+AI đổi metadata gói lên `1.0.0`, dựng lại Docker demo và rà các cảnh bảo vệ qua trình duyệt ở cổng 3014. Đã đăng nhập năm vai trò và tải CSV từ báo cáo Lãnh đạo. Check Windows qua 2.155 ca, một ca symlink skipped. Hồ sơ dùng số liệu đo thật và nêu p95 cao hơn mục tiêu, giới hạn ẩn danh ứng dụng và các FR còn mở. [Nghiệm thu](NGHIEM_THU_TUAN_15.md)

@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-11",
+  "status": "passed",
+  "packageVersion": "1.0.0",
+  "environment": "Project sfs-week14-demo tách riêng trên loopback, dữ liệu giả đã chuẩn bị",
+  "method": "Trình duyệt thực hiện đăng nhập và thao tác các màn hình chuẩn bị cho buổi bảo vệ",
+  "browser": "156.0.8078.4",
+  "httpChecks": [
+    {
+      "page": "trang chủ",
+      "status": 200
+    },
+    {
+      "page": "đăng nhập",
+      "status": 200
+    },
+    {
+      "page": "health",
+      "status": 200
+    },
+    {
+      "page": "Mailpit",
+      "status": 200
+    }
+  ],
+  "checks": [
+    {
+      "role": "SINH_VIEN",
+      "signedInThroughForm": true,
+      "openedPendingSurvey": true
+    },
+    {
+      "role": "CAN_BO_DBCL",
+      "signedInThroughForm": true,
+      "openedCampaignList": true
+    },
+    {
+      "role": "GIANG_VIEN",
+      "signedInThroughForm": true,
+      "openedOwnClassResults": true
+    },
+    {
+      "role": "LANH_DAO",
+      "signedInThroughForm": true,
+      "campaignFilterApplied": true,
+      "csvDownloaded": true,
+      "csvBytes": 6311
+    },
+    {
+      "role": "THANH_TRA",
+      "signedInThroughForm": true,
+      "openedCaseQueue": true
+    }
+  ],
+  "scope": "Lượt rà các cảnh của buổi bảo vệ. Bằng chứng chạy chuỗi UC-GOLD đầy đủ lưu riêng."
+}

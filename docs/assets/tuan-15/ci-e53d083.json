@@ -1,0 +1,23 @@
+{
+  "sha": "e53d0830dc69fcad76d230955a325369b8b2f80c",
+  "url": "https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/42982583192",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "check",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "smoke",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-11",
+  "source": "e53d0830dc69fcad76d230955a325369b8b2f80c",
+  "command": "npm run check",
+  "packageVersion": "1.0.0",
+  "os": "Windows",
+  "exitCode": 0,
+  "files": {
+    "passed": 93,
+    "total": 93
+  },
+  "tests": {
+    "passed": 2155,
+    "skipped": 1,
+    "total": 2156
+  },
+  "coveragePercent": {
+    "statements": 78.49,
+    "branches": 73.48,
+    "functions": 82.22,
+    "lines": 79.69
+  },
+  "skipReason": "Symlink test skipped because the Windows test account lacked the required filesystem permission.",
+  "checks": [
+    "Prisma runtime and design validate/generate",
+    "ERD consistency",
+    "ESLint",
+    "TypeScript",
+    "Vitest coverage"
+  ]
+}

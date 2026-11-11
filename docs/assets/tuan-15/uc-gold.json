@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "week": 15,
+  "status": "passed",
+  "timezone": "Asia/Saigon",
+  "observationDate": "2026-11-11",
+  "scope": "Regression of the application baseline d39d4cc. Week 15 source changes add release metadata and documentation.",
+  "source": {
+    "commit": "d39d4ccf6ac01cfd6bd0a9d438578162dfef019b",
+    "archiveSha256": "7c6a96ea3970c0127f74bc7465764594f3507d38f9ab2f662717c6a3bc3df7b6"
+  },
+  "run": {
+    "startedAtUtc": "2026-11-11T07:50:32.4333648Z",
+    "finishedAtUtc": "2026-11-11T07:54:05.8629634Z",
+    "command": "node scripts/run-week12-e2e.mjs",
+    "node": "v24.21.0",
+    "browserProject": "chromium",
+    "playwright": "1.64.1",
+    "os": "Windows",
+    "workers": 1,
+    "retries": 0,
+    "exitCode": 0,
+    "reporterStats": {
+      "startTime": "2026-11-11T07:50:39.174Z",
+      "duration": 206365.017,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "W13 NFR-15 — trang tài khoản công khai, bàn phím và axe ở desktop/360px",
+        "file": "accessibility.spec.ts",
+        "project": "chromium",
+        "durationMs": 16002,
+        "status": "passed"
+      },
+      {
+        "title": "W13 FR-90/160 NFR-15 — dashboard mười vai trò với axe, bàn phím và 360px",
+        "file": "accessibility.spec.ts",
+        "project": "chromium",
+        "durationMs": 53958,
+        "status": "passed"
+      },
+      {
+        "title": "W13 FR-50/70/153 NFR-15 — khảo sát và phản hồi sinh viên, đủ nhãn và thao tác bàn phím",
+        "file": "accessibility.spec.ts",
+        "project": "chromium",
+        "durationMs": 12326,
+        "status": "passed"
+      },
+      {
+        "title": "UC-GOLD — quy trình từ lập đợt tới báo cáo và các nhánh bổ sung",
+        "file": "uc-gold.spec.ts",
+        "project": "chromium",
+        "durationMs": 87307,
+        "status": "passed"
+      },
+      {
+        "title": "TC-ALL-01 / BR-67 — dashboard mười vai trò, ngưỡng và IDOR",
+        "file": "uc-gold.spec.ts",
+        "project": "chromium",
+        "durationMs": 1819,
+        "status": "passed"
+      },
+      {
+        "title": "FR-90/91 — dashboard desktop/mobile và không tràn trang",
+        "file": "uc-gold.spec.ts",
+        "project": "chromium",
+        "durationMs": 21571,
+        "status": "passed"
+      }
+    ]
+  },
+  "environment": {
+    "gitArchiveCheckout": true,
+    "verifiedDockerStore": true,
+    "verifiedIsolatedMySqlServerIdentity": true,
+    "syntheticFixture": true,
+    "mainDatabaseWrites": false,
+    "everydayDemoDatabaseWrites": false,
+    "fixtureAccountCount": 21,
+    "fixtureSessionsRevoked": true,
+    "fixtureDataRetained": true
+  },
+  "ucGold": {
+    "outcome": "passed",
+    "completedSteps": [
+      "create-template/campaign/readiness/confirm/approve/open21tasks",
+      "student-browser-submit/19-api-submit/anonymous-count20/no-resubmit",
+      "close/aggregate/moderate/publish/teacher-score2",
+      "teacher-browser-submit-improvement/head-browser-confirm",
+      "anonymous-feedback/answer/student-browser-rating-close/overdue-escalation",
+      "exam-routing/inspector-conflict404/verification/conclusion/notify/close/leader-summary",
+      "anomaly-safe-metrics/attention/refer-case/no-publish-block",
+      "leader-browser-dashboard/csv-xlsx-pdf-download"
+    ],
+    "exported": [
+      {
+        "format": "CSV",
+        "bytes": 4323,
+        "sha256": "2530cddae1df9c1e4bb8e7eecd5857fbbd81957714a8ce67239ad34eec5448f1"
+      },
+      {
+        "format": "XLSX",
+        "bytes": 8150,
+        "sha256": "22973845c7144a8ef7f3529342d54c0efbdd34646e4322b92ae56dc16617680d"
+      },
+      {
+        "format": "PDF",
+        "bytes": 19424,
+        "sha256": "e8d36b8ef28c6dd66c94a40d17c1f81342906dee62ac8b5d6cd5dbb979bf3fca"
+      }
+    ],
+    "method": {
+      "browser": [
+        "student submit and confirmation",
+        "teacher opens own class result page; score checked through API",
+        "teacher submits improvement and department head confirms",
+        "student rates response",
+        "leadership dashboard and CSV, XLSX and PDF downloads"
+      ],
+      "apiAndDatabase": [
+        "create and approve campaign, readiness and opening",
+        "additional synthetic submissions and duplicate prevention",
+        "early closure, aggregation, moderation and publication",
+        "ordinary and exam feedback, escalation, inspection and anomaly cases",
+        "synthetic login sessions issued by fixture helpers"
+      ],
+      "endOfCampaign": "Early close with a reason in this E2E run.",
+      "sla": "Fixture deadline changed inside the isolated database to observe escalation; no real waiting period."
+    }
+  },
+  "historicalManualEvidence": {
+    "path": "docs/assets/tuan-13/manual-uc-gold.json",
+    "sha256": "0bb1947dcc22424211c831e38c87b32ae1b49de43d5295971f8a8021a3814dab",
+    "observationDates": [
+      "2026-11-04",
+      "2026-11-05"
+    ],
+    "naturalCampaignDeadlineObserved": true,
+    "status": "manual_walkthrough_passed",
+    "repeatedAsNewManualRunInWeek15": false
+  }
+}

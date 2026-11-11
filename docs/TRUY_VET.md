@@ -1,4 +1,6 @@
-# Bảng truy vết yêu cầu đến Tuần 14
+# Bảng truy vết yêu cầu phiên bản 1.0
+
+Lượt hồi quy UC-GOLD ngày 11/11/2026 kiểm lại chuỗi tạo đợt, xác nhận, chốt danh sách, nộp phiếu, công bố, giải trình, phản hồi và xuất báo cáo. Sơ đồ mười vai trò dẫn về đặc tả và Điều chỉnh số 01. [UC-GOLD Tuần 15](UC_GOLD_TUAN_15.md) · [Sơ đồ ca sử dụng](SO_DO_CA_SU_DUNG_TUAN_15.md) · [Nghiệm thu bản 1.0](NGHIEM_THU_TUAN_15.md)
 
 Cập nhật 05/11/2026. Nguồn chức năng `831d14decd9d6a562a1f9ecc0a53f6a4fadc8248`; [CI 41904262769](https://github.com/nguyenvansang3902/Student-Feedback-System-for-Courses/actions/runs/41904262769) đã qua check/e2e/smoke đúng nguồn đã sửa harness lịch. Đã chốt FR/điểm ngày 05/11; các mốc dưới bảng là lịch sử.
 

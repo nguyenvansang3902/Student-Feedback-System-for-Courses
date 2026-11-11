@@ -1,5 +1,7 @@
 # Tiến độ yêu cầu chức năng
 
+**Tổng kết Tuần 15 ngày 11/11/2026:** **213/219 điểm (97,3%), 79/84 FR**. Bản 1.0 tập hợp tài liệu bảo vệ và kết quả chạy lại UC-GOLD. So với 215/219 điểm kế hoạch lũy kế, phần chênh 2 điểm thuộc FR-145. [Nghiệm thu bản bảo vệ](NGHIEM_THU_TUAN_15.md)
+
 **Tuần 14 ngày 11/11/2026:** FR-103 thêm 2 điểm, tổng **213/219 = 97,3%, 79/84 FR**. Đã đối chiếu bản phục hồi thử 46 bảng, 811 dòng và một tệp đính kèm. Kế hoạch lũy kế là 215/219 điểm. Còn chênh 2 điểm của FR-145. [Nghiệm thu Tuần 14](NGHIEM_THU_TUAN_14.md)
 
 **Đã nghiệm thu Tuần 12–13 ngày 05/11/2026: 211/219 = 96,3%, 78/84 FR.** Tuần 12 chốt FR-90/91/92/93/94/147/151/158/159, thêm 20 điểm; Tuần 13 chốt FR-160, thêm 3 điểm. Kế hoạch lũy kế Tuần 13 là 213/219; chênh 2 điểm FR-145 giữ backlog, không tự cắt.
